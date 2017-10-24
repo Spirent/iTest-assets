@@ -1,0 +1,471 @@
+<?xml version="1.0"?>
+<testCase version="6.1.0.e2e4ec0">
+    <general>
+        <notes>v 0.1</notes>
+        <sessionClass includeTestCase="true" sessionType="iperf_server_base.ffsp"/>
+    </general>
+    <procedures>
+        <item name="main">
+            <steps>
+                <item guid="8f03f07c-d6d6-452c-a793-a3d0ffaa5368" action="comment">
+                    <command>
+                        <body>Unit test here</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="7d1089d4-cdaf-44b7-ab0f-67ba9b70dd76" action="comment">
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+        </item>
+        <item name="RunTraffic" isPublic="true" isVBlock="true">
+            <description>Run Iperf Traffic </description>
+            <steps>
+                <item guid="f1d6f9c9-8a4a-41ad-8708-1b85bfbb29f9" action="comment">
+                    <command>
+                        <body>Build command</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="35e24cd9-3eb1-4206-a3b2-2d359848c91c" action="eval">
+                            <command>
+                                <body>set command &quot;iperf3 -c $server_address -t $run_time -f kG&quot;</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="8fec4528-bc25-464f-8aed-e90ce34e048a" action="if">
+                            <command>
+                                <body>$bandwidth != &quot;unlimited&quot;</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="84441424-f64b-4925-a269-d27c50cef426" action="then">
+                                    <nestedSteps>
+                                        <item guid="0c320230-792e-4989-9c4a-b2c9e3558e5d" action="eval">
+                                            <command>
+                                                <body>set command &quot;$command -b $bandwidth&quot;</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="8722b7dd-aea2-455f-a378-472cd76f200c" action="comment">
+                    <command>
+                        <body>issue command</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="e158584d-1bda-437b-bb0c-b97dfacdfe70" action="command" session="$session" estimatedStepExecutionTime="10.062">
+                            <command>
+                                <body>$command</body>
+                            </command>
+                            <postProcessing>
+                                <analysisRules>
+                                    <item>
+                                        <extractorInfo extractorType="query">
+                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                <query>transfer_total_by_direction(&quot;sender&quot;)</query>
+                                            </extractorProperties>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="store">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                <storageLocation>gbytes_sent</storageLocation>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                    <item>
+                                        <extractorInfo extractorType="query">
+                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                <query>transfer_total_by_direction(&quot;receiver&quot;)</query>
+                                            </extractorProperties>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="store">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                <storageLocation>gbytes_received</storageLocation>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                    <item>
+                                        <extractorInfo extractorType="query">
+                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                <query>bandwidth_by_direction(&quot;sender&quot;)</query>
+                                            </extractorProperties>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="store">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                <storageLocation>bitrate_sent</storageLocation>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                    <item>
+                                        <extractorInfo extractorType="query">
+                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                <query>bandwidth_by_direction(&quot;receiver&quot;)</query>
+                                            </extractorProperties>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="store">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                <storageLocation>bitrate_received</storageLocation>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                </analysisRules>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                                <completionProperties>
+                                    <idleChannel inherit="false" sub="true">[expr $run_time * 1000]</idleChannel>
+                                    <maxIdleTimeAddition inherit="false" sub="true">[expr $run_time + 3]</maxIdleTimeAddition>
+                                    <screenMode inherit="false">true</screenMode>
+                                </completionProperties>
+                            </applicationProperties>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="ad3d5924-0513-4f30-ad08-fcbe7b13bec7" action="comment">
+                    <command>
+                        <body>parse responses</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="df22f649-3171-486f-a3d4-e64c2979807b" action="comment">
+                            <command>
+                                <body>Return bytes sent </body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="fd1d4bb3-22ff-449b-84d3-6bf7d70fcbef" action="eval">
+                                    <command>
+                                        <body>set gbytes_sent [lindex [split $gbytes_sent] 0]</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="c0dac6a3-41e4-44c1-b3fe-cc12003825ca" action="eval">
+                                    <command>
+                                        <body>expr $gbytes_sent * 1000000000</body>
+                                    </command>
+                                    <postProcessing>
+                                        <analysisRules>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                        <query>group1()</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="store">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                        <storageLocation>var1</storageLocation>
+                                                        <query>[return bytes_sent]</query>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                        </analysisRules>
+                                    </postProcessing>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="31f06369-bf4a-40b7-b472-6d3cebf07865" action="comment">
+                            <command>
+                                <body>Return bytes received</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="44460c90-3869-45e1-9c34-d5d197a278b7" action="eval">
+                                    <command>
+                                        <body>set gbytes_received [lindex [split $gbytes_received] 0]</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="415e01b0-fced-480b-b21a-627f98a878ad" action="eval">
+                                    <command>
+                                        <body>expr $gbytes_received * 1000000000</body>
+                                    </command>
+                                    <postProcessing>
+                                        <analysisRules>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                        <query>group1()</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="store">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                        <storageLocation>var1</storageLocation>
+                                                        <query>[return bytes_received]</query>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                        </analysisRules>
+                                    </postProcessing>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="25853fd3-f260-471c-b564-8cf41b3ef9ab" action="comment">
+                            <command>
+                                <body>Return sent bitrate</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="544c8a7c-4314-4d81-97ce-46c05a82b54e" action="eval">
+                                    <command>
+                                        <body>set bitrate_sent [lindex [split $bitrate_sent] 0]</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="46db3f07-e458-4e5c-8f15-78bdfba36b45" action="eval">
+                                    <command>
+                                        <body>expr $bitrate_sent * 1000</body>
+                                    </command>
+                                    <postProcessing>
+                                        <analysisRules>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                        <query>group1()</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="store">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                        <storageLocation>var1</storageLocation>
+                                                        <query>[return bitrate_sent]</query>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                        </analysisRules>
+                                    </postProcessing>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="687f23ee-5240-4d2c-9957-6745738b6368" action="comment">
+                            <command>
+                                <body>Return received bitrate</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="4f2e6549-2b83-4a03-86cd-9c35c3748fb2" action="eval">
+                                    <command>
+                                        <body>set bitrate_received [lindex [split $bitrate_received] 0]</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="487d3c89-541a-4e73-a6ef-574b96007673" action="eval">
+                                    <command>
+                                        <body>expr $bitrate_received * 1000</body>
+                                    </command>
+                                    <postProcessing>
+                                        <analysisRules>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                        <query>group1()</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="store">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                        <storageLocation>var1</storageLocation>
+                                                        <query>[return bitrate_received]</query>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                        </analysisRules>
+                                    </postProcessing>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <multilineDescription>Run traffic on Iperf for the specified duration. Returns bytes transferred and bit rate for upstream and downstream in a JSON block. </multilineDescription>
+            <arguments>
+                <item name="server_address">
+                    <description>Address of the Iperf server to send traffic to. 
+ex. 192.168.1.1
+</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="run_time">
+                    <description>Time in seconds to run traffic</description>
+                    <defaultValue>60</defaultValue>
+                </item>
+                <item name="bandwidth">
+                    <description>Target bandwidth in bits/sec. Will run unlimited if left as default. </description>
+                    <defaultValue>unlimited</defaultValue>
+                </item>
+            </arguments>
+            <response>{&quot;bytes_sent&quot;:&quot;value&quot;,&quot;bytes_received&quot;:&quot;value&quot;,&quot;bitrate_sent&quot;:&quot;value&quot;,&quot;bitrate_received&quot;:&quot;value&quot;}</response>
+        </item>
+        <item name="StartServer" isPublic="true" isVBlock="true">
+            <description>Start Iperf server </description>
+            <steps>
+                <item guid="961e7bc4-9811-4e8c-8b02-00e4a40a7431" action="command" session="$session">
+                    <command>
+                        <body>iperf3 -s &amp;</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="contains">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                        <searchString>error </searchString>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$value == 0</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="Eval">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                    <statement>set status OK</statement>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenTrue>
+                                        <actionsWhenFalse>
+                                            <item actionId="Eval">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                    <statement>set status error</statement>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenFalse>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                        <completionProperties>
+                            <completeWhen inherit="false">TIMED</completeWhen>
+                            <completionTime inherit="false">1</completionTime>
+                        </completionProperties>
+                    </applicationProperties>
+                </item>
+                <item guid="7baf7e03-8397-4789-b8e7-c211c83f8f7a" action="eval">
+                    <command>
+                        <body>puts $status</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="regex">
+                                    <extractorProperties type="com.fnfr.svt.mapping.regex.extractors.RegexExtractorPropertyGroup" useLineMode="true">
+                                        <regex>^.*$</regex>
+                                        <extractionGroupIndex>0</extractionGroupIndex>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>var1</storageLocation>
+                                        <query>[return status]</query>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <multilineDescription>Starts Iperf server. Returns success/failure status in JSON block:
+Returns status &quot;OK&quot; on success, &quot;error&quot; on failure&quot;</multilineDescription>
+            <response>{&quot;status&quot;:&quot;value&quot;}</response>
+        </item>
+        <item name="StopServer" isPublic="true" isVBlock="true">
+            <description>Stop Iperf Server</description>
+            <steps>
+                <item guid="8ff5627b-5e8d-4512-adb9-4d0d25e1ad20" action="command" session="$session">
+                    <command>
+                        <body>taskkill /IM iperf3.exe /F</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="contains">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                        <searchString>SUCCESS</searchString>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$value == 1</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="Eval">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                    <statement>set status OK</statement>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenTrue>
+                                        <actionsWhenFalse>
+                                            <item actionId="Eval">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                    <statement>set status error</statement>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenFalse>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="f115e061-d9d8-4c7f-b258-1bfb047fe23e" action="eval">
+                    <command>
+                        <body>puts $status</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="regex">
+                                    <extractorProperties type="com.fnfr.svt.mapping.regex.extractors.RegexExtractorPropertyGroup" useLineMode="true">
+                                        <regex>^.*$</regex>
+                                        <extractionGroupIndex>0</extractionGroupIndex>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>var1</storageLocation>
+                                        <query>[return status]</query>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <version>0.1</version>
+            <multilineDescription>Stops Iperf server. Returns success/failure status in JSON block:
+Returns status &quot;OK&quot; on success, &quot;error&quot; on failure&quot;</multilineDescription>
+            <response>{&quot;status&quot;:&quot;value&quot;}</response>
+        </item>
+    </procedures>
+</testCase>
