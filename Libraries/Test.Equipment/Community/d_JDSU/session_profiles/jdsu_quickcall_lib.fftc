@@ -1,0 +1,896 @@
+<?xml version="1.0"?>
+<testCase version="6.1.0.e2e4ec0">
+    <general>
+        <notes>REST quick call library for JDSU session
+</notes>
+        <sessionClass includeTestCase="true" sessionType="jdsu_rest.ffsp"/>
+    </general>
+    <procedures>
+        <item name="main">
+            <steps>
+                <item guid="b1e9c57a-a49e-4dba-b681-c9843b0925ab" action="comment">
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+        </item>
+        <item name="versionQuery" isPublic="true">
+            <steps>
+                <item guid="cefe7003-6286-4561-bec6-ba01d7159fb3" action="POST" session="$session">
+                    <postProcessing>
+                        <storeResponseAt>output</storeResponseAt>
+                        <storeResponseText>true</storeResponseText>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties">
+                        <message inherit="false">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;versionQuery/&gt;</message>
+                    </applicationProperties>
+                </item>
+                <item guid="0988e319-cb7a-4bad-a32c-495721acb676" action="write">
+                    <command>
+                        <body>$output</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+        </item>
+        <item name="login" isPublic="true">
+            <steps>
+                <item guid="925c5bbe-1b62-409c-b020-d65b42a5b2e7" action="POST" session="$session">
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>responseHTTPHeaders/Set_Cookie</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>cookie</storageLocation>
+                                        <isStorageLocationGlobal>true</isStorageLocationGlobal>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                        <storeResponseAt>output</storeResponseAt>
+                        <storeResponseText>true</storeResponseText>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" message="&lt;login username=&quot;$username&quot; password=&quot;$password&quot;/&gt;" message.inherit="false" action="$url" action.inherit="false"/>
+                </item>
+                <item guid="59216f26-6f2c-4432-9522-121ed890cfc3" action="write">
+                    <command>
+                        <body>$output</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <arguments>
+                <item name="username">
+                    <defaultValue>SMART-USER1</defaultValue>
+                </item>
+                <item name="password">
+                    <defaultValue>JDSUapi01!</defaultValue>
+                </item>
+                <item name="url">
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="SART_open" isPublic="true">
+            <steps>
+                <item guid="36c6154b-3b7c-4fd1-8fad-8ab303ab2011" action="eval">
+                    <command>
+                        <body>set cookie [gget cookie]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="57c0ec3d-8d8c-4472-8f2d-09b33e78ed77" action="POST" session="$session">
+                    <postProcessing>
+                        <storeResponseAt>output</storeResponseAt>
+                        <storeResponseText>true</storeResponseText>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" action="http://10.189.1.210:8080/api/xml" action.inherit="false">
+                        <message inherit="false">&lt;?xml version=&quot;1.0&quot;?&gt;
+
+   &lt;contextDrill ifKey=&quot;sa&quot; maximizeApp=&quot;True&quot;/&gt;
+
+</message>
+                        <httpHeader inherit="false" transferableToolId="com.fnfr.itest.applications.webservices.restful">
+                            <memberClasses>
+                                <item>com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry</item>
+                            </memberClasses>
+                            <item transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry" header="Cookie" header.inherit="false" value="$cookie" value.inherit="false"/>
+                        </httpHeader>
+                    </applicationProperties>
+                </item>
+                <item guid="6d377671-69f4-4481-bae9-1824d6f0a099" action="write">
+                    <command>
+                        <body>$output</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <arguments>
+                <item name="url">
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="MUS" isPublic="true">
+            <steps>
+                <item guid="1b60fc3e-f805-473c-8150-1bd515d4dc78" action="eval">
+                    <command>
+                        <body>set cookie [gget cookie]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="f0182b4a-ca93-4505-9658-f376b668c62e" action="POST" session="$session">
+                    <postProcessing>
+                        <storeResponseAt>output</storeResponseAt>
+                        <storeResponseText>true</storeResponseText>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" action="http://10.189.1.210:8080/api/xml" action.inherit="false">
+                        <message inherit="false">&lt;?xml version=&quot;1.0&quot;?&gt;
+
+&lt;addMultiUserServer ifKey=&quot;sa&quot; ipAddress=&quot;155.165.161.82&quot;/&gt;
+</message>
+                        <httpHeader inherit="false" transferableToolId="com.fnfr.itest.applications.webservices.restful">
+                            <memberClasses>
+                                <item>com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry</item>
+                            </memberClasses>
+                            <item transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry" header="Cookie" header.inherit="false" value="$cookie" value.inherit="false"/>
+                        </httpHeader>
+                    </applicationProperties>
+                </item>
+                <item guid="4b79b118-a21d-4efb-9ec4-20357b77e044" action="write">
+                    <command>
+                        <body>$output</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <arguments>
+                <item name="cookie"/>
+                <item name="url"/>
+            </arguments>
+        </item>
+        <item name="add_DNA" isPublic="true">
+            <steps>
+                <item guid="484640f6-98d9-4ec8-8dbb-3489560b741f" action="eval">
+                    <command>
+                        <body>set cookie [gget cookie]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="17b40d79-ac6a-403c-8cb8-b170d4ff06bf" action="foreach">
+                    <command>
+                        <body>DNA $DNA_List</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="81613ae0-735b-4996-96ed-a99cebdf9722" action="comment">
+                            <command>
+                                <body>Insert steps here to be executed on each loop</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="f669aa60-74b0-4b20-ae8a-366a264d4a69" action="POST" session="$session">
+                            <postProcessing>
+                                <storeResponseAt>output</storeResponseAt>
+                                <storeResponseText>true</storeResponseText>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" action="$url" action.inherit="false">
+                                <message inherit="false">&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;connectToDNA ifKey=&quot;sa&quot; dnaIfKey=&quot;$DNA_List&quot;/&gt;</message>
+                                <httpHeader inherit="false" transferableToolId="com.fnfr.itest.applications.webservices.restful">
+                                    <memberClasses>
+                                        <item>com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry</item>
+                                    </memberClasses>
+                                    <item transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry" header="Cookie" header.inherit="false" value="$cookie" value.inherit="false"/>
+                                </httpHeader>
+                            </applicationProperties>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="addbcb83-8767-4510-a60b-9dc02a16732a" action="write">
+                    <command>
+                        <body>$output</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <arguments>
+                <item name="DNA_List">
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="url">
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="deciphering" isPublic="true">
+            <steps>
+                <item guid="17b1592c-cab7-4155-98f9-fadd5571598f" action="eval">
+                    <command>
+                        <body>set cookie [gget cookie]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="241f8a49-9172-449f-9f04-acbbbb562b69" action="POST" session="$session">
+                    <postProcessing>
+                        <storeResponseAt>output</storeResponseAt>
+                        <storeResponseText>true</storeResponseText>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties">
+                        <message inherit="false">&lt;?xml version=&quot;1.0&quot;?&gt;
+
+&lt;enableDeciphering ifKey=&quot;sa&quot; ltenas=&quot;true&quot;/&gt;
+
+
+
+
+</message>
+                        <httpHeader inherit="false" transferableToolId="com.fnfr.itest.applications.webservices.restful">
+                            <memberClasses>
+                                <item>com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry</item>
+                            </memberClasses>
+                            <item transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry" header="Cookie" header.inherit="false" value="$cookie" value.inherit="false"/>
+                        </httpHeader>
+                    </applicationProperties>
+                </item>
+                <item guid="228b8229-869f-4cca-8830-e6a7c701fa64" action="write">
+                    <command>
+                        <body>$output</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+        </item>
+        <item name="lte_call_trace" isPublic="true">
+            <steps>
+                <item guid="fa5b6a0b-fec6-49fb-8d1c-6ee1b0866850" action="eval">
+                    <command>
+                        <body>set cookie [gget cookie]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="434a73ec-ac53-4163-9465-d61be1858bad" action="POST" session="$session">
+                    <postProcessing>
+                        <storeResponseAt>output</storeResponseAt>
+                        <storeResponseText>true</storeResponseText>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" action="$url" action.inherit="false">
+                        <message inherit="false">&lt;?xml version=&quot;1.0&quot;?&gt;
+
+&lt;callTrace ifKey=&quot;sa&quot; profile=&quot;3GPP LTE/SAE Interfaces (Signaling and User Plane)&quot; dbFlag=&quot;false&quot; dbip=&quot;10.194.53.56&quot; createCSVfile=&quot;false&quot; logToSameCSVFile=&quot;false&quot; calltype=&quot;All&quot; outputSummary=&quot;false&quot; exportHeadings=&quot;false&quot; exportVisibleColumns=&quot;false&quot;&gt; &lt;exportPhaseGraphics multipleDescriptionColumns=&quot;false&quot; shortDescription=&quot;false&quot; verbosePhaseInfo=&quot;false&quot;/&gt;&lt;/callTrace&gt;</message>
+                        <httpHeader inherit="false" transferableToolId="com.fnfr.itest.applications.webservices.restful">
+                            <memberClasses>
+                                <item>com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry</item>
+                            </memberClasses>
+                            <item transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry" header="Cookie" header.inherit="false" value="$cookie" value.inherit="false"/>
+                        </httpHeader>
+                    </applicationProperties>
+                </item>
+                <item guid="1cadbe10-0f28-41d9-adc3-f4a38fa2c030" action="write">
+                    <command>
+                        <body>$output</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <arguments>
+                <item name="url">
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="lte_filter" isPublic="true">
+            <steps>
+                <item guid="ca77e939-5b9f-4050-90dd-02ea227b29fa" action="eval">
+                    <command>
+                        <body>set cookie [gget cookie]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="669ae1f4-e177-4ff5-a4cf-18b9f801fc50" action="POST" session="$session">
+                    <postProcessing>
+                        <storeResponseAt>output</storeResponseAt>
+                        <storeResponseText>true</storeResponseText>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" action="$url" action.inherit="false">
+                        <message inherit="false">&lt;?xml version=&quot;1.0&quot;?&gt;
+
+&lt;callTraceFilter ifKey=&quot;sa&quot; profile=&quot;3GPP LTE/SAE Interfaces (Signaling and User Plane)&quot; calltype=&quot;All&quot;&gt; &lt;filterconfig name=&quot;IMSI&quot; value=&quot;$IMSI&quot; trace=&quot;yes&quot;/&gt; &lt;/callTraceFilter&gt;</message>
+                        <httpHeader inherit="false" transferableToolId="com.fnfr.itest.applications.webservices.restful">
+                            <memberClasses>
+                                <item>com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry</item>
+                            </memberClasses>
+                            <item transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry" header="Cookie" header.inherit="false" value="$cookie" value.inherit="false"/>
+                        </httpHeader>
+                    </applicationProperties>
+                </item>
+                <item guid="9970bcee-b9df-4fcf-a35f-2fa9271e2854" action="write">
+                    <command>
+                        <body>$output</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <arguments>
+                <item name="url"/>
+                <item name="IMSI">
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="start_recording" isPublic="true">
+            <steps>
+                <item guid="c24f8e9b-fcd0-4791-86f7-2ff3baae4463" action="eval">
+                    <command>
+                        <body>set cookie [gget cookie]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="32c97b86-b72d-439a-b2da-b21e0c8f4116" action="POST" session="$session">
+                    <postProcessing>
+                        <storeResponseAt>output</storeResponseAt>
+                        <storeResponseText>true</storeResponseText>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" action="$url" action.inherit="false">
+                        <message inherit="false">&lt;?xml version=&quot;1.0&quot;?&gt;
+
+&lt;startInterface ifKey=&quot;sa&quot;/&gt;
+
+
+
+</message>
+                        <httpHeader inherit="false" transferableToolId="com.fnfr.itest.applications.webservices.restful">
+                            <memberClasses>
+                                <item>com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry</item>
+                            </memberClasses>
+                            <item transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry" header="Cookie" header.inherit="false" value="$cookie" value.inherit="false"/>
+                        </httpHeader>
+                    </applicationProperties>
+                </item>
+                <item guid="2841e44c-88f8-4ea5-b0c3-b2691ebb1afe" action="write">
+                    <command>
+                        <body>$output</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <arguments>
+                <item name="url">
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="stop_recording" isPublic="true">
+            <steps>
+                <item guid="10b09ea8-1a0e-4223-9585-057a9147f721" action="eval">
+                    <command>
+                        <body>set cookie [gget cookie]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="5021e296-bed5-4a95-8b38-c3070e4f92c6" action="POST" session="$session">
+                    <postProcessing>
+                        <storeResponseAt>output</storeResponseAt>
+                        <storeResponseText>true</storeResponseText>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" action="$url" action.inherit="false">
+                        <message inherit="false">&lt;?xml version=&quot;1.0&quot;?&gt;
+
+   &lt;stopInterface ifKey=&quot;sa&quot;/&gt;
+
+
+
+</message>
+                        <httpHeader inherit="false" transferableToolId="com.fnfr.itest.applications.webservices.restful">
+                            <memberClasses>
+                                <item>com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry</item>
+                            </memberClasses>
+                            <item transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry" header="Cookie" header.inherit="false" value="$cookie" value.inherit="false"/>
+                        </httpHeader>
+                    </applicationProperties>
+                </item>
+                <item guid="0d1c77fb-18be-4a94-8c13-c0accff0ddec" action="write">
+                    <command>
+                        <body>$output</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <arguments>
+                <item name="url">
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="close_software" isPublic="true">
+            <steps>
+                <item guid="aa8f80c1-ca5b-4658-a858-e2728e2fd11b" action="eval">
+                    <command>
+                        <body>set cookie [gget cookie]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="cac9b932-9069-4384-b68f-7bf813daa3b4" action="POST" session="$session">
+                    <postProcessing>
+                        <storeResponseAt>output</storeResponseAt>
+                        <storeResponseText>true</storeResponseText>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" action="$url" action.inherit="false">
+                        <message inherit="false">&lt;?xml version=&quot;1.0&quot;?&gt;
+
+   &lt;closeInterface ifKey=&quot;sa&quot;/&gt;</message>
+                        <httpHeader inherit="false" transferableToolId="com.fnfr.itest.applications.webservices.restful">
+                            <memberClasses>
+                                <item>com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry</item>
+                            </memberClasses>
+                            <item transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry" header="Cookie" header.inherit="false" value="$cookie" value.inherit="false"/>
+                        </httpHeader>
+                    </applicationProperties>
+                </item>
+                <item guid="0a73c25d-634e-42fe-99b5-54b4e215225f" action="write">
+                    <command>
+                        <body>$output</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <arguments>
+                <item name="url">
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="Start_Capture" isPublic="true">
+            <steps>
+                <item guid="804f2233-c75a-4b01-bba5-b58b00ebddfc" action="comment">
+                    <command>
+                        <body>Login to JDSU using XML</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="e24d255c-04fc-4889-a91f-8b104d581686" action="POST" session="$session">
+                            <postProcessing>
+                                <analysisRules>
+                                    <item>
+                                        <extractorInfo extractorType="query">
+                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                <query>responseHTTPHeaders/Set_Cookie</query>
+                                            </extractorProperties>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="store">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                <storageLocation>cookie</storageLocation>
+                                                <isStorageLocationGlobal>true</isStorageLocationGlobal>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                </analysisRules>
+                                <storeResponseAt>output</storeResponseAt>
+                                <storeResponseText>true</storeResponseText>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" message="&lt;login username=&quot;$username&quot; password=&quot;$password&quot;/&gt;" message.inherit="false" action="$url" action.inherit="false"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="4d31ad8b-6301-400d-a27e-1d3aefb715cc" action="comment">
+                    <command>
+                        <body>Start the applications</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="143b1f82-f471-4ceb-8137-ff948ef6a37a" action="eval">
+                            <command>
+                                <body>set cookie [gget cookie]</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="ccdb78e4-1903-4226-a23b-0a4ed97e3fc7" action="POST" session="$session">
+                            <postProcessing>
+                                <storeResponseAt>output</storeResponseAt>
+                                <storeResponseText>true</storeResponseText>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" action="$url" action.inherit="false">
+                                <message inherit="false">&lt;?xml version=&quot;1.0&quot;?&gt;
+
+   &lt;contextDrill ifKey=&quot;sa&quot; maximizeApp=&quot;True&quot;/&gt;
+
+</message>
+                                <httpHeader inherit="false" transferableToolId="com.fnfr.itest.applications.webservices.restful">
+                                    <memberClasses>
+                                        <item>com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry</item>
+                                    </memberClasses>
+                                    <item transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry" header="Cookie" header.inherit="false" value="$cookie" value.inherit="false"/>
+                                </httpHeader>
+                            </applicationProperties>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="4207e008-e07b-4571-9f43-31925effe72e" action="comment">
+                    <command>
+                        <body>Connect DNA</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="3819465b-8d4b-4ec9-8a35-0a6af2ecf7db" action="foreach">
+                            <command>
+                                <body>DNA $DNA_List</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="b09c2f53-0621-4148-aaaa-9b1de946d2f4" action="comment">
+                                    <command>
+                                        <body>Connect to all the DNA&apos;s mentioned in the LIst</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="63bba68b-1a05-49f2-b09c-9dcbc5ad74b7" action="POST" session="$session">
+                                    <postProcessing>
+                                        <storeResponseAt>output</storeResponseAt>
+                                        <storeResponseText>true</storeResponseText>
+                                    </postProcessing>
+                                    <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" action="$url" action.inherit="false">
+                                        <message inherit="false">&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;connectToDNA ifKey=&quot;sa&quot; dnaIfKey=&quot;$DNA&quot;/&gt;</message>
+                                        <httpHeader inherit="false" transferableToolId="com.fnfr.itest.applications.webservices.restful">
+                                            <memberClasses>
+                                                <item>com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry</item>
+                                            </memberClasses>
+                                            <item transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry" header="Cookie" header.inherit="false" value="$cookie" value.inherit="false"/>
+                                        </httpHeader>
+                                    </applicationProperties>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="f2ecfa9b-5fd7-4fac-b77e-7009d12b3ef1" action="comment">
+                    <command>
+                        <body>Set the Call trace filter</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="4e453771-d982-4842-a805-cde7251beed3" action="POST" session="$session">
+                            <postProcessing>
+                                <storeResponseAt>output</storeResponseAt>
+                                <storeResponseText>true</storeResponseText>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" action="$url" action.inherit="false">
+                                <message inherit="false">&lt;?xml version=&quot;1.0&quot;?&gt;
+
+&lt;callTraceFilter ifKey=&quot;sa&quot; profile=&quot;3GPP LTE/SAE Interfaces (Signaling and User Plane)&quot; calltype=&quot;All&quot;&gt; &lt;filterconfig name=&quot;IMSI&quot; value=&quot;$IMSI&quot; trace=&quot;yes&quot;/&gt; &lt;/callTraceFilter&gt;</message>
+                                <httpHeader inherit="false" transferableToolId="com.fnfr.itest.applications.webservices.restful">
+                                    <memberClasses>
+                                        <item>com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry</item>
+                                    </memberClasses>
+                                    <item transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry" header="Cookie" header.inherit="false" value="$cookie" value.inherit="false"/>
+                                </httpHeader>
+                            </applicationProperties>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="9dd22c78-3fed-4c21-89a1-39ca6491801c" action="comment">
+                    <command>
+                        <body>Start Capture</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="b446b402-9920-43ab-b9df-486fb667ccb2" action="POST" session="$session">
+                            <postProcessing>
+                                <storeResponseAt>output</storeResponseAt>
+                                <storeResponseText>true</storeResponseText>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" action="$url" action.inherit="false">
+                                <message inherit="false">&lt;?xml version=&quot;1.0&quot;?&gt;
+
+&lt;startInterface ifKey=&quot;sa&quot;/&gt;
+
+
+
+</message>
+                                <httpHeader inherit="false" transferableToolId="com.fnfr.itest.applications.webservices.restful">
+                                    <memberClasses>
+                                        <item>com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry</item>
+                                    </memberClasses>
+                                    <item transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry" header="Cookie" header.inherit="false" value="$cookie" value.inherit="false"/>
+                                </httpHeader>
+                            </applicationProperties>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <arguments>
+                <item name="url">
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="DNA_List">
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="IMSI"/>
+                <item name="username">
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="password">
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="logout" isPublic="true">
+            <steps>
+                <item guid="db47063b-6bf3-4b63-82b1-cd23d5a75f78" action="eval">
+                    <command>
+                        <body>set cookie [gget cookie]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="ea83754b-cc43-45ec-80fc-c13195a863b0" action="POST" session="$session">
+                    <postProcessing>
+                        <storeResponseAt>output</storeResponseAt>
+                        <storeResponseText>true</storeResponseText>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" action="$url" action.inherit="false">
+                        <message inherit="false">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;logout/&gt;</message>
+                        <httpHeader inherit="false" transferableToolId="com.fnfr.itest.applications.webservices.restful">
+                            <memberClasses>
+                                <item>com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry</item>
+                            </memberClasses>
+                            <item transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry" header="Cookie" header.inherit="false" value="$cookie" value.inherit="false"/>
+                        </httpHeader>
+                    </applicationProperties>
+                </item>
+                <item guid="dca78547-1919-4f85-9faa-6bc0d6613bc2" action="write">
+                    <command>
+                        <body>$output</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <arguments>
+                <item name="url">
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="Stop_Capture" isPublic="true">
+            <steps>
+                <item guid="74ed537e-c12a-45d5-88d9-db6414321110" action="comment">
+                    <command>
+                        <body>Login to JDSU using XML</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="fb24b156-4bb1-4c82-8739-75a9798fc477" action="POST" session="$session">
+                            <postProcessing>
+                                <analysisRules>
+                                    <item>
+                                        <extractorInfo extractorType="query">
+                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                <query>responseHTTPHeaders/Set_Cookie</query>
+                                            </extractorProperties>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="store">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                <storageLocation>cookie</storageLocation>
+                                                <isStorageLocationGlobal>true</isStorageLocationGlobal>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                </analysisRules>
+                                <storeResponseAt>output</storeResponseAt>
+                                <storeResponseText>true</storeResponseText>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" message="&lt;login username=&quot;$username&quot; password=&quot;$password&quot;/&gt;" message.inherit="false" action="$url" action.inherit="false"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="1ec0724d-b4a0-4045-8569-28ab5cb2ad2a" action="comment">
+                    <command>
+                        <body>Stop Interface</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="6fe3a026-fe1f-4984-852d-fde455764335" action="eval">
+                            <command>
+                                <body>set cookie [gget cookie]</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="0886cb1c-7979-474d-8339-9621af2eaead" action="POST" session="$session">
+                            <postProcessing>
+                                <storeResponseAt>output</storeResponseAt>
+                                <storeResponseText>true</storeResponseText>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" action="$url" action.inherit="false">
+                                <message inherit="false">&lt;?xml version=&quot;1.0&quot;?&gt; &lt;stopInterface ifKey=&quot;sa&quot;/&gt;
+
+
+
+</message>
+                                <httpHeader inherit="false" transferableToolId="com.fnfr.itest.applications.webservices.restful">
+                                    <memberClasses>
+                                        <item>com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry</item>
+                                    </memberClasses>
+                                    <item transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry" header="Cookie" header.inherit="false" value="$cookie" value.inherit="false"/>
+                                </httpHeader>
+                            </applicationProperties>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="e758a09f-a799-460d-af4b-7274b8d67827" action="comment">
+                    <command>
+                        <body>Save XML</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="83d95e59-9526-4237-b749-a9c709d0d67d" action="POST" session="$session">
+                            <postProcessing>
+                                <storeResponseAt>output</storeResponseAt>
+                                <storeResponseText>true</storeResponseText>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" action="$url" action.inherit="false">
+                                <message inherit="false">&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;saveInterfaceFile ifKey=&quot;sa&quot; filename=&quot;C:\\\\output\\\\Trace_Overview.csv&quot; overwrite=&quot;true&quot; whichMeasurements=&quot;specific&quot;&gt;
+         &lt;saveMeasurement mKey=&quot;traffic overview&quot; /&gt;
+&lt;/saveInterfaceFile&gt;</message>
+                                <httpHeader inherit="false" transferableToolId="com.fnfr.itest.applications.webservices.restful">
+                                    <memberClasses>
+                                        <item>com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry</item>
+                                    </memberClasses>
+                                    <item transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry" header="Cookie" header.inherit="false" value="$cookie" value.inherit="false"/>
+                                </httpHeader>
+                            </applicationProperties>
+                        </item>
+                        <item guid="57fcd76d-8d00-4332-a1c5-4bfbdcb71de7" action="POST" session="$session">
+                            <postProcessing>
+                                <storeResponseAt>output</storeResponseAt>
+                                <storeResponseText>true</storeResponseText>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" action="$url" action.inherit="false">
+                                <message inherit="false">&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;saveInterfaceFile ifKey=&quot;sa&quot; filename=&quot;C:\\\\output\\\\Trace_Decodes.csv&quot; overwrite=&quot;true&quot; whichMeasurements=&quot;specific&quot;&gt;
+         &lt;saveMeasurement mKey=&quot;traffic decodes&quot; /&gt;
+&lt;/saveInterfaceFile&gt;
+</message>
+                                <httpHeader inherit="false" transferableToolId="com.fnfr.itest.applications.webservices.restful">
+                                    <memberClasses>
+                                        <item>com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry</item>
+                                    </memberClasses>
+                                    <item transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry" header="Cookie" header.inherit="false" value="$cookie" value.inherit="false"/>
+                                </httpHeader>
+                            </applicationProperties>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="2a5b1276-efac-49e1-8866-d287f884ed87" action="comment">
+                    <command>
+                        <body>Get file from JDSU</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="97063e24-8b56-4663-8482-e60b3cd881c0" action="POST" session="$session">
+                            <postProcessing>
+                                <storeResponseAt>output</storeResponseAt>
+                                <storeResponseText>true</storeResponseText>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" message="&lt;getFile srcFile=&quot;C:\\\\output\\\\Trace_Overview.csv&quot; dstFile=&quot;Trace_Overview.csv&quot;/&gt;" message.inherit="false" action="$url" action.inherit="false">
+                                <httpHeader inherit="false" transferableToolId="com.fnfr.itest.applications.webservices.restful">
+                                    <memberClasses>
+                                        <item>com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry</item>
+                                    </memberClasses>
+                                    <item transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry" header="Cookie" header.inherit="false" value="$cookie" value.inherit="false"/>
+                                </httpHeader>
+                            </applicationProperties>
+                        </item>
+                        <item guid="ea00b914-977c-419d-9f84-f09726f56d77" action="POST" session="$session">
+                            <postProcessing>
+                                <storeResponseAt>output</storeResponseAt>
+                                <storeResponseText>true</storeResponseText>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" message="&lt;getFile srcFile=&quot;C:\\\\output\\\\Trace_Decodes.csv&quot; dstFile=&quot;Trace_Decode.csv&quot;/&gt;" message.inherit="false" action="$url" action.inherit="false">
+                                <httpHeader inherit="false" transferableToolId="com.fnfr.itest.applications.webservices.restful">
+                                    <memberClasses>
+                                        <item>com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry</item>
+                                    </memberClasses>
+                                    <item transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry" header="Cookie" header.inherit="false" value="$cookie" value.inherit="false"/>
+                                </httpHeader>
+                            </applicationProperties>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="3438557e-a02a-4c28-9397-c5f2fa33f8bf" action="comment">
+                    <command>
+                        <body>Stop Interface</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="734789f0-9a82-48ea-a2b8-90560d7385c2" action="POST" session="$session">
+                            <postProcessing>
+                                <storeResponseAt>output</storeResponseAt>
+                                <storeResponseText>true</storeResponseText>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" action="$url" action.inherit="false">
+                                <message inherit="false">&lt;?xml version=&quot;1.0&quot;?&gt;
+
+   &lt;closeInterface ifKey=&quot;sa&quot;/&gt;</message>
+                                <httpHeader inherit="false" transferableToolId="com.fnfr.itest.applications.webservices.restful">
+                                    <memberClasses>
+                                        <item>com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry</item>
+                                    </memberClasses>
+                                    <item transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry" header="Cookie" header.inherit="false" value="$cookie" value.inherit="false"/>
+                                </httpHeader>
+                            </applicationProperties>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="84af7a14-870c-41ae-adf1-4ad076ebcbdf" action="comment">
+                    <command>
+                        <body>Logout</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="a7b51f7b-18e9-4a2d-a314-d18f264f4533" action="POST" session="$session">
+                            <postProcessing>
+                                <storeResponseAt>output</storeResponseAt>
+                                <storeResponseText>true</storeResponseText>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" action="$url" action.inherit="false">
+                                <message inherit="false">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;logout/&gt;</message>
+                                <httpHeader inherit="false" transferableToolId="com.fnfr.itest.applications.webservices.restful">
+                                    <memberClasses>
+                                        <item>com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry</item>
+                                    </memberClasses>
+                                    <item transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry" header="Cookie" header.inherit="false" value="$cookie" value.inherit="false"/>
+                                </httpHeader>
+                            </applicationProperties>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <arguments>
+                <item name="Trace_Overview_Path">
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="Trace_Decode_Path">
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="url">
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+    </procedures>
+</testCase>
