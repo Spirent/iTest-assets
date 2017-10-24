@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<ResponseMap version="5.1.0.77511">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="show_controllers">
+                <command>
+                    <body>-fabric_plane &quot;all&quot;</body>
+                </command>
+            </action>
+            <responseBody>Thu May 19 12:16:16.928 UTC
+
+Flags: Admin State: 1-Up 2-Down 12-UnPowered 16-Shutdown
+       Oper  State: 1-Up 2-Down 3-Admin Down
+
+Summary for All Fabric Planes:
+
+Plane Id   Admin State     Oper State      Links Up    Links Down  In Pkt Count    Out Pkt count
+=============================================================================================
+0            01              01              04          00          2792600706            2792600373
+1            01              01              04          00          2755065326            2755065673
+2            01              01              04          00          2797276335            2797275953
+3            01              01              04          00          2773087629            2773087252
+4            01              01              04          00          2774715821            2774715425
+5            01              01              04          00          2774351221            2774350837
+6            01              01              04          00          2773724659            2773724280</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;/&gt;
+</structuredData>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties"/>
+        <item type="com.fnfr.svt.mapping.table.TabularMapperProperties">
+            <tabularMaps>
+                <item name="table1">
+                    <additionalBannerLineCount>1</additionalBannerLineCount>
+                    <banner>Plane Id\\s+Admin State\\s+Oper State\\s+Links Up\\s+Links Down\\s+In Pkt Count\\s+Out Pkt count\\s*</banner>
+                    <bannerStructure>Regex</bannerStructure>
+                    <minOccurences>0</minOccurences>
+                    <columns>
+                        <item name="Plane_Id_Admin">
+                            <isKey>true</isKey>
+                            <width>13</width>
+                        </item>
+                        <item name="Admin_State_Oper">
+                            <width>16</width>
+                        </item>
+                        <item name="Oper_State_Links">
+                            <width>16</width>
+                        </item>
+                        <item name="Links_Up_Links">
+                            <width>12</width>
+                        </item>
+                        <item name="Links_Down_In">
+                            <width>12</width>
+                        </item>
+                        <item name="Pkt_Count_Out_Pkt">
+                            <width>22</width>
+                        </item>
+                        <item name="count">
+                            <width>999</width>
+                        </item>
+                    </columns>
+                    <ignoreBlankLines>false</ignoreBlankLines>
+                    <autoUpdateNames>false</autoUpdateNames>
+                </item>
+            </tabularMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="show_controllers" command="-fabric_plane*"/>
+    <aliases>
+        <item name="fabric_plane_up_cnt">
+            <queryFormatString>count(mapped/Tabular/table1/table/row[Admin_State_Oper=&apos;01&apos;]/Plane_Id_Admin)</queryFormatString>
+        </item>
+    </aliases>
+</ResponseMap>

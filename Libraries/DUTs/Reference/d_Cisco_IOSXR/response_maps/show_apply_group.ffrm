@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+<ResponseMap version="5.1.0.77511">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="command">
+                <command>
+                    <body>show apply-group </body>
+                </command>
+            </action>
+            <responseBody>                                         Global          Non-Global
+   Groups                            Reference Count   Reference Count
+   LOAD-INTERVAL                            1                0
+   GLOBAL-GROUP                             1                0
+   ISIS-INTERFACE                           0              209
+   ISIS-METRICS                             0              209
+   RSVP                                     0                1
+   GOOGLE-BACKBONE-MPLS                     0              4001
+   AFFINITY-TRANSOCEANIC                    0              4001
+   BACKBONE-INTERFACE                       0                5
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;prompt&gt;RP/0/RSP0/CPU0:google_D9_tb2#&lt;/prompt&gt;
+    &lt;echo&gt;show apply-group &lt;/echo&gt;
+    &lt;promptName&gt;prompt1&lt;/promptName&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.7</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.table.TabularMapperProperties">
+            <tabularMaps>
+                <item name="table1">
+                    <additionalBannerLineCount>1</additionalBannerLineCount>
+                    <banner>                                         Global          Non-Global</banner>
+                    <bannerStructure>CaseInsensitive</bannerStructure>
+                    <columnBoundaries>Positional</columnBoundaries>
+                    <maxOccurences>1</maxOccurences>
+                    <columns>
+                        <item name="Groups">
+                            <isKey>true</isKey>
+                            <width>37</width>
+                        </item>
+                        <item name="Global_Reference_Count">
+                            <width>18</width>
+                        </item>
+                        <item name="Non-Global_Reference_Count">
+                            <width>0</width>
+                        </item>
+                    </columns>
+                </item>
+            </tabularMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="sh* appl*"/>
+    <responseFilters>
+        <item name="TimeStamp" patternType="REGEX" filterAction="EXC_LINES_CONTAINING">
+            <pattern>\\S+ \\S+\\s+\\d+ \\d+:\\d+:\\d+.\\d+ \\S+</pattern>
+        </item>
+        <item name="Dashes" filterAction="EXC_LINES_CONTAINING">
+            <pattern>------</pattern>
+        </item>
+    </responseFilters>
+    <aliases>
+        <item name="Global_Reference_Count">
+            <description>Collect all of the Groups with Global Ref Count = 1</description>
+            <queryFormatString>count(//row[Global_Reference_Count=&apos;{0}&apos;])</queryFormatString>
+            <arguments>
+                <item name="state">
+                    <defaultvalue>1</defaultvalue>
+                </item>
+            </arguments>
+        </item>
+    </aliases>
+</ResponseMap>

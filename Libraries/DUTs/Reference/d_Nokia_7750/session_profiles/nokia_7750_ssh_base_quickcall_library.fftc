@@ -1,0 +1,220 @@
+<?xml version="1.0"?>
+<testCase version="6.1.0.e2e4ec0">
+    <general>
+        <sessionClass includeTestCase="true" sessionType="project://d_Nokia_7750/session_profiles/nokia_7750_ssh_base.ffsp"/>
+    </general>
+    <procedures>
+        <item name="main">
+            <steps>
+                <item guid="4d12e6ba-d28e-49a4-a440-400d753f5b3d" action="comment">
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+        </item>
+        <item name="Ping" isPublic="true" isVBlock="true">
+            <description>Ping</description>
+            <steps>
+                <item guid="484d1a1c-5860-45b4-b6ec-c0cae2aef65b" action="command" session="$session" normalOffset="97.987" estimatedStepExecutionTime="3.287">
+                    <command>
+                        <body>ping $ip_address</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>packet_loss()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>var1</storageLocation>
+                                        <query>[return packet_loss]</query>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+            </steps>
+            <multilineDescription>Ping specified IP.
+Returns JSON string: 
+\tpacket_loss - percentage of packets lost</multilineDescription>
+            <arguments>
+                <item name="ip_address">
+                    <description>IP Address to ping</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+            <response>{&quot;packet_loss&quot;:&quot;value&quot;}</response>
+        </item>
+        <item name="ConfigureInterfaceMtu" isPublic="true">
+            <description>Configure Interface MTU</description>
+            <steps>
+                <item guid="2a88a93c-9dad-4ee6-a128-d35641a89e48" action="command" session="$session" estimatedStepExecutionTime="0.114">
+                    <command>
+                        <body>configure port $interface ethernet mtu $new_mtu</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+            </steps>
+            <multilineDescription>Configure the MTU on a given port
+</multilineDescription>
+            <arguments>
+                <item name="interface">
+                    <description>Name of port to modify</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="new_mtu">
+                    <description>Size of MTU to configure
+</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="ConfigureInterfaceLldp" isPublic="true">
+            <description>Configure Interface LLDP</description>
+            <steps>
+                <item guid="0fb65d74-926b-4013-87e9-4f482abc9a08" action="if">
+                    <command>
+                        <body>$disable == &quot;no&quot;</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="4c71efe6-4405-45fe-8739-29ce04ff6ced" action="then">
+                            <nestedSteps>
+                                <item guid="969b73fe-8da9-4bb9-a437-f1ea30a581d4" action="comment">
+                                    <command>
+                                        <body>Enable LLDP in global config</body>
+                                    </command>
+                                    <nestedSteps>
+                                        <item guid="109230dc-8ff5-49c5-89a5-3568469b4fbd" action="command" session="$session" normalOffset="102.408" estimatedStepExecutionTime="0.109">
+                                            <command>
+                                                <body>configure system lldp</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                                                <lineTerminator inherit="false">SLASH_R_SLASH_N</lineTerminator>
+                                            </applicationProperties>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                        <item guid="6ff0947c-6ed1-4377-bf9a-56cadc913c38" action="command" session="$session" normalOffset="16.224" estimatedStepExecutionTime="0.104">
+                                            <command>
+                                                <body>no shutdown</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                                                <completionProperties expectedIdleTime="0.325" expectedIdleTime.inherit="false"/>
+                                            </applicationProperties>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                        <item guid="72ec9131-ea97-4f35-818c-e3832b139e7a" action="command" session="$session" normalOffset="22.513" estimatedStepExecutionTime="0.104">
+                                            <command>
+                                                <body>exit</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                                                <completionProperties expectedIdleTime="0.12" expectedIdleTime.inherit="false"/>
+                                            </applicationProperties>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="326e9aeb-e9e0-46e5-8a3c-a51a0538ad88" action="comment">
+                                    <command>
+                                        <body>Enable LLDP on port</body>
+                                    </command>
+                                    <nestedSteps>
+                                        <item guid="5d4f7b79-0443-4ae3-aa8e-89d8d1835ac3" action="command" session="$session" normalOffset="5.326" estimatedStepExecutionTime="0.105">
+                                            <command>
+                                                <body>configure port $interface ethernet lldp dest-mac nearest-bridge admin-status tx-rx</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                                                <completionProperties expectedIdleTime="4.36" expectedIdleTime.inherit="false"/>
+                                            </applicationProperties>
+                                        </item>
+                                        <item guid="a5e9e8ec-eb52-4d63-89a3-3efb8ba67ac0" action="command" session="$session" normalOffset="9.883" estimatedStepExecutionTime="0.104">
+                                            <command>
+                                                <body>configure port $interface ethernet lldp dest-mac nearest-bridge notification</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                                                <completionProperties expectedIdleTime="0.86" expectedIdleTime.inherit="false"/>
+                                            </applicationProperties>
+                                        </item>
+                                        <item guid="be86d39a-d067-49eb-b3b3-953f8ad9bd67" action="command" session="$session" normalOffset="13.866" estimatedStepExecutionTime="0.105">
+                                            <command>
+                                                <body>configure port $interface ethernet lldp dest-mac nearest-bridge tx-tlvs port-desc sys-name sys-desc sys-cap</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                                                <completionProperties expectedIdleTime="0.415" expectedIdleTime.inherit="false"/>
+                                            </applicationProperties>
+                                        </item>
+                                        <item guid="a3f9e883-2481-4465-b9a5-4e9d28521627" action="command" session="$session" normalOffset="11.947" estimatedStepExecutionTime="0.104">
+                                            <command>
+                                                <body>configure port $interface ethernet lldp dest-mac nearest-bridge tx-mgmt-address system</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                                                <completionProperties expectedIdleTime="0.949" expectedIdleTime.inherit="false"/>
+                                            </applicationProperties>
+                                        </item>
+                                        <item guid="3d3dd057-5dd4-4369-9654-d06c80b99ea1" action="command" session="$session" normalOffset="2.685" estimatedStepExecutionTime="0.104">
+                                            <command>
+                                                <body>exit all </body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                                                <completionProperties expectedIdleTime="0.345" expectedIdleTime.inherit="false"/>
+                                            </applicationProperties>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="e8e4c803-1670-46db-8cae-0a9952c90534" action="else">
+                            <nestedSteps>
+                                <item guid="8ae0d0a8-9e8a-48fe-b707-1e02a1f828a0" action="comment">
+                                    <command>
+                                        <body>Disable LLDP on port</body>
+                                    </command>
+                                    <nestedSteps>
+                                        <item guid="4fda6191-2f3a-4078-9dd8-8d62ca8740b9" action="command" session="$session" normalOffset="7.608" estimatedStepExecutionTime="0.105">
+                                            <command>
+                                                <body>configure port 2/2/1 ethernet lldp dest-mac nearest-bridge admin-status disable</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                                                <completionProperties expectedIdleTime="0.405" expectedIdleTime.inherit="false"/>
+                                            </applicationProperties>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <author>Alex Orr</author>
+            <version>1.0</version>
+            <multilineDescription>Configure an LLDP on an interface </multilineDescription>
+            <arguments>
+                <item name="interface">
+                    <description>Port number to modify
+example 2/2/1</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="disable">
+                    <description>If &quot;no&quot;, will enable LLDP, else, will disable LLDP</description>
+                    <defaultValue>no</defaultValue>
+                </item>
+            </arguments>
+        </item>
+    </procedures>
+</testCase>

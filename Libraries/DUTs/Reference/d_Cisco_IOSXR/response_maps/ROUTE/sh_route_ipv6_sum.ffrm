@@ -1,0 +1,190 @@
+<?xml version="1.0"?>
+<ResponseMap version="5.1.0.77511">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="command">
+                <command>
+                    <body>sh route ipv6 sum</body>
+                </command>
+            </action>
+            <responseBody>Route Source    Routes    Backup    Deleted    Memory (bytes)
+connected       10        0         0          1640        
+local           10        0         0          1640        
+ospf 666        0         0         0          0           
+Total           20        0         0          3280       
+
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+                    
+    &lt;prompt&gt;RP/0/RSP0/CPU0:DUI1-RO1#&lt;/prompt&gt;
+
+                        &lt;echo&gt;sh route ipv6 sum&lt;/echo&gt;
+
+                        &lt;promptName&gt;RP0RSP0CPU0&lt;/promptName&gt;
+
+                    
+                    
+                &lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.4</duration>
+        </item>
+        <item name="sample2">
+            <action actionType="command">
+                <command>
+                    <body>show route ipv6 summary </body>
+                </command>
+            </action>
+            <responseBody>Route Source                     Routes     Backup     Deleted     Memory(bytes)
+connected                        3          0          0           492          
+connected l2tpv3_xconnect        0          0          0           0            
+local                            3          0          0           492          
+ospf OSPFv3                      30         0          0           4920         
+Total                            36         0          0           5904         
+
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;prompt&gt;RP/0/RSP0/CPU0:iVista-05#&lt;/prompt&gt;
+    &lt;echo&gt;show route ipv6 summary &lt;/echo&gt;
+    &lt;promptName&gt;RP0RSP0CPU0&lt;/promptName&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.9</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.table.TabularMapperProperties"/>
+        <item type="com.fnfr.svt.mapping.block.documents.BlockMapperProperties">
+            <BlockMaps name="container">
+                <nodes>
+                    <item type="com.fnfr.svt.mapping.block.documents.ResponseMapBlock" name="banner_1">
+                        <minOccurrences>0</minOccurrences>
+                        <lines>
+                            <item>
+                                <tokens>
+                                    <item representativeValue="Route" parser="Word"/>
+                                    <item representativeValue=" " parser="Whitespace" isVariable="true"/>
+                                    <item representativeValue="Source" parser="Word"/>
+                                    <item representativeValue="                     " parser="Whitespace" isVariable="true"/>
+                                    <item representativeValue="Routes" parser="Word"/>
+                                    <item representativeValue="     " parser="Whitespace" isVariable="true"/>
+                                    <item representativeValue="Backup" parser="Word"/>
+                                    <item representativeValue="     " parser="Whitespace" isVariable="true"/>
+                                    <item representativeValue="Deleted" parser="Word"/>
+                                    <item representativeValue="     " parser="Whitespace" isVariable="true"/>
+                                    <item representativeValue="Memory" parser="Word"/>
+                                    <item representativeValue="(" parser="Punctuation"/>
+                                    <item representativeValue="bytes" parser="Word"/>
+                                    <item representativeValue=")" parser="Punctuation"/>
+                                </tokens>
+                            </item>
+                        </lines>
+                    </item>
+                    <item type="com.fnfr.svt.mapping.block.documents.ResponseMapBlock" name="banner_2">
+                        <minOccurrences>0</minOccurrences>
+                        <lines>
+                            <item>
+                                <tokens>
+                                    <item representativeValue="Route" parser="Word"/>
+                                    <item representativeValue=" " parser="Whitespace" isVariable="true"/>
+                                    <item representativeValue="Source" parser="Word"/>
+                                    <item representativeValue="    " parser="Whitespace" isVariable="true"/>
+                                    <item representativeValue="Routes" parser="Word"/>
+                                    <item representativeValue="    " parser="Whitespace" isVariable="true"/>
+                                    <item representativeValue="Backup" parser="Word"/>
+                                    <item representativeValue="    " parser="Whitespace" isVariable="true"/>
+                                    <item representativeValue="Deleted" parser="Word"/>
+                                    <item representativeValue="    " parser="Whitespace" isVariable="true"/>
+                                    <item representativeValue="Memory" parser="Word"/>
+                                    <item representativeValue=" " parser="Whitespace" isVariable="true"/>
+                                    <item representativeValue="(" parser="Punctuation"/>
+                                    <item representativeValue="bytes" parser="Word"/>
+                                    <item representativeValue=")" parser="Punctuation"/>
+                                </tokens>
+                            </item>
+                        </lines>
+                    </item>
+                    <item type="com.fnfr.svt.mapping.block.documents.ResponseMapBlock" name="body_1">
+                        <minOccurrences>0</minOccurrences>
+                        <maxOccurences>0</maxOccurences>
+                        <lines>
+                            <item>
+                                <tokens>
+                                    <item name="route_source" representativeValue="*" parser="Punctuation" isVariable="true" isWildcard="true" isKey="true"/>
+                                    <item representativeValue="        " parser="Whitespace" isVariable="true"/>
+                                    <item name="routes" representativeValue="0" parser="Number" isVariable="true"/>
+                                    <item representativeValue="          " parser="Whitespace" isVariable="true"/>
+                                    <item name="backup" representativeValue="0" parser="Number" isVariable="true"/>
+                                    <item representativeValue="          " parser="Whitespace" isVariable="true"/>
+                                    <item name="deleted" representativeValue="0" parser="Number" isVariable="true"/>
+                                    <item representativeValue="           " parser="Whitespace" isVariable="true"/>
+                                    <item name="memory" representativeValue="0" parser="Number" isVariable="true"/>
+                                    <item representativeValue="            " parser="Whitespace" isVariable="true"/>
+                                </tokens>
+                            </item>
+                        </lines>
+                    </item>
+                    <item type="com.fnfr.svt.mapping.block.documents.ResponseMapBlock" name="body_2">
+                        <minOccurrences>0</minOccurrences>
+                        <maxOccurences>0</maxOccurences>
+                        <lines>
+                            <item>
+                                <tokens>
+                                    <item name="route_source" representativeValue="*" parser="Punctuation" isVariable="true" isWildcard="true" isKey="true"/>
+                                    <item representativeValue="        " parser="Whitespace" isVariable="true"/>
+                                    <item name="routes" representativeValue="0" parser="Number" isVariable="true"/>
+                                    <item representativeValue="         " parser="Whitespace" isVariable="true"/>
+                                    <item name="backup" representativeValue="0" parser="Number" isVariable="true"/>
+                                    <item representativeValue="         " parser="Whitespace" isVariable="true"/>
+                                    <item name="deleted" representativeValue="0" parser="Number" isVariable="true"/>
+                                    <item representativeValue="          " parser="Whitespace" isVariable="true"/>
+                                    <item name="memory" representativeValue="0" parser="Number" isVariable="true"/>
+                                    <item representativeValue="           " parser="Whitespace" isVariable="true"/>
+                                </tokens>
+                            </item>
+                        </lines>
+                    </item>
+                </nodes>
+            </BlockMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="sh* route ipv6 summary">
+        <application>
+            <item>com.fnfr.svt.applications.ssh</item>
+            <item>com.fnfr.svt.applications.telnet</item>
+        </application>
+    </applicabilityProperties>
+    <responseFilters>
+        <item name="TimeStamp" patternType="REGEX" filterAction="EXC_LINES_CONTAINING">
+            <pattern>^\\S+\\s+\\S+\\s+\\d+\\s+\\d+:\\d+:\\d+.\\d+\\s+\\S+</pattern>
+        </item>
+        <item name="commandEcho" filterAction="EXC_LINES_CONTAINING">
+            <pattern>sh*route</pattern>
+        </item>
+    </responseFilters>
+</ResponseMap>

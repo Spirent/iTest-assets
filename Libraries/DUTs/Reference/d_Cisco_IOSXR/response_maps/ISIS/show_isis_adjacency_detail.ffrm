@@ -1,0 +1,248 @@
+<?xml version="1.0"?>
+<ResponseMap version="5.1.0.77511">
+    <sampleDictionary>
+        <item name="sample5">
+            <action>
+                <command>
+                    <body>show_isis_adjacency -detail yes</body>
+                </command>
+            </action>
+            <responseBody>Tue Aug 30 05:07:19.309 EDT
+
+IS-IS 1 Level-2 adjacencies:
+System Id      Interface        SNPA           State Hold Changed  NSF IPv4 IPv6
+                                                                       BFD  BFD 
+asr9k-4        BE7              *PtoP*         Up    29   01:13:36 Yes None None
+  Area Address:           49.0010
+  Neighbor IPv4 Address:  10.0.26.1*
+  Neighbor IPv6 Address:  fe80::226:98ff:fe14:af39*
+  Topology:               IPv4 Unicast
+  Topology:               IPv6 Unicast
+Jun2           BE5              *PtoP*         Up    20   01:12:10 Yes None None
+  Area Address:           49.0010
+  Neighbor IPv4 Address:  10.0.35.2*
+  Neighbor IPv6 Address:  fe80::219:e2ff:febc:3fc5*
+  Topology:               IPv4 Unicast
+  Topology:               IPv6 Unicast
+Ixia2          BE12             *PtoP*         Up    26   01:12:12 No  None None
+  Area Address:           49.0010
+  Neighbor IPv4 Address:  192.168.2.0*
+  Neighbor IPv6 Address:  fe80::200:2fff:fe20:f6d3*
+  Topology:               IPv4 Unicast
+  Topology:               IPv6 Unicast
+asr9k-3        BE3              *PtoP*         Up    26   01:13:17 Yes None None
+  Area Address:           49.0010
+  Neighbor IPv4 Address:  10.0.30.1*
+  Neighbor IPv6 Address:  fe80::66c:9dff:fe53:892b*
+  Topology:               IPv4 Unicast
+  Topology:               IPv6 Unicast
+Ixia1          BE11             *PtoP*         Up    24   01:13:27 No  None None
+  Area Address:           49.0010
+  Neighbor IPv4 Address:  192.168.1.0*
+  Neighbor IPv6 Address:  fe80::200:2fff:fe1f:51fd*
+  Topology:               IPv4 Unicast
+  Topology:               IPv6 Unicast
+Jun1           BE2              *PtoP*         Up    19   01:11:25 Yes None None
+  Area Address:           49.0010
+  Neighbor IPv4 Address:  10.0.20.1*
+  Neighbor IPv6 Address:  fe80::21d:b5ff:fe28:27c2*
+  Topology:               IPv4 Unicast
+  Topology:               IPv6 Unicast
+
+Total adjacency count: 6
+</responseBody>
+        </item>
+        <item name="sample1">
+            <responseBody>Thu Sep  1 05:27:22.356 EDT
+
+IS-IS 1 Level-2 adjacencies:
+System Id      Interface        SNPA           State Hold Changed  NSF IPv4 IPv6
+                                                                       BFD  BFD 
+asr9k-4        BE7              *PtoP*         Up    27   00:29:03 Yes None None
+  Area Address:           49.0010
+  Neighbor IPv4 Address:  10.0.26.1*
+  Neighbor IPv6 Address:  fe80::226:98ff:fe14:af39*
+  Topology:               IPv4 Unicast
+  Topology:               IPv6 Unicast
+Jun2           BE5              *PtoP*         Up    24   00:29:05 Yes None None
+  Area Address:           49.0010
+  Neighbor IPv4 Address:  10.0.35.2*
+  Neighbor IPv6 Address:  fe80::219:e2ff:febc:3fc5*
+  Topology:               IPv4 Unicast
+  Topology:               IPv6 Unicast
+Ixia2          BE12             *PtoP*         Up    26   00:28:58 No  None None
+  Area Address:           49.0010
+  Neighbor IPv4 Address:  192.168.2.0*
+  Neighbor IPv6 Address:  fe80::200:2fff:fe20:f6d3*
+  Topology:               IPv4 Unicast
+  Topology:               IPv6 Unicast
+Ixia1          BE11             *PtoP*         Up    24   00:29:04 No  None None
+  Area Address:           49.0010
+  Neighbor IPv4 Address:  192.168.1.0*
+  Neighbor IPv6 Address:  fe80::200:2fff:fe1f:51fd*
+  Topology:               IPv4 Unicast
+  Topology:               IPv6 Unicast
+
+Total adjacency count: 4
+</responseBody>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="sys_id_info">
+                    <groups>
+                        <item name="Router_name">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <key>true</key>
+                            <start>0</start>
+                            <end>8</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor0">
+                            <regex>\\s+</regex>
+                            <start>8</start>
+                            <end>15</end>
+                        </item>
+                        <item name="Interface">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <key>true</key>
+                            <start>15</start>
+                            <end>18</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+\\*PtoP\\*\\s+</regex>
+                            <start>18</start>
+                            <end>47</end>
+                        </item>
+                        <item name="Status">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <key>true</key>
+                            <start>47</start>
+                            <end>49</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>\\s+\\d+\\s+\\S+\\s+Yes None None\\s+Area Address:\\s+</regex>
+                            <start>49</start>
+                            <end>107</end>
+                        </item>
+                        <item name="Area_Address">
+                            <regex>([\\d]+(\\.[\\d]+))</regex>
+                            <named>true</named>
+                            <start>107</start>
+                            <end>114</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="((\d+\.)+\d+)">one or more of digit and dots</item>
+                                <item name="([\d]+(\.[\d]+))">one simple decimal number</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor3">
+                            <regex>\\s+Neighbor IPv\\d+\\s+Address:\\s+</regex>
+                            <start>114</start>
+                            <end>141</end>
+                        </item>
+                        <item name="Neighbor_IPv4_Address">
+                            <regex>((\\d+\\.)+\\d+)</regex>
+                            <named>true</named>
+                            <start>141</start>
+                            <end>150</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="((\d+\.)+\d+)">one or more of digit and dots</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor4">
+                            <regex>\\*\\s+Neighbor IPv\\d+\\s+Address:\\s+</regex>
+                            <start>150</start>
+                            <end>178</end>
+                        </item>
+                        <item name="Neighbor_IPv6_Address">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>178</start>
+                            <end>202</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name=".{24}">exactly 24 of any character</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor5">
+                            <regex>\\*\\s+Topology:\\s+</regex>
+                            <start>202</start>
+                            <end>230</end>
+                        </item>
+                        <item name="IPv4_Topology">
+                            <regex>[^\\r\\n]+</regex>
+                            <named>true</named>
+                            <start>230</start>
+                            <end>242</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor6">
+                            <regex>\\s+Topology:\\s+</regex>
+                            <start>242</start>
+                            <end>269</end>
+                        </item>
+                        <item name="IPv6_Topology">
+                            <regex>[^\\r\\n]+</regex>
+                            <named>true</named>
+                            <start>269</start>
+                            <end>281</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>asr9k-4        BE7              *PtoP*         Up    29   01:13:36 Yes None None
+  Area Address:           49.0010
+  Neighbor IPv4 Address:  10.0.26.1*
+  Neighbor IPv6 Address:  fe80::226:98ff:fe14:af39*
+  Topology:               IPv4 Unicast
+  Topology:               IPv6 Unicast</sampleMatch>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="show_isis_adjacency" command="*detail*" priority="49">
+        <application>
+            <item>com.fnfr.svt.applications.telnet</item>
+            <item>com.fnfr.svt.applications.ssh</item>
+        </application>
+    </applicabilityProperties>
+    <aliases>
+        <item name="Router_name">
+            <queryFormatString>(.//Router_name)</queryFormatString>
+        </item>
+    </aliases>
+</ResponseMap>

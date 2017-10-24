@@ -1,0 +1,230 @@
+<?xml version="1.0"?>
+<ResponseMap version="5.1.0.77511">
+    <sampleDictionary>
+        <item name="sample1">
+            <responseBody>Wed Jun  1 12:25:46.467 EST
+TenGigE0/0/0/8:
+Local client
+------------
+  Administrative configuration:
+    PDU revision:                        39
+    Mode:                            Active
+    Unidirectional support:               N
+    Link monitor support:                 N
+    Remote loopback support:              N
+    MIB retrieval support:                Y
+    Maximum PDU size:                  1500
+    Mis-wiring detection key:           3CA
+
+Operational status:
+    Port status:                Operational
+    Loopback status:                   None
+    Interface mis-wired:                  N
+
+Remote client
+-------------
+  MAC address:               0019.e2bc.3852
+  Vendor (OUI):                    00.90.69
+
+  Administrative configuration:
+    PDU revision:                         1
+    Mode:                            Active
+    Unidirectional support:               N
+    Link monitor support:                 Y
+    Remote loopback support:              N
+    MIB retrieval support:                N
+    Maximum PDU size:                  1500
+
+</responseBody>
+        </item>
+        <item name="sample4">
+            <responseBody>Tue Oct 25 17:42:41.076 EST
+HundredGigE0/5/0/2:
+Local client
+------------
+  Administrative configuration:
+    PDU revision:                         2
+    Mode:                            Active
+    Unidirectional support:               N
+    Link monitor support:                 N
+    Remote loopback support:              N
+    MIB retrieval support:                Y
+    Maximum PDU size:                  1500
+    Mis-wiring detection key:          1D41
+
+Operational status:
+    Port status:                Active send
+    Loopback status:                   None
+    Interface mis-wired:                  N
+
+Remote client
+-------------
+  MAC address:                  Not present
+  Vendor (OUI):                 Not present 
+
+  Administrative configuration:
+    PDU revision:               Not present
+    Mode:                       Not present
+    Unidirectional support:     Not present
+    Link monitor support:       Not present
+    Remote loopback support:    Not present
+    MIB retrieval support:      Not present
+    Maximum PDU size:           Not present
+
+</responseBody>
+        </item>
+        <item name="sample2">
+            <responseBody>Wed Jun  1 12:18:32.752 EST
+TenGigE0/0/0/8:
+Local client
+------------
+  Administrative configuration:
+    PDU revision:                        21
+    Mode:                            Active
+    Unidirectional support:               N
+    Link monitor support:                 N
+    Remote loopback support:              N
+    MIB retrieval support:                Y
+    Maximum PDU size:                  1500
+    Mis-wiring detection key:           3CA
+
+Operational status:
+    Port status:                  Port down
+    Loopback status:                   None
+    Interface mis-wired:                  N
+
+Remote client
+-------------
+  MAC address:                  Not present
+  Vendor (OUI):                 Not present
+
+  Administrative configuration:
+    PDU revision:               Not present
+    Mode:                       Not present
+    Unidirectional support:     Not present
+    Link monitor support:       Not present
+    Remote loopback support:    Not present
+    MIB retrieval support:      Not present
+    Maximum PDU size:           Not present
+</responseBody>
+        </item>
+        <item name="sample3">
+            <responseBody>Fri Jul 15 10:54:16.841 EST
+TenGigE0/0/0/8:
+Local client
+------------
+  Administrative configuration:
+    PDU revision:                         1
+    Mode:                            Active
+    Unidirectional support:               N
+    Link monitor support:                 N
+    Remote loopback support:              N
+    MIB retrieval support:                Y
+    Maximum PDU size:                  1500
+    Mis-wiring detection key:          6C08
+
+Operational status:
+    Port status:                  Port down
+    Loopback status:                   None
+    Interface mis-wired:                  N
+
+Remote client
+-------------
+  MAC address:                  Not present
+  Vendor (OUI):                 Not present 
+
+  Administrative configuration:
+    PDU revision:               Not present
+    Mode:                       Not present
+    Unidirectional support:     Not present
+    Link monitor support:       Not present
+    Remote loopback support:    Not present
+    MIB retrieval support:      Not present
+    Maximum PDU size:           Not present
+
+</responseBody>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="operational_status_port_status">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>\\s+Port status:\\s+</regex>
+                            <start>0</start>
+                            <end>32</end>
+                        </item>
+                        <item name="port_status">
+                            <regex>.+</regex>
+                            <named>true</named>
+                            <start>32</start>
+                            <end>43</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>    Port status:                Operational</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+                <item name="remote_client_mac_address">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>\\s+MAC address:\\s+</regex>
+                            <start>0</start>
+                            <end>29</end>
+                        </item>
+                        <item name="remote_client_mac">
+                            <regex>.+</regex>
+                            <named>true</named>
+                            <start>29</start>
+                            <end>43</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>  MAC address:               0019.e2bc.3852</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+                <item name="mode_sts">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>.*Remote\\sclient.+\\s+Mode:\\s+</regex>
+                            <start>0</start>
+                            <end>225</end>
+                        </item>
+                        <item name="mode_status">
+                            <regex>[^0-9\\r\\n]+</regex>
+                            <named>true</named>
+                            <start>225</start>
+                            <end>236</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>Remote client
+-------------
+  MAC address:                  Not present
+  Vendor (OUI):                 Not present
+
+  Administrative configuration:
+    PDU revision:               Not present
+    Mode:                       Not present</sampleMatch>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="show_ethernet_oam" command="-option1 discovery -option2 &quot;interface*&quot;"/>
+</ResponseMap>

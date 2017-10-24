@@ -1,0 +1,244 @@
+<?xml version="1.0"?>
+<ResponseMap version="6.0.0.18638fa">
+    <sampleDictionary>
+        <item name="sample1">
+            <responseBody>Thu May 21 08:05:59.366 EDT
+
+           Tunnel   LSP     Destination          Source    Tun    FRR  LSP  Path
+             Name    ID         Address         Address  State  State Role  Prot
+----------------- ----- --------------- --------------- ------ ------ ---- -----
+       tunnel-te1     8    11.255.255.6    11.255.255.9     up  Ready Head Inact
+       tunnel-te2     8    11.255.255.6    11.255.255.9     up  Ready Head Inact
+       tunnel-te3     8    11.255.255.6    11.255.255.9     up  Ready Head Inact
+       tunnel-te4     8    11.255.255.6    11.255.255.9     up  Ready Head Inact</responseBody>
+        </item>
+        <item name="sample2">
+            <responseBody>Tue Sep 20 10:39:04.034 EST
+
+           Tunnel   LSP     Destination          Source    Tun    FRR  LSP  Path
+             Name    ID         Address         Address  State  State Role  Prot
+----------------- ----- --------------- --------------- ------ ------ ---- -----
+    *tunnel-te210     0         1.1.1.1         0.0.0.0   down  Inact Head Inact
+    *tunnel-te211     0         2.2.2.2         0.0.0.0   down  Inact Head Inact
+    *tunnel-te212     0         5.5.5.5         0.0.0.0   down  Inact Head Inact
+    *tunnel-te213     0         4.4.4.4         0.0.0.0   down  Inact Head Inact
+    *tunnel-te214     0         4.4.4.4         0.0.0.0   down  Inact Head Inact
+    *tunnel-te215     0         2.2.2.2         0.0.0.0   down  Inact Head Inact
+    *tunnel-te216     0         4.4.4.4         0.0.0.0   down  Inact Head Inact
+    *tunnel-te217     0         2.2.2.2         0.0.0.0   down  Inact Head Inact
+* = automatically created backup tunnel
+</responseBody>
+        </item>
+        <item name="sample_611">
+            <responseBody>
+           Tunnel   LSP     Destination          Source           FRR  LSP  Path
+             Name    ID         Address         Address  State  State Role  Prot
+----------------- ----- --------------- --------------- ------ ------ ---- -----
+J1-to-a9k2-p2mp-1    60         4.4.4.4         1.1.1.1     up  Inact  Mid      
+* = automatically created backup tunnel
+</responseBody>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.block.documents.BlockMapperProperties">
+            <BlockMaps name="container"/>
+        </item>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="tunnel_id">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>(\\s+)?</regex>
+                            <start>0</start>
+                            <end>7</end>
+                        </item>
+                        <item name="tunnel">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <key>true</key>
+                            <start>7</start>
+                            <end>17</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+</regex>
+                            <start>17</start>
+                            <end>21</end>
+                        </item>
+                        <item name="lsp_id">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>21</start>
+                            <end>23</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>\\s+</regex>
+                            <start>23</start>
+                            <end>27</end>
+                        </item>
+                        <item name="destination">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>27</start>
+                            <end>39</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="((\d+\.)+\d+)">one or more of digit and dots</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor3">
+                            <regex>\\s+</regex>
+                            <start>39</start>
+                            <end>43</end>
+                        </item>
+                        <item name="source">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>43</start>
+                            <end>55</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="((\d+\.)+\d+)">one or more of digit and dots</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor4">
+                            <regex>\\s+</regex>
+                            <start>55</start>
+                            <end>60</end>
+                        </item>
+                        <item name="tun_state">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>60</start>
+                            <end>62</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor5">
+                            <regex>\\s+</regex>
+                            <start>62</start>
+                            <end>64</end>
+                        </item>
+                        <item name="frr_state">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>64</start>
+                            <end>69</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor6">
+                            <regex>\\s+</regex>
+                            <start>69</start>
+                            <end>70</end>
+                        </item>
+                        <item name="lsp_role">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>70</start>
+                            <end>74</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor7">
+                            <regex>(\\s+)?</regex>
+                            <start>74</start>
+                            <end>75</end>
+                        </item>
+                        <item name="path_prot">
+                            <regex>(\\w+)?</regex>
+                            <named>true</named>
+                            <start>75</start>
+                            <end>80</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>       tunnel-te2    28    11.255.255.6    11.255.255.9     up  Ready Head Inact</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+            </regexMaps>
+        </item>
+        <item type="com.fnfr.svt.mapping.table.TabularMapperProperties">
+            <tabularMaps>
+                <item name="table1">
+                    <banner>             Name    ID         Address         Address  State  State Role  Prot</banner>
+                    <bannerStructure>CaseInsensitive</bannerStructure>
+                    <columns>
+                        <item name="tunnel_name">
+                            <isKey>true</isKey>
+                            <lastFullCell></lastFullCell>
+                            <uid>edf1610d-583a-48e9-9a17-3993c3f91c43</uid>
+                        </item>
+                        <item name="lsp_id">
+                            <lastFullCell></lastFullCell>
+                            <uid>e27b536a-c108-44aa-9744-a919f18c4044</uid>
+                        </item>
+                        <item name="dest_addr">
+                            <lastFullCell></lastFullCell>
+                            <uid>a9682adc-c72d-4a84-ba78-bc58c2ebb310</uid>
+                        </item>
+                        <item name="src_addr">
+                            <lastFullCell></lastFullCell>
+                            <uid>ee7a6567-3f89-4082-a8c9-f1f6e04029aa</uid>
+                        </item>
+                        <item name="tunnel_state">
+                            <lastFullCell></lastFullCell>
+                            <uid>3920b597-6947-47ab-8b45-a95d566dca3c</uid>
+                        </item>
+                        <item name="frr_state">
+                            <lastFullCell></lastFullCell>
+                            <uid>78ecb8be-73a2-4dcb-8d25-567c66b079bb</uid>
+                        </item>
+                        <item name="lsp_role">
+                            <lastFullCell></lastFullCell>
+                            <uid>772b59c9-85b4-43ad-846d-44bd6df084fc</uid>
+                        </item>
+                    </columns>
+                </item>
+            </tabularMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="show_mpls_te_tunnels" command="*tabular*"/>
+    <aliases>
+        <item name="tun_state">
+            <queryFormatString>.//tun_state</queryFormatString>
+        </item>
+    </aliases>
+</ResponseMap>

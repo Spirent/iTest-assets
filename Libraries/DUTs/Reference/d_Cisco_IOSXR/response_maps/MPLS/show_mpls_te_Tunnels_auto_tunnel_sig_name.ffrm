@@ -1,0 +1,109 @@
+<?xml version="1.0"?>
+<ResponseMap version="6.0.0.18638fa">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="show_mpls_te_tunnels">
+                <command>
+                    <body>-auto_tunnels_sig_name &quot;yes&quot;</body>
+                </command>
+            </action>
+            <responseBody>
+TunID:LSPID Ingress Intf:Label  Egress Intf:Label Bandwidth Tunnel Name         
+----------- ------------------ ------------------ --------- --------------------
+  210:8              N/A:N/A            BE5:i-nul         0 autob_asr9k_7_t210_BE3_3.3.3.3
+  211:7              N/A:N/A           BE80:i-nul         0 autob_asr9k_7_t211_BE3
+  233:2              N/A:N/A           BE80:17523         0 autob_asr9k_7_t233_BE5
+  243:0              N/A:N/A            N/A:N/A           0 autob_asr9k_7_t243_BE5_5.5.5.5
+* = automatically created backup tunnel
+Displayed 4 (of 7) heads, 0 (of 62834) midpoints, 0 (of 3) tails
+Displayed 3 up, 1 down, 0 recovering, 0 recovered heads
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;definedIn&gt;project://d_Cisco_IOSXR/session_profiles/cisco_IOSXR_ssh_quickcall_library.fftc&lt;/definedIn&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="definedIn">
+                    <queryFormatString>.//definedIn</queryFormatString>
+                    <source>Kernel</source>
+                </item>
+            </aliases>
+            <duration>1.6</duration>
+        </item>
+        <item name="sample2">
+            <responseBody>Fri Jun 16 23:59:23.760 EDT
+
+TunID:LSPID Ingress Intf:Label  Egress Intf:Label Bandwidth Tunnel Name         
+----------- ------------------ ------------------ --------- --------------------
+  210:5              N/A:N/A            BE7:18415         0 autob_NCS5k_2_t210_BE5
+  211:3              N/A:N/A            BE7:17417         0 autob_NCS5k_2_t211_BE2
+  212:7              N/A:N/A            BE5:i-nul         0 ABCD-&gt;2.2.2.2-&gt;BE3-&gt;5.5.5.5
+  216:5              N/A:N/A            BE5:300002         0 ABCD-&gt;2.2.2.2-&gt;BE3-&gt;3.3.3.3
+  217:3              N/A:N/A            BE5:i-nul         0 autob_NCS5k_2_t217_BE7_4.4.4.4
+  218:2              N/A:N/A            BE2:299864         0 autob_NCS5k_2_t218_BE7</responseBody>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties"/>
+        <item type="com.fnfr.svt.mapping.table.TabularMapperProperties">
+            <tabularMaps>
+                <item name="table1">
+                    <additionalBannerLineCount>1</additionalBannerLineCount>
+                    <banner>TunID:LSPID Ingress Intf:Label\\s+Egress Intf:Label Bandwidth Tunnel Name\\s*</banner>
+                    <footer>\\* = automatically created backup tunnel\\s*</footer>
+                    <bannerStructure>Regex</bannerStructure>
+                    <footerStructure>Regex</footerStructure>
+                    <columnBoundaries>Positional</columnBoundaries>
+                    <minOccurences>0</minOccurences>
+                    <columns>
+                        <item name="TunID_LSPID">
+                            <isKey>true</isKey>
+                            <width>21</width>
+                            <lastFullCell></lastFullCell>
+                            <uid>1e9fb959-6a5c-4d68-a4a9-0bc3ae0ce459</uid>
+                        </item>
+                        <item name="ntf_Label_Egress">
+                            <width>18</width>
+                            <lastFullCell></lastFullCell>
+                            <uid>79e28fb9-0d33-4b65-8659-1a74ff0f1dd8</uid>
+                        </item>
+                        <item name="Intf_Label_Bandwid">
+                            <width>18</width>
+                            <lastFullCell></lastFullCell>
+                            <uid>b48370fc-197f-46f4-8bfc-13707322223c</uid>
+                        </item>
+                        <item name="th">
+                            <width>3</width>
+                            <lastFullCell></lastFullCell>
+                            <uid>3e2a3953-4ec9-4154-8560-a46c0d30136a</uid>
+                        </item>
+                        <item name="Tunnel_Name">
+                            <width>0</width>
+                            <lastFullCell></lastFullCell>
+                            <uid>1fc3609a-87bb-4293-bd44-5da305d21fbb</uid>
+                        </item>
+                    </columns>
+                    <ignoreBlankLines>false</ignoreBlankLines>
+                    <autoUpdateNames>false</autoUpdateNames>
+                </item>
+            </tabularMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="show_mpls_te_tunnels" command="-auto_tunnels_sig_name &quot;yes&quot;"/>
+    <aliases>
+        <item name="tunnel_LSP_id_by_intf">
+            <queryFormatString>mapped/Tabular/table1/table/row[contains(Tunnel_Name,&quot;{0}&quot;)]/TunID_LSPID</queryFormatString>
+            <arguments>
+                <item name="argument0"/>
+            </arguments>
+        </item>
+        <item name="tunnel_name_by_intf">
+            <queryFormatString>mapped/Tabular/table1/table/row[contains(Tunnel_Name,&quot;{0}&quot;)]/Tunnel_Name</queryFormatString>
+            <arguments>
+                <item name="argument0"/>
+            </arguments>
+        </item>
+    </aliases>
+</ResponseMap>

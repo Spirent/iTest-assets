@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<ResponseMap version="5.1.0.77511">
+    <sampleDictionary>
+        <item name="sample1">
+            <responseBody>Sun Aug 28 18:02:14.595 EDT
+     Packets Switched: 3434063
+     Packets Switched: 0</responseBody>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.table.TabularMapperProperties"/>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="packets_switched">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>\\s+Packets Switched:\\s+</regex>
+                            <start>0</start>
+                            <end>23</end>
+                        </item>
+                        <item name="Packets_Switched">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>23</start>
+                            <end>24</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+</regex>
+                            <start>24</start>
+                            <end>25</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>     Packets Switched: ?
+</sampleMatch>
+                    <optional>true</optional>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="show_mpls_fwd" command="*filter*"/>
+    <responseFilters>
+        <item name="TimeStamp" patternType="REGEX" filterAction="EXC_LINES_CONTAINING">
+            <pattern>^\\S+\\s+\\S+\\s+\\d+\\s+\\d+:\\d+:\\d+.\\d+\\s+\\S+</pattern>
+        </item>
+        <item name="updatedLine" patternType="REGEX">
+            <pattern>Updated\\s+\\S+\\s+\\d+\\s+\\d+:\\d+:\\d+.\\d+</pattern>
+        </item>
+    </responseFilters>
+</ResponseMap>

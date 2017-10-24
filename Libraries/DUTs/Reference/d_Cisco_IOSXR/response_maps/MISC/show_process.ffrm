@@ -1,0 +1,180 @@
+<?xml version="1.0"?>
+<ResponseMap version="6.0.0.18638fa">
+    <sampleDictionary>
+        <item name="sample1">
+            <responseBody>Tue Aug  2 09:06:13.523 EST
+                  Job Id: 1053
+                     PID: 557437
+         Executable path: /disk0/iosxr-mpls-6.0.2/0x100305/bin/rsvp
+              Instance #: 1
+              Version ID: 00.00.0000
+                 Respawn: ON
+           Respawn count: 1
+            Last started: Thu Jul 28 13:36:05 2016
+           Process state: Run (last exit due to SIGSEGV)
+           Package state: Normal
+       Started on config: cfg/gl/ip_rsvp/core/
+           Process group: v4-routing
+                    core: MAINMEM
+               Max. core: 0
+               Placement: Placeable
+            startup_path: /pkg/startup/rsvp.startup
+                   Ready: 0.759s
+               Available: 9.098s
+        Process cpu time: 17863.355 user, 715.447 kernel, 18578.801 total
+JID   TID CPU Stack pri state        TimeInState    HR:MM:SS:MSEC   NAME
+1053   1    6  104K  10 Receive        0:00:00:0006    3:18:52:0570 rsvp
+1053   2    6  104K  10 Sigwaitinfo  115:30:07:0675    0:00:00:0000 rsvp
+1053   3    6  104K  10 Receive      115:30:08:0012    0:00:00:0000 rsvp
+1053   4    6  104K  10 Condvar        0:00:26:0978    0:08:36:0824 rsvp
+1053   5    7  104K  10 Receive        0:00:00:0006    0:23:16:0756 rsvp
+1053   6    5  104K  10 Condvar        0:00:01:0421    0:09:54:0753 rsvp
+1053   7    7  104K  10 Receive        0:00:01:0630    1:08:58:0876 rsvp</responseBody>
+        </item>
+        <item name="sample2">
+            <responseBody>Tue Aug  2 09:06:13.523 EST
+                  Job Id: 1053
+                     PID: 557437
+         Executable path: /disk0/iosxr-mpls-6.0.2/0x100305/bin/rsvp
+              Instance #: 1
+              Version ID: 00.00.0000
+                 Respawn: ON
+           Respawn count: 1
+            Last started: Thu Jul 28 13:36:05 2016
+           Process state: Run
+           Package state: Normal
+       Started on config: cfg/gl/ip_rsvp/core/
+           Process group: v4-routing
+                    core: MAINMEM
+               Max. core: 0
+               Placement: Placeable
+            startup_path: /pkg/startup/rsvp.startup
+                   Ready: 0.759s
+               Available: 9.098s
+        Process cpu time: 17863.355 user, 715.447 kernel, 18578.801 total
+JID   TID CPU Stack pri state        TimeInState    HR:MM:SS:MSEC   NAME
+1053   1    6  104K  10 Receive        0:00:00:0006    3:18:52:0570 rsvp
+1053   2    6  104K  10 Sigwaitinfo  115:30:07:0675    0:00:00:0000 rsvp
+1053   3    6  104K  10 Receive      115:30:08:0012    0:00:00:0000 rsvp
+1053   4    6  104K  10 Condvar        0:00:26:0978    0:08:36:0824 rsvp
+1053   5    7  104K  10 Receive        0:00:00:0006    0:23:16:0756 rsvp
+1053   6    5  104K  10 Condvar        0:00:01:0421    0:09:54:0753 rsvp
+1053   7    7  104K  10 Receive        0:00:01:0630    1:08:58:0876 rsvp</responseBody>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="pattern1">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>\\s+Respawn count:\\s+</regex>
+                            <start>0</start>
+                            <end>26</end>
+                        </item>
+                        <item name="Respawn_count">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>26</start>
+                            <end>27</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>           Respawn count: 1</sampleMatch>
+                </item>
+                <item name="pattern2">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>\\s+Process state:\\s+</regex>
+                            <start>0</start>
+                            <end>26</end>
+                        </item>
+                        <item name="Process_state">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>26</start>
+                            <end>29</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+</regex>
+                            <start>29</start>
+                            <end>40</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>           Process state: Run
+          </sampleMatch>
+                </item>
+                <item name="pattern3">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>\\s+Job Id:\\s+</regex>
+                            <start>0</start>
+                            <end>26</end>
+                        </item>
+                        <item name="job_id">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>26</start>
+                            <end>30</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>                  Job Id: 1053</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+                <item name="pattern4">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>PID:\\s+</regex>
+                            <start>0</start>
+                            <end>5</end>
+                        </item>
+                        <item name="pid">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>5</start>
+                            <end>11</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>PID: 557437</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="show_process" command="*">
+        <application>
+            <item>com.fnfr.svt.applications.ssh</item>
+        </application>
+    </applicabilityProperties>
+</ResponseMap>

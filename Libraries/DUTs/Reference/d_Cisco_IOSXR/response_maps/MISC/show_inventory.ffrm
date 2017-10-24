@@ -1,0 +1,186 @@
+<?xml version="1.0"?>
+<ResponseMap version="5.1.0.77511">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="show_inventory">
+                <command>
+                    <body>-loc $hw_mod_loc</body>
+                </command>
+            </action>
+            <responseBody>Thu Sep  1 16:33:36.790 EST
+NAME: &quot;module 0/7/CPU0&quot;, DESCR: &quot;8x100GE, Transport Edge Optimized LC&quot;
+PID: A9K-8X100GE-TR, VID: V04, SN: FOC2011N314
+
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;definedIn&gt;project://d_Cisco_IOSXR/session_profiles/cisco_IOSXR_ssh_quickcall_library.fftc&lt;/definedIn&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="definedIn">
+                    <queryFormatString>.//definedIn</queryFormatString>
+                    <source>Kernel</source>
+                </item>
+            </aliases>
+            <duration>7.5</duration>
+        </item>
+        <item name="sample2">
+            <responseBody>NAME: &quot;module 0/1/CPU0&quot;, DESCR: &quot;ASR 9900 8-port 100GE LC -TR OTN&quot;
+PID: A99-8X100GE-TR, VID: V01, SN: FOC2026NGYC</responseBody>
+        </item>
+        <item name="sample3">
+            <responseBody>Tue Sep 27 16:44:46.231 EDT
+NAME: &quot;module 0/7/CPU0&quot;, DESCR: &quot;8x100GE, Transport Edge Optimized LC&quot;
+NAME: &quot;module mau HundredGigE0/7/CPU0/1&quot;, DESCR: &quot;CPAK 10X10G LR&quot;
+NAME: &quot;module mau HundredGigE0/7/CPU0/6&quot;, DESCR: &quot;CPAK 100G ER4L Optics&quot;
+NAME: &quot;module mau HundredGigE0/7/CPU0/7&quot;, DESCR: &quot;CPAK 100G ER4L Optics&quot;</responseBody>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="pattern1">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>NAME: &quot;module\\s+</regex>
+                            <start>0</start>
+                            <end>14</end>
+                        </item>
+                        <item name="module">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <key>true</key>
+                            <start>14</start>
+                            <end>22</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name=".{8}">exactly 8 of any character</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>&quot;, DESCR: &quot;</regex>
+                            <start>22</start>
+                            <end>33</end>
+                        </item>
+                        <item name="DESCR">
+                            <regex>[^\\r\\n]+</regex>
+                            <named>true</named>
+                            <start>33</start>
+                            <end>65</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name=".{32}">exactly 32 of any character</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>&quot;\\s+PID:\\s+</regex>
+                            <start>65</start>
+                            <end>72</end>
+                        </item>
+                        <item name="PID">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>72</start>
+                            <end>86</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name=".{14}">exactly 14 of any character</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor3">
+                            <regex>, VID:\\s+</regex>
+                            <start>86</start>
+                            <end>93</end>
+                        </item>
+                        <item name="VID">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>93</start>
+                            <end>96</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor4">
+                            <regex>, SN:\\s+</regex>
+                            <start>96</start>
+                            <end>102</end>
+                        </item>
+                        <item name="SN">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>102</start>
+                            <end>113</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>NAME: &quot;module 0/1/CPU0&quot;, DESCR: &quot;ASR 9900 8-port 100GE LC -TR OTN&quot;
+PID: A99-8X100GE-TR, VID: V01, SN: FOC2026NGYC</sampleMatch>
+                    <optional>true</optional>
+                </item>
+                <item name="pattern2">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>NAME: &quot;module mau\\s+</regex>
+                            <start>0</start>
+                            <end>18</end>
+                        </item>
+                        <item name="breakout_int_loc">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>18</start>
+                            <end>39</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name=".{21}">exactly 21 of any character</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>&quot;, DESCR: &quot;</regex>
+                            <start>39</start>
+                            <end>50</end>
+                        </item>
+                        <item name="optics_pid">
+                            <regex>[^\\r\\n]+</regex>
+                            <named>true</named>
+                            <key>true</key>
+                            <start>50</start>
+                            <end>64</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name=".{14}">exactly 14 of any character</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>&quot;</regex>
+                            <start>64</start>
+                            <end>65</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>NAME: &quot;module mau HundredGigE0/7/CPU0/1&quot;, DESCR: &quot;CPAK 10X10G LR&quot;</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="show_inventory" command="*"/>
+</ResponseMap>

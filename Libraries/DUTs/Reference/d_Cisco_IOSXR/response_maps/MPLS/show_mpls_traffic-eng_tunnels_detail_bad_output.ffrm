@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<ResponseMap version="5.1.0.77511">
+    <sampleDictionary>
+        <item name="sample10">
+            <responseBody>Mon Sep  5 07:08:56.401 EDT
+
+Bad tunnel name</responseBody>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.block.documents.BlockMapperProperties">
+            <BlockMaps name="container">
+                <nodes>
+                    <item type="com.fnfr.svt.mapping.block.documents.ResponseMapBlock" name="date">
+                        <minOccurrences>0</minOccurrences>
+                        <lines>
+                            <item>
+                                <tokens>
+                                    <item representativeValue="Tue Mar 29 18:37:56.603" parser="OtherTimestamp" isVariable="true"/>
+                                    <item representativeValue=" " parser="Whitespace" isVariable="true"/>
+                                    <item representativeValue="EST" parser="Word" isVariable="true"/>
+                                </tokens>
+                                <isOptional>true</isOptional>
+                            </item>
+                            <item/>
+                        </lines>
+                    </item>
+                    <item type="com.fnfr.svt.mapping.block.documents.ResponseMapBlock" name="block2">
+                        <lines>
+                            <item>
+                                <tokens>
+                                    <item name="tunnel_name" representativeValue="Bad" parser="Word"/>
+                                    <item representativeValue=" " parser="Whitespace"/>
+                                    <item representativeValue="tunnel" parser="Word"/>
+                                    <item representativeValue=" " parser="Whitespace"/>
+                                    <item representativeValue="name" parser="Word"/>
+                                </tokens>
+                            </item>
+                            <item/>
+                        </lines>
+                    </item>
+                </nodes>
+            </BlockMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="show_mpls_te_tunnels" command="*detail*" priority="3"/>
+    <aliases>
+        <item name="in_label_by_tunnel_id">
+            <queryFormatString>mapped/Block/Body/container/LSP_tunnel[tunnel_header/tunnel_id = &apos;{0}&apos;]/InLabel/in_label</queryFormatString>
+            <arguments>
+                <item name="tunnel_id">
+                    <valuesQuery>mapped/Block/Body/container/LSP_tunnel/tunnel_header/tunnel_id</valuesQuery>
+                    <interpretAs>SampleValues</interpretAs>
+                </item>
+            </arguments>
+        </item>
+        <item name="out_label_by_tunnel_id">
+            <queryFormatString>mapped/Block/Body/container/LSP_tunnel[tunnel_header/tunnel_id = &apos;{0}&apos;]/OutLabel/out_label</queryFormatString>
+            <arguments>
+                <item name="tunnel_id">
+                    <valuesQuery>mapped/Block/Body/container/LSP_tunnel/tunnel_header/tunnel_id</valuesQuery>
+                    <interpretAs>SampleValues</interpretAs>
+                </item>
+            </arguments>
+        </item>
+        <item name="incoming_explicit_route_by_tunnel_id">
+            <queryFormatString>mapped/Block/Body/container/LSP_tunnel[tunnel_header/tunnel_id = &apos;{0}&apos;]/Signalling_Info/path_info/incoming/block2/incoming_explicit_route</queryFormatString>
+            <arguments>
+                <item name="tunnel_id">
+                    <valuesQuery>mapped/Block/Body/container/LSP_tunnel/tunnel_header/tunnel_id</valuesQuery>
+                    <interpretAs>SampleValues</interpretAs>
+                </item>
+            </arguments>
+        </item>
+        <item name="outgoing_explicit_route_by_tunnel_id">
+            <queryFormatString>mapped/Block/Body/container/LSP_tunnel[tunnel_header/tunnel_id = &apos;{0}&apos;]/Signalling_Info/path_info/outgoing/block3/outgoing_explicit_route</queryFormatString>
+            <arguments>
+                <item name="tunnel_id">
+                    <valuesQuery>mapped/Block/Body/container/LSP_tunnel/tunnel_header/tunnel_id</valuesQuery>
+                    <interpretAs>SampleValues</interpretAs>
+                </item>
+            </arguments>
+        </item>
+    </aliases>
+</ResponseMap>

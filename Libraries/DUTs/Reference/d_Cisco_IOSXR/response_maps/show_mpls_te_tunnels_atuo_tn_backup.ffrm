@@ -1,0 +1,123 @@
+<?xml version="1.0"?>
+<ResponseMap version="6.0.0.18638fa">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="show_mpls_te_tunnels_auto_tunnel_backup">
+                <command>
+                    <body>-option &quot;| utility egrep \\&quot;Name: tunnel-te212\\&quot; -A20&quot;</body>
+                </command>
+            </action>
+            <responseBody>show mpls traffic-eng tunnels auto-tunne backup | utilit$
+Tue Aug  1 04:26:01.801 EDT
+Name: tunnel-te212  Destination: 5.5.5.5  Ifhandle:0x720 (auto-tunnel backup)
+  Signalled-Name: autob_asr9k_2_t212_BE3_3.3.3.3
+  Status:
+    Admin:    up Oper: down   Path: not valid   Signalling: Down
+
+    path option 10,  type explicit (autob_nnhop_srlg_te212)
+    Last PCALC Error: Tue Aug  1 03:37:35 2017
+      Info: No path to destination, 5.5.5.5 (exclude-link)
+    path option 20,  type explicit (autob_nnhop_te212) [disabled]
+    G-PID: 0x0800 (derived from egress interface properties)
+    Bandwidth Requested: 0 kbps  CT0
+    Creation Time: Mon Jul 31 08:35:30 2017 (19:50:31 ago)
+  Config Parameters:
+    Bandwidth:        0 kbps (CT0) Priority:  7  7 Affinity: 0x0/0x0
+    Metric Type: TE (global)
+    Path Selection:
+      Tiebreaker: Min-fill (default)
+    Hop-limit: disabled
+    Cost-limit: disabled
+    Path-invalidation timeout: 10000 msec (default), Action: Tear (default)
+    AutoRoute: disabled  LockDown: disabled   Policy class: not set
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;isEmpty&gt;false&lt;/isEmpty&gt;
+    &lt;definedIn&gt;project://d_Cisco_IOSXR_main/session_profiles/cisco_IOSXR_ssh_quickcall_library.fftc&lt;/definedIn&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="isEmpty">
+                    <queryFormatString>.//isEmpty</queryFormatString>
+                </item>
+                <item name="definedIn">
+                    <queryFormatString>.//definedIn</queryFormatString>
+                    <source>Kernel</source>
+                </item>
+            </aliases>
+            <duration>2.4</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="pattern1">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Name:\\s+</regex>
+                            <start>0</start>
+                            <end>6</end>
+                        </item>
+                        <item name="tunnel_name">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>6</start>
+                            <end>7</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+Destination:\\s+</regex>
+                            <start>7</start>
+                            <end>22</end>
+                        </item>
+                        <item name="tunnel_destination">
+                            <regex>((\\d+\\.)+\\d+)</regex>
+                            <named>true</named>
+                            <start>22</start>
+                            <end>29</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="((\d+\.)+\d+)">one or more of digit and dots</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>\\s+Ifhandle:</regex>
+                            <start>29</start>
+                            <end>40</end>
+                        </item>
+                        <item name="auto_tunnel_backup">
+                            <regex>([0][x][\\da-fA-F]+)</regex>
+                            <named>true</named>
+                            <start>40</start>
+                            <end>45</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([0][x][\da-fA-F]+)">one hexadecimal number</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor3">
+                            <regex>\\s+\\(auto-tunnel backup\\)</regex>
+                            <start>45</start>
+                            <end>66</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>Name: *  Destination: 5.5.5.5  Ifhandle:0x720 (auto-tunnel backup)</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="show_mpls_te_tunnels_auto_tunnel_backup" command="-option &quot;| utility egrep \\&quot;Name:*\\&quot; -A20&quot;"/>
+</ResponseMap>

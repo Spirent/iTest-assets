@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<ResponseMap version="5.1.0.77511">
+    <sampleDictionary>
+        <item name="sample1">
+            <responseBody>Fri Jul 29 06:10:43.956 EDT
+
+Routing entry for 5.5.5.5/32
+  Known via &quot;isis 1&quot;, distance 115, metric 400, type level-2
+  Installed Jul 29 01:16:58.101 for 04:53:45
+  Routing Descriptor Blocks
+    10.0.35.2, from 5.5.5.5, via Bundle-Ether5
+      Route metric is 400
+  No advertising protos.</responseBody>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="pattern1">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>\\s+Known via &quot;</regex>
+                            <start>0</start>
+                            <end>13</end>
+                        </item>
+                        <item name="known_via">
+                            <regex>[^\\r\\n]+</regex>
+                            <named>true</named>
+                            <start>13</start>
+                            <end>19</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name=".{6}">exactly 6 of any character</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>&quot;, distance\\s+\\d+, metric\\s+\\d+, type level-\\d+</regex>
+                            <start>19</start>
+                            <end>60</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>  Known via &quot;isis 1&quot;, distance 115, metric 400, type level-2</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+</ResponseMap>

@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<ResponseMap version="5.1.0.77511">
+    <sampleDictionary>
+        <item name="sample1">
+            <responseBody>Wed Apr  6 05:52:08.576 EST
+Type escape sequence to abort.
+Sending 5, 100-byte ICMP Echos to 5.5.5.5, timeout is 2 seconds:
+!!!!!
+Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/1 ms</responseBody>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="successRate">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Success rate is\\s+</regex>
+                            <start>0</start>
+                            <end>16</end>
+                        </item>
+                        <item name="Success_rate">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>16</start>
+                            <end>19</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+percent \\(\\d+/\\d+\\)</regex>
+                            <start>19</start>
+                            <end>33</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>Success rate is 100 percent (5/5)</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="ping"/>
+</ResponseMap>

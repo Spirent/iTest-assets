@@ -1,0 +1,297 @@
+<?xml version="1.0"?>
+<testCase version="6.1.0.e2e4ec0">
+    <general>
+        <sessionClass includeTestCase="true" sessionType="project://d_Cisco_IOS/session_profiles/SSH_IOS_base_profile.ffsp"/>
+    </general>
+    <procedures>
+        <item name="main">
+            <steps>
+                <item guid="f393a2a4-7a8d-453d-b8b3-9312416a44aa" action="comment">
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+        </item>
+        <item name="ConfigureVlanTrunk" isPublic="true">
+            <description>Configure VLAN Trunk</description>
+            <steps>
+                <item guid="d2db9637-9f34-47ec-b299-4952ab7e2577" action="command" session="$session">
+                    <command>
+                        <body>config t</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="174308bb-5245-4931-93ee-5ddf86294c8d" action="command" session="$session">
+                    <command>
+                        <body>interface $interface</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="3edf42c2-ab27-4ae6-af79-2b1f4ac6b03f" action="foreach">
+                    <command>
+                        <body>vlan $vlan_list</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="efc602c1-cf6f-4b6f-9cc4-8cf66faf7a62" action="if">
+                            <command>
+                                <body>$remove == &quot;false&quot;</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="817f894d-39b3-4e56-9e1f-6ec53b253d00" action="then">
+                                    <nestedSteps>
+                                        <item guid="0e38ebd6-8943-47c9-a040-c0bcc01dee5b" action="command" session="$session">
+                                            <command>
+                                                <body>switch trunk allowed vlan add $vlan</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="7f6761ba-b90c-4b79-8475-9b8f61000ac0" action="else">
+                                    <nestedSteps>
+                                        <item guid="fb6c173a-9474-4513-a890-0876a5579123" action="command" session="$session">
+                                            <command>
+                                                <body>switch trunk allowed vlan remove $vlan</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="f7c898de-2c6a-4830-a11c-d1787db250e1" action="command" session="$session">
+                    <command>
+                        <body>end</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+            </steps>
+            <multilineDescription>Add or remove VLAN trunk configuration to an interface</multilineDescription>
+            <arguments>
+                <item name="interface">
+                    <description>Name of interface to configure trunk on</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="vlan_list">
+                    <description>Tcl list of vlans to add (or remove, if $remove is set to true) to trunk port
+ex: {555 20 4000}</description>
+                </item>
+                <item name="remove">
+                    <description>Set to &quot;true&quot; to remove VLANs from trunk </description>
+                    <defaultValue>false</defaultValue>
+                </item>
+            </arguments>
+        </item>
+        <item name="ConfigureVlanAccess" isPublic="true">
+            <steps>
+                <item guid="9ce3c6bf-736e-4c3a-a965-a502fc6b62ce" action="command" session="$session" estimatedStepExecutionTime="0.01">
+                    <command>
+                        <body>conf t</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                        <completionProperties expectedIdleTime="1.001" expectedIdleTime.inherit="false"/>
+                    </applicationProperties>
+                </item>
+                <item guid="8547b268-b202-4459-a677-53c2b83ed63b" action="command" session="$session" normalOffset="3.919" estimatedStepExecutionTime="0.01">
+                    <command>
+                        <body>int $interface</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                        <completionProperties expectedIdleTime="0.905" expectedIdleTime.inherit="false"/>
+                    </applicationProperties>
+                </item>
+                <item guid="07980ebb-75b6-44c7-a3f2-8e063bb07a7d" action="command" session="$session" estimatedStepExecutionTime="0.009">
+                    <command>
+                        <body>switchport mode access</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                        <completionProperties expectedIdleTime="0.692" expectedIdleTime.inherit="false"/>
+                    </applicationProperties>
+                </item>
+                <item guid="73e613d5-15ae-4622-8d75-c33091ef94a0" action="command" session="$session" normalOffset="17.674" estimatedStepExecutionTime="0.058">
+                    <command>
+                        <body>switchport access vlan $vlan</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                        <completionProperties expectedIdleTime="0.254" expectedIdleTime.inherit="false"/>
+                    </applicationProperties>
+                </item>
+                <item guid="8f01da7c-6ee0-4688-be48-a20f2f51a86c" action="command" session="$session">
+                    <command>
+                        <body>end</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                        <completionProperties expectedIdleTime="0.254" expectedIdleTime.inherit="false"/>
+                    </applicationProperties>
+                </item>
+            </steps>
+            <multilineDescription>Configure a port to VLAN access mode on a specified VLAN</multilineDescription>
+            <arguments>
+                <item name="interface">
+                    <description>The interface for VLAN</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="vlan">
+                    <description>The VLAN for interface</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="EnableLldpGlobal" isPublic="true">
+            <description>Enable LLDP Global</description>
+            <steps>
+                <item guid="c461c20e-3d9b-4a1e-95d5-80b7c5aa9914" action="command" session="$session">
+                    <command>
+                        <body>conf t</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="83182291-6060-4cd6-91f2-ab7362d87e75" action="command" session="$session">
+                    <command>
+                        <body>lldp run</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="338fd579-73e7-4b1b-bf5c-076698a24db7" action="command" session="$session">
+                    <command>
+                        <body>end</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+            </steps>
+            <multilineDescription>Enable LLDP on global config</multilineDescription>
+        </item>
+        <item name="ConfigureVlanGlobal" isPublic="true">
+            <description>Configure VLAN Global</description>
+            <steps>
+                <item guid="1d14749b-e24a-4446-b7da-03443d573859" action="command" session="$session">
+                    <command>
+                        <body>config t</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="e41b8b75-d481-40eb-afd0-26524a0a5fab" action="if">
+                    <command>
+                        <body>$remove == &quot;false&quot;</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="f78f6f50-922d-452f-99d4-3c52970db668" action="then">
+                            <nestedSteps>
+                                <item guid="447506f0-f37e-4131-9e67-56d278864e2c" action="command" session="$session">
+                                    <command>
+                                        <body>vlan $vlan</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="18d4a135-d201-4082-8e5d-b25073f26f79" action="else">
+                            <nestedSteps>
+                                <item guid="8590eb71-f550-41e3-ab67-87525d6da4a4" action="command" session="$session">
+                                    <command>
+                                        <body>no vlan $vlan</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="83a45a06-c2b0-4cc5-97d4-40d55e679a84" action="command" session="$session">
+                    <command>
+                        <body>end</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+            </steps>
+            <multilineDescription>Add or remove a VLAN in the global config</multilineDescription>
+            <arguments>
+                <item name="vlan">
+                    <description>VLAN tag to create or remove</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="remove">
+                    <description>set to &apos;true&apos; to remove vlan config</description>
+                    <defaultValue>false</defaultValue>
+                </item>
+            </arguments>
+        </item>
+        <item name="ConfigureBridgeDomainGlobal" isPublic="true">
+            <description>Configure Bridge Domain Global</description>
+            <steps>
+                <item guid="e8f37916-d013-44fa-82c6-4162d10945c2" action="command" session="$session">
+                    <command>
+                        <body>config t</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="013f916a-4cf8-4837-8bb9-d840ab7c0eef" action="if">
+                    <command>
+                        <body>$remove == &quot;false&quot;</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="676de65b-c5dc-402c-a323-d0ded0846c3e" action="then">
+                            <nestedSteps>
+                                <item guid="c0c6a3d0-5120-41cd-b5db-12c40add234a" action="command" session="$session">
+                                    <command>
+                                        <body>bridge-domain $vlan</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="b81c1913-68f4-4a9f-9100-b8e6e2cb3ec4" action="else">
+                            <nestedSteps>
+                                <item guid="7de4e384-e1ee-4c8b-a046-7b619aced46b" action="command" session="$session">
+                                    <command>
+                                        <body>no bridge-domain $vlan</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="36b94b1e-5a3b-452b-8222-95a132477079" action="command" session="$session">
+                    <command>
+                        <body>end</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+            </steps>
+            <multilineDescription>Add or remove a VLAN bridge domain in the global config</multilineDescription>
+            <arguments>
+                <item name="vlan">
+                    <description>VLAN tag to map to bridge domain</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="remove">
+                    <description>set to &apos;true&apos; to remove bridge domain config</description>
+                    <defaultValue>false</defaultValue>
+                </item>
+            </arguments>
+        </item>
+    </procedures>
+</testCase>
