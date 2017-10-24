@@ -1,0 +1,328 @@
+<?xml version="1.0"?>
+<ResponseMap version="6.1.0.e2e4ec0">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="command">
+                <command>
+                    <body>iperf -c localhost -t 5</body>
+                </command>
+            </action>
+            <responseBody>------------------------------------------------------------
+Client connecting to localhost, TCP port 5001
+TCP window size: 2.50 MByte (default)
+------------------------------------------------------------
+[  4] local 127.0.0.1 port 5001 connected with 127.0.0.1 port 60165
+[  3] local 127.0.0.1 port 60165 connected with 127.0.0.1 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[  3]  0.0- 5.0 sec  20.6 GBytes  35.4 Gbits/sec
+[ ID] Interval       Transfer     Bandwidth
+[  4]  0.0- 5.0 sec  20.6 GBytes  35.3 Gbits/sec</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;isEmpty&gt;false&lt;/isEmpty&gt;
+    &lt;terminal RequiredForRendering=&quot;true&quot;&gt;
+        &lt;prompt&gt;spirent@ubuntu:~$ &lt;/prompt&gt;
+        &lt;promptExtraction&gt;LAST_LINE&lt;/promptExtraction&gt;
+        &lt;echo&gt;iperf -c localhost -t 5&lt;/echo&gt;
+        &lt;idleTime&gt;4.916&lt;/idleTime&gt;
+        &lt;contentType&gt;text&lt;/contentType&gt;
+        &lt;terminator&gt;SLASH_R&lt;/terminator&gt;
+    &lt;/terminal&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="isEmpty">
+                    <queryFormatString>.//isEmpty</queryFormatString>
+                </item>
+            </aliases>
+        </item>
+        <item name="sample2">
+            <action actionType="command">
+                <command>
+                    <body>iperf -c localhost -t 5 -f kK</body>
+                </command>
+            </action>
+            <responseBody>
+
+
+
+
+
+
+
+
+
+
+Last login: Tue Oct 10 13:13:45 2017 from 10.40.132.81
+spirent@ubuntu:~$ iperf -c localhost -t 5 -f kK
+------------------------------------------------------------
+Client connecting to localhost, TCP port 5001
+TCP window size: 2564 KByte (default)
+------------------------------------------------------------
+[  3] local 127.0.0.1 port 60182 connected with 127.0.0.1 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[  3]  0.0- 5.0 sec  21756928 KBytes  35646544 Kbits/sec
+spirent@ubuntu:~$ 
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;isEmpty&gt;false&lt;/isEmpty&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="isEmpty">
+                    <queryFormatString>.//isEmpty</queryFormatString>
+                </item>
+            </aliases>
+            <duration>10.2</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="connection_info">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>\\[\\s+</regex>
+                            <start>0</start>
+                            <end>3</end>
+                        </item>
+                        <item name="thread_id_def">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>3</start>
+                            <end>4</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>] local\\s+</regex>
+                            <start>4</start>
+                            <end>12</end>
+                        </item>
+                        <item name="local_ip">
+                            <regex>((\\d+\\.)+\\d+)</regex>
+                            <named>true</named>
+                            <start>12</start>
+                            <end>21</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="((\d+\.)+\d+)">one or more of digit and dots</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>\\s+port\\s+</regex>
+                            <start>21</start>
+                            <end>27</end>
+                        </item>
+                        <item name="local_port">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>27</start>
+                            <end>31</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor3">
+                            <regex>\\s+connected with\\s+</regex>
+                            <start>31</start>
+                            <end>47</end>
+                        </item>
+                        <item name="remote_ip">
+                            <regex>((\\d+\\.)+\\d+)</regex>
+                            <named>true</named>
+                            <start>47</start>
+                            <end>56</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="((\d+\.)+\d+)">one or more of digit and dots</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor4">
+                            <regex>\\s+port\\s+</regex>
+                            <start>56</start>
+                            <end>62</end>
+                        </item>
+                        <item name="remote_port">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>62</start>
+                            <end>67</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>[  4] local 127.0.0.1 port 5001 connected with 127.0.0.1 port 60165</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+                <item name="data">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>\\[\\s+</regex>
+                            <start>0</start>
+                            <end>3</end>
+                        </item>
+                        <item name="thread_id">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>3</start>
+                            <end>4</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>]\\s+</regex>
+                            <start>4</start>
+                            <end>7</end>
+                        </item>
+                        <item name="low_int">
+                            <regex>([\\d]+(\\.[\\d]+))</regex>
+                            <named>true</named>
+                            <start>7</start>
+                            <end>10</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="((\d+\.)+\d+)">one or more of digit and dots</item>
+                                <item name="([\d]+(\.[\d]+))">one simple decimal number</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>-\\s+</regex>
+                            <start>10</start>
+                            <end>12</end>
+                        </item>
+                        <item name="high_int">
+                            <regex>([\\d]+(\\.[\\d]+))</regex>
+                            <named>true</named>
+                            <start>12</start>
+                            <end>15</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="((\d+\.)+\d+)">one or more of digit and dots</item>
+                                <item name="([\d]+(\.[\d]+))">one simple decimal number</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor3">
+                            <regex>\\s+sec\\s+</regex>
+                            <start>15</start>
+                            <end>21</end>
+                        </item>
+                        <item name="byte_count">
+                            <regex>[\\d]+(\\.[\\d])*</regex>
+                            <named>true</named>
+                            <start>21</start>
+                            <end>25</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="((\d+\.)+\d+)">one or more of digit and dots</item>
+                                <item name="([\d]+(\.[\d]+))">one simple decimal number</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor4">
+                            <regex>\\s+</regex>
+                            <start>25</start>
+                            <end>26</end>
+                        </item>
+                        <item name="byte_count_unit">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>26</start>
+                            <end>32</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor5">
+                            <regex>\\s+</regex>
+                            <start>32</start>
+                            <end>34</end>
+                        </item>
+                        <item name="bitrate">
+                            <regex>[\\d]+(\\.[\\d])*</regex>
+                            <named>true</named>
+                            <start>34</start>
+                            <end>38</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="((\d+\.)+\d+)">one or more of digit and dots</item>
+                                <item name="([\d]+(\.[\d]+))">one simple decimal number</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor6">
+                            <regex>\\s+</regex>
+                            <start>38</start>
+                            <end>39</end>
+                        </item>
+                        <item name="bitrate_unit">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>39</start>
+                            <end>44</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor7">
+                            <regex>/sec</regex>
+                            <start>44</start>
+                            <end>48</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>[  4]  0.0- 5.0 sec  20.6 GBytes  35.3 Gbits/sec</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="iperf -c * -t *"/>
+</ResponseMap>
