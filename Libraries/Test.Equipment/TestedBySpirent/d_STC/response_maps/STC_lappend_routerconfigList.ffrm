@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<ResponseMap version="4.1.4.63326">
+    <sampleDictionary>
+        <item name="sample2">
+            <action actionType="eval">
+                <command>
+                    <body>lappend routerconfigList $routerconfigNameList</body>
+                </command>
+            </action>
+            <responseBody>bfdrouterconfig1 ospfv2routerconfig1 isisrouterconfig1 ospfv3routerconfig1 bgprouterconfig1 bfdrouterconfig2 ospfv2routerconfig2 isisrouterconfig2 ospfv3routerconfig2 bgprouterconfig2 isisrouterconfig3 ospfv2routerconfig3 ospfv3routerconfig3 bgprouterconfig3</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;/&gt;
+</structuredData>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="pattern1">
+                    <groups>
+                        <item name="routerName">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>0</start>
+                            <end>4</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>word</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="eval" command="lappend routerconfigList *"/>
+    <aliases>
+        <item name="List_of_Routers_by_Type">
+            <queryFormatString>//routerName[contains(.,&quot;{0}&quot;)]</queryFormatString>
+            <arguments>
+                <item name="routerType"/>
+            </arguments>
+        </item>
+    </aliases>
+</ResponseMap>
