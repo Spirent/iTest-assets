@@ -1,0 +1,76 @@
+<?xml version="1.0" ?><ResponseMap version="5.2.0.2567c16">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="command">
+                <command>
+                    <body>netsh interface show interface</body>
+                </command>
+            </action>
+            <responseBody>
+Admin State    State          Type             Interface Name
+-------------------------------------------------------------------------
+Enabled        Connected      Dedicated        Ethernet 2
+Enabled        Connected      Dedicated        Wi-Fi
+
+
+[Wed Oct 28 - 19:04:05] ~
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;prompt&gt;[spirent.wifi-host] $ &lt;/prompt&gt;
+    &lt;echo&gt;netsh interface show interface&lt;/echo&gt;
+    &lt;promptName&gt;prompt1&lt;/promptName&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.3</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties"/>
+        <item type="com.fnfr.svt.mapping.table.TabularMapperProperties">
+            <tabularMaps>
+                <item name="table1">
+                    <additionalBannerLineCount>2</additionalBannerLineCount>
+                    <bannerStructure>CaseInsensitive</bannerStructure>
+                    <columnBoundaries>Positional</columnBoundaries>
+                    <maxOccurences>1</maxOccurences>
+                    <columns>
+                        <item name="admin_state">
+                            <width>15</width>
+                            <lastFullCell/>
+                        </item>
+                        <item name="state">
+                            <width>15</width>
+                            <lastFullCell/>
+                        </item>
+                        <item name="type">
+                            <width>17</width>
+                            <lastFullCell/>
+                        </item>
+                        <item name="interface_name">
+                            <width>22</width>
+                            <lastFullCell/>
+                        </item>
+                    </columns>
+                </item>
+            </tabularMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="netsh interface show interface">
+        <application>
+            <item>com.fnfr.svt.applications.ssh</item>
+        </application>
+    </applicabilityProperties>
+</ResponseMap>

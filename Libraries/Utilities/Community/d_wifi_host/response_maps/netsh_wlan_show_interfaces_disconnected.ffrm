@@ -1,0 +1,191 @@
+<?xml version="1.0" ?><ResponseMap version="5.2.0.2567c16">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="command">
+                <command>
+                    <body>netsh wlan show interfaces</body>
+                </command>
+            </action>
+            <responseBody>
+There is 1 interface on the system: 
+
+    Name                   : Wi-Fi
+    Description            : NETGEAR A6210 WiFi USB3.0 Adapter
+    GUID                   : 97ea4607-72cc-4cec-9bf6-bb6fb9a6bdfe
+    Physical address       : c0:ff:d4:c2:fa:02
+    State                  : disconnected
+
+    Hosted network status  : Not available
+
+
+[Tue Sep 08 - 14:40:18] ~</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;terminal RequiredForRendering=&quot;true&quot;&gt;
+        &lt;prompt&gt;[spirent.wifi-host] $ &lt;/prompt&gt;
+        &lt;promptExtraction&gt;LAST_LINE&lt;/promptExtraction&gt;
+        &lt;echo&gt;netsh wlan show interfaces&lt;/echo&gt;
+        &lt;idleTime&gt;0.172&lt;/idleTime&gt;
+        &lt;contentType&gt;text&lt;/contentType&gt;
+        &lt;terminator&gt;SLASH_R&lt;/terminator&gt;
+    &lt;/terminal&gt;
+&lt;/structure&gt;
+</structuredData>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.table.TabularMapperProperties"/>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="ifStatusPattern">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>There is\\s+</regex>
+                            <start>0</start>
+                            <end>9</end>
+                        </item>
+                        <item name="ifCount">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>9</start>
+                            <end>10</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+interface on the system:</regex>
+                            <start>10</start>
+                            <end>35</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>There is 1 interface on the system:</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+                <item name="nameLine">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Name\\s+:\\s+</regex>
+                            <start>0</start>
+                            <end>25</end>
+                        </item>
+                        <item name="ifName">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>25</start>
+                            <end>30</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>Name                   : Wi-Fi</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+                <item name="descLine">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Description\\s+:\\s+</regex>
+                            <start>0</start>
+                            <end>25</end>
+                        </item>
+                        <item name="ifDescription">
+                            <regex>[^\\r\\n]+</regex>
+                            <named>true</named>
+                            <start>25</start>
+                            <end>58</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>Description            : NETGEAR A6210 WiFi USB3.0 Adapter</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+                <item name="guidLine">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>GUID\\s+:\\s+</regex>
+                            <start>0</start>
+                            <end>25</end>
+                        </item>
+                        <item name="ifGuid">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>25</start>
+                            <end>61</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>GUID                   : 97ea4607-72cc-4cec-9bf6-bb6fb9a6bdfe</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+                <item name="macAddressLine">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Physical address\\s+:\\s+</regex>
+                            <start>0</start>
+                            <end>25</end>
+                        </item>
+                        <item name="macAddress">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>25</start>
+                            <end>42</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>Physical address       : c0:ff:d4:c2:fa:02</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+                <item name="linkStateLine">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>State\\s+:\\s+</regex>
+                            <start>0</start>
+                            <end>25</end>
+                        </item>
+                        <item name="linkState">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>25</start>
+                            <end>37</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>State                  : disconnected</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="netsh wlan show interfaces">
+        <application>
+            <item>com.fnfr.svt.applications.ssh</item>
+        </application>
+    </applicabilityProperties>
+</ResponseMap>

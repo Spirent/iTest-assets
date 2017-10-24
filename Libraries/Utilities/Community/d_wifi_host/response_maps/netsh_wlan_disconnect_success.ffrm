@@ -1,0 +1,74 @@
+<?xml version="1.0" ?><ResponseMap version="5.2.0.2567c16">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="command">
+                <command>
+                    <body>netsh wlan disconnect Wi-Fi</body>
+                </command>
+            </action>
+            <responseBody>Disconnection request was completed successfully for interface &quot;Wi-Fi&quot;.
+
+[Wed Sep 09 - 14:45:34] ~
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;prompt&gt;[spirent.wifi-host] $ &lt;/prompt&gt;
+    &lt;echo&gt;netsh wlan disconnect Wi-Fi&lt;/echo&gt;
+    &lt;promptName&gt;prompt1&lt;/promptName&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.3</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="disconnectStatusLine">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Disconnection request\\s+</regex>
+                            <start>0</start>
+                            <end>22</end>
+                        </item>
+                        <item name="disconnectStatus">
+                            <regex>was completed successfully</regex>
+                            <named>true</named>
+                            <start>22</start>
+                            <end>48</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name=".{26}">exactly 26 of any character</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>.*</regex>
+                            <start>48</start>
+                            <end>71</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>Disconnection request was completed successfully for interface &quot;Wi-Fi&quot;.</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="netsh wlan disconnect *">
+        <application>
+            <item>com.fnfr.svt.applications.ssh</item>
+        </application>
+    </applicabilityProperties>
+</ResponseMap>
