@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<ResponseMap version="4.3.1.73463">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="getSnapShotList">
+                <command>
+                    <body>-vmName plno-evci-duts27</body>
+                </command>
+            </action>
+            <responseBody>snapshotName = org-baseline
+snapshotName = baseline-6-13
+snapshotName = last-baseline
+snapshotName = baseline
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;definedIn&gt;project://support/sessionProfiles/VsphereBaseQuickCallLibrary.fftc&lt;/definedIn&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="definedIn">
+                    <queryFormatString>.//definedIn</queryFormatString>
+                    <source>Kernel</source>
+                </item>
+            </aliases>
+            <duration>3.0</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.table.TabularMapperProperties"/>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="snapshotNameLine">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>snapshotName =\\s+</regex>
+                            <start>0</start>
+                            <end>15</end>
+                        </item>
+                        <item name="snapshotName">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>15</start>
+                            <end>28</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>snapshotName = baseline-6-13</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="getSnapShotList" command="*">
+        <application>
+            <item>com.fnfr.itest.applications.vmware.vi.core.tool</item>
+        </application>
+    </applicabilityProperties>
+</ResponseMap>
