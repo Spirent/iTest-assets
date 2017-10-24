@@ -1,0 +1,745 @@
+<?xml version="1.0"?>
+<testCase version="6.1.0.e2e4ec0">
+    <general>
+        <documentation>Ixia IxNetwork Quickcalls</documentation>
+        <owner>Alex Orr</owner>
+        <sessionClass includeTestCase="true" sessionType="ixia_ixnetwork_base.ffsp"/>
+    </general>
+    <procedures>
+        <item name="main">
+            <steps>
+                <item guid="2ff5a539-92b7-466f-8b2d-202793134fcd" action="comment">
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+        </item>
+        <item name="GetTrafficStats" isPublic="true" isVBlock="true">
+            <description>Get Traffic Statistics</description>
+            <steps>
+                <item guid="11c031b0-34e7-4317-bf03-d793a2fb613e" action="command" session="$session" estimatedStepExecutionTime="16.954">
+                    <command>
+                        <body>show stats &quot;Traffic Item Statistics&quot;</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query sub="true">LossPct(&quot;$traffic_flow&quot;)</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>var1</storageLocation>
+                                        <query>[return loss_percent]</query>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query sub="true">TxRatebps(&quot;$traffic_flow&quot;)</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>var1</storageLocation>
+                                        <query>[return tx_bps]</query>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query sub="true">RxRatebps(&quot;$traffic_flow&quot;)</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>var1</storageLocation>
+                                        <query>[return rx_bps]</query>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <multilineDescription>Get stats from IXNetwork&apos;s Traffic Item Statistics view
+Returns JSON block:
+\tloss_percent - percentage of transmitted packets lost 
+\ttx_bps - current transmitting bitrate in bits per second
+\trx_bps - current receiving bitrate in bits per second</multilineDescription>
+            <arguments>
+                <item name="traffic_flow">
+                    <description>Name of the traffic flow to get info on.</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+            <response>{&quot;loss_percent&quot;:&quot;value&quot;,&quot;rx_bps&quot;:&quot;value&quot;,&quot;tx_bps&quot;:&quot;value&quot;}</response>
+        </item>
+        <item name="GetAllTrafficIds" isPublic="true" isVBlock="true">
+            <description>Get All Traffic IDs</description>
+            <steps>
+                <item guid="9d0d3aaf-41fa-4642-8ae9-0f9bb31be97a" action="comment">
+                    <command>
+                        <body>issue command to get list of traffic IDs</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="752a553b-74c4-4bc1-87df-2f6edd715fb6" action="command" session="$session" estimatedStepExecutionTime="0.006">
+                            <command>
+                                <body>eval ixNet getList [eval ixNet getRoot]/traffic trafficItem</body>
+                            </command>
+                            <postProcessing>
+                                <analysisRules>
+                                    <item>
+                                        <extractorInfo extractorType="regex">
+                                            <extractorProperties type="com.fnfr.svt.mapping.regex.extractors.RegexExtractorPropertyGroup" useLineMode="true">
+                                                <regex>[^\\r\\n]+</regex>
+                                            </extractorProperties>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="store">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                <storageLocation>idList</storageLocation>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                </analysisRules>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="c9c75a2d-dee4-4dfe-afe7-e8b0d68aa456" action="comment">
+                    <command>
+                        <body>Workaround to return list in block proc</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="fe611602-9294-4704-8dfb-41d37da39820" action="eval">
+                            <command>
+                                <body>puts $idList</body>
+                            </command>
+                            <postProcessing>
+                                <analysisRules>
+                                    <item>
+                                        <extractorInfo extractorType="regex">
+                                            <extractorProperties type="com.fnfr.svt.mapping.regex.extractors.RegexExtractorPropertyGroup" useLineMode="true">
+                                                <regex>[^\\r\\n]+</regex>
+                                            </extractorProperties>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="store">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                <storageLocation>idList</storageLocation>
+                                                <query>[return traffic_ids_list]</query>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                </analysisRules>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <multilineDescription>Get a list of API handles for each traffic item in the config.
+Returns JSON block
+\ttraffic_ids_list - List of all traffic item handles</multilineDescription>
+            <response>{&quot;traffic_ids_list&quot;:&quot;value&quot;}</response>
+        </item>
+        <item name="GetAllFlowIds" isPublic="true" isVBlock="true">
+            <description>Get All Traffic Flow IDs</description>
+            <steps>
+                <item guid="e8e9761f-437b-46b3-972c-01e046986650" action="comment">
+                    <command>
+                        <body>Get all traffic item IDs</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="24470131-0139-430d-a863-46b861c8acb8" action="GetAllTrafficIds" session="$session">
+                            <postProcessing>
+                                <analysisRules>
+                                    <item>
+                                        <extractorInfo extractorType="query">
+                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                <query>mapped/Json/traffic_ids_list</query>
+                                            </extractorProperties>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="store">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                <storageLocation>trafficIdsList</storageLocation>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                </analysisRules>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="8559c80d-3972-447c-82a3-73218e163033" action="comment">
+                    <command>
+                        <body>issue command to get list of traffic flow IDs</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="d5d953c7-3315-492e-b482-40cf7a2cc091" action="foreach">
+                            <command>
+                                <body>trafficId $trafficIdsList</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="69789116-74e5-4a39-8d8c-84ac3eb20ef0" action="command" session="$session" estimatedStepExecutionTime="0.004">
+                                    <command>
+                                        <body>eval ixNet getList $trafficId highLevelStream</body>
+                                    </command>
+                                    <postProcessing>
+                                        <analysisRules>
+                                            <item>
+                                                <extractorInfo extractorType="regex">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.regex.extractors.RegexExtractorPropertyGroup" useLineMode="true">
+                                                        <regex>[^\\r\\n]+</regex>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="store">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                        <storageLocation>idList</storageLocation>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                        </analysisRules>
+                                    </postProcessing>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="facd55b8-7c33-4c33-b166-99b58dbf83c7" action="comment">
+                    <command>
+                        <body>Workaround to return list in block proc</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="d5b362e2-1eaa-406c-803e-51137506b99e" action="eval">
+                            <command>
+                                <body>puts $idList</body>
+                            </command>
+                            <postProcessing>
+                                <analysisRules>
+                                    <item>
+                                        <extractorInfo extractorType="regex">
+                                            <extractorProperties type="com.fnfr.svt.mapping.regex.extractors.RegexExtractorPropertyGroup" useLineMode="true">
+                                                <regex>[^\\r\\n]+</regex>
+                                            </extractorProperties>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="store">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                <storageLocation>idList</storageLocation>
+                                                <query>[return traffic_flows_list]</query>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                </analysisRules>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <multilineDescription>Get a list of API handles for each traffic flow in the config.
+Returns JSON block
+\ttraffic_ids_list - List of all traffic flow handles</multilineDescription>
+            <response>{&quot;traffic_flows_list&quot;:&quot;value&quot;}</response>
+        </item>
+        <item name="GetFlowIdByName" isPublic="true" isVBlock="true">
+            <description>Get Flow ID by Name</description>
+            <steps>
+                <item guid="64bb4e44-cb99-45dd-9656-38f38138cbaa" action="comment">
+                    <command>
+                        <body>Get all existing flow IDs</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="41fdf2ff-eaaf-404a-945a-c275c58adb00" action="GetAllFlowIds" session="$session">
+                            <postProcessing>
+                                <analysisRules>
+                                    <item>
+                                        <extractorInfo extractorType="query">
+                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                <query>mapped/Json/traffic_flows_list</query>
+                                            </extractorProperties>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="store">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                <storageLocation>trafficFlowsList</storageLocation>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                </analysisRules>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="c28500f0-e94a-4619-9969-38fa03a26f78" action="eval">
+                            <command>
+                                <body>set trafficIdsList [split $trafficFlowsList] </body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="6f3eaf68-c179-480a-8e22-131c543f423c" action="comment">
+                    <command>
+                        <body>Loop over all flow IDs until flow with desired name is found</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="c196d0d9-4169-453b-b391-1dae5072d640" action="eval">
+                            <command>
+                                <body>set flowFound false</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="c4b16002-4cd9-4f28-800d-d137f28e2421" action="foreach">
+                            <command>
+                                <body>flowId $trafficFlowsList</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="7d026d4d-9338-4562-b2d0-0bea39784654" action="command" session="$session">
+                                    <command>
+                                        <body>eval ixNet getAttibute $flowId -name</body>
+                                    </command>
+                                    <postProcessing>
+                                        <analysisRules>
+                                            <item>
+                                                <extractorInfo extractorType="regex">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.regex.extractors.RegexExtractorPropertyGroup" useLineMode="true">
+                                                        <regex>[^\\r\\n]+</regex>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>$value == $flow_name</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="Eval">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                                    <statement>set flowFound true</statement>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="Break">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                        </analysisRules>
+                                    </postProcessing>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="63cc9775-3062-477a-a5e2-0fd227d96993" action="comment">
+                    <command>
+                        <body>Return flow handle if found</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="6faa910a-edbe-48a3-8062-d9acf53a3c9b" action="if">
+                            <command>
+                                <body>$flowFound == &quot;true&quot;</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="28f590e3-b7e1-4a99-af7c-952922ac079b" action="then">
+                                    <nestedSteps>
+                                        <item guid="7a814f26-cc3f-49fc-8ce1-aef3efd8f7f4" action="eval">
+                                            <command>
+                                                <body>puts $flowId</body>
+                                            </command>
+                                            <postProcessing>
+                                                <analysisRules>
+                                                    <item>
+                                                        <extractorInfo extractorType="regex">
+                                                            <extractorProperties type="com.fnfr.svt.mapping.regex.extractors.RegexExtractorPropertyGroup" useLineMode="true">
+                                                                <regex>[^\\r\\n]+</regex>
+                                                            </extractorProperties>
+                                                        </extractorInfo>
+                                                        <processorInfo ruleType="store">
+                                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                                <storageLocation>idList</storageLocation>
+                                                                <query>[return flow_id]</query>
+                                                            </ruleProperties>
+                                                        </processorInfo>
+                                                    </item>
+                                                </analysisRules>
+                                            </postProcessing>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="f5164119-8593-4949-88bf-02008864f8bf" action="else">
+                                    <nestedSteps>
+                                        <item guid="c85e7026-4715-4293-86c8-23044cd74256" action="eval">
+                                            <command>
+                                                <body>puts &quot;not found&quot;</body>
+                                            </command>
+                                            <postProcessing>
+                                                <analysisRules>
+                                                    <item>
+                                                        <extractorInfo extractorType="regex">
+                                                            <extractorProperties type="com.fnfr.svt.mapping.regex.extractors.RegexExtractorPropertyGroup" useLineMode="true">
+                                                                <regex>[^\\r\\n]+</regex>
+                                                            </extractorProperties>
+                                                        </extractorInfo>
+                                                        <processorInfo ruleType="store">
+                                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                                <storageLocation>idList</storageLocation>
+                                                                <query>[return flow_id]</query>
+                                                            </ruleProperties>
+                                                        </processorInfo>
+                                                    </item>
+                                                </analysisRules>
+                                            </postProcessing>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <multilineDescription>Get flow API handle by user-friendly name
+Returns JSON block
+\tflow_id - API handle of desired flow</multilineDescription>
+            <arguments>
+                <item name="flow_name">
+                    <description>User-readable flow name 
+ex: MEF-EndpointSet-1 - Flow Group 0001</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+            <response>{&quot;flow_id&quot;:&quot;value&quot;}</response>
+        </item>
+        <item name="GetTrafficNameFromId" isPublic="true" isVBlock="true">
+            <description>Get Traffic Name From ID</description>
+            <steps>
+                <item guid="b1af280d-bbd7-4601-98aa-2f723640ec04" action="command" session="$session" estimatedStepExecutionTime="0.003">
+                    <command>
+                        <body>eval ixNet getAttribute $traffic_id -name</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="regex">
+                                    <extractorProperties type="com.fnfr.svt.mapping.regex.extractors.RegexExtractorPropertyGroup" useLineMode="true">
+                                        <regex>[^\\r\\n]+</regex>
+                                        <extractionGroupIndex>0</extractionGroupIndex>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>var1</storageLocation>
+                                        <query>[return traffic_item_name]</query>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <multilineDescription>Get user defined descriptive traffic item name from Ixia traffic item ID
+Returns JSON block
+\ttraffic_item_name - Descriptive name of desired traffic item
+</multilineDescription>
+            <arguments>
+                <item name="traffic_id">
+                    <description>ID of desired traffic item.
+ ex: ::ixNet::OBJ-/traffic/trafficItem:1</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+            <response>{&quot;traffic_item_name&quot;:&quot;value&quot;}</response>
+        </item>
+        <item name="StartTraffic" isPublic="true">
+            <description>Start Traffic</description>
+            <steps>
+                <item guid="4e5282fa-82b7-40bd-9c29-2fec8c5e8642" action="command" session="$session" estimatedStepExecutionTime="5.027">
+                    <command>
+                        <body>start traffic </body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <multilineDescription>Start traffic on all enabled traffic items</multilineDescription>
+        </item>
+        <item name="StopTraffic" isPublic="true">
+            <description>Stop Traffic</description>
+            <steps>
+                <item guid="59fa4d52-9d6c-4764-965f-1f281d36a65c" action="command" session="$session" estimatedStepExecutionTime="6.036">
+                    <command>
+                        <body>stop traffic </body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <multilineDescription>Stop currently running traffic</multilineDescription>
+        </item>
+        <item name="ChangeFlowRate" isPublic="true" isVBlock="true">
+            <description>Change Flow Rate</description>
+            <steps>
+                <item guid="2174a75e-6dd3-4776-8601-c5537479b108" action="comment">
+                    <command>
+                        <body>Get flow&apos;s API handle from name</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="8e225b05-b37d-481e-93ee-98ceb6801b04" action="GetFlowIdByName" session="$session">
+                            <command>
+                                <body> -flow_name $flow_name</body>
+                            </command>
+                            <postProcessing>
+                                <analysisRules>
+                                    <item>
+                                        <extractorInfo extractorType="query">
+                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                <query>mapped/Json/flow_id</query>
+                                            </extractorProperties>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="store">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                <storageLocation>flow_handle</storageLocation>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                </analysisRules>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="7280d575-eae4-4829-b617-394b82c9537a" action="comment">
+                    <command>
+                        <body>If flow name is found, make changes. If flow name is not found, return error</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="edca0f1f-5b2f-46dc-b23d-5618bc2de886" action="if">
+                            <command>
+                                <body>$flow_handle != &quot;not found&quot;</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="da062e0f-d64b-448f-a7b8-8b57213ce094" action="then">
+                                    <nestedSteps>
+                                        <item guid="d73c0b39-4b85-4ed2-b760-14f4364719ee" action="command" session="$session" estimatedStepExecutionTime="0.004">
+                                            <command>
+                                                <body>eval ixNet setAttribute ${flow_handle}/frameRate -rate $rate</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                        </item>
+                                        <item guid="8a49fcad-1001-4fa1-96c9-590424a417c4" action="command" session="$session" estimatedStepExecutionTime="0.004">
+                                            <command>
+                                                <body>eval ixNet setAttribute ${flow_handle}/frameRate -type $type</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                        </item>
+                                        <item guid="a3755392-3b0a-4e75-9020-a3c1e4fe556b" action="command" session="$session">
+                                            <command>
+                                                <body>eval ixNet setAttribute ${flow_handle}/frameRate -bitRateUnitsType bitsPerSec</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                        </item>
+                                        <item guid="c7c724ef-1c88-458e-b063-0d4bfe206aa9" action="if">
+                                            <command>
+                                                <body>$commit == &quot;yes&quot;</body>
+                                            </command>
+                                            <nestedSteps>
+                                                <item guid="efb57b19-0317-4ce0-9797-f73c61b15b93" action="then">
+                                                    <nestedSteps>
+                                                        <item guid="cba00f31-b492-47dc-acaa-12fc7c26dba8" action="command" session="$session" estimatedStepExecutionTime="0.004">
+                                                            <command>
+                                                                <body>eval ixNet commit </body>
+                                                            </command>
+                                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                                        </item>
+                                                    </nestedSteps>
+                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                </item>
+                                            </nestedSteps>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="c17e22db-25af-4f9c-96ce-a5763be0df88" action="else">
+                                    <nestedSteps>
+                                        <item guid="fdc4ef61-83db-43ab-a3ad-2b2cdad59f71" action="eval">
+                                            <command>
+                                                <body>puts &quot;error&quot;</body>
+                                            </command>
+                                            <postProcessing>
+                                                <analysisRules>
+                                                    <item>
+                                                        <extractorInfo extractorType="regex">
+                                                            <extractorProperties type="com.fnfr.svt.mapping.regex.extractors.RegexExtractorPropertyGroup" useLineMode="true">
+                                                                <regex>[^\\r\\n]+</regex>
+                                                            </extractorProperties>
+                                                        </extractorInfo>
+                                                        <processorInfo ruleType="store">
+                                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                                <storageLocation>var1</storageLocation>
+                                                                <query>[return status]</query>
+                                                            </ruleProperties>
+                                                        </processorInfo>
+                                                    </item>
+                                                </analysisRules>
+                                            </postProcessing>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                        <item guid="d9e072cd-88b2-444f-b911-cd5a808e2021" action="eval">
+                                            <command>
+                                                <body>puts &quot;Flow ID for name $flow_name not found&quot;</body>
+                                            </command>
+                                            <postProcessing>
+                                                <analysisRules>
+                                                    <item>
+                                                        <extractorInfo extractorType="regex">
+                                                            <extractorProperties type="com.fnfr.svt.mapping.regex.extractors.RegexExtractorPropertyGroup" useLineMode="true">
+                                                                <regex>[^\\r\\n]+</regex>
+                                                            </extractorProperties>
+                                                        </extractorInfo>
+                                                        <processorInfo ruleType="store">
+                                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                                <storageLocation>var1</storageLocation>
+                                                                <query>[return error_message]</query>
+                                                            </ruleProperties>
+                                                        </processorInfo>
+                                                    </item>
+                                                </analysisRules>
+                                            </postProcessing>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <multilineDescription>Modify the traffic rate and type on an existing traffic flow.
+Returns block JSON string:
+\tstatus: &apos;OK&apos; if change is successful, error otherwise
+\terror_message: gives error message if error found, &apos;none&apos; otherwise</multilineDescription>
+            <arguments>
+                <item name="flow_name">
+                    <description>Name of traffic flow to modify as it appears in the Ixia configuration.
+ex. Traffic Item 1, Inbound, etc.</description>
+                </item>
+                <item name="commit">
+                    <description>If left as default, will commit config changes at the end of the quick call. Otherwise, will not commit changes. </description>
+                    <defaultValue>yes</defaultValue>
+                </item>
+                <item name="rate">
+                    <description>New rate to change to. Can be in any of the supported types. Use only integers when supplying bitrates.
+ex: 1.0, 500.0, 1000000</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="type">
+                    <description>New rate type to change to. Possible rate types:
+percentLineRate
+framesPerSecond
+bitsPerSecond</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+            <response>{&quot;status&quot;:&quot;OK&quot;,&quot;error_message&quot;:&quot;none&quot;}</response>
+        </item>
+        <item name="CommitConfigChanges" isPublic="true">
+            <description>Commit Config Changes</description>
+            <steps>
+                <item guid="e47c4533-ba5a-4a40-ab94-d04007129b51" action="command" session="$session" estimatedStepExecutionTime="0.004">
+                    <command>
+                        <body>eval ixNet commit </body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <multilineDescription>Commits any new config changes (works for flow objects and possibly others, traffic objects need to be applied using apply traffic command)</multilineDescription>
+        </item>
+        <item name="RunTraffic" isPublic="true">
+            <description>Run Traffic</description>
+            <steps>
+                <item guid="435b460f-b4e6-4ebd-8247-be27f625d27d" action="StartTraffic" session="$session" normalOffset="3.312" estimatedStepExecutionTime="0.646">
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="dfb7a53b-6bfa-415c-9030-b4c6b94f9eb9" action="sleep" normalOffset="15.573" estimatedStepExecutionTime="0.07">
+                    <command>
+                        <body>$duration</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="b9c89174-b9e7-43fa-83cd-8a704f4edfee" action="StopTraffic" session="$session" normalOffset="16.809" estimatedStepExecutionTime="0.706">
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <author>Alex Orr</author>
+            <version>1.0</version>
+            <multilineDescription>Runs traffic by starting all enabled traffic items on Ixia.</multilineDescription>
+            <arguments>
+                <item name="duration">
+                    <description>Time in seconds to run traffic
+</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+    </procedures>
+</testCase>
