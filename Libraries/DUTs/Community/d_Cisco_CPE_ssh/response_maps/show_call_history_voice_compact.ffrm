@@ -1,0 +1,126 @@
+<?xml version="1.0"?>
+<ResponseMap version="5.4.0.4f90e5a">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="command">
+                <command>
+                    <body>show call history voice compact</body>
+                </command>
+            </action>
+            <responseBody>&lt;callID&gt;  A/O FAX T&lt;sec&gt; Codec       type        Peer Address       IP R&lt;ip&gt;:&lt;udp&gt; disc-cause
+       176 ORG     T66    g729r8      VOIP        P17025634891     208.57.21.10:16806   D10  
+       175 ANS     T66    g729r8      TELE        P7025634890                          D10  
+       177 ANS     T66    g729r8      VOIP        P7025634890     208.57.21.10:16808   D10  
+       178 ORG     T79    g729r8      TELE        P7025634891                          D10  
+       209 ANS     T66    g729r8      TELE        P7025634890                          D10  
+       210 ORG     T66    g729r8      VOIP        P17025634891     208.57.21.10:16810   D10  
+       211 ANS     T66    g729r8      VOIP        P7025634890     208.57.21.10:16812   D10  
+       212 ORG     T79    g729r8      TELE        P7025634891                          D10  
+Total call-legs: 8
+
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;isEmpty&gt;false&lt;/isEmpty&gt;
+    &lt;promptName&gt;priv&lt;/promptName&gt;
+    &lt;echo&gt;show call history voice compact&lt;/echo&gt;
+    &lt;prompt&gt;C2900_iTest_FXS#&lt;/prompt&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="isEmpty">
+                    <queryFormatString>.//isEmpty</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.4</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.table.TabularMapperProperties">
+            <tabularMaps>
+                <item name="table1">
+                    <banner>\\&lt;callID\\&gt;\\s+A/O FAX T\\&lt;sec\\&gt; Codec\\s+type\\s+Peer Address\\s+IP R\\&lt;ip\\&gt;:\\&lt;udp\\&gt; disc-cause\\s*</banner>
+                    <footer>Total call-legs:\\s+(\\d+)\\s*</footer>
+                    <bannerStructure>Regex</bannerStructure>
+                    <footerStructure>Regex</footerStructure>
+                    <columnBoundaries>Positional</columnBoundaries>
+                    <columns>
+                        <item name="call_id">
+                            <width>11</width>
+                            <lastFullCell></lastFullCell>
+                            <uid>7bcf0b5b-2aec-46fa-915c-031c97195297</uid>
+                        </item>
+                        <item name="a_o">
+                            <width>8</width>
+                            <lastFullCell></lastFullCell>
+                            <uid>94b20bf4-1b27-4131-b277-0050ec2f8590</uid>
+                        </item>
+                        <item name="tsec">
+                            <width>7</width>
+                            <lastFullCell></lastFullCell>
+                            <uid>61217ded-d2e5-49f4-a9a5-48beddde532b</uid>
+                        </item>
+                        <item name="Codec">
+                            <width>12</width>
+                            <lastFullCell></lastFullCell>
+                            <uid>4ef0ccb3-085e-402b-ae1d-1ad9589b08d4</uid>
+                        </item>
+                        <item name="type">
+                            <isKey>true</isKey>
+                            <width>12</width>
+                            <lastFullCell></lastFullCell>
+                            <uid>3817f761-ec87-4b5f-b86a-ce568bda176c</uid>
+                        </item>
+                        <item name="Peer_Address_IP_R_ip___udp__disc-cause">
+                            <width>999</width>
+                            <lastFullCell></lastFullCell>
+                            <uid>837f783b-a53f-4c49-ad90-53ae2d4f5ee1</uid>
+                        </item>
+                    </columns>
+                    <ignoreBlankLines>false</ignoreBlankLines>
+                    <autoUpdateNames>false</autoUpdateNames>
+                </item>
+            </tabularMaps>
+        </item>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="pattern1">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Total call-legs:\\s+</regex>
+                            <start>0</start>
+                            <end>17</end>
+                        </item>
+                        <item name="Total_call_legs">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>17</start>
+                            <end>18</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>Total call-legs: 8</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="show call history voice compact"/>
+</ResponseMap>
