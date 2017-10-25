@@ -1,0 +1,476 @@
+<?xml version="1.0" ?><ResponseMap version="6.0.0.18638fa">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="show_log_syslog">
+                <command>
+                    <body>-log_msg [param syslog_down_msg] -log_time [gget timestamp1]</body>
+                </command>
+            </action>
+            <responseBody>Jun 13 19:07:10.359  sfcca304ia1-PE10 bfdd[1654]: %DAEMON-4-BFDD_TRAP_STATE_DOWN: local discriminator: 3367, new state: down
+Jun 13 19:07:10.370  sfcca304ia1-PE10 bfdd[1654]: %DAEMON-4-BFDD_TRAP_STATE_DOWN: local discriminator: 3366, new state: down
+Jun 13 19:07:18.576  sfcca304ia1-PE10 bfdd[1654]: %DAEMON-4-BFDD_TRAP_STATE_DOWN: local discriminator: 3365, new state: down
+Jun 13 19:07:18.581  sfcca304ia1-PE10 bfdd[1654]: %DAEMON-4-BFDD_TRAP_STATE_DOWN: local discriminator: 3368, new state: down
+Jun 13 19:08:13.200  sfcca304ia1-PE10 bfdd[1654]: %DAEMON-4-BFDD_TRAP_STATE_DOWN: local discriminator: 3364, new state: down
+
+{master}
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;definedIn&gt;project://d_juniper/session_profiles/juniper_qc.fftc&lt;/definedIn&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="definedIn">
+                    <queryFormatString>.//definedIn</queryFormatString>
+                    <source>Kernel</source>
+                </item>
+            </aliases>
+            <duration>7.3</duration>
+        </item>
+        <item name="sample2">
+            <responseBody>Jun 13 19:08:16.994  sfcca304ia1-PE10 rpd[2258]: %DAEMON-5-RPD_LAYER2_VC_BFD_UP: BFD session for Layer 2 VC (VPN : VPLS:INFRA_NMVPN, local-site : 10, remote-site : 5) came up
+Jun 13 19:10:31.964  sfcca304ia1-PE10 rpd[2258]: %DAEMON-5-RPD_LAYER2_VC_BFD_UP: BFD session for Layer 2 VC (VPN : VPLS:INFRA_NMVPN, local-site : 10, remote-site : 14) came up
+
+{master}</responseBody>
+        </item>
+        <item name="sample3">
+            <responseBody>Jun 23 13:20:49.451  sfcca302vr1-PE5 rpd[2214]: %DAEMON-5-RPD_LAYER2_VC_BFD_DOWN: BFD session for Layer 2 VC (VPN : VPLS:INFRA_NMVPN_2, local-site : 5, remote-site : 10) went down</responseBody>
+        </item>
+        <item name="sample4">
+            <responseBody>Jun 23 18:03:11.903  sfcca302vr1-PE5 rpd[2214]: %DAEMON-5-RPD_LAYER2_VC_DOWN: State of Layer 2 VC (VPN : VPLS:INFRA_NMVPN_2, local-site : 5, remote-site : 10) changed from UP to DELETED</responseBody>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.table.TabularMapperProperties"/>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="pattern1">
+                    <groups>
+                        <item name="Time">
+                            <regex>.{19}</regex>
+                            <named>true</named>
+                            <start>0</start>
+                            <end>19</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor0">
+                            <regex>\\s+</regex>
+                            <start>19</start>
+                            <end>21</end>
+                        </item>
+                        <item name="Router">
+                            <regex>[^\\r\\n]+</regex>
+                            <named>true</named>
+                            <start>21</start>
+                            <end>48</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name=".{27}">exactly 27 of any character</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>: %</regex>
+                            <start>48</start>
+                            <end>51</end>
+                        </item>
+                        <item name="syslog_msg">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>51</start>
+                            <end>80</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name=".{29}">exactly 29 of any character</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>: local discriminator:\\s+</regex>
+                            <start>80</start>
+                            <end>103</end>
+                        </item>
+                        <item name="local_des">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <key>true</key>
+                            <start>103</start>
+                            <end>107</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor3">
+                            <regex>, new state: down</regex>
+                            <start>107</start>
+                            <end>124</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>Jun 13 19:07:10.359  sfcca304ia1-PE10 bfdd[1654]: %DAEMON-4-BFDD_TRAP_STATE_DOWN: local discriminator: 3367, new state: down</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+                <item name="pattern2">
+                    <groups>
+                        <item name="Time">
+                            <regex>.{19}</regex>
+                            <named>true</named>
+                            <start>0</start>
+                            <end>19</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor0">
+                            <regex>\\s+</regex>
+                            <start>19</start>
+                            <end>21</end>
+                        </item>
+                        <item name="Router">
+                            <regex>[^\\r\\n]+</regex>
+                            <named>true</named>
+                            <start>21</start>
+                            <end>47</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name=".{26}">exactly 26 of any character</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>: %</regex>
+                            <start>47</start>
+                            <end>50</end>
+                        </item>
+                        <item name="syslog_msg">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>50</start>
+                            <end>79</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name=".{29}">exactly 29 of any character</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>: BFD session for Layer\\s+\\d+\\s+VC \\(VPN :\\s+</regex>
+                            <start>79</start>
+                            <end>115</end>
+                        </item>
+                        <item name="vpls_instance">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>115</start>
+                            <end>131</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name=".{16}">exactly 16 of any character</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor3">
+                            <regex>, local-site :\\s+</regex>
+                            <start>131</start>
+                            <end>146</end>
+                        </item>
+                        <item name="local_site">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>146</start>
+                            <end>148</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor4">
+                            <regex>, remote-site :\\s+</regex>
+                            <start>148</start>
+                            <end>164</end>
+                        </item>
+                        <item name="remote_site">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <key>true</key>
+                            <start>164</start>
+                            <end>165</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor5">
+                            <regex>\\) came up</regex>
+                            <start>165</start>
+                            <end>174</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>Jun 13 19:08:16.994  sfcca304ia1-PE10 rpd[2258]: %DAEMON-5-RPD_LAYER2_VC_BFD_UP: BFD session for Layer 2 VC (VPN : VPLS:INFRA_NMVPN, local-site : 10, remote-site : 5) came up</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+                <item name="pattern3">
+                    <groups>
+                        <item name="Time">
+                            <regex>.{19}</regex>
+                            <named>true</named>
+                            <start>0</start>
+                            <end>19</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor0">
+                            <regex>\\s+</regex>
+                            <start>19</start>
+                            <end>21</end>
+                        </item>
+                        <item name="Router">
+                            <regex>[^\\r\\n]+</regex>
+                            <named>true</named>
+                            <start>21</start>
+                            <end>46</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name=".{25}">exactly 25 of any character</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>: %</regex>
+                            <start>46</start>
+                            <end>49</end>
+                        </item>
+                        <item name="syslog_msg">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>49</start>
+                            <end>80</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name=".{31}">exactly 31 of any character</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>: BFD session for Layer\\s+\\d+\\s+VC \\(VPN :\\s+</regex>
+                            <start>80</start>
+                            <end>116</end>
+                        </item>
+                        <item name="vpls_instance">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>116</start>
+                            <end>134</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name=".{18}">exactly 18 of any character</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor3">
+                            <regex>, local-site :\\s+</regex>
+                            <start>134</start>
+                            <end>149</end>
+                        </item>
+                        <item name="local_site">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>149</start>
+                            <end>150</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor4">
+                            <regex>, remote-site :\\s+</regex>
+                            <start>150</start>
+                            <end>166</end>
+                        </item>
+                        <item name="remote_site">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <key>true</key>
+                            <start>166</start>
+                            <end>168</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor5">
+                            <regex>\\) went down</regex>
+                            <start>168</start>
+                            <end>179</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>Jun 23 13:20:49.451  sfcca302vr1-PE5 rpd[2214]: %DAEMON-5-RPD_LAYER2_VC_BFD_DOWN: BFD session for Layer 2 VC (VPN : VPLS:INFRA_NMVPN_2, local-site : 5, remote-site : 10) went down</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+                <item name="pattern4">
+                    <groups>
+                        <item name="Time">
+                            <regex>.{19}</regex>
+                            <named>true</named>
+                            <start>0</start>
+                            <end>19</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor0">
+                            <regex>\\s+</regex>
+                            <start>19</start>
+                            <end>21</end>
+                        </item>
+                        <item name="Router">
+                            <regex>[^\\r\\n]+</regex>
+                            <named>true</named>
+                            <start>21</start>
+                            <end>46</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name=".{25}">exactly 25 of any character</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>: %</regex>
+                            <start>46</start>
+                            <end>49</end>
+                        </item>
+                        <item name="syslog_msg">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>49</start>
+                            <end>76</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name=".{27}">exactly 27 of any character</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>: State of Layer\\s+\\d+\\s+VC \\(VPN :\\s+</regex>
+                            <start>76</start>
+                            <end>105</end>
+                        </item>
+                        <item name="vpls_instance">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>105</start>
+                            <end>123</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name=".{18}">exactly 18 of any character</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor3">
+                            <regex>, local-site :\\s+</regex>
+                            <start>123</start>
+                            <end>138</end>
+                        </item>
+                        <item name="local_site">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>138</start>
+                            <end>139</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor4">
+                            <regex>, remote-site :\\s+</regex>
+                            <start>139</start>
+                            <end>155</end>
+                        </item>
+                        <item name="remote_site">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <key>true</key>
+                            <start>155</start>
+                            <end>157</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor5">
+                            <regex>\\) changed from UP to DELETED</regex>
+                            <start>157</start>
+                            <end>185</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>Jun 23 18:03:11.903  sfcca302vr1-PE5 rpd[2214]: %DAEMON-5-RPD_LAYER2_VC_DOWN: State of Layer 2 VC (VPN : VPLS:INFRA_NMVPN_2, local-site : 5, remote-site : 10) changed from UP to DELETED</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="show_log_syslog" command="show log messages | match *"/>
+    <aliases>
+        <item name="TimeByLocalSiteAndRemoteSite">
+            <queryFormatString>mapped/Regex/Body/line/pattern2[local_site='{0}' and remote_site='{1}']/Time</queryFormatString>
+            <arguments>
+                <item name="local_site">
+                    <valuesQuery>.//local_site</valuesQuery>
+                    <interpretAs>SampleValues</interpretAs>
+                </item>
+                <item name="remote_site">
+                    <valuesQuery>.//remote_site</valuesQuery>
+                    <interpretAs>SampleValues</interpretAs>
+                </item>
+            </arguments>
+        </item>
+    </aliases>
+</ResponseMap>

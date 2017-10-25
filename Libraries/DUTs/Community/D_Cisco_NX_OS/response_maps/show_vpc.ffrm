@@ -1,0 +1,272 @@
+<?xml version="1.0" ?><ResponseMap version="6.0.0.18638fa">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="command">
+                <command>
+                    <body>show vpc</body>
+                </command>
+            </action>
+            <responseBody>Legend:
+                (*) - local vPC is down, forwarding via vPC peer-link
+
+vPC domain id                     : 100 
+Peer status                       : peer adjacency formed ok      
+vPC keep-alive status             : peer is alive                 
+Configuration consistency status  : success 
+Per-vlan consistency status       : success                       
+Type-2 consistency status         : success 
+vPC role                          : primary, operational secondary
+Number of vPCs configured         : 2   
+Peer Gateway                      : Enabled
+Dual-active excluded VLANs        : -
+Graceful Consistency Check        : Enabled
+Auto-recovery status              : Enabled, timer is off.(timeout = 240s)
+Delay-restore status              : Timer is off.(timeout = 30s)
+Delay-restore SVI status          : Timer is off.(timeout = 10s)
+
+vPC Peer-link status
+---------------------------------------------------------------------
+id   Port   Status Active vlans    
+--   ----   ------ --------------------------------------------------
+1    Po999  up     1,50,999                                               
+
+vPC status
+----------------------------------------------------------------------
+id   Port   Status Consistency Reason                     Active vlans
+--   ----   ------ ----------- ------                     ------------
+10   Po10   up     success     success                    1,50,999        
+                                                                          
+11   Po11   up     success     success                    1,50,999        
+                                                                          
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;isEmpty&gt;false&lt;/isEmpty&gt;
+    &lt;promptName&gt;Priviledged_Prompt&lt;/promptName&gt;
+    &lt;echo&gt;show vpc&lt;/echo&gt;
+    &lt;prompt&gt;N9372-1-LAB-AGGR1A# &lt;/prompt&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="isEmpty">
+                    <queryFormatString>.//isEmpty</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.3</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="domain_id">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>vPC domain id\\s+:\\s+</regex>
+                            <start>0</start>
+                            <end>36</end>
+                        </item>
+                        <item name="vPC_domain_id">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>36</start>
+                            <end>39</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+</regex>
+                            <start>39</start>
+                            <end>40</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>vPC domain id                     : 100 </sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+                <item name="peer_status_p">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Peer status\\s+:\\s+</regex>
+                            <start>0</start>
+                            <end>36</end>
+                        </item>
+                        <item name="Peer_status">
+                            <regex>[^0-9\\r\\n]+</regex>
+                            <named>true</named>
+                            <start>36</start>
+                            <end>66</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>Peer status                       : peer adjacency formed ok      </sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+                <item name="keep_alive">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>vPC keep-alive status\\s+:\\s+</regex>
+                            <start>0</start>
+                            <end>36</end>
+                        </item>
+                        <item name="vPC_keep_alive_status">
+                            <regex>[^0-9\\r\\n]+</regex>
+                            <named>true</named>
+                            <start>36</start>
+                            <end>49</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+</regex>
+                            <start>49</start>
+                            <end>66</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>vPC keep-alive status             : peer is alive                 </sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+                <item name="config_consist">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Configuration consistency status\\s+:\\s+</regex>
+                            <start>0</start>
+                            <end>36</end>
+                        </item>
+                        <item name="Configuration_consistency_status">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>36</start>
+                            <end>43</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>Configuration consistency status  : success</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+                <item name="vlan_consist">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Per-vlan consistency status\\s+:\\s+</regex>
+                            <start>0</start>
+                            <end>36</end>
+                        </item>
+                        <item name="Per_vlan_consistency_status">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>36</start>
+                            <end>43</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>Per-vlan consistency status       : success</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+                <item name="type2_consist">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Type-\\d+\\s+consistency status\\s+:\\s+</regex>
+                            <start>0</start>
+                            <end>36</end>
+                        </item>
+                        <item name="Type_2_consistency_status">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>36</start>
+                            <end>43</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>Type-2 consistency status         : success</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+                <item name="peer_gw">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Peer Gateway\\s+:\\s+</regex>
+                            <start>0</start>
+                            <end>36</end>
+                        </item>
+                        <item name="Peer_Gateway">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>36</start>
+                            <end>43</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>Peer Gateway                      : Enabled</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+                <item name="role">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>vPC role\\s+:\\s+</regex>
+                            <start>0</start>
+                            <end>36</end>
+                        </item>
+                        <item name="vPC_role">
+                            <regex>.+</regex>
+                            <named>true</named>
+                            <start>36</start>
+                            <end>66</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>vPC role                          : primary, operational secondary</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="show vpc"/>
+</ResponseMap>

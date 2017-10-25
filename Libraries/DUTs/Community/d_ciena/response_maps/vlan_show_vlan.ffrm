@@ -1,0 +1,102 @@
+<?xml version="1.0" ?><ResponseMap version="6.0.0.18638fa">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="command">
+                <command>
+                    <body>vlan show vlan 2931</body>
+                </command>
+            </action>
+            <responseBody>
++-------------------- VLAN 2931 INFO ---------------------+
+| Parameter            | Value                            |
++----------------------+----------------------------------+
+| VLAN ID              | 2931                             |
+| Name                 | EWS-3960-2931                    |
+| Features             | ETH-VC                           |
+| Translation VLAN     |                                  |
+| MAC Learning         | VS Override                      |
+| Egress TPID          | 8100                             |
+| PFG State            | VS Override                      |
+|     Fwd-Policies     | A -&gt; AB  B -&gt; A                  |
++---------------------------------------------------------+
++--------------------- VLAN Members ----------------------+
+| Port      | VTag      | Fwd Group | VS-Sub              |
++-----------+-----------+-----------+---------------------+
+| 2         | 2931      | A         | True                |
+| 11        | 2931      | A         | False               |
++-----------+-----------+-----------+---------------------+
+
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;prompt&gt;3960-11&amp;gt; &lt;/prompt&gt;
+    &lt;echo&gt;vlan show vlan 2931&lt;/echo&gt;
+    &lt;promptName&gt;normal&lt;/promptName&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.4</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.table.TabularMapperProperties">
+            <tabularMaps>
+                <item name="table1">
+                    <additionalBannerLineCount>1</additionalBannerLineCount>
+                    <banner>| Port </banner>
+                    <footer>+-------</footer>
+                    <bannerStructure>Wildcard</bannerStructure>
+                    <footerStructure>Wildcard</footerStructure>
+                    <customDelimiter>|</customDelimiter>
+                    <delimiter>Custom</delimiter>
+                    <columns>
+                        <item name="col1">
+                            <lastFullCell/>
+                            <showInStructuredData>false</showInStructuredData>
+                        </item>
+                        <item name="Port">
+                            <lastFullCell/>
+                        </item>
+                        <item name="VTag">
+                            <lastFullCell/>
+                        </item>
+                        <item name="Fwd_Group">
+                            <lastFullCell/>
+                        </item>
+                        <item name="VS-Sub">
+                            <lastFullCell/>
+                        </item>
+                        <item name="col2">
+                            <lastFullCell/>
+                            <showInStructuredData>false</showInStructuredData>
+                        </item>
+                    </columns>
+                </item>
+            </tabularMaps>
+        </item>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties"/>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="vlan show vlan *"/>
+    <aliases>
+        <item name="Nni_port">
+            <queryFormatString>//Port[../Port!=&quot;{0}&quot;]</queryFormatString>
+            <arguments>
+                <item name="uni_port">
+                    <valuesQuery>//Port</valuesQuery>
+                    <interpretAs>SampleValues</interpretAs>
+                </item>
+            </arguments>
+        </item>
+    </aliases>
+</ResponseMap>

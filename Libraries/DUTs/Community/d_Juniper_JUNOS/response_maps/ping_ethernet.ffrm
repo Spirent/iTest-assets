@@ -1,0 +1,123 @@
+<?xml version="1.0" ?><ResponseMap version="6.0.0.18638fa">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="command">
+                <command>
+                    <body>ping ethernet maintenance-domain VPLS:2980-4 maintenance-association serv mep 1030 count 10</body>
+                </command>
+            </action>
+            <responseBody>PING to 00:03:18:55:72:b5, Interface xe-11/0/2.2980
+68 bytes from 00:03:18:55:72:b5: lbm_seq=0
+68 bytes from 00:03:18:55:72:b5: lbm_seq=2
+68 bytes from 00:03:18:55:72:b5: lbm_seq=3
+68 bytes from 00:03:18:55:72:b5: lbm_seq=4
+68 bytes from 00:03:18:55:72:b5: lbm_seq=5
+68 bytes from 00:03:18:55:72:b5: lbm_seq=6
+68 bytes from 00:03:18:55:72:b5: lbm_seq=7
+68 bytes from 00:03:18:55:72:b5: lbm_seq=8
+68 bytes from 00:03:18:55:72:b5: lbm_seq=9
+--- ping statistics ---
+10 packets transmitted, 9 packets received, 10% packet loss
+
+{master}
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;prompt&gt;itest-ap@sfcca302ia2-PE13&amp;gt; &lt;/prompt&gt;
+    &lt;echo&gt;ping ethernet maintenance-domain VPLS:2980-4 maintenance-association serv mep 1030 count 10 &lt;/echo&gt;
+    &lt;promptName&gt;normal&lt;/promptName&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+            </aliases>
+            <duration>11.4</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.table.TabularMapperProperties"/>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="pattern2">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>--- ping statistics ---\\s+</regex>
+                            <start>0</start>
+                            <end>24</end>
+                        </item>
+                        <item name="packets_transmitted">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>24</start>
+                            <end>26</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+packets transmitted,\\s+</regex>
+                            <start>26</start>
+                            <end>48</end>
+                        </item>
+                        <item name="packets_received">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>48</start>
+                            <end>49</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>\\s+packets received,\\s+</regex>
+                            <start>49</start>
+                            <end>68</end>
+                        </item>
+                        <item name="packet_loss">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>68</start>
+                            <end>70</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor3">
+                            <regex>% packet loss</regex>
+                            <start>70</start>
+                            <end>83</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>--- ping statistics ---
+10 packets transmitted, 9 packets received, 10% packet loss</sampleMatch>
+                    <optional>true</optional>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="ping ethernet *"/>
+</ResponseMap>

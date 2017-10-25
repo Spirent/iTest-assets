@@ -1,0 +1,84 @@
+<?xml version="1.0" ?><ResponseMap version="6.0.0.18638fa">
+    <sampleDictionary>
+        <item name="saos_8_4">
+            <action actionType="command">
+                <command>
+                    <body>port show slot LM1 statistics format wide</body>
+                </command>
+            </action>
+            <responseBody>+------------------------------------------------------------------- PORT STATISTICS SUMMARY (WIDE) ------------------------------------------------------------------+
+|              Port               |                              Byte                               |                               Pkt                               |
+|                                 |               Tx               |               Rx               |               Tx               |               Rx               |
++---------------------------------+--------------------------------+--------------------------------+--------------------------------+--------------------------------+
+| 1/1                             |        816,419,940,340,654,532 |          1,464,951,549,046,433 |          3,183,475,876,757,321 |              3,645,602,809,032 |
+| 1/2                             |             17,888,287,004,148 |             25,977,010,573,866 |                 11,784,115,271 |                 17,112,655,152 |
++---------------------------------+--------------------------------+--------------------------------+--------------------------------+--------------------------------+
+
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;prompt&gt;8700-15&amp;gt; &lt;/prompt&gt;
+    &lt;echo&gt;port show slot LM1 statistics format wide&lt;/echo&gt;
+    &lt;promptName&gt;normal&lt;/promptName&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+            </aliases>
+            <duration>1.6</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties"/>
+        <item type="com.fnfr.svt.mapping.table.TabularMapperProperties">
+            <tabularMaps>
+                <item name="statistics_summary_wide">
+                    <additionalBannerLineCount>2</additionalBannerLineCount>
+                    <banner>|              Port               |                              Byte                               |                               Pkt                               |</banner>
+                    <footer>+---------------------------------+--------------------------------+--------------------------------+--------------------------------+--------------------------------+</footer>
+                    <bannerStructure>CaseInsensitive</bannerStructure>
+                    <footerStructure>CaseInsensitive</footerStructure>
+                    <customDelimiter>|</customDelimiter>
+                    <delimiter>Custom</delimiter>
+                    <minOccurences>0</minOccurences>
+                    <columns>
+                        <item name="pipe">
+                            <lastFullCell/>
+                            <showInStructuredData>false</showInStructuredData>
+                        </item>
+                        <item name="port">
+                            <isKey>true</isKey>
+                            <lastFullCell/>
+                        </item>
+                        <item name="byte_tx">
+                            <lastFullCell/>
+                        </item>
+                        <item name="byte_rx">
+                            <lastFullCell/>
+                        </item>
+                        <item name="pkt_tx">
+                            <lastFullCell/>
+                        </item>
+                        <item name="pkt_rx">
+                            <lastFullCell/>
+                        </item>
+                        <item name="pipe_1">
+                            <lastFullCell/>
+                            <showInStructuredData>false</showInStructuredData>
+                        </item>
+                    </columns>
+                </item>
+            </tabularMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="port show slot \\S+ statistics format wide" matchType="Regex"/>
+</ResponseMap>

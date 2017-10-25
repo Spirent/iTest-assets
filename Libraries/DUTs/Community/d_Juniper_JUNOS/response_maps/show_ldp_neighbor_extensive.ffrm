@@ -1,0 +1,216 @@
+<?xml version="1.0" ?><ResponseMap version="6.0.0.18638fa">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="command">
+                <command>
+                    <body>show ldp neighbor extensive</body>
+                </command>
+            </action>
+            <responseBody>Address            Interface          Label space ID         Hold time
+0.0.0.0       lo0.0              0.0.0.0:0           43
+  Transport address: 0.0.0.0, Configuration sequence: 4
+  Up for 1w3d 03:28:18
+  Reference count: 2
+  Hold time: 45, Proposed local/peer: 45/45
+  Hello interval: 15
+  Hello flags: targeted, request send targeted
+  Neighbor types: configured-tunneled
+Address            Interface          Label space ID         Hold time
+0.0.0.0       lo0.0              0.0.0.0:0           41
+  Transport address: 0.0.0.0, Configuration sequence: 2
+  Up for 4w0d 01:10:44
+  Reference count: 2
+  Hold time: 45, Proposed local/peer: 45/45
+  Hello interval: 15
+  Hello flags: targeted, request send targeted
+  Neighbor types: configured-tunneled
+Address            Interface          Label space ID         Hold time
+0.0.0.0       ae10.0             0.0.0.0:0           42
+  Transport address: 0.0.0.0, Configuration sequence: 4
+  Up for 1w3d 03:28:18
+  Reference count: 1
+  Hold time: 45, Proposed local/peer: 45/45
+  Hello flags: none
+  Neighbor types: discovered
+Address            Interface          Label space ID         Hold time
+0.0.0.0       ae11.0             0.0.0.0:0           43
+  Transport address: 0.0.0.0, Configuration sequence: 2
+  Up for 4w0d 01:11:34
+  Reference count: 1
+  Hold time: 45, Proposed local/peer: 45/45
+  Hello flags: none
+  Neighbor types: discovered
+
+{master}
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;prompt&gt;itest-ap@PE35&amp;gt; &lt;/prompt&gt;
+    &lt;echo&gt;show ldp neighbor extensive &lt;/echo&gt;
+    &lt;promptName&gt;normal&lt;/promptName&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.2</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="pattern1">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Up for\\s+</regex>
+                            <start>0</start>
+                            <end>7</end>
+                        </item>
+                        <item name="Up_for">
+                            <regex>[^\\r\\n]+</regex>
+                            <named>true</named>
+                            <start>7</start>
+                            <end>8</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>Up for *</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+                <item name="pattern2">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Neighbor types:\\s+</regex>
+                            <start>0</start>
+                            <end>16</end>
+                        </item>
+                        <item name="Neighbor_types">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>16</start>
+                            <end>35</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>Neighbor types: configured-tunneled</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+                <item name="pattern3">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Address\\s+Interface\\s+Label space ID\\s+Hold time\\s+</regex>
+                            <start>0</start>
+                            <end>71</end>
+                        </item>
+                        <item name="Address">
+                            <regex>((\\d+\\.)+\\d+)</regex>
+                            <named>true</named>
+                            <start>71</start>
+                            <end>83</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="((\d+\.)+\d+)">one or more of digit and dots</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+</regex>
+                            <start>83</start>
+                            <end>90</end>
+                        </item>
+                        <item name="Interface">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>90</start>
+                            <end>95</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>\\s+</regex>
+                            <start>95</start>
+                            <end>109</end>
+                        </item>
+                        <item name="Label_space_ID">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>109</start>
+                            <end>123</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor3">
+                            <regex>\\s+</regex>
+                            <start>123</start>
+                            <end>134</end>
+                        </item>
+                        <item name="Hold_time">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>134</start>
+                            <end>136</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>Address            Interface          Label space ID         Hold time
+0.0.0.0       lo0.0              0.0.0.0:0           43</sampleMatch>
+                </item>
+            </regexMaps>
+        </item>
+        <item type="com.fnfr.svt.mapping.table.TabularMapperProperties"/>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="show ldp neighbor extensive">
+        <application>
+            <item>com.fnfr.svt.applications.cmd</item>
+            <item>com.fnfr.svt.applications.ssh</item>
+            <item>com.fnfr.svt.applications.telnet</item>
+        </application>
+    </applicabilityProperties>
+    <aliases>
+        <item name="num_neighbor_types">
+            <description>Number of entries where &quot;Neighbor_types&quot; is of the type with input argument</description>
+            <queryFormatString>count(//pattern2[Neighbor_types = &quot;{0}&quot;]/Neighbor_types)</queryFormatString>
+            <arguments>
+                <item name="neighbor_type">
+                    <valuesQuery>//Neighbor_types</valuesQuery>
+                    <interpretAs>SampleValues</interpretAs>
+                </item>
+            </arguments>
+        </item>
+    </aliases>
+</ResponseMap>

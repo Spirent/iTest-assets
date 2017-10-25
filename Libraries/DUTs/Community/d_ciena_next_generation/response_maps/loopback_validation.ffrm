@@ -1,0 +1,198 @@
+<?xml version="1.0" ?><ResponseMap version="6.0.0.18638fa">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="ethernet_ping_mac_hop">
+                <command>
+                    <body>-destination_mep_id  $mep_id -md $md -ma $ma -source_mep_id  $local_mep_id -count $count -priority $priority -ping_interval $ping_interval</body>
+                </command>
+            </action>
+            <responseBody>Loopback HOP Cnt: 1
+Local MEP id: 220 
+Target Mac Address: 00:1D:B5:41:5D:A2
+Hop_1 Success rate is 100.0 %
+
+Loopback HOP Cnt: 2
+Local MEP id: 220 
+Target Mac Address: 00:17:CB:D4:61:F7
+Hop_2 Success rate is 100.0 %
+
+Loopback HOP Overall STATUS: PASS</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;definedIn&gt;project://d_ciena/session_profiles/ciena_saos_qc.fftc&lt;/definedIn&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="definedIn">
+                    <queryFormatString>.//definedIn</queryFormatString>
+                    <source>Kernel</source>
+                </item>
+            </aliases>
+            <duration>39.2</duration>
+        </item>
+        <item name="sample2">
+            <action actionType="ethernet_ping_mac_mep">
+                <command>
+                    <body>-destination_mep_id  $mep_id -md $md -ma $ma -source_mep_id  $local_mep_id -count $count -priority $priority -ping_interval $ping_interval</body>
+                </command>
+            </action>
+            <responseBody>Success rate is 100.0 %</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;definedIn&gt;project://d_ciena/session_profiles/ciena_saos_qc.fftc&lt;/definedIn&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="definedIn">
+                    <queryFormatString>.//definedIn</queryFormatString>
+                    <source>Kernel</source>
+                </item>
+            </aliases>
+            <duration>24.8</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="overall_status">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Loopback HOP Overall STATUS:\\s+</regex>
+                            <start>0</start>
+                            <end>29</end>
+                        </item>
+                        <item name="Loopback_HOP_Overall_STATUS">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>29</start>
+                            <end>33</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>Loopback HOP Overall STATUS: PASS</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+                <item name="source_id">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Local MEP id:\\s+</regex>
+                            <start>0</start>
+                            <end>14</end>
+                        </item>
+                        <item name="Local_MEP_id">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>14</start>
+                            <end>17</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>Local MEP id: 220</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+                <item name="target_id">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Target Mac Address:\\s+</regex>
+                            <start>0</start>
+                            <end>20</end>
+                        </item>
+                        <item name="Target_Mac_Address">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>20</start>
+                            <end>37</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>Target Mac Address: 00:1D:B5:41:5D:A2</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+                <item name="hop_success">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Hop_\\d+\\s+Success rate is\\s+</regex>
+                            <start>0</start>
+                            <end>22</end>
+                        </item>
+                        <item name="Success_rate">
+                            <regex>([\\d]+(\\.[\\d]+))</regex>
+                            <named>true</named>
+                            <start>22</start>
+                            <end>27</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="((\d+\.)+\d+)">one or more of digit and dots</item>
+                                <item name="([\d]+(\.[\d]+))">one simple decimal number</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+%</regex>
+                            <start>27</start>
+                            <end>29</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>Hop_1 Success rate is 100.0 %</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+                <item name="one_step_success">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Success rate is\\s+</regex>
+                            <start>0</start>
+                            <end>16</end>
+                        </item>
+                        <item name="Success_rate">
+                            <regex>([\\d]+(\\.[\\d]+))</regex>
+                            <named>true</named>
+                            <start>16</start>
+                            <end>21</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="((\d+\.)+\d+)">one or more of digit and dots</item>
+                                <item name="([\d]+(\.[\d]+))">one simple decimal number</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+%</regex>
+                            <start>21</start>
+                            <end>23</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>Success rate is 100.0 %</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="ethernet_ping_mac_*" command="-destination_mep_id  $mep_id -md $md -ma $ma -source_mep_id  $local_mep_id -count $count -priority $priority -ping_interval $ping_interval"/>
+</ResponseMap>

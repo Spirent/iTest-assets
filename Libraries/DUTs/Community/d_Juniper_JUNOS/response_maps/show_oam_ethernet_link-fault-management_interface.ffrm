@@ -1,0 +1,207 @@
+<?xml version="1.0" ?><ResponseMap version="6.0.0.18638fa">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="command">
+                <command>
+                    <body>show oam ethernet link-fault-management ge-1/1/4</body>
+                </command>
+            </action>
+            <responseBody>  Interface: ge-1/1/4
+    Status: Running, Discovery state: Send Any
+    Peer address: 00:02:a1:8a:36:8a
+    Flags:Remote-Stable Remote-State-Valid Local-Stable 0x50
+    Remote entity information:
+      Remote MUX action: forwarding, Remote parser action: forwarding
+      Discovery mode: active, Unidirectional mode: unsupported
+      Remote loopback mode: supported, Link events: supported
+      Variable requests: unsupported
+
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;prompt&gt;itest-ap@chgil304ia2-PE1&amp;gt; &lt;/prompt&gt;
+    &lt;echo&gt;show oam ethernet link-fault-management ge-1/1/4 &lt;/echo&gt;
+    &lt;promptName&gt;normal&lt;/promptName&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.3</duration>
+        </item>
+        <item name="sample2">
+            <action actionType="command">
+                <command>
+                    <body>show oam ethernet link-fault-management ae34 detail</body>
+                </command>
+            </action>
+            <responseBody>Feb 07 16:01:22 
+  Interface: ae34
+    Status: Running, Discovery state: Send Any
+    Transmit interval: 1000ms, PDU threshold: 3 frames, Hold time: 0ms
+
+{master}
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;isEmpty&gt;false&lt;/isEmpty&gt;
+    &lt;promptName&gt;normal&lt;/promptName&gt;
+    &lt;echo&gt;show oam ethernet link-fault-management ae34 detail&lt;/echo&gt;
+    &lt;prompt&gt;itest-ap@PE50&amp;gt; &lt;/prompt&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="isEmpty">
+                    <queryFormatString>.//isEmpty</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.3</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="Peer_MAC_Address">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>\\s+Peer address:\\s+</regex>
+                            <start>0</start>
+                            <end>18</end>
+                        </item>
+                        <item name="Peer_address">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>18</start>
+                            <end>35</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>    Peer address: 00:02:a1:8a:36:8a</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+                <item name="interface_no">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>\\s+Interface:\\s+</regex>
+                            <start>0</start>
+                            <end>13</end>
+                        </item>
+                        <item name="Interface">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>13</start>
+                            <end>21</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>  Interface: ge-1/1/4</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+                <item name="Flags_Remote">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>\\s+Flags:Remote-Stable Remote-State-Valid Local-Stable\\s+</regex>
+                            <start>0</start>
+                            <end>56</end>
+                        </item>
+                        <item name="Flags_Remote_Stable_Remote_State_Valid_Local_Stable">
+                            <regex>([0][x][\\da-fA-F]+)</regex>
+                            <named>true</named>
+                            <start>56</start>
+                            <end>60</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([0][x][\da-fA-F]+)">one hexadecimal number</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>    Flags:Remote-Stable Remote-State-Valid Local-Stable 0x50</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+                <item name="Variable_request">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>\\s+Variable requests:\\s+</regex>
+                            <start>0</start>
+                            <end>25</end>
+                        </item>
+                        <item name="Variable_requests">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>25</start>
+                            <end>36</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>      Variable requests: unsupported</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+                <item name="Status_state">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Status: Running, Discovery state:\\s+</regex>
+                            <start>0</start>
+                            <end>34</end>
+                        </item>
+                        <item name="Discovery_state">
+                            <regex>[^\\r\\n]+</regex>
+                            <named>true</named>
+                            <start>34</start>
+                            <end>35</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>Status: Running, Discovery state: *</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="show oam ethernet link-fault-management *"/>
+</ResponseMap>

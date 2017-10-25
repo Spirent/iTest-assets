@@ -1,0 +1,230 @@
+<?xml version="1.0" ?><ResponseMap version="6.0.0.18638fa">
+    <notes>12/4/12 NJL
+
+Pattern for now.</notes>
+    <headline>ADTRAN show evc map</headline>
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="command">
+                <command>
+                    <body>show evc-map itest-vpls-evc-map</body>
+                </command>
+            </action>
+            <responseBody>EVC-map &quot;itest-vpls-evc-map&quot;
+  Admin State            : Enabled
+  EVC-map Status         : Not Running - EVC Not Running
+  Connected EVC          : itest-vpls-evc (2133)
+  MEN-Pri                : 4
+  Policer                : 10MEG
+  Connected UNI          : Ethernet 1/0/1
+  Match CE-VLAN-ID       : 934
+
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;prompt&gt;AUTO_838-2G-7#&lt;/prompt&gt;
+    &lt;echo&gt;show evc-map itest-vpls-evc-map&lt;/echo&gt;
+    &lt;promptName&gt;enable&lt;/promptName&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.3</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="pattern1">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>EVC-map &quot;</regex>
+                            <start>0</start>
+                            <end>9</end>
+                        </item>
+                        <item name="evc_map">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <key>true</key>
+                            <start>9</start>
+                            <end>27</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name=".{18}">exactly 18 of any character</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>&quot;\\s+Admin State\\s+:\\s+</regex>
+                            <start>27</start>
+                            <end>56</end>
+                        </item>
+                        <item name="admin_state">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>56</start>
+                            <end>63</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>\\s+EVC-map Status\\s+:\\s+</regex>
+                            <start>63</start>
+                            <end>91</end>
+                        </item>
+                        <item name="evc_map_status">
+                            <regex>[^0-9\\r\\n]+</regex>
+                            <named>true</named>
+                            <start>91</start>
+                            <end>120</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor3">
+                            <regex>\\s+Connected EVC\\s+:\\s+</regex>
+                            <start>120</start>
+                            <end>148</end>
+                        </item>
+                        <item name="connected_evc">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>148</start>
+                            <end>162</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor4">
+                            <regex>\\s+\\(</regex>
+                            <start>162</start>
+                            <end>164</end>
+                        </item>
+                        <item name="connected_evc_num">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>164</start>
+                            <end>168</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor5">
+                            <regex>\\)\\s+MEN-Pri\\s+:\\s+</regex>
+                            <start>168</start>
+                            <end>197</end>
+                        </item>
+                        <item name="men_pri">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>197</start>
+                            <end>198</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor6">
+                            <regex>\\s+Policer\\s+:\\s+</regex>
+                            <start>198</start>
+                            <end>226</end>
+                        </item>
+                        <item name="policer">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>226</start>
+                            <end>231</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor7">
+                            <regex>\\s+Connected UNI\\s+: Ethernet\\s+</regex>
+                            <start>231</start>
+                            <end>268</end>
+                        </item>
+                        <item name="connected_uni_ethernet">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>268</start>
+                            <end>273</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor8">
+                            <regex>\\s+Match CE-VLAN-ID\\s+:\\s+</regex>
+                            <start>273</start>
+                            <end>301</end>
+                        </item>
+                        <item name="match_ce_vlan_id">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>301</start>
+                            <end>304</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>EVC-map &quot;itest-vpls-evc-map&quot;
+  Admin State            : Enabled
+  EVC-map Status         : Not Running - EVC Not Running
+  Connected EVC          : itest-vpls-evc (2133)
+  MEN-Pri                : 4
+  Policer                : 10MEG
+  Connected UNI          : Ethernet 1/0/1
+  Match CE-VLAN-ID       : 934</sampleMatch>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="sh* evc-m* *">
+        <application>
+            <item>com.fnfr.svt.applications.cmd</item>
+            <item>com.fnfr.svt.applications.ssh</item>
+            <item>com.fnfr.svt.applications.telnet</item>
+        </application>
+    </applicabilityProperties>
+</ResponseMap>

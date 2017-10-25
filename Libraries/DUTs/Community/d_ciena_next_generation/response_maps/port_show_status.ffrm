@@ -1,0 +1,99 @@
+<?xml version="1.0" ?><ResponseMap version="6.0.0.18638fa">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="command">
+                <command>
+                    <body>port show status</body>
+                </command>
+            </action>
+            <responseBody>+------------------------------- PORT OPERATIONAL STATUS ----------------------------+
+| Slot   |                               |   |Link State|    |   |Speed/ |MTU  |Flo  |
+| Port   | Description                   |Lnk|Duration  |XCVR|STP|Duplex |Size |Ctl  |
++--------+-------------------------------+---+----------+----+---+-------+-----+-----+
+|  1/1   |                               |Dwn|  2d 5h 3m|Ena |Dis|       | 9130|     |
+|  1/2   |                               |Dwn| 23h48m50s|Ena |Dis|       | 9126|     |
+|  2/1   |                               |Dwn| 20d 5h48m| Dis|Dis|       | 2000|     |
+|  2/2   |                               |Dwn|  0h 0m 0s|Ena |Dis|       | 2000|     |
++--------+-------------------------------+---+----------+----+---+-------+-----+-----+
+
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;prompt&gt;8700-15&amp;gt; &lt;/prompt&gt;
+    &lt;echo&gt;port show status&lt;/echo&gt;
+    &lt;promptName&gt;normal&lt;/promptName&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+            </aliases>
+            <duration>1.1</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties"/>
+        <item type="com.fnfr.svt.mapping.table.TabularMapperProperties">
+            <tabularMaps>
+                <item name="table1">
+                    <additionalBannerLineCount>3</additionalBannerLineCount>
+                    <banner>\\+-* PORT OPERATIONAL STATUS -*\\+</banner>
+                    <footer>\\+-*\\+-*\\+-*\\+-*\\+-*\\+-*\\+-*\\+-*\\+-*\\+</footer>
+                    <bannerStructure>Regex</bannerStructure>
+                    <footerStructure>Regex</footerStructure>
+                    <customDelimiter>|</customDelimiter>
+                    <delimiter>Custom</delimiter>
+                    <minOccurences>0</minOccurences>
+                    <columns>
+                        <item name="pipe">
+                            <lastFullCell/>
+                            <showInStructuredData>false</showInStructuredData>
+                        </item>
+                        <item name="port">
+                            <isKey>true</isKey>
+                            <lastFullCell/>
+                        </item>
+                        <item name="description">
+                            <lastFullCell/>
+                        </item>
+                        <item name="link">
+                            <lastFullCell/>
+                        </item>
+                        <item name="duration">
+                            <lastFullCell/>
+                        </item>
+                        <item name="xcvr">
+                            <lastFullCell/>
+                        </item>
+                        <item name="stp">
+                            <lastFullCell/>
+                        </item>
+                        <item name="duplex">
+                            <lastFullCell/>
+                        </item>
+                        <item name="mtu_size">
+                            <lastFullCell/>
+                        </item>
+                        <item name="flow_ctrl">
+                            <lastFullCell/>
+                        </item>
+                        <item name="pipe_1">
+                            <lastFullCell/>
+                            <showInStructuredData>false</showInStructuredData>
+                        </item>
+                    </columns>
+                    <ignoreBlankLines>false</ignoreBlankLines>
+                </item>
+            </tabularMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="port show status"/>
+</ResponseMap>

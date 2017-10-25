@@ -1,0 +1,453 @@
+<?xml version="1.0" ?><ResponseMap version="6.0.0.18638fa">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="command">
+                <command>
+                    <body>show system uptime</body>
+                </command>
+            </action>
+            <responseBody>May 12 15:36:52 
+Current time: 2016-05-12 15:36:52 EDT
+Time Source:  NTP CLOCK 
+System booted: 2016-04-20 14:24:00 EDT (3w1d 01:12 ago)
+Protocols started: 2016-04-20 14:24:00 EDT (3w1d 01:12 ago)
+Last configured: 2016-05-12 14:36:58 EDT (00:59:54 ago) by itest-ap
+ 3:36PM  up 22 days,  1:13, 2 users, load averages: 0.21, 0.23, 0.23
+
+{master}
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;prompt&gt;automation@PE54&amp;gt; &lt;/prompt&gt;
+    &lt;echo&gt;show system uptime&lt;/echo&gt;
+    &lt;promptName&gt;normal&lt;/promptName&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.5</duration>
+        </item>
+        <item name="sample2">
+            <action actionType="command">
+                <command>
+                    <body>show system uptime</body>
+                </command>
+            </action>
+            <responseBody>May 20 14:40:47 
+Current time: 2016-05-20 14:40:47 EDT
+Time Source:  LOCAL CLOCK 
+System booted: 2016-04-20 14:34:22 EDT (4w2d 00:06 ago)
+Protocols started: 2016-04-20 14:34:22 EDT (4w2d 00:06 ago)
+Last configured: 2016-05-16 16:43:27 EDT (3d 21:57 ago) by dp1543
+ 2:40PM  up 30 days, 6 mins, 1 users, load averages: 0.31, 0.19, 0.17
+
+{backup}
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;prompt&gt;automation@PE54&amp;gt; &lt;/prompt&gt;
+    &lt;echo&gt;show system uptime&lt;/echo&gt;
+    &lt;promptName&gt;normal&lt;/promptName&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.6</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="pattern2">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Current time:\\s+</regex>
+                            <start>0</start>
+                            <end>14</end>
+                        </item>
+                        <item name="Current_time">
+                            <regex>[^\\r\\n]+</regex>
+                            <named>true</named>
+                            <start>14</start>
+                            <end>33</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name=".{19}">exactly 19 of any character</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+</regex>
+                            <start>33</start>
+                            <end>34</end>
+                        </item>
+                        <item name="tz">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>34</start>
+                            <end>35</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>Current time: 2016-05-12 15:36:52 *</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+                <item name="pattern3">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>System booted:\\s+</regex>
+                            <start>0</start>
+                            <end>15</end>
+                        </item>
+                        <item name="System_booted">
+                            <regex>[^\\r\\n]+</regex>
+                            <named>true</named>
+                            <start>15</start>
+                            <end>34</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name=".{19}">exactly 19 of any character</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+\\w+ \\(</regex>
+                            <start>34</start>
+                            <end>40</end>
+                        </item>
+                        <item name="ago">
+                            <regex>[^\\r\\n]+</regex>
+                            <named>true</named>
+                            <start>40</start>
+                            <end>50</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name=".{10}">exactly 10 of any character</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>\\s+ago\\)</regex>
+                            <start>50</start>
+                            <end>55</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>System booted: 2016-04-20 14:24:00 EDT (3w1d 01:12 ago)</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+                <item name="pattern1">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Protocols started:\\s+</regex>
+                            <start>0</start>
+                            <end>19</end>
+                        </item>
+                        <item name="Protocols_started">
+                            <regex>[^\\r\\n]+</regex>
+                            <named>true</named>
+                            <start>19</start>
+                            <end>38</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name=".{19}">exactly 19 of any character</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+\\w+ \\(</regex>
+                            <start>38</start>
+                            <end>44</end>
+                        </item>
+                        <item name="ago">
+                            <regex>[^\\r\\n]+</regex>
+                            <named>true</named>
+                            <start>44</start>
+                            <end>54</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name=".{10}">exactly 10 of any character</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>\\s+ago\\)</regex>
+                            <start>54</start>
+                            <end>59</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>Protocols started: 2016-04-20 14:24:00 EDT (3w1d 01:12 ago)</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+                <item name="pattern4">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>\\S+\\s+up\\s+</regex>
+                            <start>0</start>
+                            <end>11</end>
+                        </item>
+                        <item name="up_days">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>11</start>
+                            <end>13</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+days,\\s+</regex>
+                            <start>13</start>
+                            <end>21</end>
+                        </item>
+                        <item name="up_hours">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>21</start>
+                            <end>25</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name=".{4}">exactly 4 of any character</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>,\\s+\\d+\\s+users, load averages:\\s+</regex>
+                            <start>25</start>
+                            <end>51</end>
+                        </item>
+                        <item name="load_ave1">
+                            <regex>([\\d]+(\\.[\\d]+))</regex>
+                            <named>true</named>
+                            <start>51</start>
+                            <end>55</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="((\d+\.)+\d+)">one or more of digit and dots</item>
+                                <item name="([\d]+(\.[\d]+))">one simple decimal number</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor3">
+                            <regex>,\\s+</regex>
+                            <start>55</start>
+                            <end>57</end>
+                        </item>
+                        <item name="load_ave2">
+                            <regex>([\\d]+(\\.[\\d]+))</regex>
+                            <named>true</named>
+                            <start>57</start>
+                            <end>61</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="((\d+\.)+\d+)">one or more of digit and dots</item>
+                                <item name="([\d]+(\.[\d]+))">one simple decimal number</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor4">
+                            <regex>,\\s+</regex>
+                            <start>61</start>
+                            <end>63</end>
+                        </item>
+                        <item name="load_ave3">
+                            <regex>([\\d]+(\\.[\\d]+))</regex>
+                            <named>true</named>
+                            <start>63</start>
+                            <end>67</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="((\d+\.)+\d+)">one or more of digit and dots</item>
+                                <item name="([\d]+(\.[\d]+))">one simple decimal number</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>3:36PM  up 22 days,  1:13, 2 users, load averages: 0.21, 0.23, 0.23</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+                <item name="pattern5">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>\\S+\\s+up\\s+</regex>
+                            <start>0</start>
+                            <end>11</end>
+                        </item>
+                        <item name="PM_up">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>11</start>
+                            <end>13</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+days,\\s+</regex>
+                            <start>13</start>
+                            <end>20</end>
+                        </item>
+                        <item name="mins">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>20</start>
+                            <end>21</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>\\s+mins,\\s+\\d+\\s+users, load averages:\\s+</regex>
+                            <start>21</start>
+                            <end>52</end>
+                        </item>
+                        <item name="load_ave1">
+                            <regex>([\\d]+(\\.[\\d]+))</regex>
+                            <named>true</named>
+                            <start>52</start>
+                            <end>56</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="((\d+\.)+\d+)">one or more of digit and dots</item>
+                                <item name="([\d]+(\.[\d]+))">one simple decimal number</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor3">
+                            <regex>,\\s+</regex>
+                            <start>56</start>
+                            <end>58</end>
+                        </item>
+                        <item name="load_ave2">
+                            <regex>([\\d]+(\\.[\\d]+))</regex>
+                            <named>true</named>
+                            <start>58</start>
+                            <end>62</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="((\d+\.)+\d+)">one or more of digit and dots</item>
+                                <item name="([\d]+(\.[\d]+))">one simple decimal number</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor4">
+                            <regex>,\\s+</regex>
+                            <start>62</start>
+                            <end>64</end>
+                        </item>
+                        <item name="load_ave3">
+                            <regex>([\\d]+(\\.[\\d]+))</regex>
+                            <named>true</named>
+                            <start>64</start>
+                            <end>68</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="((\d+\.)+\d+)">one or more of digit and dots</item>
+                                <item name="([\d]+(\.[\d]+))">one simple decimal number</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>2:40PM  up 30 days, 6 mins, 1 users, load averages: 0.31, 0.19, 0.17</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+                <item name="pattern6">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Time Source:\\s+</regex>
+                            <start>0</start>
+                            <end>14</end>
+                        </item>
+                        <item name="Time_Source">
+                            <regex>[^0-9\\r\\n]+</regex>
+                            <named>true</named>
+                            <start>14</start>
+                            <end>25</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>Time Source:  LOCAL CLOCK</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="show system uptime">
+        <application>
+            <item>com.fnfr.svt.applications.cmd</item>
+            <item>com.fnfr.svt.applications.ssh</item>
+            <item>com.fnfr.svt.applications.telnet</item>
+        </application>
+    </applicabilityProperties>
+    <aliases>
+        <item name="uptime">
+            <description>Concat the days and hours</description>
+            <queryFormatString>concat(//up_days, &quot; &quot;, //up_hours)</queryFormatString>
+        </item>
+        <item name="load_averages">
+            <description>Concat the load averages</description>
+            <queryFormatString>concat( //load_ave1, &quot; &quot;, //load_ave2, &quot; &quot;, //load_ave3)</queryFormatString>
+        </item>
+    </aliases>
+</ResponseMap>

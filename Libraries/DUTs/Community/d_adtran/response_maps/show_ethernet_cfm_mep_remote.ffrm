@@ -1,0 +1,235 @@
+<?xml version="1.0" ?><ResponseMap version="6.0.0.18638fa">
+    <notes>4/2/13 NJL Inital development.</notes>
+    <headline>show ethernet cfm mep remote for ADTRAN 838</headline>
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="command">
+                <command>
+                    <body>show ethernet cfm mep remote</body>
+                </command>
+            </action>
+            <responseBody>
+Local MEP 1011
+   Domain/Assoc: vpls:280029-4/serv
+   Level: 4   VLAN: 0
+   Interface: ethernet 1/0/1
+   MEP Database Rule: auto-learning
+
+   Remote MEP database                                 Port     Iface
+   MEPID  State Age           MAC                RDI   Status   Status
+   1030   Ok    0d 00:02:29   00:A0:C8:4C:A6:A0  True  Up       Down
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;prompt&gt;838-11#&lt;/prompt&gt;
+    &lt;echo&gt;show ethernet cfm mep remote&lt;/echo&gt;
+    &lt;promptName&gt;enable&lt;/promptName&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.5</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="pattern1">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Local MEP\\s+</regex>
+                            <start>0</start>
+                            <end>10</end>
+                        </item>
+                        <item name="local_mep_id">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <key>true</key>
+                            <start>10</start>
+                            <end>14</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+Domain/Assoc:\\s+</regex>
+                            <start>14</start>
+                            <end>32</end>
+                        </item>
+                        <item name="md">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>32</start>
+                            <end>45</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name=".{13}">exactly 13 of any character</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>/</regex>
+                            <start>45</start>
+                            <end>46</end>
+                        </item>
+                        <item name="ma">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>46</start>
+                            <end>50</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor3">
+                            <regex>\\s+Level:\\s+</regex>
+                            <start>50</start>
+                            <end>61</end>
+                        </item>
+                        <item name="level">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>61</start>
+                            <end>62</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor4">
+                            <regex>\\s+VLAN:\\s+</regex>
+                            <start>62</start>
+                            <end>71</end>
+                        </item>
+                        <item name="vlan">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>71</start>
+                            <end>72</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor5">
+                            <regex>\\s+Interface:\\s+</regex>
+                            <start>72</start>
+                            <end>87</end>
+                        </item>
+                        <item name="interface">
+                            <regex>[^\\r\\n]+</regex>
+                            <named>true</named>
+                            <start>87</start>
+                            <end>101</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor6">
+                            <regex>\\s+MEP Database Rule:\\s+</regex>
+                            <start>101</start>
+                            <end>124</end>
+                        </item>
+                        <item name="mep_database_rule">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>124</start>
+                            <end>137</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>Local MEP 1011
+   Domain/Assoc: vpls:280029-4/serv
+   Level: 4   VLAN: 0
+   Interface: ethernet 1/0/1
+   MEP Database Rule: auto-learning</sampleMatch>
+                    <optional>true</optional>
+                </item>
+            </regexMaps>
+        </item>
+        <item type="com.fnfr.svt.mapping.table.TabularMapperProperties">
+            <tabularMaps>
+                <item name="table1">
+                    <additionalBannerLineCount>1</additionalBannerLineCount>
+                    <banner>   Remote MEP database                                 Port     Iface</banner>
+                    <bannerStructure>CaseInsensitive</bannerStructure>
+                    <columnBoundaries>Positional</columnBoundaries>
+                    <minOccurences>0</minOccurences>
+                    <maxOccurences>1</maxOccurences>
+                    <columns>
+                        <item name="remote_mep_id">
+                            <isKey>true</isKey>
+                            <width>10</width>
+                            <lastFullCell/>
+                        </item>
+                        <item name="state">
+                            <width>6</width>
+                            <lastFullCell/>
+                        </item>
+                        <item name="age">
+                            <width>14</width>
+                            <lastFullCell/>
+                        </item>
+                        <item name="mac">
+                            <width>19</width>
+                            <lastFullCell/>
+                        </item>
+                        <item name="rdi">
+                            <width>6</width>
+                            <lastFullCell/>
+                        </item>
+                        <item name="port_status">
+                            <width>9</width>
+                            <lastFullCell/>
+                        </item>
+                        <item name="iface_status">
+                            <width>0</width>
+                            <lastFullCell/>
+                        </item>
+                    </columns>
+                </item>
+            </tabularMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="sh* eth* c* m* r*">
+        <application>
+            <item>com.fnfr.svt.applications.cmd</item>
+            <item>com.fnfr.svt.applications.ssh</item>
+            <item>com.fnfr.svt.applications.telnet</item>
+        </application>
+    </applicabilityProperties>
+</ResponseMap>

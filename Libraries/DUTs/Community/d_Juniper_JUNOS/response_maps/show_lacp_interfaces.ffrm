@@ -1,0 +1,180 @@
+<?xml version="1.0" ?><ResponseMap version="6.0.0.18638fa">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="command">
+                <command>
+                    <body>show lacp interfaces</body>
+                </command>
+            </action>
+            <responseBody>Aggregated interface: ae10
+    LACP state:       Role   Exp   Def  Dist  Col  Syn  Aggr  Timeout  Activity
+      et-2/0/0       Actor    No    No   Yes  Yes  Yes   Yes     Fast    Active
+      et-2/0/0     Partner    No    No   Yes  Yes  Yes   Yes     Fast    Active
+    LACP protocol:        Receive State  Transmit State          Mux State 
+      et-2/0/0                  Current   Fast periodic Collecting distributing
+
+Aggregated interface: ae11
+    LACP state:       Role   Exp   Def  Dist  Col  Syn  Aggr  Timeout  Activity
+      et-3/0/0       Actor    No    No   Yes  Yes  Yes   Yes     Fast    Active
+      et-3/0/0     Partner    No    No   Yes  Yes  Yes   Yes     Fast    Active
+    LACP protocol:        Receive State  Transmit State          Mux State 
+      et-3/0/0                  Current   Fast periodic Collecting distributing
+
+Aggregated interface: ae19
+    LACP state:       Role   Exp   Def  Dist  Col  Syn  Aggr  Timeout  Activity
+      ge-1/0/1       Actor    No   Yes    No   No   No   Yes     Fast    Active
+      ge-1/0/1     Partner    No   Yes    No   No   No   Yes     Fast   Passive
+      ge-1/0/2       Actor    No   Yes    No   No   No   Yes     Fast    Active
+      ge-1/0/2     Partner    No   Yes    No   No   No   Yes     Fast   Passive
+    LACP protocol:        Receive State  Transmit State          Mux State 
+      ge-1/0/1            Port disabled     No periodic           Detached
+      ge-1/0/2            Port disabled     No periodic           Detached
+
+Aggregated interface: ae69
+    LACP state:       Role   Exp   Def  Dist  Col  Syn  Aggr  Timeout  Activity
+      xe-5/1/0       Actor    No    No   Yes  Yes  Yes   Yes     Fast    Active
+      xe-5/1/0     Partner    No    No   Yes  Yes  Yes   Yes     Fast    Active
+      xe-5/2/0       Actor    No    No   Yes  Yes  Yes   Yes     Fast    Active
+      xe-5/2/0     Partner    No    No   Yes  Yes  Yes   Yes     Fast    Active
+    LACP protocol:        Receive State  Transmit State          Mux State 
+      xe-5/1/0                  Current   Fast periodic Collecting distributing
+      xe-5/2/0                  Current   Fast periodic Collecting distributing
+
+{master}
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;prompt&gt;itest-ap@PE35&amp;gt; &lt;/prompt&gt;
+    &lt;echo&gt;show lacp interfaces &lt;/echo&gt;
+    &lt;promptName&gt;normal&lt;/promptName&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.1</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="pattern1">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Aggregated interface:\\s+</regex>
+                            <start>0</start>
+                            <end>22</end>
+                        </item>
+                        <item name="Aggregated_interface">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>22</start>
+                            <end>26</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>Aggregated interface: ae10</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+            </regexMaps>
+        </item>
+        <item type="com.fnfr.svt.mapping.table.TabularMapperProperties">
+            <tabularMaps>
+                <item name="LACP_State">
+                    <banner>    LACP state:       Role   Exp   Def  Dist  Col  Syn  Aggr  Timeout  Activity</banner>
+                    <footer>    LACP protocol:        Receive State  Transmit State          Mux State </footer>
+                    <bannerStructure>CaseInsensitive</bannerStructure>
+                    <footerStructure>CaseInsensitive</footerStructure>
+                    <columns>
+                        <item name="interface">
+                            <isKey>true</isKey>
+                            <lastFullCell/>
+                        </item>
+                        <item name="LACP">
+                            <lastFullCell/>
+                        </item>
+                        <item name="Exp">
+                            <lastFullCell/>
+                        </item>
+                        <item name="Def">
+                            <lastFullCell/>
+                        </item>
+                        <item name="Dist">
+                            <lastFullCell/>
+                        </item>
+                        <item name="Col">
+                            <lastFullCell/>
+                        </item>
+                        <item name="Syn">
+                            <lastFullCell/>
+                        </item>
+                        <item name="Aggr">
+                            <lastFullCell/>
+                        </item>
+                        <item name="Timeout">
+                            <lastFullCell/>
+                        </item>
+                        <item name="Activity">
+                            <lastFullCell/>
+                        </item>
+                    </columns>
+                </item>
+                <item name="LACP_Protocol">
+                    <banner>    LACP protocol:        Receive State  Transmit State          Mux State </banner>
+                    <bannerStructure>CaseInsensitive</bannerStructure>
+                    <columnBoundaries>Positional</columnBoundaries>
+                    <minOccurences>0</minOccurences>
+                    <columns>
+                        <item name="interface">
+                            <isKey>true</isKey>
+                            <width>26</width>
+                            <lastFullCell/>
+                        </item>
+                        <item name="Receive_State">
+                            <width>15</width>
+                            <lastFullCell/>
+                        </item>
+                        <item name="Transmit_State">
+                            <width>24</width>
+                            <spillover>Steal</spillover>
+                            <lastFullCell/>
+                        </item>
+                        <item name="Mux_State">
+                            <width>0</width>
+                            <spillover>Steal</spillover>
+                            <lastFullCell/>
+                        </item>
+                    </columns>
+                </item>
+            </tabularMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="show lacp interfaces">
+        <application>
+            <item>com.fnfr.svt.applications.cmd</item>
+            <item>com.fnfr.svt.applications.ssh</item>
+            <item>com.fnfr.svt.applications.telnet</item>
+        </application>
+    </applicabilityProperties>
+    <aliases>
+        <item name="num_not_fast">
+            <description>How many interfaces do NOT have Timeout == Fast?</description>
+            <queryFormatString>count(//table/row[Timeout != 'Fast']/Timeout)</queryFormatString>
+        </item>
+    </aliases>
+</ResponseMap>

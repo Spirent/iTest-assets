@@ -1,0 +1,192 @@
+<?xml version="1.0" ?><ResponseMap version="6.0.0.18638fa">
+    <sampleDictionary>
+        <item name="private_edit">
+            <action actionType="command">
+                <command>
+                    <body>edit private</body>
+                </command>
+            </action>
+            <responseBody>warning: uncommitted changes will be discarded on exit
+Entering configuration mode
+Users currently editing the configuration:
+  juniper terminal pts/0 (pid 66875) on since 2017-01-11 09:47:39 EST, idle 00:02:14
+      private [edit]
+
+{master}[edit]
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;isEmpty&gt;false&lt;/isEmpty&gt;
+    &lt;promptName&gt;editor_prompt&lt;/promptName&gt;
+    &lt;echo&gt;edit private &lt;/echo&gt;
+    &lt;prompt&gt;spirentdev1@MPC7# &lt;/prompt&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="isEmpty">
+                    <queryFormatString>.//isEmpty</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.7</duration>
+        </item>
+        <item name="exclusive_edit">
+            <action>
+                <command>
+                    <body>edit private</body>
+                </command>
+            </action>
+            <responseBody>Users currently editing the configuration:
+  juniper terminal pts/0 (pid 67152) on since 2017-01-11 10:40:29 EST
+      exclusive {master}[edit]
+
+{master}[edit]</responseBody>
+        </item>
+        <item name="no_user">
+            <action>
+                <command>
+                    <body>edit private</body>
+                </command>
+            </action>
+            <responseBody>warning: uncommitted changes will be discarded on exit
+Entering configuration mode
+
+{master}[edit]
+</responseBody>
+        </item>
+        <item name="commit_running">
+            <action>
+                <command>
+                    <body>edit private</body>
+                </command>
+            </action>
+            <responseBody>warning: changes cannot be committed while 'configure exclusive' is active
+warning: uncommitted changes will be discarded on exit
+Entering configuration mode
+Users currently editing the configuration:
+  mr4983 terminal pts/2 (pid 73592) on since 2017-01-11 15:05:02 EST, idle 00:16:38
+      private [edit]
+  readwrite (pid 73937) on since 2017-01-11 15:22:43 EST
+      commit-script-running
+
+{master}[edit]</responseBody>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="edit_user_info">
+                    <groups>
+                        <item name="user_id">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>0</start>
+                            <end>7</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor0">
+                            <regex>\\s+terminal\\s+</regex>
+                            <start>7</start>
+                            <end>17</end>
+                        </item>
+                        <item name="terminal_id">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>17</start>
+                            <end>22</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+\\(pid\\s+</regex>
+                            <start>22</start>
+                            <end>28</end>
+                        </item>
+                        <item name="pid">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>28</start>
+                            <end>33</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>\\) on since\\s+</regex>
+                            <start>33</start>
+                            <end>44</end>
+                        </item>
+                        <item name="on_since">
+                            <regex>[^\\r\\n]+</regex>
+                            <named>true</named>
+                            <start>44</start>
+                            <end>63</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name=".{19}">exactly 19 of any character</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor3">
+                            <regex>\\s+EST</regex>
+                            <start>63</start>
+                            <end>67</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>juniper terminal pts/0 (pid 67152) on since 2017-01-11 10:40:29 EST</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+                <item name="current_edit_mode">
+                    <groups>
+                        <item name="edit_mode">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>0</start>
+                            <end>7</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor0">
+                            <regex>\\s+\\[edit]</regex>
+                            <start>7</start>
+                            <end>14</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>private [edit]</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="edit private"/>
+</ResponseMap>

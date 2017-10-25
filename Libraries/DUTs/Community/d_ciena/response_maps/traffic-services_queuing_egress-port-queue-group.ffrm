@@ -1,0 +1,224 @@
+<?xml version="1.0" ?><ResponseMap version="6.0.0.18638fa">
+    <notes>Display the queue configuration for the port </notes>
+    <headline>Egress port queue configuration</headline>
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="command">
+                <command>
+                    <body>traffic-services queuing egress-port-queue-group show port 5</body>
+                </command>
+            </action>
+            <responseBody>
++------------------------------ QUEUE GROUP DATA ------------------------------+
+|                                                                              |
++--------------------------------+---------------------------------------------+
+| Name [Port]                    | 5                                           |
+| Id                             | 5                                           |
+| Queue Count                    | 8                                           |
+| Scheduling Algorithm           | weighted-deficit-round-robin                |
+|    Scheduler granularity (Kb)  | 1600                                        |
+| Traffic Shaping                | On                                          |
+| Shaper Bandwidth (Kbps)        | 100032                                      |
+| Shaper Burst Size (KBytes)     | 128                                         |
+| Dynamic Max Queue Depth        | medium-high                                 |
++------------------------------------------------------------------------------+
+|   |     Scheduler    |  Size   |    CIR    |   CBS    |    EIR    |   EBS    |
+| Q | Pri Idx | Weight | (Pckts) |  (Kbps)   | (KBytes) |  (Kbps)   | (KBytes) |
++---+---------+--------+---------+-----------+----------+-----------+----------+
+| 0 | 10000   | 20     | 100     | 0         | 0        | 1000000   | 256      |
+| 1 | 20000   | 20     | 100     | 0         | 0        | 1000000   | 256      |
+| 2 | 30000   | 20     | 100     | 0         | 0        | 1000000   | 256      |
+| 3 | 40000   | 20     | 100     | 0         | 0        | 1000000   | 256      |
+| 4 | 50000   | 20     | 100     | 0         | 0        | 1000000   | 256      |
+| 5 | 60000   | 0      | 100     | 0         | 0        | 50048     | 31256    |
+| 6 | 70000   | 0      | 100     | 0         | 0        | 0         | 256      |
+| 7 | 80000   | 0      | 100     | 1024      | 256      | 0         | 0        |
++---+---------+--------+---------+-----------+----------+-----------+----------+
+
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;isEmpty&gt;false&lt;/isEmpty&gt;
+    &lt;promptName&gt;normal&lt;/promptName&gt;
+    &lt;echo&gt;traffic-services queuing egress-port-queue-group show port 5&lt;/echo&gt;
+    &lt;prompt&gt;3930-17-iTest&amp;gt; &lt;/prompt&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="isEmpty">
+                    <queryFormatString>.//isEmpty</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.5</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="pattern1">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>\\| Shaper Bandwidth \\(Kbps\\)\\s+\\|\\s+</regex>
+                            <start>0</start>
+                            <end>35</end>
+                        </item>
+                        <item name="Shaper_Bandwidth_Kbps">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>35</start>
+                            <end>41</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+\\|</regex>
+                            <start>41</start>
+                            <end>80</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>| Shaper Bandwidth (Kbps)        | 100032                                      |</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+                <item name="pattern2">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>\\| Shaper Burst Size \\(KBytes\\)\\s+\\|\\s+</regex>
+                            <start>0</start>
+                            <end>35</end>
+                        </item>
+                        <item name="Shaper_Burst_Size_KBytes">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>35</start>
+                            <end>38</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+\\|</regex>
+                            <start>38</start>
+                            <end>80</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>| Shaper Burst Size (KBytes)     | 128                                         |</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+            </regexMaps>
+        </item>
+        <item type="com.fnfr.svt.mapping.table.TabularMapperProperties">
+            <tabularMaps>
+                <item name="table1">
+                    <additionalBannerLineCount>2</additionalBannerLineCount>
+                    <banner>|   |     Scheduler    |  Size   |    CIR    |   CBS    |    EIR    |   EBS    |</banner>
+                    <footer>+---+---------+--------+---------+-----------+----------+-----------+----------+</footer>
+                    <bannerStructure>CaseInsensitive</bannerStructure>
+                    <footerStructure>CaseInsensitive</footerStructure>
+                    <customDelimiter>|</customDelimiter>
+                    <minOccurences>0</minOccurences>
+                    <columns>
+                        <item name="x_">
+                            <lastFullCell/>
+                            <showInStructuredData>false</showInStructuredData>
+                            <addAllQuery>false</addAllQuery>
+                        </item>
+                        <item name="Q">
+                            <isKey>true</isKey>
+                            <lastFullCell/>
+                        </item>
+                        <item name="x_1">
+                            <lastFullCell/>
+                            <showInStructuredData>false</showInStructuredData>
+                            <addAllQuery>false</addAllQuery>
+                        </item>
+                        <item name="Pri_Idx">
+                            <lastFullCell/>
+                        </item>
+                        <item name="du">
+                            <lastFullCell/>
+                            <showInStructuredData>false</showInStructuredData>
+                            <addAllQuery>false</addAllQuery>
+                        </item>
+                        <item name="Weight">
+                            <lastFullCell/>
+                        </item>
+                        <item name="x_2">
+                            <lastFullCell/>
+                            <showInStructuredData>false</showInStructuredData>
+                            <addAllQuery>false</addAllQuery>
+                        </item>
+                        <item name="Size">
+                            <lastFullCell/>
+                        </item>
+                        <item name="x_____CIR________CBS_________EIR________EBS_____">
+                            <lastFullCell/>
+                            <showInStructuredData>false</showInStructuredData>
+                            <addAllQuery>false</addAllQuery>
+                        </item>
+                        <item name="CIR">
+                            <lastFullCell/>
+                        </item>
+                        <item name="col11">
+                            <lastFullCell/>
+                            <showInStructuredData>false</showInStructuredData>
+                            <addAllQuery>false</addAllQuery>
+                        </item>
+                        <item name="CBS">
+                            <lastFullCell/>
+                        </item>
+                        <item name="col13">
+                            <lastFullCell/>
+                            <showInStructuredData>false</showInStructuredData>
+                            <addAllQuery>false</addAllQuery>
+                        </item>
+                        <item name="EIR">
+                            <lastFullCell/>
+                        </item>
+                        <item name="col15">
+                            <lastFullCell/>
+                            <showInStructuredData>false</showInStructuredData>
+                            <addAllQuery>false</addAllQuery>
+                        </item>
+                        <item name="EBS">
+                            <lastFullCell/>
+                        </item>
+                        <item name="col17">
+                            <lastFullCell/>
+                            <showInStructuredData>false</showInStructuredData>
+                            <addAllQuery>false</addAllQuery>
+                        </item>
+                    </columns>
+                </item>
+            </tabularMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="traffic-services queuing egress-port-queue-group show port *" priority="60">
+        <application>
+            <item>com.fnfr.svt.applications.ssh</item>
+            <item>com.fnfr.svt.applications.telnet</item>
+        </application>
+    </applicabilityProperties>
+</ResponseMap>

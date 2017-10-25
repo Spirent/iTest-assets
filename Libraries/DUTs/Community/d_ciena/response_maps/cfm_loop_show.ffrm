@@ -1,0 +1,96 @@
+<?xml version="1.0" ?><ResponseMap version="6.0.0.18638fa">
+    <sampleDictionary>
+        <item name="sample1">
+            <responseBody>+--------------------------- MEP LOOPBACK MESSAGE INFORMATION ----------------------------+
+|                |Local|Remote           |Rem  |Next      |   LBM   |    Rx LBR    | Loss |
+|Service         |Mepid|Mac Address      |Mepid|Seq Number|Tx  |ToTx|Io  |Ooo |Con |      |
++----------------+-----+-----------------+-----+----------+----+----+----+----+----+------|
+|VPLS:2980-4serv |1011 |00:03:18:55:72:B5|1030 |11        |10  |0   |10  |0   |0   |0     |
++----------------+-----+-----------------+-----+----------+----+----+----+----+----+------|</responseBody>
+        </item>
+        <item name="sample2">
+            <responseBody>+---------------------------- MEP LOOPBACK MESSAGE INFORMATION -----------------------------+
+|                  |Local|Remote           |Rem  |Next      |   LBM   |    Rx LBR    | Loss |
+|Service           |Mepid|Mac Address      |Mepid|Seq Number|Tx  |ToTx|Io  |Ooo |Con |      |
++------------------+-----+-----------------+-----+----------+----+----+----+----+----+------|
+|VPLS:2980-4serv   |1030 |00:03:18:58:D0:15|1011 |4         |3   |7   |3   |0   |1   |6     |
++------------------+-----+-----------------+-----+----------+----+----+----+----+----+------|
+</responseBody>
+        </item>
+        <item name="sample3">
+            <responseBody>+---------------------------- MEP LOOPBACK MESSAGE INFORMATION ---------------------------+
+|                |Local|Remote           |Rem  |Next      |   LBM   |    Rx LBR    | Loss |
+|Service         |Mepid|Mac Address      |Mepid|Seq Number|Tx  |ToTx|Io  |Ooo |Con |      |
++----------------+-----+-----------------+-----+----------+----+----+----+----+----+------|
+|VPWS:1991311-4serv|1234 |00:02:5A:01:11:B6|420  |6         |5   |0   |5   |0   |0   |0     |
++----------------+-----+-----------------+-----+----------+----+----+----+----+----+------|</responseBody>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties"/>
+        <item type="com.fnfr.svt.mapping.table.TabularMapperProperties">
+            <tabularMaps>
+                <item name="table1">
+                    <additionalBannerLineCount>1</additionalBannerLineCount>
+                    <banner>\\|Service\\s+\\|Mepid\\|Mac Address\\s+\\|Mepid\\|Seq Number\\|Tx\\s+\\|ToTx|Io\\s+\\|Ooo\\s+\\|Con\\s+\\|\\s+\\|</banner>
+                    <footer>\\+-*\\+-*\\+-*\\+-*\\+-*\\+-*\\+-*\\+-*\\+-*\\+-*\\+-*?(=\\|||\\+)</footer>
+                    <bannerStructure>Regex</bannerStructure>
+                    <footerStructure>Regex</footerStructure>
+                    <customDelimiter>|</customDelimiter>
+                    <delimiter>Custom</delimiter>
+                    <maxOccurences>1</maxOccurences>
+                    <columns>
+                        <item name="col1">
+                            <lastFullCell/>
+                            <showInStructuredData>false</showInStructuredData>
+                        </item>
+                        <item name="Service">
+                            <lastFullCell/>
+                        </item>
+                        <item name="Mepid">
+                            <lastFullCell/>
+                        </item>
+                        <item name="Mac_Address">
+                            <lastFullCell/>
+                        </item>
+                        <item name="Mepid1">
+                            <lastFullCell/>
+                        </item>
+                        <item name="Seq_Number">
+                            <lastFullCell/>
+                        </item>
+                        <item name="Tx">
+                            <lastFullCell/>
+                        </item>
+                        <item name="ToTx">
+                            <lastFullCell/>
+                        </item>
+                        <item name="Io">
+                            <lastFullCell/>
+                        </item>
+                        <item name="Ooo">
+                            <lastFullCell/>
+                        </item>
+                        <item name="Con">
+                            <lastFullCell/>
+                        </item>
+                        <item name="loss">
+                            <lastFullCell/>
+                        </item>
+                        <item name="col2">
+                            <lastFullCell/>
+                            <showInStructuredData>false</showInStructuredData>
+                        </item>
+                    </columns>
+                    <responseEndCountsAsEnd>false</responseEndCountsAsEnd>
+                </item>
+            </tabularMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="cfm loop show *" priority="40">
+        <application>
+            <item>com.fnfr.svt.applications.ssh</item>
+            <item>com.fnfr.svt.applications.telnet</item>
+        </application>
+    </applicabilityProperties>
+</ResponseMap>

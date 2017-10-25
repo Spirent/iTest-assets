@@ -1,0 +1,179 @@
+<?xml version="1.0" ?><ResponseMap version="6.0.0.18638fa">
+    <notes>NJL 3/15/13 Inital version</notes>
+    <headline>show ethernet cfm association for Adtran 838</headline>
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="command">
+                <command>
+                    <body>show ethernet cfm association </body>
+                </command>
+            </action>
+            <responseBody>
+Index 1 ADTN-TEST-DOMAIN/ADTN-TEST-ASSOCIATION
+   CCM Interval 1-second
+   MEP Database Rule: configured-only
+   Component   Primary VID         MIP-mode  Sender-ID   MEP-Count
+        1         1000             Defer       Defer         1
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;terminal RequiredForRendering=&quot;true&quot;&gt;
+        &lt;prompt&gt;838-10#&lt;/prompt&gt;
+        &lt;promptExtraction&gt;LAST_LINE&lt;/promptExtraction&gt;
+        &lt;echo/&gt;
+        &lt;idleTime&gt;0.206&lt;/idleTime&gt;
+        &lt;contentType&gt;text&lt;/contentType&gt;
+        &lt;terminator&gt;SLASH_R_SLASH_N&lt;/terminator&gt;
+    &lt;/terminal&gt;
+&lt;/structure&gt;
+</structuredData>
+        </item>
+        <item name="sample2">
+            <action actionType="command">
+                <command>
+                    <body>show ethernet cfm association </body>
+                </command>
+            </action>
+            <responseBody>
+Index 1 ADTN-TEST-DOMAIN/ADTN-TEST-ASSOCIATION
+   CCM Interval 1-second
+   MEP Database Rule: configured-only
+   Component   Primary VID         MIP-mode  Sender-ID   MEP-Count
+        1         1000             Defer       Defer         1
+
+Index 2 foo/bar
+   CCM Interval 10-seconds
+   MEP Database Rule: configured-only
+   Component   Primary VID         MIP-mode  Sender-ID   MEP-Count
+        1         1000             Defer       Defer         1
+        2         nick             Defer       Defer         10</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;terminal RequiredForRendering=&quot;true&quot;&gt;
+        &lt;prompt&gt;838-10#&lt;/prompt&gt;
+        &lt;promptExtraction&gt;LAST_LINE&lt;/promptExtraction&gt;
+        &lt;echo/&gt;
+        &lt;idleTime&gt;0.206&lt;/idleTime&gt;
+        &lt;contentType&gt;text&lt;/contentType&gt;
+        &lt;terminator&gt;SLASH_R_SLASH_N&lt;/terminator&gt;
+    &lt;/terminal&gt;
+&lt;/structure&gt;
+</structuredData>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties"/>
+        <item type="com.fnfr.svt.mapping.block.documents.BlockMapperProperties">
+            <BlockMaps name="container">
+                <nodes>
+                    <item name="association" type="com.fnfr.svt.mapping.block.documents.ResponseMapNodeContainer">
+                        <minOccurrences>0</minOccurrences>
+                        <maxOccurences>0</maxOccurences>
+                        <nodes>
+                            <item name="association_data" type="com.fnfr.svt.mapping.block.documents.ResponseMapBlock">
+                                <minOccurrences>0</minOccurrences>
+                                <lines>
+                                    <item>
+                                        <tokens>
+                                            <item parser="Word" representativeValue="Index"/>
+                                            <item isVariable="true" parser="Whitespace" representativeValue=" "/>
+                                            <item isKey="true" isVariable="true" name="index" parser="Number" representativeValue="1"/>
+                                            <item isVariable="true" parser="Whitespace" representativeValue=" "/>
+                                            <item isVariable="true" isWildcard="true" name="md" parser="Word" representativeValue="md"/>
+                                            <item parser="Punctuation" representativeValue="/"/>
+                                            <item isVariable="true" isWildcard="true" name="ma" parser="Word" representativeValue="ma"/>
+                                        </tokens>
+                                    </item>
+                                    <item>
+                                        <tokens>
+                                            <item isVariable="true" parser="Whitespace" representativeValue="   "/>
+                                            <item parser="Word" representativeValue="CCM"/>
+                                            <item isVariable="true" parser="Whitespace" representativeValue=" "/>
+                                            <item parser="Word" representativeValue="Interval"/>
+                                            <item isVariable="true" parser="Whitespace" representativeValue=" "/>
+                                            <item isVariable="true" isWildcard="true" name="ccm_interval" parser="Word" representativeValue="ccmInterval"/>
+                                        </tokens>
+                                    </item>
+                                    <item>
+                                        <tokens>
+                                            <item isVariable="true" parser="Whitespace" representativeValue="   "/>
+                                            <item parser="Word" representativeValue="MEP"/>
+                                            <item isVariable="true" parser="Whitespace" representativeValue=" "/>
+                                            <item parser="Word" representativeValue="Database"/>
+                                            <item isVariable="true" parser="Whitespace" representativeValue=" "/>
+                                            <item parser="Word" representativeValue="Rule"/>
+                                            <item parser="Punctuation" representativeValue=":"/>
+                                            <item isVariable="true" parser="Whitespace" representativeValue=" "/>
+                                            <item isVariable="true" isWildcard="true" name="db_rule" parser="Word" representativeValue="configuredonly"/>
+                                        </tokens>
+                                    </item>
+                                </lines>
+                            </item>
+                            <item name="component_table" type="com.fnfr.svt.mapping.block.documents.ResponseMapNodeContainer">
+                                <minOccurrences>0</minOccurrences>
+                                <nodes>
+                                    <item name="header" type="com.fnfr.svt.mapping.block.documents.ResponseMapBlock">
+                                        <minOccurrences>0</minOccurrences>
+                                        <lines>
+                                            <item>
+                                                <tokens>
+                                                    <item isVariable="true" parser="Whitespace" representativeValue="   "/>
+                                                    <item parser="Word" representativeValue="Component"/>
+                                                    <item isVariable="true" parser="Whitespace" representativeValue="   "/>
+                                                    <item parser="Word" representativeValue="Primary"/>
+                                                    <item isVariable="true" parser="Whitespace" representativeValue=" "/>
+                                                    <item parser="Word" representativeValue="VID"/>
+                                                    <item isVariable="true" parser="Whitespace" representativeValue="         "/>
+                                                    <item parser="Word" representativeValue="MIP"/>
+                                                    <item parser="Punctuation" representativeValue="-"/>
+                                                    <item parser="Word" representativeValue="mode"/>
+                                                    <item isVariable="true" parser="Whitespace" representativeValue="  "/>
+                                                    <item parser="Word" representativeValue="Sender"/>
+                                                    <item parser="Punctuation" representativeValue="-"/>
+                                                    <item parser="Word" representativeValue="ID"/>
+                                                    <item isVariable="true" parser="Whitespace" representativeValue="   "/>
+                                                    <item parser="Word" representativeValue="MEP"/>
+                                                    <item parser="Punctuation" representativeValue="-"/>
+                                                    <item parser="Word" representativeValue="Count"/>
+                                                </tokens>
+                                            </item>
+                                        </lines>
+                                    </item>
+                                    <item name="row" type="com.fnfr.svt.mapping.block.documents.ResponseMapBlock">
+                                        <minOccurrences>0</minOccurrences>
+                                        <maxOccurences>0</maxOccurences>
+                                        <lines>
+                                            <item>
+                                                <tokens>
+                                                    <item isVariable="true" parser="Whitespace" representativeValue="        "/>
+                                                    <item isKey="true" isVariable="true" name="component" parser="Number" representativeValue="1"/>
+                                                    <item isVariable="true" parser="Whitespace" representativeValue="         "/>
+                                                    <item isVariable="true" isWildcard="true" name="vid" parser="Word" representativeValue="vid"/>
+                                                    <item isVariable="true" parser="Whitespace" representativeValue="             "/>
+                                                    <item isVariable="true" name="mip_mode" parser="Word" representativeValue="Defer"/>
+                                                    <item isVariable="true" parser="Whitespace" representativeValue="       "/>
+                                                    <item isVariable="true" name="sender_id" parser="Word" representativeValue="Defer"/>
+                                                    <item isVariable="true" parser="Whitespace" representativeValue="         "/>
+                                                    <item isVariable="true" name="mep_count" parser="Number" representativeValue="1"/>
+                                                </tokens>
+                                            </item>
+                                        </lines>
+                                    </item>
+                                </nodes>
+                            </item>
+                        </nodes>
+                    </item>
+                </nodes>
+            </BlockMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="sh* eth* cfm assoc*">
+        <application>
+            <item>com.fnfr.svt.applications.cmd</item>
+            <item>com.fnfr.svt.applications.ssh</item>
+            <item>com.fnfr.svt.applications.telnet</item>
+        </application>
+    </applicabilityProperties>
+</ResponseMap>

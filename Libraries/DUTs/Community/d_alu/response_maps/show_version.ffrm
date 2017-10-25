@@ -1,0 +1,196 @@
+<?xml version="1.0" ?><ResponseMap version="6.0.0.18638fa">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="command">
+                <command>
+                    <body>show version</body>
+                </command>
+            </action>
+            <responseBody>TiMOS-C-11.0.R15 cpm/hops ALCATEL ESS 7450 Copyright (c) 2000-2015 Alcatel-Lucent.
+All rights reserved. All use subject to applicable license agreements.
+Built on Tue Feb 3 13:53:32 PST 2015 by builder in /rel11.0/b1/R15/panos/main
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;prompt&gt;A:MDLTWNNJ-LSW01# &lt;/prompt&gt;
+    &lt;echo&gt;show version &lt;/echo&gt;
+    &lt;promptName&gt;prompt1&lt;/promptName&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.1</duration>
+        </item>
+        <item name="sample2">
+            <action actionType="command">
+                <command>
+                    <body>show version</body>
+                </command>
+            </action>
+            <responseBody>TiMOS-C-11.0.R15 cpm/hops ALCATEL SR 7750 Copyright (c) 2000-2015 Alcatel-Lucent.
+All rights reserved. All use subject to applicable license agreements.
+Built on Tue Feb 3 13:53:32 PST 2015 by builder in /rel11.0/b1/R15/panos/main
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;prompt&gt;A:MDLTWNNJ-LVH21# &lt;/prompt&gt;
+    &lt;echo&gt;show version &lt;/echo&gt;
+    &lt;promptName&gt;prompt1&lt;/promptName&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.5</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="pattern1">
+                    <groups>
+                        <item name="anchor0">
+                            <start>0</start>
+                            <end>0</end>
+                        </item>
+                        <item name="Version">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>0</start>
+                            <end>16</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+cpm/hops ALCATEL\\s+</regex>
+                            <start>16</start>
+                            <end>34</end>
+                        </item>
+                        <item name="ModelType">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>34</start>
+                            <end>37</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>\\s+</regex>
+                            <start>37</start>
+                            <end>38</end>
+                        </item>
+                        <item name="ModelNumber">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>38</start>
+                            <end>42</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor3">
+                            <regex>\\s+Copyright \\(c\\)\\s+\\d+-\\d+\\s+Alcatel-Lucent\\.\\s+All rights reserved\\. All use subject to applicable license agreements\\.\\s+Built on\\s+[^\\r\\n]+\\s+by builder in /rel([\\d]+(\\.[\\d]+))/b\\d+/R\\d+/panos/main</regex>
+                            <start>42</start>
+                            <end>231</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>TiMOS-C-11.0.R15 cpm/hops ALCATEL ESS 7450 Copyright (c) 2000-2015 Alcatel-Lucent.
+All rights reserved. All use subject to applicable license agreements.
+Built on Tue Feb 3 13:53:32 PST 2015 by builder in /rel11.0/b1/R15/panos/main</sampleMatch>
+                </item>
+                <item name="pattern2">
+                    <groups>
+                        <item name="cpm_hops_ALCATEL">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>0</start>
+                            <end>16</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor0">
+                            <regex>\\s+cpm/hops ALCATEL\\s+</regex>
+                            <start>16</start>
+                            <end>34</end>
+                        </item>
+                        <item name="ModelType">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>34</start>
+                            <end>37</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+</regex>
+                            <start>37</start>
+                            <end>38</end>
+                        </item>
+                        <item name="ModelNumber">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>38</start>
+                            <end>42</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>\\s+Copyright</regex>
+                            <start>42</start>
+                            <end>52</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>TiMOS-C-11.0.R15 cpm/hops ALCATEL ESS 7450 Copyright</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="show version"/>
+</ResponseMap>

@@ -1,0 +1,110 @@
+<?xml version="1.0" ?><ResponseMap version="6.0.0.18638fa">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="command">
+                <command>
+                    <body>show configuration routing-instances VPLS:INFRA?</body>
+                </command>
+            </action>
+            <responseBody>Possible completions:
+  &lt;instance_name&gt;      Routing instance name
+  VPLS:INFRASTRUCTURE_VPLS_IPAG2  Routing instance name
+  VPLS:INFRA_NMVPN     Routing instance name
+  VPLS:INFRA_NTE_IPAG2  Routing instance name
+{master}
+spirentdev1@sfcca303ia2-PE14&gt; show configuration routing-instances VPLS:INFRA   
+
+{master}
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;isEmpty&gt;false&lt;/isEmpty&gt;
+    &lt;promptName&gt;normal&lt;/promptName&gt;
+    &lt;echo&gt;show configuration routing-instances VPLS:INFRA?&lt;/echo&gt;
+    &lt;prompt&gt;spirentdev1@sfcca303ia2-PE14&amp;gt; &lt;/prompt&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="isEmpty">
+                    <queryFormatString>.//isEmpty</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.3</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="nte_ipag_handle">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>VPLS:INFRA_NTE_</regex>
+                            <start>0</start>
+                            <end>15</end>
+                        </item>
+                        <item name="nte_ipag_type">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>15</start>
+                            <end>20</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+Routing instance name</regex>
+                            <start>20</start>
+                            <end>43</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>VPLS:INFRA_NTE_IPAG2  Routing instance name</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+                <item name="vpls_infra_handle">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>VPLS:</regex>
+                            <start>0</start>
+                            <end>5</end>
+                        </item>
+                        <item name="infra_key_string">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>5</start>
+                            <end>30</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+Routing instance name</regex>
+                            <start>30</start>
+                            <end>53</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>VPLS:INFRASTRUCTURE_VPLS_IPAG2  Routing instance name</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="show configuration routing-instances VPLS:INFRA?"/>
+</ResponseMap>

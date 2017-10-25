@@ -1,0 +1,117 @@
+<?xml version="1.0" ?><ResponseMap version="6.0.0.18638fa">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="command">
+                <command>
+                    <body>show rsvp neighbor instance PLS</body>
+                </command>
+            </action>
+            <responseBody>Jan 31 09:51:18 
+RSVP neighbor: 1 learned
+Address            Idle Up/Dn LastChange HelloInt HelloTx/Rx MsgRcvd
+0.0.0.0           0  1/0    20:28:36        9     0/0    0
+
+{backup}
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;isEmpty&gt;false&lt;/isEmpty&gt;
+    &lt;promptName&gt;system_prompt&lt;/promptName&gt;
+    &lt;echo&gt;show rsvp neighbor instance PLS&lt;/echo&gt;
+    &lt;prompt&gt;automation@PE50&amp;gt; &lt;/prompt&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="isEmpty">
+                    <queryFormatString>.//isEmpty</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.5</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="pattern1">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>RSVP neighbor:\\s+</regex>
+                            <start>0</start>
+                            <end>15</end>
+                        </item>
+                        <item name="RSVP_neighbor">
+                            <regex>[^\\r\\n]+</regex>
+                            <named>true</named>
+                            <start>15</start>
+                            <end>24</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>RSVP neighbor: 1 learned</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+            </regexMaps>
+        </item>
+        <item type="com.fnfr.svt.mapping.table.TabularMapperProperties">
+            <tabularMaps>
+                <item name="table1">
+                    <banner>Address            Idle Up/Dn LastChange HelloInt HelloTx/Rx MsgRcvd</banner>
+                    <bannerStructure>CaseInsensitive</bannerStructure>
+                    <minOccurences>0</minOccurences>
+                    <columns>
+                        <item name="Address">
+                            <lastFullCell/>
+                            <uid>d6856cbc-eb59-49e9-a95a-1c9b924f97b8</uid>
+                        </item>
+                        <item name="Idle">
+                            <lastFullCell/>
+                            <uid>f00ad1a0-3b28-4b27-a4ca-38c3e0676eeb</uid>
+                        </item>
+                        <item name="Up_Dn">
+                            <lastFullCell/>
+                            <uid>6c6fc2a0-2caa-467c-a08c-05279aeda102</uid>
+                        </item>
+                        <item name="LastChange">
+                            <lastFullCell/>
+                            <uid>a847ae90-99d1-4b51-a20c-059ae5fe79f0</uid>
+                        </item>
+                        <item name="HelloInt">
+                            <lastFullCell/>
+                            <uid>18ddfb83-14f6-41ae-aec4-99b00ded0b32</uid>
+                        </item>
+                        <item name="HelloTx_Rx">
+                            <lastFullCell/>
+                            <uid>5f778a41-de11-4c9a-8101-5d3e358c79a6</uid>
+                        </item>
+                        <item name="MsgRcvd">
+                            <lastFullCell/>
+                            <uid>dd7c14f7-78a6-499f-b04d-c3b9542b74bb</uid>
+                        </item>
+                    </columns>
+                </item>
+            </tabularMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="show rsvp neighbor instance *">
+        <application>
+            <item>com.fnfr.svt.applications.cmd</item>
+            <item>com.fnfr.itest.application.serial</item>
+            <item>com.fnfr.svt.applications.ssh</item>
+            <item>com.fnfr.svt.applications.telnet</item>
+        </application>
+    </applicabilityProperties>
+</ResponseMap>

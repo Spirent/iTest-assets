@@ -1,0 +1,1100 @@
+<?xml version="1.0" ?><ResponseMap version="6.0.0.18638fa">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="command">
+                <command>
+                    <body>show configuration firewall family inet filter PROTECTHOST</body>
+                </command>
+            </action>
+            <responseBody>accounting-profile PROTECTHOSTPROFILE;
+term FRAGMENTS {
+    from {
+        is-fragment;
+    }
+    then {
+        count FRAGMENTS_DENIED;
+        log;
+        discard;
+    }
+}
+term FIRSTFRAGS {
+    from {
+        first-fragment;
+    }
+    then {
+        count FIRSTFRAGS_DENIED;
+        log;
+        discard;
+    }
+}
+# BAD_OPTIONS not required on RR
+term BAD_OPTIONS {
+    from {
+        ip-options [ loose-source-route route-record security timestamp stream-id strict-source-route ];
+    }
+    then {
+        count BAD_OPTIONS_DENIED;
+        log;
+        discard;
+    }
+}
+# RATE_LIMIT_LSP_PING not required on RR
+term RATE_LIMIT_LSP_PING {
+    from {
+        source-prefix-list {
+            PL_LSP_PING_ADDRESSES;
+        }
+        protocol udp;
+        port 3503;
+    }
+    then {
+        policer SMALL_BANDWIDTH_POLICER;
+        count LSP_PERMITTED;
+        accept;
+    }
+}
+# RSVP_PERMIT not required on RR
+term RSVP_PERMIT {
+    from {
+        source-prefix-list {
+            PL_INFRASTRUCTURE_ADDRESSES;
+        }
+        protocol rsvp;
+    }
+    then {
+        count RSVP_PERMITTED;
+        accept;
+    }
+}
+# BFD_PERMIT not required on RR
+term BFD_PERMIT {
+    from {
+        source-prefix-list {
+            PL_LINK_ADDRESSES;
+        }
+        protocol udp;
+        port 3784;
+    }
+    then {
+        policer NM_POLICER;
+        count BFD_PERMITTED;
+        accept;
+    }
+}
+term OPTIONS {
+    from {
+        ip-options any;
+    }
+    then {
+        count OPTION_PACKETS;
+        log;
+        discard;
+    }
+}
+term SSH_DENY {
+    from {
+        source-prefix-list {
+            PL_DEFAULT;
+            PL_SSH_ADDRESSES except;
+        }
+        protocol tcp;
+        port ssh;
+    }
+    then {
+        count SSH_DENIED;
+        log;
+        discard;
+    }
+}                                       
+term TELNET_DENY {
+    from {
+        source-prefix-list {
+            PL_DEFAULT;
+            PL_TELNET_ADDRESSES_CRYPT except;
+        }
+        protocol tcp;
+        port telnet;
+    }
+    then {
+        count TELNET_DENIED;
+        log;
+        discard;
+    }
+}
+term FTP_DENY {
+    from {
+        source-prefix-list {
+            PL_DEFAULT;
+            PL_FTP_ADDRESSES except;
+        }
+        protocol tcp;
+        port [ ftp ftp-data ];
+    }
+    then {
+        count FTP_DENIED;
+        log;
+        discard;
+    }
+}
+term TACACS_DENY {
+    from {
+        source-prefix-list {
+            PL_DEFAULT;
+            PL_TACACS_ADDRESSES except;
+        }
+        protocol tcp;
+        port 49339;
+    }
+    then {
+        count TACACS_DENIED;
+        log;
+        discard;
+    }
+}
+term JSCRIPT_DENY {
+    from {
+        source-prefix-list {
+            PL_DEFAULT;
+            PL_JSCRIPT_ADDRESSES except;
+        }
+        protocol tcp;
+        port [ 3220 3221 ];
+    }
+    then {
+        count JSCRIPT_DENIED;
+        log;
+        discard;
+    }
+}
+term BGP_DENY {
+    from {
+        source-prefix-list {
+            PL_DEFAULT;
+            PL_BGP_ADDRESSES except;
+        }
+        protocol tcp;
+        port bgp;
+    }
+    then {
+        count BGP_DENIED;
+        log;
+        discard;
+    }
+}
+term LDP_DENY {
+    from {
+        source-prefix-list {
+            PL_DEFAULT;
+            PL_LDP_ADDRESSES except;
+            PL_OSPF_ADDRESSES except;
+        }
+        protocol [ tcp udp ];
+        port 646;
+    }
+    then {
+        count LDP_DENIED;
+        log;
+        discard;
+    }
+}
+term RATE_LIMIT_TCP_CONNECTION {
+    from {
+        source-prefix-list {
+            PL_SSH_ADDRESSES;
+            PL_TELNET_ADDRESSES_CRYPT;
+            PL_BGP_ADDRESSES;
+            PL_TACACS_ADDRESSES;
+            PL_LDP_ADDRESSES;           
+            PL_OSPF_ADDRESSES;
+            PL_JSCRIPT_ADDRESSES;
+        }
+        protocol tcp;
+        port [ ssh telnet bgp 49339 646 3221 ftp ftp-data 862 ];
+        tcp-flags &quot;(syn &amp; !ack) | fin | rst&quot;;
+    }
+    then {
+        policer TCP_POLICER;
+        count TCP_CONNECTIONS;
+        next term;
+    }
+}
+term BGP_PERMIT {
+    from {
+        destination-prefix-list {
+            PL_LOOPBACK_ADDRESS;
+            PL_LINK_ADDRESSES;
+        }
+        protocol tcp;
+        port bgp;
+    }
+    then {
+        count BGP_PERMITTED;
+        accept;
+    }
+}
+term LDP_PERMIT {
+    from {
+        source-prefix-list {
+            PL_LINK_ADDRESSES;
+            PL_LDP_ADDRESSES;
+        }
+        protocol [ tcp udp ];
+        port 646;
+    }
+    then {
+        count LDP_PERMITTED;
+        accept;
+    }
+}
+term OSPF_PERMIT {
+    from {
+        source-prefix-list {
+            PL_OSPF_ADDRESSES;
+        }
+        protocol ospf;
+    }
+    then {
+        count OSPF_PERMITTED;
+        accept;
+    }
+}
+term BAD_SERVER_DENY {
+    from {
+        protocol tcp;
+        destination-port 49339;
+    }
+    then {
+        count BAD_SERVER_DENIED;
+        log;
+        discard;
+    }
+}
+# port 862 not on RR
+term BAD_CLIENT_DENY {
+    from {
+        protocol tcp;
+        source-port [ 3220 3221 862 ];
+    }
+    then {
+        count BAD_CLIENT_DENIED;
+        log;
+        discard;
+    }
+}
+term RATE_LIMIT_TTL_EXPIRED {
+    from {
+        ttl [ 0 1 ];
+    }
+    then {
+        policer TTL_POLICER;
+        count TTL_PERMITTED;
+        next term;
+    }
+}
+term RATE_LIMIT_BULK {
+    from {
+        source-prefix-list {
+            PL_BULK_DATA_ADDRESSES;
+        }
+        destination-prefix-list {
+            PL_LOOPBACK_ADDRESS;
+        }
+        protocol tcp;
+        port [ ssh ftp ftp-data ];
+    }
+    then {
+        policer BULK_DATA_POLICER;      
+        count BULK_PERMITTED;
+        accept;
+    }
+}
+term RATE_LIMIT_NM {
+    from {
+        destination-prefix-list {
+            PL_LOOPBACK_ADDRESS;
+            PL_IRB_ADDRESS;
+            PL_FXP0_ADDRESSES;
+        }
+        protocol tcp;
+        port [ ssh telnet 49339 3220 3221 ftp ftp-data 862 ];
+    }
+    then {
+        policer NM_POLICER;
+        count NM_PERMITTED;
+        accept;
+    }
+}
+term SNMP_PERMIT {
+    from {
+        source-prefix-list {
+            PL_SNMP_CLIENTS;
+        }
+        destination-prefix-list {
+            PL_LOOPBACK_ADDRESS;
+        }
+        protocol udp;
+        destination-port snmp;
+    }
+    then {
+        policer NM_POLICER;
+        count SNMP_PERMITTED;
+        accept;
+    }
+}
+term NTP_PERMIT {
+    from {
+        source-prefix-list {
+            PL_LOOPBACK_ADDRESS;
+            PL_NTP_ADDRESSES;
+        }
+        destination-prefix-list {
+            PL_LOOPBACK_ADDRESS;
+        }
+        protocol udp;
+        port ntp;
+    }
+    then {
+        policer NM_POLICER;
+        count NTP_PERMITTED;
+        accept;
+    }
+}
+term DNS_PERMIT {
+    from {
+        source-prefix-list {
+            PL_DNS_ADDRESSES;
+        }
+        protocol udp;
+        source-port domain;
+    }
+    then {
+        policer NM_POLICER;
+        count DNS_PERMITTED;
+        accept;
+    }
+}
+term RATE_LIMIT_TRACEROUTE {
+    from {
+        protocol udp;
+        destination-port 33434-33523;
+    }
+    then {
+        policer TINY_BANDWIDTH_POLICER;
+        count TRACEROUTE_PERMITTED;
+        accept;
+    }
+}
+term RATE_LIMIT_TINY_ICMP {
+    from {
+        packet-length 0-63;
+        protocol icmp;
+        icmp-type [ echo-request echo-reply unreachable time-exceeded ];
+    }
+    then {
+        policer TINY_BANDWIDTH_POLICER;
+        count TINY_ICMP_PERMITTED;
+        accept;
+    }
+}
+term RATE_LIMIT_ICMP {
+    from {
+        packet-length 64-999;
+        protocol icmp;
+        icmp-type [ echo-request echo-reply unreachable time-exceeded ];
+    }
+    then {                              
+        policer SMALL_BANDWIDTH_POLICER;
+        count ICMP_PERMITTED;
+        accept;
+    }
+}
+term RATE_LIMIT_BIG_ICMP {
+    from {
+        protocol icmp;
+        icmp-type [ echo-request echo-reply unreachable time-exceeded ];
+    }
+    then {
+        policer BIG_BANDWIDTH_POLICER;
+        count BIG_ICMP_PERMITTED;
+        accept;
+    }
+}
+/* All other traffic that is not trusted is silently dropped. Juniper recommends logging the denied traffic for analysis purposes. */
+term DENY_EVERYTHING_ELSE {
+    then {
+        count OTHER_DENIED;
+        log;
+        discard;
+    }
+}
+
+{master}
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;prompt&gt;spirentdev1@sfcca302ia1-PE8&amp;gt; &lt;/prompt&gt;
+    &lt;echo&gt;show configuration firewall family inet filter PROTECTHOST &lt;/echo&gt;
+    &lt;promptName&gt;normal&lt;/promptName&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+            </aliases>
+            <duration>1.5</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="pattern1">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>term\\s+</regex>
+                            <start>0</start>
+                            <end>5</end>
+                        </item>
+                        <item name="term_name">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <key>true</key>
+                            <start>5</start>
+                            <end>24</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+\\{\\s+from \\{\\s+source-prefix-list \\{\\s+PL_LSP_PING_ADDRESSES;\\s+}\\s+\\s+protocol udp;\\s+port\\s+\\d+;\\s+}\\s+\\s+then \\{\\s+policer\\s+</regex>
+                            <start>24</start>
+                            <end>186</end>
+                        </item>
+                        <item name="policer_name">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>186</start>
+                            <end>209</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>;\\s+count\\s+</regex>
+                            <start>209</start>
+                            <end>225</end>
+                        </item>
+                        <item name="counter_name">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>225</start>
+                            <end>238</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor3">
+                            <regex>;\\s+accept;\\s+}\\s+}</regex>
+                            <start>238</start>
+                            <end>263</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>term RATE_LIMIT_LSP_PING {
+    from {
+        source-prefix-list {
+            PL_LSP_PING_ADDRESSES;
+        }
+        protocol udp;
+        port 3503;
+    }
+    then {
+        policer SMALL_BANDWIDTH_POLICER;
+        count LSP_PERMITTED;
+        accept;
+    }
+}</sampleMatch>
+                    <optional>true</optional>
+                </item>
+                <item name="pattern5">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>term\\s+</regex>
+                            <start>0</start>
+                            <end>5</end>
+                        </item>
+                        <item name="term_name">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <key>true</key>
+                            <start>5</start>
+                            <end>30</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+\\{\\s+from \\{\\s+source-prefix-list \\{\\s+PL_SSH_ADDRESSES;\\s+PL_TELNET_ADDRESSES_CRYPT;\\s+PL_BGP_ADDRESSES;\\s+PL_TACACS_ADDRESSES;\\s+PL_LDP_ADDRESSES;\\s+PL_OSPF_ADDRESSES;\\s+PL_JSCRIPT_ADDRESSES;\\s+}\\s+\\s+protocol tcp;\\s+port \\[ ssh telnet bgp\\s+\\d+\\s+\\d+\\s+\\d+\\s+ftp ftp-data\\s+\\d+\\s+];\\s+tcp-flags &quot;\\(syn &amp; !ack\\) \\| fin \\| rst&quot;;\\s+}\\s+\\s+then \\{\\s+policer\\s+</regex>
+                            <start>30</start>
+                            <end>487</end>
+                        </item>
+                        <item name="policer_name">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>487</start>
+                            <end>498</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>;\\s+count\\s+</regex>
+                            <start>498</start>
+                            <end>514</end>
+                        </item>
+                        <item name="counter_name">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>514</start>
+                            <end>529</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor3">
+                            <regex>;\\s+next term;\\s+}\\s+}</regex>
+                            <start>529</start>
+                            <end>557</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>term RATE_LIMIT_TCP_CONNECTION {
+    from {
+        source-prefix-list {
+            PL_SSH_ADDRESSES;
+            PL_TELNET_ADDRESSES_CRYPT;
+            PL_BGP_ADDRESSES;
+            PL_TACACS_ADDRESSES;
+            PL_LDP_ADDRESSES;           
+            PL_OSPF_ADDRESSES;
+            PL_JSCRIPT_ADDRESSES;
+        }
+        protocol tcp;
+        port [ ssh telnet bgp 49339 646 3221 ftp ftp-data 862 ];
+        tcp-flags &quot;(syn &amp; !ack) | fin | rst&quot;;
+    }
+    then {
+        policer TCP_POLICER;
+        count TCP_CONNECTIONS;
+        next term;
+    }
+}</sampleMatch>
+                    <optional>true</optional>
+                </item>
+                <item name="pattern6">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>term\\s+</regex>
+                            <start>0</start>
+                            <end>5</end>
+                        </item>
+                        <item name="term_name">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <key>true</key>
+                            <start>5</start>
+                            <end>26</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+\\{\\s+from \\{\\s+protocol udp;\\s+destination-port\\s+\\d+-\\d+;\\s+}\\s+\\s+then \\{\\s+policer\\s+</regex>
+                            <start>26</start>
+                            <end>133</end>
+                        </item>
+                        <item name="policer_name">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>133</start>
+                            <end>155</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>;\\s+count\\s+</regex>
+                            <start>155</start>
+                            <end>171</end>
+                        </item>
+                        <item name="counter_name">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>171</start>
+                            <end>191</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor3">
+                            <regex>;\\s+accept;\\s+}\\s+}</regex>
+                            <start>191</start>
+                            <end>216</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>term RATE_LIMIT_TRACEROUTE {
+    from {
+        protocol udp;
+        destination-port 33434-33523;
+    }
+    then {
+        policer TINY_BANDWIDTH_POLICER;
+        count TRACEROUTE_PERMITTED;
+        accept;
+    }
+}</sampleMatch>
+                    <optional>true</optional>
+                </item>
+                <item name="pattern7">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>term\\s+</regex>
+                            <start>0</start>
+                            <end>5</end>
+                        </item>
+                        <item name="term_name">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <key>true</key>
+                            <start>5</start>
+                            <end>25</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+\\{\\s+from \\{\\s+packet-length\\s+\\d+-\\d+;\\s+protocol icmp;\\s+icmp-type \\[ echo-request echo-reply unreachable time-exceeded ];\\s+}\\s+\\s+then \\{\\s+policer\\s+</regex>
+                            <start>25</start>
+                            <end>196</end>
+                        </item>
+                        <item name="policer_name">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>196</start>
+                            <end>218</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>;\\s+count\\s+</regex>
+                            <start>218</start>
+                            <end>234</end>
+                        </item>
+                        <item name="counter_name">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>234</start>
+                            <end>253</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor3">
+                            <regex>;\\s+accept;\\s+}\\s+}</regex>
+                            <start>253</start>
+                            <end>278</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>term RATE_LIMIT_TINY_ICMP {
+    from {
+        packet-length 0-63;
+        protocol icmp;
+        icmp-type [ echo-request echo-reply unreachable time-exceeded ];
+    }
+    then {
+        policer TINY_BANDWIDTH_POLICER;
+        count TINY_ICMP_PERMITTED;
+        accept;
+    }
+}</sampleMatch>
+                    <optional>true</optional>
+                </item>
+                <item name="pattern8">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>term\\s+</regex>
+                            <start>0</start>
+                            <end>5</end>
+                        </item>
+                        <item name="term_name">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <key>true</key>
+                            <start>5</start>
+                            <end>24</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+\\{\\s+from \\{\\s+protocol icmp;\\s+icmp-type \\[ echo-request echo-reply unreachable time-exceeded ];\\s+}\\s+\\s+then \\{\\s+policer\\s+</regex>
+                            <start>24</start>
+                            <end>167</end>
+                        </item>
+                        <item name="policer_name">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>167</start>
+                            <end>188</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>;\\s+count\\s+</regex>
+                            <start>188</start>
+                            <end>204</end>
+                        </item>
+                        <item name="counter_name">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>204</start>
+                            <end>222</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor3">
+                            <regex>;\\s+accept;\\s+}\\s+}</regex>
+                            <start>222</start>
+                            <end>247</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>term RATE_LIMIT_BIG_ICMP {
+    from {
+        protocol icmp;
+        icmp-type [ echo-request echo-reply unreachable time-exceeded ];
+    }
+    then {
+        policer BIG_BANDWIDTH_POLICER;
+        count BIG_ICMP_PERMITTED;
+        accept;
+    }
+}</sampleMatch>
+                    <optional>true</optional>
+                </item>
+                <item name="pattern9">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>term\\s+</regex>
+                            <start>0</start>
+                            <end>5</end>
+                        </item>
+                        <item name="term_name">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <key>true</key>
+                            <start>5</start>
+                            <end>18</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+\\{\\s+from \\{\\s+destination-prefix-list \\{\\s+PL_LOOPBACK_ADDRESS;\\s+PL_IRB_ADDRESS;\\s+PL_FXP\\d+_ADDRESSES;\\s+}\\s+\\s+protocol tcp;\\s+port \\[ ssh telnet\\s+\\d+\\s+\\d+\\s+\\d+\\s+ftp ftp-data\\s+\\d+\\s+];\\s+}\\s+\\s+then \\{\\s+policer\\s+</regex>
+                            <start>18</start>
+                            <end>285</end>
+                        </item>
+                        <item name="policer_name">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>285</start>
+                            <end>295</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>;\\s+count\\s+</regex>
+                            <start>295</start>
+                            <end>311</end>
+                        </item>
+                        <item name="counter_name">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>311</start>
+                            <end>323</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor3">
+                            <regex>;\\s+accept;\\s+}\\s+}</regex>
+                            <start>323</start>
+                            <end>348</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>term RATE_LIMIT_NM {
+    from {
+        destination-prefix-list {
+            PL_LOOPBACK_ADDRESS;
+            PL_IRB_ADDRESS;
+            PL_FXP0_ADDRESSES;
+        }
+        protocol tcp;
+        port [ ssh telnet 49339 3220 3221 ftp ftp-data 862 ];
+    }
+    then {
+        policer NM_POLICER;
+        count NM_PERMITTED;
+        accept;
+    }
+}</sampleMatch>
+                    <optional>true</optional>
+                </item>
+                <item name="pattern10">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>term\\s+</regex>
+                            <start>0</start>
+                            <end>5</end>
+                        </item>
+                        <item name="term_name">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <key>true</key>
+                            <start>5</start>
+                            <end>20</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+\\{\\s+from \\{\\s+source-prefix-list \\{\\s+PL_BULK_DATA_ADDRESSES;\\s+}\\s+\\s+destination-prefix-list \\{\\s+PL_LOOPBACK_ADDRESS;\\s+}\\s+\\s+protocol tcp;\\s+port \\[ ssh ftp ftp-data ];\\s+}\\s+\\s+then \\{\\s+policer\\s+</regex>
+                            <start>20</start>
+                            <end>276</end>
+                        </item>
+                        <item name="policer_name">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>276</start>
+                            <end>293</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>;\\s+count\\s+</regex>
+                            <start>293</start>
+                            <end>315</end>
+                        </item>
+                        <item name="counter_name">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>315</start>
+                            <end>329</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor3">
+                            <regex>;\\s+accept;\\s+}\\s+}</regex>
+                            <start>329</start>
+                            <end>354</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>term RATE_LIMIT_BULK {
+    from {
+        source-prefix-list {
+            PL_BULK_DATA_ADDRESSES;
+        }
+        destination-prefix-list {
+            PL_LOOPBACK_ADDRESS;
+        }
+        protocol tcp;
+        port [ ssh ftp ftp-data ];
+    }
+    then {
+        policer BULK_DATA_POLICER;      
+        count BULK_PERMITTED;
+        accept;
+    }
+}</sampleMatch>
+                    <optional>true</optional>
+                </item>
+                <item name="pattern11">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>term\\s+</regex>
+                            <start>0</start>
+                            <end>5</end>
+                        </item>
+                        <item name="term_name">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <key>true</key>
+                            <start>5</start>
+                            <end>27</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+\\{\\s+from \\{\\s+ttl \\[\\s+\\d+\\s+\\d+\\s+];\\s+}\\s+\\s+then \\{\\s+policer\\s+</regex>
+                            <start>27</start>
+                            <end>95</end>
+                        </item>
+                        <item name="policer_name">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>95</start>
+                            <end>106</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>;\\s+count\\s+</regex>
+                            <start>106</start>
+                            <end>122</end>
+                        </item>
+                        <item name="counter_name">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>122</start>
+                            <end>135</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor3">
+                            <regex>;\\s+next term;\\s+}\\s+}</regex>
+                            <start>135</start>
+                            <end>163</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>term RATE_LIMIT_TTL_EXPIRED {
+    from {
+        ttl [ 0 1 ];
+    }
+    then {
+        policer TTL_POLICER;
+        count TTL_PERMITTED;
+        next term;
+    }
+}</sampleMatch>
+                    <optional>true</optional>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="show configuration firewall family inet filter PROTECTHOST">
+        <application>
+            <item>com.fnfr.svt.applications.cmd</item>
+            <item>com.fnfr.svt.applications.ssh</item>
+            <item>com.fnfr.svt.applications.telnet</item>
+        </application>
+    </applicabilityProperties>
+</ResponseMap>

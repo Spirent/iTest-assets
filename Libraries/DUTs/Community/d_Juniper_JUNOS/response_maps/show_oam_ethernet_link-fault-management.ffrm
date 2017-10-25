@@ -1,0 +1,259 @@
+<?xml version="1.0" ?><ResponseMap version="6.0.0.18638fa">
+    <sampleDictionary>
+        <item name="sample1">
+            <action>
+                <command>
+                    <body>show oam ethernet link-fault-management</body>
+                </command>
+            </action>
+            <responseBody>  Interface: ae10
+    Status: Running, Discovery state: Send Any
+    Transmit interval: 100ms, PDU threshold: 3 frames, Hold time: 0ms
+  Interface: ae11
+    Status: Running, Discovery state: Send Any
+    Transmit interval: 100ms, PDU threshold: 3 frames, Hold time: 0ms
+  Interface: ae19
+    Status: Running, Discovery state: Fault
+    Transmit interval: 1000ms, PDU threshold: 3 frames, Hold time: 0ms
+  Interface: ae69
+    Status: Running, Discovery state: Send Any
+    Transmit interval: 1000ms, PDU threshold: 3 frames, Hold time: 0ms
+  Interface: ae96
+    Status: Running, Discovery state: Fault
+    Transmit interval: 100ms, PDU threshold: 3 frames, Hold time: 0ms
+  Interface: ge-1/0/1
+    Status: Running, Discovery state: Fault
+    Transmit interval: 1000ms, PDU threshold: 3 frames, Hold time: 0ms
+    Peer address: 00:00:00:00:00:00
+    Flags:0x8
+    Loopback tracking: Disabled, Loop status: Unknown
+  Interface: ge-1/0/2
+    Status: Running, Discovery state: Fault
+    Transmit interval: 1000ms, PDU threshold: 3 frames, Hold time: 0ms
+    Peer address: 00:00:00:00:00:00
+    Flags:0x8
+    Loopback tracking: Disabled, Loop status: Unknown
+  Interface: xe-5/1/0
+    Status: Running, Discovery state: Send Any
+    Transmit interval: 1000ms, PDU threshold: 3 frames, Hold time: 3000ms
+    Peer address: 00:23:8a:31:93:32
+    Flags:Remote-Stable Remote-State-Valid Local-Stable 0x50
+    Loopback tracking: Disabled, Loop status: Unknown
+    Remote entity information:
+      Remote MUX action: forwarding, Remote parser action: forwarding
+      Discovery mode: active, Unidirectional mode: unsupported
+      Remote loopback mode: supported, Link events: supported
+      Variable requests: unsupported
+  Interface: xe-5/2/0
+    Status: Running, Discovery state: Send Any
+    Transmit interval: 1000ms, PDU threshold: 3 frames, Hold time: 3000ms
+    Peer address: 00:23:8a:31:93:34
+    Flags:Remote-Stable Remote-State-Valid Local-Stable 0x50
+    Loopback tracking: Disabled, Loop status: Unknown
+    Remote entity information:
+      Remote MUX action: forwarding, Remote parser action: forwarding
+      Discovery mode: active, Unidirectional mode: unsupported
+      Remote loopback mode: supported, Link events: supported
+      Variable requests: unsupported
+  Interface: et-2/0/0
+    Status: Running, Discovery state: Send Any
+    Transmit interval: 100ms, PDU threshold: 3 frames, Hold time: 300ms
+    Peer address: 3c:61:04:06:35:9c
+    Flags:Remote-Stable Remote-State-Valid Local-Stable 0x50
+    Loopback tracking: Disabled, Loop status: Unknown
+    Remote entity information:
+      Remote MUX action: forwarding, Remote parser action: forwarding
+      Discovery mode: active, Unidirectional mode: unsupported
+      Remote loopback mode: supported, Link events: supported
+      Variable requests: unsupported
+  Interface: et-3/0/0
+    Status: Running, Discovery state: Send Any
+    Transmit interval: 100ms, PDU threshold: 3 frames, Hold time: 300ms
+    Peer address: 78:19:f7:bc:a7:11
+    Flags:Remote-Stable Remote-State-Valid Local-Stable 0x50
+    Loopback tracking: Disabled, Loop status: Unknown
+    Remote entity information:
+      Remote MUX action: forwarding, Remote parser action: forwarding
+      Discovery mode: active, Unidirectional mode: unsupported
+      Remote loopback mode: supported, Link events: supported
+      Variable requests: unsupported
+Application profile statistics:
+  Profile Name                   Invoked     Executed
+  AP_NM_8023AH_DEGRADE                     0        0
+  AP_NM_8023AH_DG_FE                       0        0
+  AP_NM_8023AH_DG_FP                       0        0
+  AP_NM_8023AH_DG_FPS                      0        0
+  AP_NM_8023AH_DG_SP                       0        0
+  AP_NM_8023AH_DOWN_LOG                    0        0
+  AP_NM_8023AH_LOG                         0        0
+
+{master}
+</responseBody>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="pattern1">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Interface:\\s+</regex>
+                            <start>0</start>
+                            <end>11</end>
+                        </item>
+                        <item name="Interface">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <key>true</key>
+                            <start>11</start>
+                            <end>12</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+Status:\\s+</regex>
+                            <start>12</start>
+                            <end>25</end>
+                        </item>
+                        <item name="Status">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>25</start>
+                            <end>32</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>, Discovery state:\\s+</regex>
+                            <start>32</start>
+                            <end>51</end>
+                        </item>
+                        <item name="Discovery_state">
+                            <regex>[^0-9\\r\\n]+</regex>
+                            <named>true</named>
+                            <start>51</start>
+                            <end>59</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor3">
+                            <regex>\\s+Transmit interval:\\s+</regex>
+                            <start>59</start>
+                            <end>83</end>
+                        </item>
+                        <item name="Transmit_interval">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>83</start>
+                            <end>86</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor4">
+                            <regex>ms, PDU threshold:\\s+</regex>
+                            <start>86</start>
+                            <end>105</end>
+                        </item>
+                        <item name="PDU_threshold">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>105</start>
+                            <end>106</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor5">
+                            <regex>\\s+frames, Hold time:\\s+</regex>
+                            <start>106</start>
+                            <end>126</end>
+                        </item>
+                        <item name="Hold_time">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>126</start>
+                            <end>127</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor6">
+                            <regex>ms</regex>
+                            <start>127</start>
+                            <end>129</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>Interface: *
+    Status: Running, Discovery state: Send Any
+    Transmit interval: 100ms, PDU threshold: 3 frames, Hold time: 0ms</sampleMatch>
+                    <optional>true</optional>
+                </item>
+            </regexMaps>
+        </item>
+        <item type="com.fnfr.svt.mapping.block.documents.BlockMapperProperties">
+            <BlockMaps name="container"/>
+        </item>
+        <item type="com.fnfr.svt.mapping.table.TabularMapperProperties">
+            <tabularMaps>
+                <item name="table1">
+                    <banner>  Profile Name                   Invoked     Executed</banner>
+                    <bannerStructure>CaseInsensitive</bannerStructure>
+                    <minOccurences>0</minOccurences>
+                    <columns>
+                        <item name="Profile_Name">
+                            <isKey>true</isKey>
+                            <lastFullCell/>
+                        </item>
+                        <item name="Invoked">
+                            <lastFullCell/>
+                        </item>
+                        <item name="Executed">
+                            <lastFullCell/>
+                        </item>
+                    </columns>
+                </item>
+            </tabularMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="show oam ethernet link-fault-management">
+        <application>
+            <item>com.fnfr.svt.applications.telnet</item>
+        </application>
+    </applicabilityProperties>
+    <aliases>
+        <item name="interface_name">
+            <queryFormatString>(mapped/Regex/Body/pattern1)[{0}]/Interface</queryFormatString>
+            <arguments>
+                <item name="row"/>
+            </arguments>
+        </item>
+    </aliases>
+</ResponseMap>

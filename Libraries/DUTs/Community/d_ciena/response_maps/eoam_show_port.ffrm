@@ -1,0 +1,301 @@
+<?xml version="1.0" ?><ResponseMap version="6.0.0.18638fa">
+    <notes>2/10/13 NJL: Fixe applicability and added tables and patterns to replace existing pattern.</notes>
+    <headline>Ciena eoam show port </headline>
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="command">
+                <command>
+                    <body>eoam show port 9</body>
+                </command>
+            </action>
+            <responseBody>+--Global Oam Status --+
+|        Enable        |
++----------------------+
++----------------------------- Oam  Port  Statistics -----------------------------------+
+|Port|Admin| Oper State |Mode|OAM Func Support|   Info     |    Info   | Unkn |Pdu |Link|
+|    |State|            |    |UniD|Lb |Ev |Var|   PduTx    |    PduRx  |CodeRx|Time|Lost|
++----+-----+------------+----+----+---+---+---+------------+-----------+----------------+
+|9   |En   |SendAny     |Act |0   |1  |1  |0  |54923       |54735      |0     |100 |500 |
++----+-----+------------+----+----+---+---+---+------------+-----------+------+----+----+
+
+
++----------------------  Oam  Peer Port  Info -----------------------------------------+
+| Oper State |Mode|OAM Func Support|Max OamPdu |     Peer Mac Address         | Faults |
+|            |    |UniD|Lb |Ev |Var|   size    |                              |CE|DG|LF|
++------------+----+----+---+---+---+-----------+------------------------------+--+--+--+
+|Active      |Act |0   |1  |1  |0  |938        |00:17:cb:d4:61:a1             |  |  |  |
++------------+----+----+---+---+---+-----------+------------------------------+--+--+--+
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+                    
+    &lt;prompt&gt;3911-13_BGPMH_Dhaval&amp;gt; &lt;/prompt&gt;
+
+                        &lt;echo&gt;eoam show port 9&lt;/echo&gt;
+
+                        &lt;promptName&gt;normal&lt;/promptName&gt;
+
+                    
+                &lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.5</duration>
+        </item>
+        <item name="sample2">
+            <action actionType="command">
+                <command>
+                    <body>eoam show port 9</body>
+                </command>
+            </action>
+            <responseBody>+--Global Oam Status --+
+|        Enable        |
++----------------------+
++----------------------------- Oam  Port  Statistics -----------------------------------+
+|Port|Admin| Oper State |Mode|OAM Func Support|   Info     |    Info   | Unkn |Pdu |Link|
+|    |State|            |    |UniD|Lb |Ev |Var|   PduTx    |    PduRx  |CodeRx|Time|Lost|
++----+-----+------------+----+----+---+---+---+------------+-----------+----------------+
+|9   |En   |SendAny     |Act |0   |1  |1  |0  |54923       |54735      |0     |100 |500 |
++----+-----+------------+----+----+---+---+---+------------+-----------+------+----+----+
+
+
++----------------------  Oam  Peer Port  Info -----------------------------------------+
+| Oper State |Mode|OAM Func Support|Max OamPdu |     Peer Mac Address         | Faults |
+|            |    |UniD|Lb |Ev |Var|   size    |                              |CE|DG|LF|
++------------+----+----+---+---+---+-----------+------------------------------+--+--+--+
+|Active      |Act |0   |1  |1  |0  |938        |00:17:cb:d4:61:a1             |a |b |c |
++------------+----+----+---+---+---+-----------+------------------------------+--+--+--+
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+                    
+    &lt;prompt&gt;3911-13_BGPMH_Dhaval&amp;gt; &lt;/prompt&gt;
+
+                        &lt;echo&gt;eoam show port 9&lt;/echo&gt;
+
+                        &lt;promptName&gt;normal&lt;/promptName&gt;
+
+                    
+                &lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.5</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="pattern1">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>\\+--Global Oam Status --\\+\\s+\\|\\s+</regex>
+                            <start>0</start>
+                            <end>34</end>
+                        </item>
+                        <item name="global_oam_status">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>34</start>
+                            <end>40</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+\\|\\s+\\+----------------------\\+</regex>
+                            <start>40</start>
+                            <end>74</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>+--Global Oam Status --+
+|        Enable        |
++----------------------+</sampleMatch>
+                </item>
+            </regexMaps>
+        </item>
+        <item type="com.fnfr.svt.mapping.table.TabularMapperProperties">
+            <tabularMaps>
+                <item name="oam_port_statistics">
+                    <additionalBannerLineCount>3</additionalBannerLineCount>
+                    <banner>\\+-*- Oam  Port  Statistics -*-\\+</banner>
+                    <footer>\\+-*\\+-*\\+-*\\+-*\\+-*\\+-*\\+-*\\+-*\\+-*\\+-*\\+-*\\+-*\\+-*\\+</footer>
+                    <bannerStructure>Regex</bannerStructure>
+                    <footerStructure>Regex</footerStructure>
+                    <customDelimiter>|</customDelimiter>
+                    <delimiter>Custom</delimiter>
+                    <minOccurences>0</minOccurences>
+                    <maxOccurences>1</maxOccurences>
+                    <columns>
+                        <item name="pipe">
+                            <lastFullCell/>
+                            <showInStructuredData>false</showInStructuredData>
+                            <addAllQuery>false</addAllQuery>
+                            <uid>904d32d0-1543-42da-990f-c4e8cfe5d8ed</uid>
+                        </item>
+                        <item name="port">
+                            <isKey>true</isKey>
+                            <lastFullCell/>
+                            <uid>97ef5f09-1712-4cc2-82aa-c7281910a12a</uid>
+                        </item>
+                        <item name="admin_state">
+                            <lastFullCell/>
+                            <uid>ad8869e0-2a80-4339-b08b-fa28cd421fb9</uid>
+                        </item>
+                        <item name="oper_state">
+                            <lastFullCell/>
+                            <uid>826704ea-f764-464f-89c8-b2dcadeb82d3</uid>
+                        </item>
+                        <item name="mode">
+                            <lastFullCell/>
+                            <uid>ffa4c6ab-ea52-4edd-9558-8a4096d2904a</uid>
+                        </item>
+                        <item name="unid">
+                            <lastFullCell/>
+                            <uid>5103a56d-5b38-4eef-bdd6-695e7b53cd18</uid>
+                        </item>
+                        <item name="lb">
+                            <lastFullCell/>
+                            <uid>ab21e96d-3b95-49c2-a6d9-6468016cdedc</uid>
+                        </item>
+                        <item name="ev">
+                            <lastFullCell/>
+                            <uid>f24f434d-a664-4b6e-90bd-f3a8a845200c</uid>
+                        </item>
+                        <item name="var">
+                            <lastFullCell/>
+                            <uid>f231716a-fe50-4117-a1e3-3895d7449042</uid>
+                        </item>
+                        <item name="pdu_tx">
+                            <lastFullCell/>
+                            <uid>d87d4181-484f-450b-ae6c-8836d4436f0a</uid>
+                        </item>
+                        <item name="pdu_rx">
+                            <lastFullCell/>
+                            <uid>456e7347-e107-4ed8-8049-4c430f148c28</uid>
+                        </item>
+                        <item name="unkn_code_rx">
+                            <lastFullCell/>
+                            <uid>e48f1bdd-203c-49a0-9ace-b82f61be0d5f</uid>
+                        </item>
+                        <item name="pdu_time">
+                            <lastFullCell/>
+                            <uid>92d1bdca-3702-42d3-9126-cc878b359599</uid>
+                        </item>
+                        <item name="link_lost">
+                            <lastFullCell/>
+                            <uid>70afc0cf-5383-4faa-87f4-397980319738</uid>
+                        </item>
+                        <item name="pipe_1">
+                            <lastFullCell/>
+                            <showInStructuredData>false</showInStructuredData>
+                            <addAllQuery>false</addAllQuery>
+                            <uid>a1b51587-a22d-4e95-97b2-68a7c9b4ded7</uid>
+                        </item>
+                    </columns>
+                </item>
+                <item name="oam_peer_port_info">
+                    <additionalBannerLineCount>3</additionalBannerLineCount>
+                    <banner>\\+-*-  Oam  Peer Port  Info -*-\\+</banner>
+                    <bannerStructure>Regex</bannerStructure>
+                    <footerStructure>CaseInsensitive</footerStructure>
+                    <customDelimiter>|</customDelimiter>
+                    <delimiter>Custom</delimiter>
+                    <minOccurences>0</minOccurences>
+                    <maxOccurences>1</maxOccurences>
+                    <columns>
+                        <item name="pipe">
+                            <lastFullCell/>
+                            <showInStructuredData>false</showInStructuredData>
+                            <addAllQuery>false</addAllQuery>
+                            <uid>c502d71f-eaa6-465c-b8be-e42cbd4664a1</uid>
+                        </item>
+                        <item name="oper_state">
+                            <isKey>true</isKey>
+                            <lastFullCell/>
+                            <uid>53d3fb12-b2d0-43a5-9f88-94f28c3f0b7c</uid>
+                        </item>
+                        <item name="mode">
+                            <lastFullCell/>
+                            <uid>f277c73d-5ec7-4696-a21e-0a5b39c6b38e</uid>
+                        </item>
+                        <item name="unid">
+                            <lastFullCell/>
+                            <uid>a2ccc136-1a6d-4f31-9e16-fa0ed40b9d4a</uid>
+                        </item>
+                        <item name="lb">
+                            <lastFullCell/>
+                            <uid>14c7c490-da53-4306-98ec-d42359045c2b</uid>
+                        </item>
+                        <item name="ev">
+                            <lastFullCell/>
+                            <uid>cc3e5ac3-7649-4ca3-8c67-0078b938afae</uid>
+                        </item>
+                        <item name="var">
+                            <lastFullCell/>
+                            <uid>88015aae-f4f9-4865-a952-994c776db83a</uid>
+                        </item>
+                        <item name="max_oam_pdu_size">
+                            <lastFullCell/>
+                            <uid>f11fd006-1f72-46ad-80c1-af8c3d611149</uid>
+                        </item>
+                        <item name="peer_mac_address">
+                            <lastFullCell/>
+                            <uid>3fab699e-d16f-40d3-958f-1a923ffcc4c7</uid>
+                        </item>
+                        <item name="fault_ce">
+                            <lastFullCell/>
+                            <uid>7bc9f46b-5c20-4670-bc04-f5b17dc88443</uid>
+                        </item>
+                        <item name="fault_dg">
+                            <lastFullCell/>
+                            <uid>97b34c51-3b8d-4870-a410-cfac9fd82421</uid>
+                        </item>
+                        <item name="fault_lf">
+                            <lastFullCell/>
+                            <uid>d0759f73-192e-4ff2-b5be-52a1badb7c30</uid>
+                        </item>
+                        <item name="pipe_1">
+                            <lastFullCell/>
+                            <showInStructuredData>false</showInStructuredData>
+                            <addAllQuery>false</addAllQuery>
+                            <uid>7cd9e613-0d6d-472d-92fb-6e86b026a17a</uid>
+                        </item>
+                    </columns>
+                </item>
+            </tabularMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="eoam show port \\S+" matchType="Regex">
+        <application>
+            <item>com.fnfr.itest.applications.vnc</item>
+            <item>com.fnfr.svt.applications.cmd</item>
+            <item>com.fnfr.svt.applications.ssh</item>
+            <item>com.fnfr.svt.applications.telnet</item>
+        </application>
+    </applicabilityProperties>
+</ResponseMap>

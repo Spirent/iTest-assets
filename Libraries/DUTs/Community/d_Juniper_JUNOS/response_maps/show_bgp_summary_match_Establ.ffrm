@@ -1,0 +1,152 @@
+<?xml version="1.0" ?><ResponseMap version="6.0.0.18638fa">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="command">
+                <command>
+                    <body>show bgp summary | match Establ</body>
+                </command>
+            </action>
+            <responseBody>0.0.0.0            65060        820        633       0       4  1d 2:24:03 Establ
+0.0.0.0            65060        629        555       0       3    23:10:27 Establ
+0.0.0.0           13979   51175567      30195       0       1      3w5d2h Establ
+0.0.0.0           13979   50673266      30210       0       1     3w6d21h Establ
+
+{master}
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;prompt&gt;itest-ap@chgil304ia1-PE28&amp;gt; &lt;/prompt&gt;
+    &lt;echo&gt;show bgp summary | match Establ &lt;/echo&gt;
+    &lt;promptName&gt;normal&lt;/promptName&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.3</duration>
+        </item>
+        <item name="sample2">
+            <action actionType="command">
+                <command>
+                    <body>show bgp summary | match est</body>
+                </command>
+            </action>
+            <responseBody>Feb 23 15:57:41 
+0.0.0.0           13979   10974345      14740     222       2 1w5d 23:34:35 Establ
+0.0.0.0           13979   10939286      14790     222       2 1w5d 23:36:09 Establ
+0.0.0.0          13979      20440      14159       1      12  2d 4:12:45 Establ
+
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;isEmpty&gt;false&lt;/isEmpty&gt;
+    &lt;promptName&gt;system_prompt&lt;/promptName&gt;
+    &lt;echo&gt;show bgp summary | match est&lt;/echo&gt;
+    &lt;prompt&gt;automation@PE54&amp;gt; &lt;/prompt&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="isEmpty">
+                    <queryFormatString>.//isEmpty</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.5</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.table.TabularMapperProperties">
+            <tabularMaps>
+                <item name="table1">
+                    <columnBoundaries>Positional</columnBoundaries>
+                    <columns>
+                        <item name="Peer">
+                            <isKey>true</isKey>
+                            <width>22</width>
+                            <lastFullCell/>
+                            <uid>267d2b1f-5499-429c-9cbe-2d520d1ccf2c</uid>
+                        </item>
+                        <item name="AS">
+                            <width>8</width>
+                            <lastFullCell/>
+                            <uid>2ed6c419-d977-41fb-a53f-3d72edb9b0a1</uid>
+                        </item>
+                        <item name="InPkt">
+                            <width>14</width>
+                            <lastFullCell/>
+                            <uid>9b86dc80-e3d5-4c92-8485-8ceb6032aa8e</uid>
+                        </item>
+                        <item name="OutPkt">
+                            <width>10</width>
+                            <lastFullCell/>
+                            <uid>41be75bc-46f1-4bac-ba96-9a136c83e4b4</uid>
+                        </item>
+                        <item name="OutQ">
+                            <width>9</width>
+                            <lastFullCell/>
+                            <uid>f4686e15-fd12-4c28-ad53-8ab7d3162026</uid>
+                        </item>
+                        <item name="Flaps">
+                            <width>3</width>
+                            <lastFullCell/>
+                            <uid>76035622-19f4-4f4c-aade-2ee3499c9b36</uid>
+                        </item>
+                        <item name="Last_Up_Down">
+                            <width>12</width>
+                            <spillover>Extend</spillover>
+                            <lastFullCell/>
+                            <uid>a428f4d3-0cf0-4a21-b612-f625559cfdbd</uid>
+                        </item>
+                        <item name="State">
+                            <width>6</width>
+                            <spillover>Extend</spillover>
+                            <lastFullCell/>
+                            <uid>25441ab0-6690-4515-b90a-eafef1824238</uid>
+                        </item>
+                    </columns>
+                </item>
+            </tabularMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="show bgp summary | match [Ee]sta*" matchType="Regex"/>
+    <responseFilters>
+        <item filterAction="EXC_LINES_MATCHING" name="date" patternType="REGEX">
+            <pattern>([a-zA-Z]{3})\\s\\d{2}\\s\\d{2}\\:\\d{2}\\:\\d{2}</pattern>
+        </item>
+        <item filterAction="EXC_LINES_MATCHING" name="master" patternType="CASE_INSENSITIVE">
+            <pattern>{master}</pattern>
+        </item>
+        <item filterAction="EXC_LINES_MATCHING" name="backup" patternType="CASE_INSENSITIVE">
+            <pattern>{backup}</pattern>
+        </item>
+    </responseFilters>
+    <aliases>
+        <item name="is_rr_established">
+            <description>True if there is an established route to either RR1 or RR2 (the input IP)</description>
+            <queryFormatString>//Peer = '{0}'</queryFormatString>
+            <arguments>
+                <item name="rr_ip">
+                    <defaultvalue>10.144.0.57</defaultvalue>
+                </item>
+            </arguments>
+        </item>
+    </aliases>
+</ResponseMap>

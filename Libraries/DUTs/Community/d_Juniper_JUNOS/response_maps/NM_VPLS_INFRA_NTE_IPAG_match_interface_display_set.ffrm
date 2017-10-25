@@ -1,0 +1,129 @@
+<?xml version="1.0" ?><ResponseMap version="6.0.0.18638fa">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="command">
+                <command>
+                    <body>show configuration routing-instances VPLS:INFRA_NTE_IPAG2 | match ge-1/0/5 | display set</body>
+                </command>
+            </action>
+            <responseBody>set routing-instances VPLS:INFRA_NTE_IPAG2 interface ge-1/0/5.127
+set routing-instances VPLS:INFRA_NTE_IPAG2 interface ge-1/0/5.4092
+set routing-instances VPLS:INFRA_NTE_IPAG2 protocols vpls site 16655 interface ge-1/0/5.127
+set routing-instances VPLS:INFRA_NTE_IPAG2 protocols vpls site 16656 interface ge-1/0/5.4092
+
+{master}
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;isEmpty&gt;false&lt;/isEmpty&gt;
+    &lt;promptName&gt;normal&lt;/promptName&gt;
+    &lt;echo&gt;show configuration routing-instances VPLS:INFRA_NTE_IPAG2 | match ge-1/0/5 | display set &lt;/echo&gt;
+    &lt;prompt&gt;spirentdev1@sfcca303ia2-PE14&amp;gt; &lt;/prompt&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="isEmpty">
+                    <queryFormatString>.//isEmpty</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.7</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="site_instance">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>set routing-instances VPLS:INFRA_NTE_</regex>
+                            <start>0</start>
+                            <end>37</end>
+                        </item>
+                        <item name="ipag_type">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>37</start>
+                            <end>42</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+protocols vpls site\\s+</regex>
+                            <start>42</start>
+                            <end>63</end>
+                        </item>
+                        <item name="nm_site_id">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>63</start>
+                            <end>68</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>\\s+interface\\s+</regex>
+                            <start>68</start>
+                            <end>79</end>
+                        </item>
+                        <item name="nm_interface">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>79</start>
+                            <end>87</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name=".{8}">exactly 8 of any character</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor3">
+                            <regex>\\.</regex>
+                            <start>87</start>
+                            <end>88</end>
+                        </item>
+                        <item name="nm_vlan_id">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <key>true</key>
+                            <start>88</start>
+                            <end>91</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>set routing-instances VPLS:INFRA_NTE_IPAG2 protocols vpls site 16655 interface ge-1/0/5.127</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="show configuration routing-instances VPLS:INFRA_NTE_(IPAG\\d+|MPCIO) \\| match \\S+\\s+\\| display set" matchType="Regex"/>
+</ResponseMap>

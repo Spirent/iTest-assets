@@ -1,0 +1,153 @@
+<?xml version="1.0" ?><ResponseMap version="6.0.0.18638fa">
+    <notes>This command ONLY runs on the backup.
+It shows the switchover state for configuration and kernel databases</notes>
+    <headline>Show system switchover state</headline>
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="command">
+                <command>
+                    <body>show system switchover</body>
+                </command>
+            </action>
+            <responseBody>Graceful switchover: On
+Configuration database: Ready
+Kernel database: Ready
+Switchover Ready
+
+{backup}
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;prompt&gt;itest-ap@PE50&amp;gt; &lt;/prompt&gt;
+    &lt;echo&gt;show system switchover &lt;/echo&gt;
+    &lt;promptName&gt;normal&lt;/promptName&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.3</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="graceful">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Graceful switchover:\\s+</regex>
+                            <start>0</start>
+                            <end>21</end>
+                        </item>
+                        <item name="Graceful_switchover">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>21</start>
+                            <end>23</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>Graceful switchover: On</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+                <item name="configuration">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Configuration database:\\s+</regex>
+                            <start>0</start>
+                            <end>24</end>
+                        </item>
+                        <item name="Configuration_database">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>24</start>
+                            <end>29</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>Configuration database: Ready</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+                <item name="kernel">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Kernel database:\\s+</regex>
+                            <start>0</start>
+                            <end>17</end>
+                        </item>
+                        <item name="Kernel_database">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>17</start>
+                            <end>22</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>Kernel database: Ready</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+                <item name="switchover">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Switchover\\s+</regex>
+                            <start>0</start>
+                            <end>11</end>
+                        </item>
+                        <item name="Switchover">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>11</start>
+                            <end>16</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>Switchover Ready</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="show system switchover">
+        <application>
+            <item>com.fnfr.svt.applications.cmd</item>
+            <item>com.fnfr.svt.applications.ssh</item>
+            <item>com.fnfr.svt.applications.telnet</item>
+        </application>
+    </applicabilityProperties>
+</ResponseMap>

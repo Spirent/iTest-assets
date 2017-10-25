@@ -1,0 +1,109 @@
+<?xml version="1.0" ?><ResponseMap version="6.0.0.18638fa">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="command">
+                <command>
+                    <body>cfm service show service &quot;vpls:2980-4serv&quot; remote</body>
+                </command>
+            </action>
+            <responseBody>+--------------------------------------- CFM REMOTE MEPS ---------------------------------------+
+|                 |     |                 |State|Total    |Seq  |Last     |  Fault  |Accelerated|
+|Service          |Mepid|Mac Address      |Ad|Op|Rx CCM   |Error|Seq Num  |F|M|P|I|R|           |
++-----------------+-----+-----------------+--+--+---------+-----+---------+-+-+-+-+-+-----------+
+|vpls:2980-4serv  |1030 |00:03:18:55:72:B5|en|en|1391     |0    |1331     |X|X|X|X|X|No         |
++-----------------+-----+-----------------+--+--+---------+-----+---------+-+-+-+-+-+-----------+
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;prompt&gt;3960-7&amp;gt; &lt;/prompt&gt;
+    &lt;echo&gt;cfm service show service &amp;quot;vpls:2980-4serv&amp;quot; remote&lt;/echo&gt;
+    &lt;promptName&gt;normal&lt;/promptName&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.3</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties"/>
+        <item type="com.fnfr.svt.mapping.table.TabularMapperProperties">
+            <tabularMaps>
+                <item name="table1">
+                    <additionalBannerLineCount>1</additionalBannerLineCount>
+                    <banner>|Service          |Mepid|Mac Address      |Ad|Op|Rx CCM   |Error|Seq Num  |F|M|P|I|R|           |</banner>
+                    <bannerStructure>CaseInsensitive</bannerStructure>
+                    <customDelimiter>|</customDelimiter>
+                    <delimiter>Custom</delimiter>
+                    <minOccurences>0</minOccurences>
+                    <maxOccurences>1</maxOccurences>
+                    <columns>
+                        <item name="col1">
+                            <lastFullCell/>
+                            <showInStructuredData>false</showInStructuredData>
+                        </item>
+                        <item name="Service">
+                            <lastFullCell/>
+                        </item>
+                        <item name="remote_mep_id">
+                            <isKey>true</isKey>
+                            <lastFullCell/>
+                        </item>
+                        <item name="Mac_Address">
+                            <lastFullCell/>
+                        </item>
+                        <item name="remote_mep_status">
+                            <lastFullCell/>
+                        </item>
+                        <item name="Op_State">
+                            <lastFullCell/>
+                        </item>
+                        <item name="Total_Rx_CCM">
+                            <lastFullCell/>
+                        </item>
+                        <item name="Seq_Error">
+                            <lastFullCell/>
+                        </item>
+                        <item name="Last_Seq_Num">
+                            <lastFullCell/>
+                        </item>
+                        <item name="F">
+                            <lastFullCell/>
+                        </item>
+                        <item name="M">
+                            <lastFullCell/>
+                        </item>
+                        <item name="P">
+                            <lastFullCell/>
+                        </item>
+                        <item name="I">
+                            <lastFullCell/>
+                        </item>
+                        <item name="R">
+                            <lastFullCell/>
+                        </item>
+                        <item name="Accelerated">
+                            <lastFullCell/>
+                        </item>
+                    </columns>
+                </item>
+            </tabularMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="cfm service show service * remote"/>
+    <responseFilters>
+        <item filterAction="EXC_LINES_CONTAINING" name="ResponseFilterList1">
+            <pattern>+----------------</pattern>
+        </item>
+    </responseFilters>
+</ResponseMap>

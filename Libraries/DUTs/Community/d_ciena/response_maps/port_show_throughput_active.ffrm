@@ -1,0 +1,153 @@
+<?xml version="1.0" ?><ResponseMap version="6.0.0.18638fa">
+    <notes>2/7/13: NJL Initial development.  Using table map keyed on port.</notes>
+    <headline>Ciena port show throughput</headline>
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="command">
+                <command>
+                    <body>port show throughput active</body>
+                </command>
+            </action>
+            <responseBody>
+
++--------------- PORT THROUGHPUT SUMMARY    5 SECOND SAMPLE ------------------+
+|   Port  |         Bit Rate (Mbps)         |        Pkt Rate (Mpps)          |
+|         | Tx             | Rx             | Tx             | Rx             |
++---------+----------------+----------------+----------------+----------------+
+| 9       |          0.002*|               *|          0.000*|               *|
+| 11      |          0.011*|          0.012*|          0.000*|          0.000*|
++---------+----------------+----------------+----------------+----------------+
+
+* = SampleTime deviation detected.</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;terminal RequiredForRendering=&quot;true&quot;&gt;
+        &lt;prompt&gt;3960-11&amp;gt; &lt;/prompt&gt;
+        &lt;promptExtraction&gt;LAST_LINE&lt;/promptExtraction&gt;
+        &lt;echo&gt;port show throughput active&lt;/echo&gt;
+        &lt;idleTime&gt;0.885&lt;/idleTime&gt;
+        &lt;contentType&gt;text&lt;/contentType&gt;
+        &lt;terminator&gt;SLASH_R_SLASH_N&lt;/terminator&gt;
+    &lt;/terminal&gt;
+&lt;/structure&gt;
+</structuredData>
+        </item>
+        <item name="sample2">
+            <action actionType="command">
+                <command>
+                    <body>port show throughput active</body>
+                </command>
+            </action>
+            <responseBody>
+
++--------------- PORT THROUGHPUT SUMMARY    5 SECOND SAMPLE ------------------+
+|   Port  |         Bit Rate (Mbps)         |        Pkt Rate (Mpps)          |
+|         | Tx             | Rx             | Tx             | Rx             |
++---------+----------------+----------------+----------------+----------------+
+| 9       |          0.001 |                |          0.000 |                |
+| 11      |          0.006 |          0.008 |          0.000 |          0.000 |
++---------+----------------+----------------+----------------+----------------+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;terminal RequiredForRendering=&quot;true&quot;&gt;
+        &lt;prompt&gt;3960-11&amp;gt; &lt;/prompt&gt;
+        &lt;promptExtraction&gt;LAST_LINE&lt;/promptExtraction&gt;
+        &lt;echo&gt;port show throughput active&lt;/echo&gt;
+        &lt;idleTime&gt;0.724&lt;/idleTime&gt;
+        &lt;contentType&gt;text&lt;/contentType&gt;
+        &lt;terminator&gt;SLASH_R_SLASH_N&lt;/terminator&gt;
+    &lt;/terminal&gt;
+&lt;/structure&gt;
+</structuredData>
+        </item>
+        <item name="sample3">
+            <action actionType="command">
+                <command>
+                    <body>port show thro active </body>
+                </command>
+            </action>
+            <responseBody>
++----------------- PORT THROUGHPUT SUMMARY    5 SECOND SAMPLE -----------------+
+|   Port   |         Bit Rate (Mbps)         |        Pkt Rate (Mpps)          |
+|          | Tx             | Rx             | Tx             | Rx             |
++----------+----------------+----------------+----------------+----------------+
+| 1        |          0.000 |                |          0.000 |                |
+| 2        |          0.001 |                |          0.000 |                |
+| 9        |          0.002 |          0.012 |          0.000 |          0.000 |
++----------+----------------+----------------+----------------+----------------+
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;prompt&gt;3930-8&amp;gt; &lt;/prompt&gt;
+    &lt;echo&gt;port show thro active &lt;/echo&gt;
+    &lt;promptName&gt;normal&lt;/promptName&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.3</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties"/>
+        <item type="com.fnfr.svt.mapping.table.TabularMapperProperties">
+            <tabularMaps>
+                <item name="table1">
+                    <additionalBannerLineCount>3</additionalBannerLineCount>
+                    <banner>+-------</banner>
+                    <footer>+------</footer>
+                    <bannerStructure>Wildcard</bannerStructure>
+                    <footerStructure>Wildcard</footerStructure>
+                    <customDelimiter>|</customDelimiter>
+                    <delimiter>Custom</delimiter>
+                    <minOccurences>0</minOccurences>
+                    <maxOccurences>1</maxOccurences>
+                    <columns>
+                        <item name="spacer1">
+                            <lastFullCell/>
+                            <showInStructuredData>false</showInStructuredData>
+                        </item>
+                        <item name="port">
+                            <isKey>true</isKey>
+                            <lastFullCell/>
+                        </item>
+                        <item name="tx_bit_rate">
+                            <lastFullCell/>
+                        </item>
+                        <item name="rx_bit_rate">
+                            <lastFullCell/>
+                        </item>
+                        <item name="tx_pkt_rate">
+                            <lastFullCell/>
+                        </item>
+                        <item name="rx_packet_rate">
+                            <lastFullCell/>
+                        </item>
+                        <item name="spacer2">
+                            <lastFullCell/>
+                            <showInStructuredData>false</showInStructuredData>
+                        </item>
+                    </columns>
+                </item>
+            </tabularMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="port sh* th* ac*">
+        <application>
+            <item>com.fnfr.svt.applications.ssh</item>
+            <item>com.fnfr.svt.applications.telnet</item>
+        </application>
+    </applicabilityProperties>
+</ResponseMap>

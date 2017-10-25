@@ -1,0 +1,688 @@
+<?xml version="1.0" ?><ResponseMap version="6.0.0.18638fa">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="command">
+                <command>
+                    <body>show protocols oam ethernet link-fault-management</body>
+                </command>
+            </action>
+            <responseBody>traceoptions {
+    file eoam.log size 100m files 30 microsecond-stamp;
+    flag all;
+}
+action-profile AP_NM_8023AH_LOG {
+    event {
+        link-adjacency-loss;
+    }
+    action {
+        syslog;
+    }
+}
+action-profile AP_NM_8023AH_DG_FE {
+    event {
+        link-event-rate {
+            frame-error 2;
+        }
+    }
+    action {
+        syslog;
+    }
+}
+action-profile AP_NM_8023AH_DG_SP {
+    event {
+        link-event-rate {
+            symbol-period 2;
+        }
+    }
+    action {
+        syslog;
+    }
+}
+action-profile AP_NM_8023AH_DOWN_LOG {
+    event {
+        link-adjacency-loss;
+    }
+    action {
+        syslog;
+        link-down;
+    }
+}
+action-profile AP_NM_8023AH_DEGRADE {
+    event {
+        link-event-rate {
+            frame-period-summary-percent 10;
+        }
+    }
+    action {
+        syslog;
+    }
+}
+action-profile AP_NM_8023AH_DG_FP {
+    event {
+        link-event-rate {
+            frame-period 2;
+        }
+    }
+    action {
+        syslog;
+    }
+}
+action-profile AP_NM_8023AH_DG_FPS {
+    event {
+        link-event-rate {
+            frame-period-summary-percent 4;
+        }
+    }
+    action {
+        syslog;
+    }
+}
+interface ae10 {
+    apply-groups AG_NM_8023AH_INL;
+}
+interface ae11 {
+    apply-groups AG_NM_8023AH_INL;
+}
+interface ae69 {
+    apply-groups AG_NM_8023AH_LAG;
+}
+interface ae96 {
+    apply-groups AG_NM_8023AH_ALU;
+}
+interface ae19 {
+    apply-groups AG_NM_8023AH_LAG;
+}
+interface ae59 {
+    apply-groups AG_NM_8023AH_INL;
+}
+
+{master}[edit]
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;prompt&gt;itest-ap@PE35# &lt;/prompt&gt;
+    &lt;echo&gt;show protocols oam ethernet link-fault-management &lt;/echo&gt;
+    &lt;promptName&gt;editor_prompt&lt;/promptName&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.2</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="pattern1">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>action-profile\\s+</regex>
+                            <start>0</start>
+                            <end>15</end>
+                        </item>
+                        <item name="action_profile">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <key>true</key>
+                            <start>15</start>
+                            <end>31</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+\\{\\s+event \\{\\s+</regex>
+                            <start>31</start>
+                            <end>54</end>
+                        </item>
+                        <item name="event">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>54</start>
+                            <end>73</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name=".{19}">exactly 19 of any character</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>;\\s+}\\s+\\s+action \\{\\s+</regex>
+                            <start>73</start>
+                            <end>102</end>
+                        </item>
+                        <item name="action">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>102</start>
+                            <end>108</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor3">
+                            <regex>;\\s+}\\s+}</regex>
+                            <start>108</start>
+                            <end>117</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>action-profile AP_NM_8023AH_LOG {
+    event {
+        link-adjacency-loss;
+    }
+    action {
+        syslog;
+    }
+}</sampleMatch>
+                    <optional>true</optional>
+                </item>
+                <item name="pattern2">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>action-profile\\s+</regex>
+                            <start>0</start>
+                            <end>15</end>
+                        </item>
+                        <item name="action_profile">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <key>true</key>
+                            <start>15</start>
+                            <end>33</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+\\{\\s+event \\{\\s+</regex>
+                            <start>33</start>
+                            <end>56</end>
+                        </item>
+                        <item name="event">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>56</start>
+                            <end>71</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>\\s+\\{\\s+frame-error\\s+</regex>
+                            <start>71</start>
+                            <end>98</end>
+                        </item>
+                        <item name="frame_error">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>98</start>
+                            <end>99</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor3">
+                            <regex>;\\s+}\\s+\\s+}\\s+action \\{\\s+</regex>
+                            <start>99</start>
+                            <end>138</end>
+                        </item>
+                        <item name="action">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>138</start>
+                            <end>144</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor4">
+                            <regex>;\\s+}\\s+}</regex>
+                            <start>144</start>
+                            <end>153</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>action-profile AP_NM_8023AH_DG_FE {
+    event {
+        link-event-rate {
+            frame-error 2;
+        }
+    }
+    action {
+        syslog;
+    }
+}</sampleMatch>
+                    <optional>true</optional>
+                </item>
+                <item name="pattern3">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>action-profile\\s+</regex>
+                            <start>0</start>
+                            <end>15</end>
+                        </item>
+                        <item name="action_profile">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <key>true</key>
+                            <start>15</start>
+                            <end>33</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+\\{\\s+event \\{\\s+</regex>
+                            <start>33</start>
+                            <end>56</end>
+                        </item>
+                        <item name="event">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>56</start>
+                            <end>71</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>\\s+\\{\\s+symbol-period\\s+</regex>
+                            <start>71</start>
+                            <end>100</end>
+                        </item>
+                        <item name="symbol_period">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>100</start>
+                            <end>101</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor3">
+                            <regex>;\\s+}\\s+\\s+}\\s+action \\{\\s+</regex>
+                            <start>101</start>
+                            <end>140</end>
+                        </item>
+                        <item name="action">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>140</start>
+                            <end>146</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor4">
+                            <regex>;\\s+}\\s+}</regex>
+                            <start>146</start>
+                            <end>155</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>action-profile AP_NM_8023AH_DG_SP {
+    event {
+        link-event-rate {
+            symbol-period 2;
+        }
+    }
+    action {
+        syslog;
+    }
+}</sampleMatch>
+                    <optional>true</optional>
+                </item>
+                <item name="pattern4">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>action-profile\\s+</regex>
+                            <start>0</start>
+                            <end>15</end>
+                        </item>
+                        <item name="action_profile">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <key>true</key>
+                            <start>15</start>
+                            <end>36</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+\\{\\s+event \\{\\s+</regex>
+                            <start>36</start>
+                            <end>59</end>
+                        </item>
+                        <item name="event">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>59</start>
+                            <end>78</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name=".{19}">exactly 19 of any character</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>;\\s+}\\s+\\s+action \\{\\s+</regex>
+                            <start>78</start>
+                            <end>107</end>
+                        </item>
+                        <item name="action">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>107</start>
+                            <end>113</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor3">
+                            <regex>;\\s+</regex>
+                            <start>113</start>
+                            <end>123</end>
+                        </item>
+                        <item name="action1">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>123</start>
+                            <end>132</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name=".{9}">exactly 9 of any character</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor4">
+                            <regex>;\\s+}\\s+}</regex>
+                            <start>132</start>
+                            <end>141</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>action-profile AP_NM_8023AH_DOWN_LOG {
+    event {
+        link-adjacency-loss;
+    }
+    action {
+        syslog;
+        link-down;
+    }
+}</sampleMatch>
+                    <optional>true</optional>
+                </item>
+                <item name="pattern5">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>action-profile\\s+</regex>
+                            <start>0</start>
+                            <end>15</end>
+                        </item>
+                        <item name="action_profile">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>15</start>
+                            <end>35</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+\\{\\s+event \\{\\s+</regex>
+                            <start>35</start>
+                            <end>58</end>
+                        </item>
+                        <item name="event">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>58</start>
+                            <end>73</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>\\s+\\{\\s+frame-period-summary-percent\\s+</regex>
+                            <start>73</start>
+                            <end>117</end>
+                        </item>
+                        <item name="frame_period_summary_percent">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>117</start>
+                            <end>119</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor3">
+                            <regex>;\\s+}\\s+\\s+}\\s+action \\{\\s+</regex>
+                            <start>119</start>
+                            <end>158</end>
+                        </item>
+                        <item name="action">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>158</start>
+                            <end>164</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor4">
+                            <regex>;\\s+}\\s+}</regex>
+                            <start>164</start>
+                            <end>173</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>action-profile AP_NM_8023AH_DEGRADE {
+    event {
+        link-event-rate {
+            frame-period-summary-percent 10;
+        }
+    }
+    action {
+        syslog;
+    }
+}</sampleMatch>
+                </item>
+                <item name="pattern6">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>action-profile\\s+</regex>
+                            <start>0</start>
+                            <end>15</end>
+                        </item>
+                        <item name="action_profile">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <key>true</key>
+                            <start>15</start>
+                            <end>33</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+\\{\\s+event \\{\\s+</regex>
+                            <start>33</start>
+                            <end>56</end>
+                        </item>
+                        <item name="event">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>56</start>
+                            <end>71</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>\\s+\\{\\s+frame-period\\s+</regex>
+                            <start>71</start>
+                            <end>99</end>
+                        </item>
+                        <item name="frame_period">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>99</start>
+                            <end>100</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor3">
+                            <regex>;\\s+}\\s+\\s+}\\s+action \\{\\s+</regex>
+                            <start>100</start>
+                            <end>139</end>
+                        </item>
+                        <item name="action">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>139</start>
+                            <end>145</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor4">
+                            <regex>;\\s+}\\s+}\\s+action-profile AP_NM_</regex>
+                            <start>145</start>
+                            <end>176</end>
+                        </item>
+                        <item name="action_profile_AP_NM_">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>176</start>
+                            <end>180</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor5">
+                            <regex>AH_DG_FPS \\{</regex>
+                            <start>180</start>
+                            <end>191</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>action-profile AP_NM_8023AH_DG_FP {
+    event {
+        link-event-rate {
+            frame-period 2;
+        }
+    }
+    action {
+        syslog;
+    }
+}
+action-profile AP_NM_8023AH_DG_FPS {</sampleMatch>
+                    <optional>true</optional>
+                </item>
+            </regexMaps>
+        </item>
+        <item type="com.fnfr.svt.mapping.block.documents.BlockMapperProperties">
+            <BlockMaps name="container"/>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="show protocols oam ethernet link-fault-management">
+        <application>
+            <item>com.fnfr.svt.applications.cmd</item>
+            <item>com.fnfr.svt.applications.ssh</item>
+            <item>com.fnfr.svt.applications.telnet</item>
+        </application>
+    </applicabilityProperties>
+</ResponseMap>

@@ -1,0 +1,138 @@
+<?xml version="1.0" ?><ResponseMap version="6.0.0.18638fa">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="command">
+                <command>
+                    <body>show configuration system login </body>
+                </command>
+            </action>
+            <responseBody>message &quot;\\n \\n ############# N O T I C E ############ \\n \\n This PE52 is being used for NSR and ISSU - Please do not delete or configure anything extra without approval from dp1543. \\n \\n ###################################### \\n \\n&quot;;
+class att-superuser {
+    idle-timeout 120;
+    permissions all;
+}
+class readonly {
+    idle-timeout 15;
+    permissions [ admin control firewall interface network routing secret security system view ];
+    deny-commands &quot;(start shell)&quot;;
+}
+class readwrite {
+    idle-timeout 30;
+    permissions [ access access-control admin clear configure control firewall firewall-control floppy interface interface-control maintenance network reset rollback routing routing-control secret security snmp system-control trace trace-control view ];
+    deny-commands &quot;(start shell)|(request system reboot)|(request system halt)&quot;;
+}
+user att-superuser {
+    full-name att-superuser;
+    uid 1005;
+    class att-superuser;
+}
+user fred {
+    full-name &quot;Fred Imbrogno&quot;;
+    uid 2009;
+    class super-user;
+    authentication {
+        encrypted-password &quot;$5$EPi0DIu0$HpKojZhf5Do11WivlGeRlNSzOcq.Il2rDn3KuzPrkP3&quot;; ## SECRET-DATA
+    }
+}
+user jtac {
+    uid 2004;
+    class super-user;
+    authentication {
+        encrypted-password &quot;$1$h99XotwR$DNUfkkH/U5RysIMpOVYN71&quot;; ## SECRET-DATA
+    }
+}
+user juniper {
+    uid 2003;
+    class super-user;
+    authentication {
+        encrypted-password &quot;$1$CY3Kuv9k$Xk1SXO4/C1K9rP4rmiKDn/&quot;; ## SECRET-DATA
+    }
+}
+user mcao {
+    uid 2001;
+    class super-user;
+    authentication {
+        encrypted-password &quot;$1$sHUSIvdn$VTHgX4tDKUG26iKGLIGzB0&quot;; ## SECRET-DATA
+    }
+}
+user readonly {
+    full-name &quot;Read Only Remote Login&quot;;
+    uid 1002;
+    class readonly;
+}
+user readwrite {
+    full-name &quot;Read Write Remote Login&quot;;
+    uid 1001;
+    class readwrite;
+}
+
+{master}
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;prompt&gt;itest-ap@PE52&amp;gt; &lt;/prompt&gt;
+    &lt;echo&gt;show configuration system login &lt;/echo&gt;
+    &lt;promptName&gt;normal&lt;/promptName&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.1</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.block.documents.BlockMapperProperties">
+            <BlockMaps name="container"/>
+        </item>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="pattern1">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>user\\s+</regex>
+                            <start>0</start>
+                            <end>5</end>
+                        </item>
+                        <item name="user">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>5</start>
+                            <end>9</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+\\{</regex>
+                            <start>9</start>
+                            <end>11</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>user jtac {</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="show configuration system login">
+        <application>
+            <item>com.fnfr.svt.applications.cmd</item>
+            <item>com.fnfr.svt.applications.ssh</item>
+            <item>com.fnfr.svt.applications.telnet</item>
+        </application>
+    </applicabilityProperties>
+</ResponseMap>

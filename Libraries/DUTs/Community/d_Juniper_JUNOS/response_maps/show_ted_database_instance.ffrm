@@ -1,0 +1,149 @@
+<?xml version="1.0" ?><ResponseMap version="6.0.0.18638fa">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="command">
+                <command>
+                    <body>show ted database instance PLS</body>
+                </command>
+            </action>
+            <responseBody>Jan 31 09:51:20 
+TED database: 0 ISIS nodes 47 INET nodes
+ID                            Type Age(s) LnkIn LnkOut Protocol
+0.0.0.0                    Rtr   73718     2      2 OSPF(0.0.0.0)
+    To: 0.0.0.0, Local: 0.0.0.0, Remote: 0.0.0.0
+      Local interface index: 0, Remote interface index: 0
+    To: 0.0.0.0, Local: 0.0.0.0, Remote: 0.0.0.0
+      Local interface index: 0, Remote interface index: 0
+ID                            Type Age(s) LnkIn LnkOut Protocol
+0.0.0.0                    Rtr   73718     1      1 OSPF(0.0.0.0)
+    To: 0.0.0.0, Local: 0.0.0.0, Remote: 0.0.0.0
+      Local interface index: 374, Remote interface index: 0
+ID                            Type Age(s) LnkIn LnkOut Protocol
+0.0.0.0                    Rtr   73718     1      1 OSPF(0.0.0.0)
+    To: 0.0.0.0, Local: 0.0.0.0, Remote: 0.0.0.0
+      Local interface index: 0, Remote interface index: 0
+ID                            Type Age(s) LnkIn LnkOut Protocol
+0.0.0.0                    Rtr   73718     2      2 OSPF(0.0.0.0)
+    To: 0.0.0.0, Local: 0.0.0.0, Remote: 0.0.0.0
+      Local interface index: 0, Remote interface index: 0
+    To: 0.0.0.0, Local: 0.0.0.0, Remote: 0.0.0.0
+      Local interface index: 0, Remote interface index: 0
+
+{backup}
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;isEmpty&gt;false&lt;/isEmpty&gt;
+    &lt;promptName&gt;system_prompt&lt;/promptName&gt;
+    &lt;echo&gt;show ted database instance PLS&lt;/echo&gt;
+    &lt;prompt&gt;automation@PE50&amp;gt; &lt;/prompt&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="isEmpty">
+                    <queryFormatString>.//isEmpty</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+            </aliases>
+            <duration>1.7</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="pattern1">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>TED database:\\s+\\d+\\s+ISIS nodes\\s+</regex>
+                            <start>0</start>
+                            <end>27</end>
+                        </item>
+                        <item name="INET_nodes">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>27</start>
+                            <end>29</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+INET nodes</regex>
+                            <start>29</start>
+                            <end>40</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>TED database: 0 ISIS nodes 47 INET nodes</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+                <item name="pattern2">
+                    <groups>
+                        <item name="ID">
+                            <regex>((\\d+\\.)+\\d+)</regex>
+                            <named>true</named>
+                            <key>true</key>
+                            <start>0</start>
+                            <end>10</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="((\d+\.)+\d+)">one or more of digit and dots</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor0">
+                            <regex>\\s+Rtr\\s+</regex>
+                            <start>10</start>
+                            <end>36</end>
+                        </item>
+                        <item name="Age">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>36</start>
+                            <end>41</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+\\d+\\s+\\d+\\s+OSPF\\(((\\d+\\.)+\\d+)\\)</regex>
+                            <start>41</start>
+                            <end>70</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>0.0.0.0                    Rtr   73718     2      2 OSPF(0.0.0.0)</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="show ted database instance *">
+        <application>
+            <item>com.fnfr.svt.applications.cmd</item>
+            <item>com.fnfr.itest.application.serial</item>
+            <item>com.fnfr.svt.applications.ssh</item>
+            <item>com.fnfr.svt.applications.telnet</item>
+        </application>
+    </applicabilityProperties>
+</ResponseMap>

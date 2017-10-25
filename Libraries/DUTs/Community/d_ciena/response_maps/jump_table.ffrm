@@ -1,0 +1,73 @@
+<?xml version="1.0" ?><ResponseMap version="6.0.0.18638fa">
+    <notes>2/10/13 NJL: Changed query names to be lowercase and underscores for consistancy.</notes>
+    <headline>CSV for Ciena jump table</headline>
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="readFile">
+                <command>
+                    <body>jumpTable.csv</body>
+                </command>
+            </action>
+            <responseBody>NT,Low_CIR,High_CIR,CBS,EBS
+3930,0,100,128,0
+3930,101,1000,128,0
+3931,0,100,128,0
+3931,101,1000,128,0
+3960,0,1000,256,0
+3960,1000,2000,512,0
+3960,2000,4000,1024,0
+3960,4000,8000,2048,0
+3911,0,100,128,0
+3911,101,1000,128,0
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;/&gt;
+</structuredData>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.table.TabularMapperProperties">
+            <tabularMaps>
+                <item name="table1">
+                    <banner>NT,Low_CIR,High_CIR,CBS,EBS</banner>
+                    <bannerStructure>CaseInsensitive</bannerStructure>
+                    <delimiter>Comma</delimiter>
+                    <columns>
+                        <item name="nt">
+                            <lastFullCell/>
+                        </item>
+                        <item name="low_cir">
+                            <lastFullCell/>
+                        </item>
+                        <item name="high_cir">
+                            <lastFullCell/>
+                        </item>
+                        <item name="cbs">
+                            <lastFullCell/>
+                        </item>
+                        <item name="ebs">
+                            <lastFullCell/>
+                        </item>
+                    </columns>
+                </item>
+            </tabularMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="readFile" command="jumpTable.csv" includeInLibrary="false"/>
+    <aliases>
+        <item name="cbs_by_nt_and_range">
+            <description>Find the CBS give the NT value and the CIR value</description>
+            <queryFormatString>mapped/Tabular/table1/table/row[nt=&quot;{0}&quot; and {1} &gt;= low_cir and {1} &lt;= high_cir]/cbs</queryFormatString>
+            <arguments>
+                <item name="nt_request">
+                    <defaultvalue>3930</defaultvalue>
+                    <valuesQuery>mapped/Tabular/table1/table/row/NT</valuesQuery>
+                </item>
+                <item name="cir">
+                    <defaultvalue>10</defaultvalue>
+                </item>
+            </arguments>
+        </item>
+    </aliases>
+</ResponseMap>

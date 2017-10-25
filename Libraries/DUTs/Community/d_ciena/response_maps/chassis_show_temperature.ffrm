@@ -1,0 +1,153 @@
+<?xml version="1.0" ?><ResponseMap version="6.0.0.18638fa">
+    <notes>Chasiss temp check
+
+2/10/13 NJL Fixed patterns.</notes>
+    <headline>Currenttemp check for threshold</headline>
+    <sampleDictionary>
+        <item name="curtemp">
+            <action actionType="command">
+                <command>
+                    <body>chassis show temperature</body>
+                </command>
+            </action>
+            <responseBody>
++- TEMPERATURE THRESHOLD -+
+| Low        | High       |
++------------+------------+
+| -40 C      | 80  C      |
++------------+------------+
+
++--- TEMPERATURE STATUS --+
+| Current | Low   | High  |
++---------+-------+-------+
+| 47  C   | 47  C | 47  C |
++---------+-------+-------+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;terminal RequiredForRendering=&quot;true&quot;&gt;
+        &lt;prompt&gt;3930-9_BGPMH&amp;gt; &lt;/prompt&gt;
+        &lt;promptExtraction&gt;LAST_LINE&lt;/promptExtraction&gt;
+        &lt;echo&gt;ls -ltr /mnt/log/corefiles&lt;/echo&gt;
+        &lt;idleTime&gt;0.872&lt;/idleTime&gt;
+        &lt;contentType&gt;text&lt;/contentType&gt;
+        &lt;terminator&gt;SLASH_R_SLASH_N&lt;/terminator&gt;
+    &lt;/terminal&gt;
+&lt;/structure&gt;
+</structuredData>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="pattern1">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>\\+- TEMPERATURE THRESHOLD -\\+\\s+\\| Low\\s+\\| High\\s+\\|\\s+\\+------------\\+------------\\+\\s+\\|\\s+</regex>
+                            <start>0</start>
+                            <end>86</end>
+                        </item>
+                        <item name="low_temp_threshold">
+                            <regex>.{5}</regex>
+                            <named>true</named>
+                            <start>86</start>
+                            <end>91</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+\\|\\s+</regex>
+                            <start>91</start>
+                            <end>99</end>
+                        </item>
+                        <item name="high_temp_threshold">
+                            <regex>.{5}</regex>
+                            <named>true</named>
+                            <start>99</start>
+                            <end>104</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>\\s+\\|\\s+\\+------------\\+------------\\+</regex>
+                            <start>104</start>
+                            <end>139</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>+- TEMPERATURE THRESHOLD -+
+| Low        | High       |
++------------+------------+
+| -40 C      | 80  C      |
++------------+------------+</sampleMatch>
+                </item>
+                <item name="pattern2">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>\\+--- TEMPERATURE STATUS --\\+\\s+\\| Current \\| Low\\s+\\| High\\s+\\|\\s+\\+---------\\+-------\\+-------\\+\\s+\\|\\s+</regex>
+                            <start>0</start>
+                            <end>86</end>
+                        </item>
+                        <item name="current_temp">
+                            <regex>.{5}</regex>
+                            <named>true</named>
+                            <start>86</start>
+                            <end>91</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+\\|\\s+</regex>
+                            <start>91</start>
+                            <end>96</end>
+                        </item>
+                        <item name="low_temp">
+                            <regex>[^\\r\\n]+</regex>
+                            <named>true</named>
+                            <start>96</start>
+                            <end>101</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name=".{5}">exactly 5 of any character</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>\\s+\\|\\s+</regex>
+                            <start>101</start>
+                            <end>104</end>
+                        </item>
+                        <item name="high_temp">
+                            <regex>[^\\r\\n]+</regex>
+                            <named>true</named>
+                            <start>104</start>
+                            <end>109</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name=".{5}">exactly 5 of any character</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor3">
+                            <regex>\\s+\\|\\s+\\+---------\\+-------\\+-------\\+</regex>
+                            <start>109</start>
+                            <end>139</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>+--- TEMPERATURE STATUS --+
+| Current | Low   | High  |
++---------+-------+-------+
+| 47  C   | 47  C | 47  C |
++---------+-------+-------+</sampleMatch>
+                </item>
+            </regexMaps>
+        </item>
+        <item type="com.fnfr.svt.mapping.table.TabularMapperProperties"/>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="chas* sh* temp*"/>
+</ResponseMap>
