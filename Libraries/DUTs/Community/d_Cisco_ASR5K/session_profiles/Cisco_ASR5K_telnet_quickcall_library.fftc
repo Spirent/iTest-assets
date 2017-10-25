@@ -1,0 +1,1278 @@
+<?xml version="1.0"?>
+<testCase version="5.4.0.4f90e5a">
+    <general>
+        <documentation>Get clock value and convert to timestamp</documentation>
+        <notes>Get timestamp from ASR5K and convert to format usable for &quot;show logs&quot;.</notes>
+        <sessionClass includeTestCase="true" sessionType="project://d_Cisco_ASR5K/session_profiles/Cisco_ASR5K_telnet.ffsp"/>
+    </general>
+    <procedures>
+        <item name="main">
+            <steps>
+                <item guid="afa62d9c-5cd1-4d92-b0ed-ee33adc2e5ba" action="comment">
+                    <command>
+                        <body>ASR QC Lib</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+        </item>
+        <item name="clearSubscriberInfo" isPublic="true" isVBlock="true">
+            <steps>
+                <item guid="b8175c36-b604-46f2-bf35-3e79a1dcf5d2" action="command" session="$session">
+                    <command>
+                        <body>clear sub imsi $IMSI</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+            </steps>
+            <multilineDescription>Clear the subcriber info for the specified IMSI</multilineDescription>
+            <arguments>
+                <item name="IMSI">
+                    <description>The IMSI of the UE to clear</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="disableLogging" isPublic="true" isVBlock="true">
+            <description>Disable debug logging</description>
+            <steps>
+                <item guid="f835d8eb-d2ca-4eb1-911c-8064799b013f" action="command" session="$session">
+                    <command>
+                        <body>q</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="927ac718-8c86-4cc3-ad5f-dae90c2f12ad" action="command" session="$session">
+                    <command>
+                        <body>no logging active</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+            </steps>
+            <author>Malcom Terry</author>
+            <multilineDescription>Disable logging on the ASR</multilineDescription>
+            <response>{&quot;success&quot;:&quot;1&quot;}</response>
+        </item>
+        <item name="enableLogging" isPublic="true" isVBlock="true">
+            <description>Enable debug logging</description>
+            <steps>
+                <item guid="47aaef92-7837-4163-b691-d4256ae9becd" action="command" session="$session">
+                    <command>
+                        <body>logging filter active facility epdg level debug 
+logging filter active facility eap-sta-s6a-s13-s6b-diameter level debug
+logging filter active facility eap-ipsec level debug
+logging filter active facility ikev2 level debug
+logging filter active facility ipsec level debug
+logging filter active facility dcardmgr level debug
+logging filter active facility npumgr level debug
+logging filter active facility imsimgr level debug
+logging filter active facility hamgr level debug
+logging filter active facility mobile-ipv6 level debug
+logging filter active facility diabase level debug
+logging filter active facility diameter-auth level debug
+logging filter active facility aaamgr level debug
+logging filter active facility aaa-client level debug
+logging filter active facility diameter level debug
+logging filter active facility egtpc level debug
+logging filter active facility egtpu level debug
+logging filter active facility egtpmgr level debug
+logging filter active facility mobile-ipv6 level debug
+logging filter active facility mobile-ip-data level debug
+logging filter active facility ipsgmgr level debug
+logging filter active facility sessmg level debug</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="0024f140-5aa2-4ace-958d-aa5ede92f2fc" action="command" session="$session">
+                    <command>
+                        <body>logging filter active facility s1ap level debug</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="e3410ca3-d61c-4d27-a586-eb5fbd752e99" action="command" session="$session">
+                    <command>
+                        <body>logging filter active facility mme-app level debug</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="89805359-baa4-4573-889a-7cf8361aecb2" action="command" session="$session">
+                    <command>
+                        <body>logging filter active facility mme-embms level debug</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="888d96cd-b6a6-4b58-899b-82fc591aa977" action="command" session="$session">
+                    <command>
+                        <body>logging filter active facility mme-misc level debug</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="2ee768e4-585d-4529-93ac-967fce18ec1c" action="command" session="$session">
+                    <command>
+                        <body>logging filter active facility mmedemux level debug</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="c0c63029-c59a-4983-87b6-a3443cfb4092" action="command" session="$session">
+                    <command>
+                        <body>logging filter active facility mmemgr level debug</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="a56ab5c0-6c80-47f5-bf38-97d79520da6b" action="command" session="$session">
+                    <command>
+                        <body>logging filter active facility sgw level debug</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="407ee827-10f0-4b27-90b7-54133acfb561" action="command" session="$session">
+                    <command>
+                        <body>logging filter active facility pgw level debug</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="13411e1e-045c-4208-975c-08443d7341ee" action="command" session="$session">
+                    <command>
+                        <body>logging filter active facility egtpc level debug</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="a32e5e33-60bd-4c66-bdf7-5c2ac7a2e7d6" action="command" session="$session">
+                    <command>
+                        <body>logging filter active facility egtpmgr level debug</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="58678861-b15a-433b-91b9-259ed163ae6e" action="command" session="$session">
+                    <command>
+                        <body>logging filter active facility diamproxy level debug</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="0e431e61-90e7-45c3-877a-c9922f1249e7" action="command" session="$session">
+                    <command>
+                        <body>logging filter active facility diabase level debug</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="9eec4f15-c8c7-4289-8575-60ca7cb17836" action="command" session="$session">
+                    <command>
+                        <body>logging filter active facility eap-sta-s6a-s13-s6b-diameter level debug</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="de58aec0-7217-443c-9f44-58fba020afc5" action="command" session="$session">
+                    <command>
+                        <body>logging filter active facility diameter-ecs level debug</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="d7ac884a-71c0-4bda-a41b-77ceaaf1e215" action="command" session="$session">
+                    <command>
+                        <body>logging filter active facility diameter level debug</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="0768d42a-cf09-4057-8da3-e55f8a446607" action="command" session="$session">
+                    <command>
+                        <body>logging filter active facility vpn level debug</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+            </steps>
+            <author>Malcom Terry</author>
+            <multilineDescription>Enable the ASR logging</multilineDescription>
+            <response>{&quot;success&quot;:&quot;1&quot;}</response>
+        </item>
+        <item name="getSystemTime" isPublic="true" isVBlock="true">
+            <steps>
+                <item guid="0549acbe-8f56-4743-ab1a-60839a2a1822" action="command" session="$session">
+                    <command>
+                        <body>show system</body>
+                    </command>
+                    <postProcessing>
+                        <storeResponseAt>myResponse</storeResponseAt>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                    <responseFilterList inherit="false">
+                        <item name="TimeStamp" patternType="REGEX" filterAction="INC_LINES_CONTAINING">
+                            <pattern>\\w+\\s+\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+\\w+\\s+\\d+</pattern>
+                        </item>
+                    </responseFilterList>
+                </item>
+                <item guid="1a2fb26f-85cc-4ba3-b272-b7e5ed3d4505" action="eval">
+                    <command>
+                        <body>set sysTime [clock format [clock scan [response myResponse]] -format &quot;%Y:%m:%d:%H:%M:%S&quot;]</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="regex">
+                                    <extractorProperties type="com.fnfr.svt.mapping.regex.extractors.RegexExtractorPropertyGroup">
+                                        <regex>(\\S+)</regex>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <query>[return sysTime]</query>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <multilineDescription>Get the system time from the ASR5K in the format: YYYY:MM:DD:hh:mm:ss
+
+Return: JSON Block
+sysTime: either the system time or &quot;invalid&quot;</multilineDescription>
+            <response>{&quot;sysTime&quot;:&quot;invalid&quot;}</response>
+        </item>
+        <item name="getTimestamp" isPublic="true" isVBlock="true">
+            <description>Get clock value and return timestamp</description>
+            <steps>
+                <item guid="0fdf1b6d-c435-4802-a969-0be679e9d93c" action="command" session="$session">
+                    <command>
+                        <body>show clock</body>
+                    </command>
+                    <postProcessing>
+                        <storeResponseAt>response</storeResponseAt>
+                        <storeResponseText>true</storeResponseText>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                    <responseFilterList inherit="false"/>
+                </item>
+                <item guid="284a4b02-19a1-4c48-aaf8-277832f3b4e4" action="eval">
+                    <command>
+                        <body>set date [lindex [split $response \\n] 0]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="d7395767-5fcc-4f7e-98fc-45740dcb709e" action="eval">
+                    <command>
+                        <body>set timestamp [clock format [clock scan $date] -format &quot;%Y:%m:%d:%H:%M:%S&quot;]</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>group1()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <query>[return timestamp]</query>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <author>Malcom Terry</author>
+            <multilineDescription>Show the clock and return timestamp in YYYY:MM:DD:hh:mm:ss format</multilineDescription>
+            <response>{&quot;timestamp&quot;:&quot;YYYY:MM:DD:HH:mm:ss&quot;}</response>
+        </item>
+        <item name="Monitor_Protocol" isPublic="true" isVBlock="true">
+            <steps>
+                <item guid="c6aedf05-c4e1-412c-b97d-458b521071c3" action="command" session="$session" normalOffset="78.252" estimatedStepExecutionTime="0.209">
+                    <command>
+                        <body>monitor protocol</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                        <completionProperties>
+                            <completeWhen inherit="false">TIMED</completeWhen>
+                            <completionTime inherit="false">5</completionTime>
+                            <screenMode inherit="false">true</screenMode>
+                        </completionProperties>
+                    </applicationProperties>
+                </item>
+                <item guid="f0919f81-760d-4850-96b9-e2be0fa80299" action="comment">
+                    <command>
+                        <body>Enable each protocol</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="df2c03a2-8493-412e-b437-4ee666cd327c" action="foreach">
+                            <command>
+                                <body>protocol $protocol_layers</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="9a14450b-8e1f-4009-aead-7d1e5a463c10" action="command" session="$session" normalOffset="0.358">
+                                    <command>
+                                        <body>$protocol</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                                        <completionProperties>
+                                            <idleChannel inherit="false">500</idleChannel>
+                                            <completeWhen inherit="false">TIMED</completeWhen>
+                                            <completionTime inherit="false">1</completionTime>
+                                            <screenMode inherit="false">true</screenMode>
+                                        </completionProperties>
+                                    </applicationProperties>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="811cbfdd-4ca5-4232-823c-d5f624eee298" action="comment">
+                    <command>
+                        <body>Monitor Subscriber is finished configuring</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="ef9f7774-4686-4705-a0bc-d694e622bc72" action="signal">
+                            <command>
+                                <body>monProtocolConfigured</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="b747d3fb-dcb5-42f8-be41-3ed601c8aa25" action="comment">
+                    <command>
+                        <body>Wait for &quot;fake&quot; prompt</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="29286d3b-cead-441d-9816-e044ac3711b3" action="if">
+                            <command>
+                                <body>$fakePrompt ne &quot;&quot;</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="7fca3515-5ea0-4f4b-8927-3505f2e53d5d" action="then">
+                                    <nestedSteps>
+                                        <item guid="0b2a082e-9cea-49c1-95f5-8714f7ae72ad" action="command" session="$session">
+                                            <command>
+                                                <body>[char ESC]</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                                                <promptProperties>
+                                                    <stepPrompts>
+                                                        <item name="FakePrompt">
+                                                            <Content sub="true">$fakePrompt</Content>
+                                                        </item>
+                                                    </stepPrompts>
+                                                    <alsoUseSessionPrompts inherit="false">false</alsoUseSessionPrompts>
+                                                </promptProperties>
+                                                <completionProperties promptLearnUserResponseTime="120" promptLearnUserResponseTime.inherit="false">
+                                                    <completeWhen inherit="false" defaultValue=""/>
+                                                    <promptExtraction inherit="false">ANYWHERE</promptExtraction>
+                                                    <maxIdleTimeAddition inherit="false">600.0</maxIdleTimeAddition>
+                                                    <completionTime inherit="false">5</completionTime>
+                                                    <screenMode inherit="false">true</screenMode>
+                                                </completionProperties>
+                                            </applicationProperties>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="5e532e48-aecf-4bc7-a6a1-c7bfbcb117dd" action="comment">
+                    <command>
+                        <body>Wait for Thread Signal</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="e7c4187a-e128-451f-90af-0c56553e75e3" action="if">
+                            <command>
+                                <body>$waitForSignal ne &quot;&quot;</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="5349debe-2204-4110-8cf7-9996973479ba" action="then">
+                                    <nestedSteps>
+                                        <item guid="94ecef26-f2f4-4864-9e2c-b0ea22c4cb4b" action="signalWait">
+                                            <command>
+                                                <body>$waitForSignal</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                        </item>
+                                        <item guid="6331b641-931d-4a94-9583-1b6c2b996dda" action="command" session="$session">
+                                            <command>
+                                                <body>[char ESC]</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                                                <completionProperties>
+                                                    <completeWhen inherit="false">TIMED</completeWhen>
+                                                    <completionTime inherit="false">5</completionTime>
+                                                    <screenMode inherit="false">true</screenMode>
+                                                </completionProperties>
+                                            </applicationProperties>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="5c2d61a9-627e-4bc1-8264-6fc053173977" action="comment">
+                    <command>
+                        <body>Loop forever until the thread is killed</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="fa1c7afb-da94-4a47-b8a8-c2699086b27a" action="if">
+                            <command>
+                                <body>$waitForSignal eq &quot;&quot; &amp;&amp; $fakePrompt eq &quot;&quot;</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="b81a5f1b-fc30-40a8-a284-6053c4142162" action="then">
+                                    <nestedSteps>
+                                        <item guid="ee16ebd2-02eb-4aca-81a3-f4afb9db9e4f" action="while">
+                                            <command>
+                                                <body>1</body>
+                                            </command>
+                                            <nestedSteps>
+                                                <item guid="5b03a8c4-c6b6-4c50-840f-0bc288beab08" action="command" session="$session">
+                                                    <command>
+                                                        <body>\\n</body>
+                                                    </command>
+                                                    <eventHandlers>
+                                                        <item name="OnSessionNotOpen"/>
+                                                    </eventHandlers>
+                                                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                                                        <completionProperties>
+                                                            <completeWhen inherit="false">TIMED</completeWhen>
+                                                            <completionTime inherit="false">30</completionTime>
+                                                            <screenMode inherit="false">true</screenMode>
+                                                        </completionProperties>
+                                                    </applicationProperties>
+                                                </item>
+                                            </nestedSteps>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="c22db979-d8a0-42e7-854c-4122b4105329" action="command" session="$session">
+                            <command>
+                                <body>q</body>
+                            </command>
+                            <eventHandlers>
+                                <item name="OnSessionNotOpen"/>
+                            </eventHandlers>
+                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                                <completionProperties>
+                                    <completeWhen inherit="false">TIMED</completeWhen>
+                                    <completionTime inherit="false">5</completionTime>
+                                    <screenMode inherit="false">true</screenMode>
+                                </completionProperties>
+                            </applicationProperties>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <multilineDescription>Start a monitor protocol session 
+
+NOTE: Monitor Protocol Never returns so this should be started in a thread and signalled by the main test case or a Fake Prompt should be passed to this procedure.
+
+Return Value: JSON Block
+status: 1 - success; 0 - failure</multilineDescription>
+            <arguments>
+                <item name="protocol_layers">
+                    <defaultValue>81 82 74 70 29 </defaultValue>
+                </item>
+                <item name="fakePrompt">
+                    <description>If passed, iTest will look to terminate the Mon Sub when this text is found</description>
+                </item>
+                <item name="waitForSignal">
+                    <description>The name of the signal to wait for - if specified</description>
+                </item>
+            </arguments>
+            <response>{&quot;status&quot;:&quot;1&quot;}</response>
+        </item>
+        <item name="Monitor_Subscriber" isPublic="true" isVBlock="true">
+            <steps>
+                <item guid="d360617a-4b33-412f-9a55-731f38a06dfd" action="command" session="$session" normalOffset="78.252" estimatedStepExecutionTime="0.209">
+                    <command>
+                        <body>monitor subscriber</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                        <completionProperties>
+                            <completeWhen inherit="false">TIMED</completeWhen>
+                            <completionTime inherit="false">5</completionTime>
+                            <screenMode inherit="false">true</screenMode>
+                        </completionProperties>
+                    </applicationProperties>
+                </item>
+                <item guid="6dc1a020-a79d-4ad9-a607-c053eecae02f" action="comment">
+                    <command>
+                        <body>Filter on IMEI</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="ca93ce39-6042-47c3-a510-d5cd0ea54f1a" action="if">
+                            <command>
+                                <body>$IMEI ne &quot;&quot;</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="95ff78c2-474b-47dd-8296-8d4f03dfd0d4" action="then">
+                                    <nestedSteps>
+                                        <item guid="fce97f93-9691-4852-8269-8a2815e2dd76" action="command" session="$session" normalOffset="0.003" estimatedStepExecutionTime="0.16">
+                                            <command>
+                                                <body>i</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                                                <completionProperties>
+                                                    <completeWhen inherit="false">TIMED</completeWhen>
+                                                    <completionTime inherit="false">25</completionTime>
+                                                    <screenMode inherit="false">true</screenMode>
+                                                </completionProperties>
+                                            </applicationProperties>
+                                        </item>
+                                        <item guid="e4035091-b0c4-48fe-b164-5101ea2c7cb2" action="command" session="$session" normalOffset="25.133">
+                                            <command>
+                                                <body>$IMEI</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                                                <completionProperties>
+                                                    <completeWhen inherit="false">TIMED</completeWhen>
+                                                    <promptExtraction inherit="false">LAST_NONEMPTY_LINE</promptExtraction>
+                                                    <completionTime inherit="false">1</completionTime>
+                                                    <screenMode inherit="false">true</screenMode>
+                                                </completionProperties>
+                                            </applicationProperties>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="0bd7b897-03a1-4b40-8de8-68c150940f9a" action="comment">
+                    <command>
+                        <body>Filter on IMSI - command for IMSI is &quot;a&quot;</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="d36d255c-9233-470e-84a5-f9774d6db504" action="if">
+                            <command>
+                                <body>$IMSI ne &quot;&quot;</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="a2418dc6-f2a8-4801-b46e-45b97b603b60" action="then">
+                                    <nestedSteps>
+                                        <item guid="dfd9f560-aef8-46c9-b12a-ae14cfd9350d" action="command" session="$session" normalOffset="0.003" estimatedStepExecutionTime="0.16">
+                                            <command>
+                                                <body>a</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                                                <completionProperties>
+                                                    <completeWhen inherit="false">TIMED</completeWhen>
+                                                    <completionTime inherit="false">25</completionTime>
+                                                    <screenMode inherit="false">true</screenMode>
+                                                </completionProperties>
+                                            </applicationProperties>
+                                        </item>
+                                        <item guid="783bc1a0-a7a9-4051-b3e0-d1d5da55c2ef" action="command" session="$session" normalOffset="25.133">
+                                            <command>
+                                                <body>$IMSI</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                                                <completionProperties>
+                                                    <completeWhen inherit="false">TIMED</completeWhen>
+                                                    <promptExtraction inherit="false">LAST_NONEMPTY_LINE</promptExtraction>
+                                                    <completionTime inherit="false">1</completionTime>
+                                                    <screenMode inherit="false">true</screenMode>
+                                                </completionProperties>
+                                            </applicationProperties>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="8ef98240-3452-4b6a-9fc2-20d57c8a9f3d" action="comment">
+                    <command>
+                        <body>Set the verbosity level if needed</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="b6340474-ed23-4715-ba52-d00a8e5ef4b3" action="while">
+                            <command>
+                                <body>1</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="be669867-34a6-4416-9647-88d9eef77ffa" action="command" session="$session" useResponseMapLibraryApplicability="false">
+                                    <command>
+                                        <body>\\n</body>
+                                    </command>
+                                    <postProcessing>
+                                        <analysisRules>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup" declareNoMatchIssue="false">
+                                                        <query>Verbosity_Level()</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>$value == $verbosity_level</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="Break">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                            <item actionId="PassTestIfNotAlreadyFailed">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup" declareNoMatchIssue="false">
+                                                        <query>count(Verbosity_Level())</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>$value == 0</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="RepeatStep">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.RepeatStepPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                        </analysisRules>
+                                    </postProcessing>
+                                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                                        <promptProperties>
+                                            <alsoUseSessionPrompts inherit="false" defaultValue=""/>
+                                        </promptProperties>
+                                        <completionProperties>
+                                            <idleChannel inherit="false">1000</idleChannel>
+                                            <completeWhen inherit="false">AUTO_OR_IDLE</completeWhen>
+                                            <promptExtraction inherit="false">LAST_NONEMPTY_LINE</promptExtraction>
+                                            <screenMode inherit="false">true</screenMode>
+                                        </completionProperties>
+                                    </applicationProperties>
+                                    <responseMap>project://d_Cisco_ASR5K/response_maps/MonSubVerbosity.ffrm</responseMap>
+                                    <useResponseMapLibraryFromSession>false</useResponseMapLibraryFromSession>
+                                </item>
+                                <item guid="7b3d5a37-5129-4506-97e1-b82c303408a3" action="command" session="$session" normalOffset="0.358">
+                                    <command>
+                                        <body>+\\n</body>
+                                    </command>
+                                    <eventHandlers>
+                                        <item name="OnPromptNotFoundTimeout">
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message>Step timed out waiting for the prompt</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="FailTest">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                        </item>
+                                    </eventHandlers>
+                                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                                        <promptProperties>
+                                            <alsoUseSessionPrompts inherit="false" defaultValue=""/>
+                                        </promptProperties>
+                                        <completionProperties>
+                                            <idleChannel inherit="false">1000</idleChannel>
+                                            <completeWhen inherit="false">AUTO_OR_IDLE</completeWhen>
+                                            <promptExtraction inherit="false">LAST_NONEMPTY_LINE</promptExtraction>
+                                            <screenMode inherit="false">true</screenMode>
+                                        </completionProperties>
+                                    </applicationProperties>
+                                    <responseMap>project://d_SPGW/response_maps/monSubMenu.ffrm</responseMap>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="98042b58-c719-43be-a0d1-0c94ad731b78" action="comment">
+                    <command>
+                        <body>For each protocol to be enabled, check the response and see if it is already enabled. The response is a multi-column table so we need to check each column to find the protocol. Once found, we skip the remainder of the columns.</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="6c174b5b-7a19-4879-91ce-2bfbb1571826" action="foreach">
+                            <command>
+                                <body>protocol $protocol_layers</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="724c8b2b-ee8e-41fc-9094-43f26654caa4" action="command" session="$session" normalOffset="0.358" useResponseMapLibraryApplicability="false">
+                                    <command>
+                                        <body>\\n</body>
+                                    </command>
+                                    <postProcessing>
+                                        <analysisRules>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup" declareNoMatchIssue="false">
+                                                        <query sub="true">col1_value_by_index(&quot;$protocol&quot;)</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>$value eq &quot;ON&quot;</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="Continue">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                        <actionsWhenFalse>
+                                                            <item actionId="SkipRemainingRules">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenFalse>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup" declareNoMatchIssue="false">
+                                                        <query sub="true">col2_value_by_index(&quot;$protocol&quot;)</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>$value eq &quot;ON&quot;</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="Continue">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                        <actionsWhenFalse>
+                                                            <item actionId="SkipRemainingRules">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenFalse>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup" declareNoMatchIssue="false">
+                                                        <query sub="true">col3_value_by_index(&quot;$protocol&quot;)</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>$value eq &quot;ON&quot;</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="Continue">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                        <actionsWhenFalse>
+                                                            <item actionId="SkipRemainingRules">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenFalse>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                        </analysisRules>
+                                    </postProcessing>
+                                    <eventHandlers>
+                                        <item name="OnResponseMappingIssue"/>
+                                        <item name="OnMappingFail"/>
+                                    </eventHandlers>
+                                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                                        <promptProperties>
+                                            <alsoUseSessionPrompts inherit="false" defaultValue=""/>
+                                        </promptProperties>
+                                        <completionProperties>
+                                            <idleChannel inherit="false">1000</idleChannel>
+                                            <completeWhen inherit="false">AUTO_OR_IDLE</completeWhen>
+                                            <promptExtraction inherit="false">LAST_NONEMPTY_LINE</promptExtraction>
+                                            <screenMode inherit="false">true</screenMode>
+                                        </completionProperties>
+                                    </applicationProperties>
+                                    <responseMap>project://d_Cisco_ASR5K/response_maps/monSubMenu.ffrm</responseMap>
+                                    <useResponseMapLibraryFromSession>false</useResponseMapLibraryFromSession>
+                                </item>
+                                <item guid="5f179990-4a79-4d76-9d32-35a31d35f242" action="comment">
+                                    <command>
+                                        <body>If we get here, the protocol needs to be enabled</body>
+                                    </command>
+                                    <nestedSteps>
+                                        <item guid="ed4c2729-40b9-41ef-970c-343ee76f13b9" action="command" session="$session" normalOffset="0.358">
+                                            <command>
+                                                <body>$protocol</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                                                <completionProperties>
+                                                    <completeWhen inherit="false">TIMED</completeWhen>
+                                                    <completionTime inherit="false">1</completionTime>
+                                                    <screenMode inherit="false">true</screenMode>
+                                                </completionProperties>
+                                            </applicationProperties>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="87b76fbe-2e38-4bd8-97ee-d6a46b749b3a" action="comment">
+                    <command>
+                        <body>Monitor Subscriber is finished configuring</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="8107d7f8-7b8d-4330-b1b3-8b61fe5b1fdb" action="command" session="$session">
+                            <command>
+                                <body>\\n</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                                <completionProperties>
+                                    <completeWhen inherit="false">TIMED</completeWhen>
+                                    <completionTime inherit="false">5</completionTime>
+                                    <screenMode inherit="false">true</screenMode>
+                                </completionProperties>
+                            </applicationProperties>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="f5351bf2-ccd0-4235-a3a9-cd9dc56a7895" action="comment">
+                    <command>
+                        <body>Monitor Subscriber is finished configuring</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="55055a78-01a4-40c6-9fd6-84ce4f97bb3f" action="signal">
+                            <command>
+                                <body>monSubConfigured</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="2a54f0e4-9f13-4215-b2d8-50439bf161ff" action="comment">
+                    <command>
+                        <body>Wait for &quot;fake&quot; prompt</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="83b5bbba-c71a-467e-ba64-3f4717983401" action="if">
+                            <command>
+                                <body>$fakePrompt ne &quot;&quot;</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="fb525b80-2a79-4895-aeea-7de992b5c6d5" action="then">
+                                    <nestedSteps>
+                                        <item guid="ec3433d4-19b2-4444-8e5d-14a3fa11890f" action="command" session="$session">
+                                            <command>
+                                                <body>\\n</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                                                <promptProperties>
+                                                    <stepPrompts>
+                                                        <item name="FakePrompt">
+                                                            <Content sub="true">$fakePrompt</Content>
+                                                        </item>
+                                                    </stepPrompts>
+                                                    <alsoUseSessionPrompts inherit="false">false</alsoUseSessionPrompts>
+                                                </promptProperties>
+                                                <completionProperties promptLearnUserResponseTime="120" promptLearnUserResponseTime.inherit="false">
+                                                    <completeWhen inherit="false" defaultValue=""/>
+                                                    <promptExtraction inherit="false">ANYWHERE</promptExtraction>
+                                                    <maxIdleTimeAddition inherit="false">600.0</maxIdleTimeAddition>
+                                                    <completionTime inherit="false">5</completionTime>
+                                                    <screenMode inherit="false">true</screenMode>
+                                                </completionProperties>
+                                            </applicationProperties>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="00cd680e-cdd6-4b26-98b0-5c050a179258" action="comment">
+                    <command>
+                        <body>Wait for Thread Signal</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="1615d227-3691-4ee5-9f6e-31951f6aea49" action="if">
+                    <command>
+                        <body>$waitForSignal ne &quot;&quot;</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="fb7dac09-8db0-46a2-ac49-9c4c9ecb6fbf" action="then">
+                            <nestedSteps>
+                                <item guid="d2c33fd3-eefa-4f3f-a393-6d9e04b03be3" action="signalWait">
+                                    <command>
+                                        <body>$waitForSignal</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="aa7d7fff-9dd9-44cd-88b6-9b2c356de81e" action="comment">
+                    <command>
+                        <body>Loop forever until the thread is killed</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="149135a2-5ba1-44c9-ad63-a9ab12376c55" action="if">
+                            <command>
+                                <body>$waitForSignal eq &quot;&quot; &amp;&amp; $fakePrompt eq &quot;&quot;</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="72708b55-74e9-4385-988a-5c9b6c55744c" action="then">
+                                    <nestedSteps>
+                                        <item guid="0603e22f-8166-4d06-9963-083f3ad80176" action="while">
+                                            <command>
+                                                <body>1</body>
+                                            </command>
+                                            <nestedSteps>
+                                                <item guid="def76d92-2070-4ad6-a006-c750acd65ee5" action="command" session="$session">
+                                                    <command>
+                                                        <body>\\n</body>
+                                                    </command>
+                                                    <eventHandlers>
+                                                        <item name="OnSessionNotOpen"/>
+                                                    </eventHandlers>
+                                                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                                                        <completionProperties>
+                                                            <completeWhen inherit="false">TIMED</completeWhen>
+                                                            <completionTime inherit="false">30</completionTime>
+                                                            <screenMode inherit="false">true</screenMode>
+                                                        </completionProperties>
+                                                    </applicationProperties>
+                                                </item>
+                                            </nestedSteps>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="f754dec0-216e-4ebc-a9fb-028c0786e55b" action="command" session="$session">
+                            <command>
+                                <body>q</body>
+                            </command>
+                            <eventHandlers>
+                                <item name="OnSessionNotOpen"/>
+                            </eventHandlers>
+                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                                <completionProperties>
+                                    <completeWhen inherit="false">TIMED</completeWhen>
+                                    <completionTime inherit="false">5</completionTime>
+                                    <screenMode inherit="false">true</screenMode>
+                                </completionProperties>
+                            </applicationProperties>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <multilineDescription>Start a monitor subscriber session 
+
+NOTE: Monitor Subscriber Never returns so this should be started in a thread and signalled by the main test case or a Fake Prompt should be passed to this procedure.
+
+Return Value: JSON Block
+status: 1 - success; 0 - failure</multilineDescription>
+            <arguments>
+                <item name="IMEI">
+                    <description>If pased, this procedure will filter on this IMEI</description>
+                </item>
+                <item name="IMSI">
+                    <description>If pased, this procedure will filter on this IMSI</description>
+                </item>
+                <item name="verbosity_level">
+                    <description>The verbosity level to select: iTest will hit theh &quot;+&quot; the specified number of times</description>
+                    <defaultValue>5</defaultValue>
+                </item>
+                <item name="protocol_layers">
+                    <defaultValue>81 82 74 70 29 </defaultValue>
+                </item>
+                <item name="fakePrompt">
+                    <description>If passed, iTest will look to terminate the Mon Sub when this text is found</description>
+                </item>
+                <item name="waitForSignal">
+                    <description>The name of the signal to wait for - if specified</description>
+                </item>
+            </arguments>
+            <response>{&quot;success&quot;:&quot;1&quot;}</response>
+        </item>
+        <item name="signalWaitCleanupLogging" isPublic="true" isVBlock="true">
+            <steps>
+                <item guid="52f4e903-233e-4c62-b6e3-197ea6a267a4" action="signalWait">
+                    <command>
+                        <body>Cleanup</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="dd560032-edf9-4260-864e-376ca1a6c166" action="disableLogging" session="$session">
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <multilineDescription>Cleanup logging for a session when the &quot;Cleanup&quot; signal is activated.
+
+This procedure is designed to run in a thread.
+
+Return Value: Block
+success: 0 - failure; 1 - success
+</multilineDescription>
+            <response>{&quot;success&quot;:&quot;1&quot;}</response>
+        </item>
+        <item name="showLogs" isPublic="true">
+            <description>Show syslog</description>
+            <steps>
+                <item guid="26935d3c-d7d0-4649-ac70-25967540c989" action="command" session="$session">
+                    <command>
+                        <body>show logs since $timestamp</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="regex">
+                                    <extractorProperties type="com.fnfr.svt.mapping.regex.extractors.RegexExtractorPropertyGroup">
+                                        <regex>(.+)</regex>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>1</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="AppendToProcedureResponse">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.AppendResponsePropertyGroup">
+                                                    <content sub="true">$value</content>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenTrue>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+            </steps>
+            <author>Malcom Terry</author>
+            <multilineDescription>Returns the logs since the timestamp value passed.
+
+Return Value:
+List of logs</multilineDescription>
+            <arguments>
+                <item name="timestamp">
+                    <description>Get logs since &lt;timestamp&gt;
+
+timestamp format:
+YYYY:MM:DD:hh:mm:ss</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="showSubscriber" isPublic="true" isVBlock="true">
+            <steps>
+                <item guid="16081031-3fa0-482d-9676-c32cfc15082c" action="comment">
+                    <command>
+                        <body>If the &quot;full&quot; flag is set, add &quot;full&quot; to the show subscriber command</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="d8ee6f1b-a312-4850-931e-452e09f6e36b" action="if">
+                    <command>
+                        <body>$full &gt; 0</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="0c3120a7-37ec-4d0b-9880-8b5283a41121" action="then">
+                            <nestedSteps>
+                                <item guid="611d11e6-c017-4d5f-8748-c83b0db350e3" action="command" session="$session">
+                                    <command>
+                                        <body>show subscriber full imsi $IMSI</body>
+                                    </command>
+                                    <postProcessing>
+                                        <analysisRules>
+                                            <item>
+                                                <extractorInfo extractorType="regex">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.regex.extractors.RegexExtractorPropertyGroup">
+                                                        <regex>(.+)</regex>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>[string match &quot;*No subscribers match*&quot; $value]</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="SkipRemainingRules">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup" declareNoMatchIssue="false">
+                                                        <query>Username()</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="store">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                        <query>[return username]</query>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup" declareNoMatchIssue="false">
+                                                        <query>(.//ip_address)[1]</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="store">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                        <query>[return ip_address]</query>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                        </analysisRules>
+                                    </postProcessing>
+                                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="2754c37c-d2db-48ca-9cf3-64f66e76f0f1" action="else">
+                            <nestedSteps>
+                                <item guid="b02e1210-3f9e-4736-930b-6461213aa285" action="command" session="$session">
+                                    <command>
+                                        <body>show subscriber imsi $IMSI</body>
+                                    </command>
+                                    <postProcessing>
+                                        <analysisRules>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup" declareNoMatchIssue="false">
+                                                        <query>(mapped/Tabular/table1/table/row/Username)[1]</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="store">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                        <query>[return username]</query>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup" declareNoMatchIssue="false">
+                                                        <query>(mapped/Tabular/table1/table/row/IP)[1]</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="store">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                        <query>[return ip_address]</query>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                        </analysisRules>
+                                    </postProcessing>
+                                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <multilineDescription>Get subscriber information for the specified IMSI</multilineDescription>
+            <arguments>
+                <item name="IMSI">
+                    <description>The IMSI values</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="full">
+                    <description>1 - show subscriber full imsi; 0 - show subscriber imsi</description>
+                    <defaultValue>0</defaultValue>
+                </item>
+            </arguments>
+            <response>{&quot;username&quot;:&quot;0&quot;,&quot;ip_address&quot;:&quot;0&quot;}</response>
+        </item>
+        <item name="showSubscriberAll" isPublic="true">
+            <steps>
+                <item guid="45e65887-1f95-4c41-9495-db1c7a40fe12" action="command" session="$session" useResponseMapLibraryApplicability="false">
+                    <command>
+                        <body>show subscriber all</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                    <responseMap>project://d_Cisco_ASR5K/response_maps/show_subscriber_imsi.ffrm</responseMap>
+                    <useResponseMapLibraryFromSession>false</useResponseMapLibraryFromSession>
+                </item>
+            </steps>
+        </item>
+    </procedures>
+</testCase>

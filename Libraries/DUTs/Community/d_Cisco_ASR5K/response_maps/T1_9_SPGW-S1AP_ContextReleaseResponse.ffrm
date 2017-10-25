@@ -1,0 +1,100 @@
+<?xml version="1.0" ?><ResponseMap version="5.4.0.4f90e5a">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="readFile">
+                <command>
+                    <body>file:/c:/temp/2016_12_19_15_33_1.9_SPGW-SessionIdleTimeout/Monitor_Subscriber_MMEPP-02.log</body>
+                </command>
+            </action>
+            <responseBody>    Procedure Code :   UE CONTEXT RELEASE (23)
+    Criticality
+      | 00.. .... | Reject (0)
+    UE CONTEXT RELEASE Value : 
+      | .001 0110 | Length Determinant : 22
+      Value : 
+        | 0... .... | Ext bit : 0
+          IEs Count : 2
+            IE : 1
+              Protocol IE ID : UE_S1AP_IDs (99)
+              Criticality
+                | 00.. .... | Reject (0)
+              UE_S1AP_IDs Value : 
+                | .000 1001 | Length Determinant : 9
+                Value : 
+                  | 0... .... | Ext bit : 0
+                  | .0.. .... | Choice index : 0
+                    UE S1AP ID Pair
+                      | ..0. .... | Ext bit : 0
+                      Bit map : 
+                        | ...0 .... | IE Extensions : Not present
+                      MME UE S1AP ID
+                        | .... 11.. | Length Determinant : 4
+                        41953769 (0x28029e9)
+                      eNB UE S1AP ID
+                        | 10.. .... | Length Determinant : 3
+                        165674 (0x2872a)
+            IE : 2
+              Protocol IE ID : Cause (2)
+              Criticality
+                | 01.. .... | Ignore (1)
+              Cause Value : 
+                | .000 0010 | Length Determinant : 2
+                Value : 
+                  | 0... .... | Ext bit : 0
+                  | .000 .... | Choice index : 0
+                    Radio Network Layer Cause
+                      | .... 0... | Ext bit : 0
+                      | .... .010 | | 100. .... | User-inactivity (20)</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;isEmpty&gt;false&lt;/isEmpty&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="isEmpty">
+                    <queryFormatString>.//isEmpty</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.1</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="userInactivity">
+                    <groups>
+                        <item name="anchor50">
+                            <regex>.+User-inactivity \\(</regex>
+                            <start>1498</start>
+                            <end>1532</end>
+                        </item>
+                        <item name="user_inactivity">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>1532</start>
+                            <end>1534</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor51">
+                            <regex>\\)</regex>
+                            <start>1534</start>
+                            <end>1535</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>                      | .... .010 | | 100. .... | User-inactivity (20)</sampleMatch>
+                    <optional>true</optional>
+                    <maintainConsistency>false</maintainConsistency>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="readFile" command="file:/c:/temp/2016_12_19_15_33_1.9_SPGW-SessionIdleTimeout/Monitor_Subscriber_MMEPP-02.log"/>
+</ResponseMap>

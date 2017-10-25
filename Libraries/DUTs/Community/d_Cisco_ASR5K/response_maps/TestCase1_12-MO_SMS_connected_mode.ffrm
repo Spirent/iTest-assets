@@ -1,0 +1,236 @@
+<?xml version="1.0" ?><ResponseMap version="5.4.0.4f90e5a">
+    <sampleDictionary>
+        <item name="sample2">
+            <action actionType="readFile">
+                <command>
+                    <body>file:/c:/temp/2016_11_30_12_43_1.12-MO_SMS_connected_mode/Monitor_Subscriber_MME.log</body>
+                </command>
+            </action>
+            <responseBody>       UL_NAS_TRANSPORT(0x63)
+    NAS Msg Container
+      0x49016500130007916174128302f95911
+        260b816174127359f10000ff55c8329b
+        fd6681e8e8f41c949e83a6cd29885e9e
+        d34166f9bb0d62528b20fa1b343b82c2
+        74d0b54c0639df76d00c068ac974b49b
+        4e460315a754900c16b381d26e10bd3c
+        a78362b319cea500
+         I . e . . . . . a t . . . . Y . 
+         . . . a t . s Y . . . . U . 2 . 
+         . f . . . . . . . . . . . . . . 
+         . A f . . . b R . . . . 4 . . . 
+         t . . L . 9 . v . . . . . t . . 
+         N F . . . T . . . . . . n . . . 
+         . . b . . . . . 
+0x0000\t 27a7 9033 0405 0763 6849 0165 0013 0007\t'..3...chI.e....
+0x0010\t 9161 7412 8302 f959 1126 0b81 6174 1273\t.at....Y.&amp;..at.s
+0x0020\t 59f1 0000 ff55 c832 9bfd 6681 e8e8 f41c\tY....U.2..f.....
+0x0030\t 949e 83a6 cd29 885e 9ed3 4166 f9bb 0d62\t.....).^..Af...b
+0x0040\t 528b 20fa 1b34 3b82 c274 d0b5 4c06 39df\tR....4;..t..L.9.
+0x0050\t 76d0 0c06 8ac9 74b4 9b4e 4603 15a7 5490\tv.....t..NF...T.
+0x0060\t 0c16 b381 d26e 10bd 3ca7 8362 b319 cea5\t.....n..&lt;..b....
+0x0070\t 00                                     \t.
+
+Wednesday November 30 2016
+&lt;&lt;&lt;&lt;OUTBOUND  From sessmgr:239 sgs_main.c:1719 (Callid 4505fe16) 12:50:11:050 Eventid:173002(3)
+SGS Tx PDU, from 0.0.0.0:29118 to 0.0.0.0:29118 (151)
+
+ SGs-AP (151 bytes)
+  UPLINK_UNITDATA(0x8)
+    IMSI
+      302221999998056
+    NAS_MESSAGE_CONTAINER</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;isEmpty&gt;false&lt;/isEmpty&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="isEmpty">
+                    <queryFormatString>.//isEmpty</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.1</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.block.documents.BlockMapperProperties">
+            <BlockMaps name="container"/>
+        </item>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="NASMessageContainingSMS">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>UL_NAS_TRANSPORT\\(</regex>
+                            <start>0</start>
+                            <end>17</end>
+                        </item>
+                        <item name="UL_NAS_TRANSPORT">
+                            <regex>([0][x][\\da-fA-F]+)</regex>
+                            <named>true</named>
+                            <start>17</start>
+                            <end>21</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([0][x][\da-fA-F]+)">one hexadecimal number</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\)\\s+</regex>
+                            <start>21</start>
+                            <end>27</end>
+                        </item>
+                        <item name="NASMsgContainer">
+                            <regex>.{17}</regex>
+                            <named>true</named>
+                            <start>27</start>
+                            <end>44</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>\\s+</regex>
+                            <start>44</start>
+                            <end>50</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>UL_NAS_TRANSPORT(0x63)
+    NAS Msg Container      </sampleMatch>
+                    <optional>true</optional>
+                </item>
+                <item name="UplinkUnitdata">
+                    <groups>
+                        <item name="SGs_AP">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>0</start>
+                            <end>6</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor0">
+                            <regex>\\s+\\(</regex>
+                            <start>6</start>
+                            <end>8</end>
+                        </item>
+                        <item name="bytes">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>8</start>
+                            <end>11</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+bytes\\)\\s+</regex>
+                            <start>11</start>
+                            <end>21</end>
+                        </item>
+                        <item name="Uplink_UnitData">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>21</start>
+                            <end>36</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>\\(</regex>
+                            <start>36</start>
+                            <end>37</end>
+                        </item>
+                        <item name="UPLINK_UNITDATA">
+                            <regex>([0][x][\\da-fA-F]+)</regex>
+                            <named>true</named>
+                            <start>37</start>
+                            <end>40</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([0][x][\da-fA-F]+)">one hexadecimal number</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor3">
+                            <regex>\\)\\s+IMSI\\s+</regex>
+                            <start>40</start>
+                            <end>57</end>
+                        </item>
+                        <item name="group2">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>57</start>
+                            <end>72</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor4">
+                            <regex>\\s+</regex>
+                            <start>72</start>
+                            <end>77</end>
+                        </item>
+                        <item name="NasMsgContainer">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>77</start>
+                            <end>98</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>SGs-AP (151 bytes)
+  UPLINK_UNITDATA(0x8)
+    IMSI
+      302221999998056
+    NAS_MESSAGE_CONTAINER</sampleMatch>
+                    <optional>true</optional>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="readFile" command="file:/c:/temp/2016_11_29_14_32_1.12-MO_SMS_connected_mode/Monitor_Subscriber_MME1.log"/>
+    <responseFilters>
+        <item name="ResponseFilterList1"/>
+    </responseFilters>
+    <aliases>
+        <item name="UL_NAS_TRANSPORT_MESSAGE_FOUND">
+            <description>Greater than zero if message found</description>
+            <queryFormatString>count(//UL_NAS_TRANSPORT)</queryFormatString>
+        </item>
+    </aliases>
+</ResponseMap>

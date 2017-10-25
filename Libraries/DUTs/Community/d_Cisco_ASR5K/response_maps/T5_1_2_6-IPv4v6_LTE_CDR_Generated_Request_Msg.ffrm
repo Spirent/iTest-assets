@@ -1,0 +1,123 @@
+<?xml version="1.0" ?><ResponseMap version="5.4.0.4f90e5a">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="readFile">
+                <command>
+                    <body>file:/c:/temp/2017_01_03_15_34_5.6-IPv4v6_LTE_CDR_Generation_when_volume_triggers_are_configured/Monitor_Subscriber_SPGWPP-03.log</body>
+                </command>
+            </action>
+            <responseBody>Message Type: GTPP_DATA_RECORD_TRANSFER_REQUEST_MSG (0xf0)
+
+CDR ELEMENTS FOLLOW
+  recordType                         SGWRECORD
+  servedIMSI                         302221001813447
+  servedIMEISV                       3562520740747723
+  sgwAddress                         0.0.0.0
+  chargingID                         173393838
+  servingNodeAddress                 0.0.0.0
+  servingNodeType                    MME
+  pgwAddressUsed                     0.0.0.0
+  accessPointNameNI                  sp.telus.com
+  pdnType                            IPV4+IPV6
+  servedPDPPDNAddress                2001:0db8:85a3:0000:0000:8a2e:0370:7334
+  dynamicAddressFlag                 TRUE</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;isEmpty&gt;false&lt;/isEmpty&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="isEmpty">
+                    <queryFormatString>.//isEmpty</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.1</duration>
+        </item>
+        <item name="sample2">
+            <responseBody>Message Type: GTPP_DATA_RECORD_TRANSFER_REQUEST_MSG (0xf0)
+Failed Opening DDL </responseBody>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.table.TabularMapperProperties">
+            <tabularMaps>
+                <item name="table1">
+                    <banner>Message Type: GTPP_DATA_RECORD_TRANSFER_REQUEST_MSG</banner>
+                    <footer>dynamicAddressFlag*</footer>
+                    <footerStructure>CaseInsensitive</footerStructure>
+                    <columns>
+                        <item name="Message">
+                            <isKey>true</isKey>
+                            <lastFullCell/>
+                            <uid>e0dd52ed-475a-4b55-a545-18b337c62047</uid>
+                        </item>
+                        <item name="GTPP_DATA_RECORD_TRANSFER_REQUEST_MSG">
+                            <lastFullCell/>
+                            <uid>5bae7c65-54a6-4aa2-ae69-349dad72ecf3</uid>
+                        </item>
+                    </columns>
+                </item>
+            </tabularMaps>
+        </item>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="failure">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Message Type:\\s+</regex>
+                            <start>0</start>
+                            <end>14</end>
+                        </item>
+                        <item name="Message_Type_Open_Failure">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>14</start>
+                            <end>51</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+\\(</regex>
+                            <start>51</start>
+                            <end>53</end>
+                        </item>
+                        <item name="Message_Type_Code_Failure">
+                            <regex>([0][x][\\da-fA-F]+)</regex>
+                            <named>true</named>
+                            <start>53</start>
+                            <end>57</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([0][x][\da-fA-F]+)">one hexadecimal number</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>\\)\\s+Failed Opening DDL\\s+</regex>
+                            <start>57</start>
+                            <end>78</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>Message Type: GTPP_DATA_RECORD_TRANSFER_REQUEST_MSG (0xf0)
+Failed Opening DDL </sampleMatch>
+                    <optional>true</optional>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="readFile" command="file:/c:/temp/2017_01_03_15_34_5.6-IPv4v6_LTE_CDR_Generation_when_volume_triggers_are_configured/Monitor_Subscriber_SPGWPP-03.log"/>
+    <aliases>
+        <item name="failed_open_DDL">
+            <description>If the system is unable to open the CDRs, this value will be greater than zero</description>
+            <queryFormatString>count(//Message_Type_Open_Failure)</queryFormatString>
+        </item>
+    </aliases>
+</ResponseMap>
