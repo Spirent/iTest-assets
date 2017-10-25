@@ -1,0 +1,640 @@
+<?xml version="1.0"?>
+<testCase version="6.1.0.e2e4ec0">
+    <general>
+        <sessionClass includeTestCase="true" sessionType="project://d_dslam_lucent-stinger/session_profiles/stinger.ffsp"/>
+    </general>
+    <procedures>
+        <item name="main">
+            <steps>
+                <item guid="79b9be6c-bbe6-4fbb-9978-99a8db9fbc3b" action="comment">
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+        </item>
+        <item name="login" isPublic="true">
+            <steps>
+                <item guid="d4787d8c-291f-46ce-bb8c-e2ca41a717ec" action="return">
+                    <command>
+                        <body>0</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+        </item>
+        <item name="getFootprint" isPublic="true">
+            <steps>
+                <item guid="c6d91373-ba64-4bd8-b3b9-4f5122db0e83" action="comment">
+                    <command>
+                        <body>Put the data in the correct TCL format</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="09f0164f-b539-4904-8ed9-e9dc80b9aa49" action="foreach">
+                            <command>
+                                <body>footprint_element $footprint_data</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="78d5d152-bcbd-4823-907e-b68a9a32066a" action="eval">
+                                    <command>
+                                        <body>set return_value($footprint_element) n/a</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="49741dbe-bb6b-41f0-833e-705d7f4e789b" action="foreach">
+                    <command>
+                        <body>card_port $card_port_num</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="ccefe87e-0ec8-4fa3-85fa-7d1235267c61" action="eval">
+                            <command>
+                                <body>set retstr &quot;&quot;</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="d4a79714-66cd-4600-8782-d86a4404cd50" action="getPortId" session="$session">
+                            <command>
+                                <body>-card_port_num $card_port</body>
+                            </command>
+                            <postProcessing>
+                                <analysisRules>
+                                    <item>
+                                        <extractorInfo extractorType="query">
+                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                <query>mapped/Json/portId</query>
+                                            </extractorProperties>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="store">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                <storageLocation>port_id</storageLocation>
+                                                <query>port_id</query>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                </analysisRules>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.svt.applications.snmp.documents.StepDefaultProperties"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="e14fa7ff-f1e6-4b34-81a9-5917d03d9a0e" action="comment">
+                            <command>
+                                <body>ATUC</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="beae5e01-69d4-4bbe-b54b-d723bd12bbbd" action="get" session="$session" estimatedStepExecutionTime="1.156">
+                                    <command>
+                                        <body>MIB-2::transmission.adslMIB.adslLineMib.adslMibObjects.adslAtucPhysTable.adslAtucPhysEntry.adslAtucCurrSnrMgn.$port_id</body>
+                                    </command>
+                                    <postProcessing>
+                                        <analysisRules>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                        <query>adslAtucCurrSnrMgn()</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="store">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                        <storageLocation>return_value(dsn)</storageLocation>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                        </analysisRules>
+                                    </postProcessing>
+                                    <applicationProperties type="com.fnfr.svt.applications.snmp.documents.StepDefaultProperties"/>
+                                </item>
+                                <item guid="d9db84fe-fe03-4dd5-8df9-bc7126037ecc" action="get" session="$session" estimatedStepExecutionTime="1.156">
+                                    <command>
+                                        <body>MIB-2::transmission.adslMIB.adslLineMib.adslMibObjects.adslAtucPhysTable.adslAtucPhysEntry.adslAtucCurrAtn.$port_id</body>
+                                    </command>
+                                    <postProcessing>
+                                        <analysisRules>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                        <query>adslAtucCurrAtn()</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="store">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                        <storageLocation>return_value(datt)</storageLocation>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                        </analysisRules>
+                                    </postProcessing>
+                                    <applicationProperties type="com.fnfr.svt.applications.snmp.documents.StepDefaultProperties"/>
+                                </item>
+                                <item guid="f8c2a8b0-0e5a-48e9-8862-6ad705f4d57a" action="get" session="$session" estimatedStepExecutionTime="1.156">
+                                    <command>
+                                        <body>MIB-2::transmission.adslMIB.adslLineMib.adslMibObjects.adslAtucPhysTable.adslAtucPhysEntry.adslAtucCurrOutputPwr.$port_id</body>
+                                    </command>
+                                    <postProcessing>
+                                        <analysisRules>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                        <query>adslAtucCurrOutputPwr()</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="store">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                        <storageLocation>return_value(dtxp)</storageLocation>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                        </analysisRules>
+                                    </postProcessing>
+                                    <applicationProperties type="com.fnfr.svt.applications.snmp.documents.StepDefaultProperties"/>
+                                </item>
+                                <item guid="e18b614d-0bca-4407-b85a-fabd4252b6ed" action="get" session="$session" estimatedStepExecutionTime="1.156">
+                                    <command>
+                                        <body>MIB-2::transmission.adslMIB.adslLineMib.adslMibObjects.adslAtucPhysTable.adslAtucPhysEntry.adslAtucCurrAttainableRate.$port_id</body>
+                                    </command>
+                                    <postProcessing>
+                                        <analysisRules>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                        <query>adslAtucCurrAttainableRate()</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="store">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                        <storageLocation>return_value(dra)</storageLocation>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                        </analysisRules>
+                                    </postProcessing>
+                                    <applicationProperties type="com.fnfr.svt.applications.snmp.documents.StepDefaultProperties"/>
+                                </item>
+                                <item guid="d4085f33-777a-4618-95b2-992e033f373e" action="get" session="$session" estimatedStepExecutionTime="1.156">
+                                    <command>
+                                        <body>MIB-2::transmission.adslMIB.adslLineMib.adslMibObjects.adslAtucChanTable.adslAtucChanEntry.adslAtucChanInterleaveDelay.$port_id</body>
+                                    </command>
+                                    <postProcessing>
+                                        <analysisRules>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                        <query>adslAtucChanInterleaveDelay()</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="store">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                        <storageLocation>return_value(dild)</storageLocation>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                        </analysisRules>
+                                    </postProcessing>
+                                    <applicationProperties type="com.fnfr.svt.applications.snmp.documents.StepDefaultProperties"/>
+                                </item>
+                                <item guid="dc7dc01d-1cc0-4447-9ed6-67f33e4ce394" action="get" session="$session" estimatedStepExecutionTime="1.156">
+                                    <command>
+                                        <body>MIB-2::transmission.adslMIB.adslLineMib.adslMibObjects.adslAtucChanTable.adslAtucChanEntry.adslAtucChanCurrTxRate.$port_id</body>
+                                    </command>
+                                    <postProcessing>
+                                        <analysisRules>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                        <query>adslAtucChanCurrTxRate()</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="store">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                        <storageLocation>return_value(dr)</storageLocation>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                        </analysisRules>
+                                    </postProcessing>
+                                    <applicationProperties type="com.fnfr.svt.applications.snmp.documents.StepDefaultProperties"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="0e6ab51c-1518-4521-8b08-3696093e5420" action="comment">
+                            <command>
+                                <body>ATUR</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="bafceae4-d0bb-4880-bec6-f5147f4e2e3b" action="get" session="$session" estimatedStepExecutionTime="1.156">
+                                    <command>
+                                        <body>MIB-2::transmission.adslMIB.adslLineMib.adslMibObjects.adslAturPhysTable.adslAturPhysEntry.adslAturCurrSnrMgn.$port_id</body>
+                                    </command>
+                                    <postProcessing>
+                                        <analysisRules>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                        <query>adslAturCurrSnrMgn()</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="store">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                        <storageLocation>return_value(usn)</storageLocation>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                        </analysisRules>
+                                    </postProcessing>
+                                    <applicationProperties type="com.fnfr.svt.applications.snmp.documents.StepDefaultProperties"/>
+                                </item>
+                                <item guid="fe1ced5b-832d-4b0d-bafb-512be90fc6f9" action="get" session="$session" estimatedStepExecutionTime="1.156">
+                                    <command>
+                                        <body>MIB-2::transmission.adslMIB.adslLineMib.adslMibObjects.adslAturPhysTable.adslAturPhysEntry.adslAturCurrAtn.$port_id</body>
+                                    </command>
+                                    <postProcessing>
+                                        <analysisRules>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                        <query>adslAturCurrAtn()</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="store">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                        <storageLocation>return_value(uatt)</storageLocation>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                        </analysisRules>
+                                    </postProcessing>
+                                    <applicationProperties type="com.fnfr.svt.applications.snmp.documents.StepDefaultProperties"/>
+                                </item>
+                                <item guid="c53a55d9-a128-4a63-a352-bbfbea266495" action="get" session="$session" estimatedStepExecutionTime="1.156">
+                                    <command>
+                                        <body>MIB-2::transmission.adslMIB.adslLineMib.adslMibObjects.adslAturPhysTable.adslAturPhysEntry.adslAturCurrOutputPwr.$port_id</body>
+                                    </command>
+                                    <postProcessing>
+                                        <analysisRules>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                        <query>adslAturCurrOutputPwr()</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="store">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                        <storageLocation>return_value(utxp)</storageLocation>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                        </analysisRules>
+                                    </postProcessing>
+                                    <applicationProperties type="com.fnfr.svt.applications.snmp.documents.StepDefaultProperties"/>
+                                </item>
+                                <item guid="462ec62b-921b-4239-9e43-a852f70d69fa" action="get" session="$session" estimatedStepExecutionTime="1.156">
+                                    <command>
+                                        <body>MIB-2::transmission.adslMIB.adslLineMib.adslMibObjects.adslAturPhysTable.adslAturPhysEntry.adslAturCurrAttainableRate.$port_id</body>
+                                    </command>
+                                    <postProcessing>
+                                        <analysisRules>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                        <query>adslAturCurrAttainableRate()</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="store">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                        <storageLocation>return_value(ura)</storageLocation>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                        </analysisRules>
+                                    </postProcessing>
+                                    <applicationProperties type="com.fnfr.svt.applications.snmp.documents.StepDefaultProperties"/>
+                                </item>
+                                <item guid="81cd6677-d658-46c2-9c11-c0fd3dfef610" action="get" session="$session" estimatedStepExecutionTime="1.156">
+                                    <command>
+                                        <body>MIB-2::transmission.adslMIB.adslLineMib.adslMibObjects.adslAturChanTable.adslAturChanEntry.adslAturChanInterleaveDelay.$port_id</body>
+                                    </command>
+                                    <postProcessing>
+                                        <analysisRules>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                        <query>adslAturChanInterleaveDelay()</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="store">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                        <storageLocation>return_value(uild)</storageLocation>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                        </analysisRules>
+                                    </postProcessing>
+                                    <applicationProperties type="com.fnfr.svt.applications.snmp.documents.StepDefaultProperties"/>
+                                </item>
+                                <item guid="67be0cc8-85b3-4be0-b93f-76784e656a1b" action="get" session="$session" estimatedStepExecutionTime="1.156">
+                                    <command>
+                                        <body>MIB-2::transmission.adslMIB.adslLineMib.adslMibObjects.adslAturChanTable.adslAturChanEntry.adslAturChanCurrTxRate.$port_id</body>
+                                    </command>
+                                    <postProcessing>
+                                        <analysisRules>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                        <query>adslAturChanCurrTxRate()</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="store">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                        <storageLocation>return_value(ur)</storageLocation>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                        </analysisRules>
+                                    </postProcessing>
+                                    <applicationProperties type="com.fnfr.svt.applications.snmp.documents.StepDefaultProperties"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="a7f4a614-7992-47e3-9c7c-3991662da21d" action="comment" skip="true">
+                            <command>
+                                <body>Get bin values</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="8e0b0e4e-4d17-4c5e-a813-31f474675152" action="get" session="$session" skip="true" estimatedStepExecutionTime="1.156">
+                                    <command>
+                                        <body>MIB-2::transmission.adslMIB.adslLineMib.adslMibObjects.adsLCSmib.1.1.2.1.2.$port_id</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.applications.snmp.documents.StepDefaultProperties"/>
+                                </item>
+                                <item guid="5ef5f494-4b3e-4222-8813-479bedf3cf03" action="get" session="$session" skip="true" estimatedStepExecutionTime="1.156">
+                                    <command>
+                                        <body>MIB-2::transmission.adslMIB.adslLineMib.adslMibObjects.adsLCSmib.1.1.2.1.2.$port_id</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.applications.snmp.documents.StepDefaultProperties"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="db0828fb-624b-4980-89d8-3782e9371e2b" action="comment">
+                            <command>
+                                <body>Adjust values</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="6b0933ad-e9d8-4ec2-ae76-aefd1c72612f" action="foreach">
+                                    <command>
+                                        <body>itm {usn dsn utxp dtxp uatt datt}</body>
+                                    </command>
+                                    <nestedSteps>
+                                        <item guid="8a2d0754-5e0b-4e5f-b285-33487668cab6" action="if">
+                                            <command>
+                                                <body>[string is double $return_value($itm)]</body>
+                                            </command>
+                                            <nestedSteps>
+                                                <item guid="5d4b5051-be2b-4c7f-92f4-5c053b4d1c17" action="then">
+                                                    <nestedSteps>
+                                                        <item guid="a5463ddf-4833-4296-bb34-f92ca3d73ad1" action="eval">
+                                                            <command>
+                                                                <body>set return_value($itm) [expr $return_value($itm) * 0.1]</body>
+                                                            </command>
+                                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                                        </item>
+                                                    </nestedSteps>
+                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                </item>
+                                            </nestedSteps>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="afbf59f9-e8df-4099-bee6-c25f8662bf18" action="comment">
+                            <command>
+                                <body>create return string</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="5e6d66f1-b361-4b3d-a548-da953214c28b" action="foreach">
+                                    <command>
+                                        <body>i $footprint_data</body>
+                                    </command>
+                                    <nestedSteps>
+                                        <item guid="f4036c71-5c92-4009-aad4-36357c9ace6e" action="eval">
+                                            <command>
+                                                <body>lappend retstr $return_value($i)</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="6245286d-4dab-4d15-bb2f-3278a9f8795f" action="eval">
+                                    <command>
+                                        <body>set retstr [join $retstr ,]</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="8f8e1960-fbd6-4f5a-a4dc-ccec3997e259" action="write">
+                            <command>
+                                <body>${retstr}\\n</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <arguments>
+                <item name="card_name">
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="card_port_num">
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="footprint_data">
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="getLinkState" isPublic="true">
+            <steps>
+                <item guid="b7f86ee0-4741-4154-9d28-af5fee997809" action="eval">
+                    <command>
+                        <body>set status 0</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="f5cb57e7-e5e2-4a56-9465-2008683273e9" action="foreach">
+                    <command>
+                        <body>card_port $card_port_num</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="93dddccc-0e9d-4fb3-aa8a-9cb99752ca71" action="getPortId" session="$session">
+                            <command>
+                                <body>-card_port_num $card_port</body>
+                            </command>
+                            <postProcessing>
+                                <analysisRules>
+                                    <item>
+                                        <extractorInfo extractorType="query">
+                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                <query>mapped/Json/portId</query>
+                                            </extractorProperties>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="store">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                <storageLocation>port_id</storageLocation>
+                                                <query>port_id</query>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                </analysisRules>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.svt.applications.snmp.documents.StepDefaultProperties"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="3079e611-58ca-46d3-aaa6-b629bfd65323" action="get" session="$session" estimatedStepExecutionTime="1.156">
+                            <command>
+                                <body>MIB-2::interfaces.ifTable.ifEntry.ifOperStatus.$port_id</body>
+                            </command>
+                            <postProcessing>
+                                <analysisRules>
+                                    <item>
+                                        <extractorInfo extractorType="query">
+                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                <query>ifOperStatus()</query>
+                                            </extractorProperties>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="assert">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                <expression>$value eq &quot;down&quot;</expression>
+                                                <actionsWhenTrue>
+                                                    <item actionId="Eval">
+                                                        <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                            <statement>set status 0</statement>
+                                                        </actionProperties>
+                                                    </item>
+                                                    <item actionId="Break">
+                                                        <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                    </item>
+                                                </actionsWhenTrue>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                </analysisRules>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.svt.applications.snmp.documents.StepDefaultProperties"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="c9076d9c-bc2c-4583-a11b-5aa07d6da8eb" action="return">
+                    <command>
+                        <body>$status</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <arguments>
+                <item name="card_name">
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="card_port_num">
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="setDslamProfile" isPublic="true">
+            <steps>
+                <item guid="86ef1044-543a-4af3-af46-c8846d68d505" action="return">
+                    <command>
+                        <body>0</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <arguments>
+                <item name="card_port_num">
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="card_name">
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="dslam_profile">
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="args"/>
+            </arguments>
+        </item>
+        <item name="getPortId" isPublic="true" isVBlock="true">
+            <steps>
+                <item guid="849018b6-d633-4805-9a76-6cbb1e59ec91" action="foreach">
+                    <command>
+                        <body>{card port} [lrange [split $card_port_num /] end-1 end]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="3b995fff-1917-43b9-b550-4f9173c8809c" action="get" session="$session">
+                    <command>
+                        <body>.iso.org.dod.internet.private.enterprises.ascend.slots.slotItemTable.slotItemEntry.slotItemFirstIf.$card.$port</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>slotItemFirstIf/Number</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>var1</storageLocation>
+                                        <query>portId</query>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.applications.snmp.documents.StepDefaultProperties"/>
+                </item>
+            </steps>
+            <arguments>
+                <item name="card_port_num">
+                    <description>\t</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+            <response>{&quot;portId&quot;:&quot;na&quot;}</response>
+        </item>
+    </procedures>
+</testCase>

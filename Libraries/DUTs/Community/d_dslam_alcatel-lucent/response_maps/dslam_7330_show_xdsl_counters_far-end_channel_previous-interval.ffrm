@@ -1,0 +1,99 @@
+<?xml version="1.0" ?><ResponseMap version="4.3.0.71664">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="command">
+                <command>
+                    <body>show xdsl counters far-end channel previous-interval interval-no 1 1/1/4/1</body>
+                </command>
+            </action>
+            <responseBody>======================================================================================================================================================
+previous-interval table
+======================================================================================================================================================
+if-index |interval-no|cv        |fecc      |cec       |measured-time|in-valid-flag|rtx-c-down|rtx-uc-down|rtx-tx-up 
+---------+-----------+----------+----------+----------+-------------+-------------+----------+-----------+--------------------------------------------
+1/1/4/1   1           0          0          0          900           false         0          0           0         
+------------------------------------------------------------------------------------------------------------------------------------------------------
+previous-interval count : 1
+======================================================================================================================================================
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;prompt&gt;leg:isadmin&amp;gt;# &lt;/prompt&gt;
+    &lt;echo&gt;show xdsl counters far-end channel previous-interval interval-no 1 1/1/4/1&lt;/echo&gt;
+    &lt;promptName&gt;basic&lt;/promptName&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.3</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.table.TabularMapperProperties">
+            <tabularMaps>
+                <item name="table1">
+                    <additionalBannerLineCount>1</additionalBannerLineCount>
+                    <startingLineNumber>5</startingLineNumber>
+                    <banner>if-index |interval-no|cv        |fecc      |cec       |measured-time|in-valid-flag|rtx-c-down|rtx-uc-down|rtx-tx-up </banner>
+                    <footer>------------------------------------------------------------------------------------------------*</footer>
+                    <bannerStructure>Wildcard</bannerStructure>
+                    <footerStructure>Wildcard</footerStructure>
+                    <minOccurences>0</minOccurences>
+                    <maxOccurences>1</maxOccurences>
+                    <columns>
+                        <item name="if-index"/>
+                        <item name="interval-no"/>
+                        <item name="cv"/>
+                        <item name="fecc"/>
+                        <item name="cec"/>
+                        <item name="measured-time"/>
+                        <item name="in-valid-flag"/>
+                        <item name="rtx-c-down"/>
+                        <item name="rtx-uc-down"/>
+                        <item name="rtx-tx-up"/>
+                    </columns>
+                </item>
+            </tabularMaps>
+        </item>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="pattern2">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>previous-interval count :\\s+</regex>
+                            <start>0</start>
+                            <end>26</end>
+                        </item>
+                        <item name="previous_interval_count">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>26</start>
+                            <end>27</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>previous-interval count : 1</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="show xdsl counters far-end channel previous-interval *"/>
+</ResponseMap>

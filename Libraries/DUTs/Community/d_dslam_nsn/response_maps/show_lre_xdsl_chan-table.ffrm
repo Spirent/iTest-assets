@@ -1,0 +1,140 @@
+<?xml version="1.0"?>
+<ResponseMap version="4.4.0.75339">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="command">
+                <command>
+                    <body>show lre 2/1 xdsl chan-table</body>
+                </command>
+            </action>
+            <responseBody>----------------------+-----------+-----------+-----------+-----------+--------
+                      | channel 1             | channel 2             |
+slot/port adm./oper.  | xTUC      | xTUR      | xTUC      | xTUR      | unit
+----------------------+-----------+-----------+-----------+-----------+--------
+-02/01-   up  /up     |           |           | unused !  | unused !  |
+Interleave Delay      | 54        | 26        | 0         | 0         | msec
+CRC error count       | 0         | 0         | 0         | 0         | errors
+Channel Transmit Rate | 2160      | 530       | 0         | 0         | kbps
+INP level             |  7.0      |  3.0      |  0.0      |  0.0      | symbols
+Forward Error Corr.   | 547       | 0         | 0         | 0         | 
+Atm Status            | -         | -         | -         | -         | 
+HEC violation count   | 0         | 0         | 0         | 0         | errors
+===============================================================================
+
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;prompt&gt;EDSI-0038-21-01# &lt;/prompt&gt;
+    &lt;echo&gt;show lre 2/1 xdsl chan-table&lt;/echo&gt;
+    &lt;promptName&gt;prompt4&lt;/promptName&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.3</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.table.TabularMapperProperties">
+            <tabularMaps>
+                <item name="table1">
+                    <additionalBannerLineCount>1</additionalBannerLineCount>
+                    <banner>slot/port*</banner>
+                    <footer>====*</footer>
+                    <bannerStructure>Wildcard</bannerStructure>
+                    <footerStructure>Wildcard</footerStructure>
+                    <customDelimiter>|</customDelimiter>
+                    <delimiter>Custom</delimiter>
+                    <minOccurences>0</minOccurences>
+                    <columns>
+                        <item name="description">
+                            <isKey>true</isKey>
+                            <width>22</width>
+                        </item>
+                        <item name="chan1_xTUC">
+                            <width>12</width>
+                        </item>
+                        <item name="chan1_xTUR">
+                            <width>12</width>
+                        </item>
+                        <item name="chan2_xTUC">
+                            <width>12</width>
+                        </item>
+                        <item name="chan2_xTUR">
+                            <width>12</width>
+                        </item>
+                        <item name="unit">
+                            <width>999</width>
+                        </item>
+                    </columns>
+                    <ignoreBlankLines>false</ignoreBlankLines>
+                    <autoUpdateNames>false</autoUpdateNames>
+                </item>
+            </tabularMaps>
+        </item>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="pattern1">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>----------------------\\+-----------\\+-----------\\+-----------\\+-----------\\+--------\\s+\\| channel\\s+</regex>
+                            <start>0</start>
+                            <end>112</end>
+                        </item>
+                        <item name="channel">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>112</start>
+                            <end>113</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+\\| channel\\s+</regex>
+                            <start>113</start>
+                            <end>136</end>
+                        </item>
+                        <item name="group2">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>136</start>
+                            <end>137</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>\\s+\\|</regex>
+                            <start>137</start>
+                            <end>151</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>----------------------+-----------+-----------+-----------+-----------+--------
+                      | channel 1             | channel 2             |</sampleMatch>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="show lre * xdsl chan-table"/>
+</ResponseMap>
