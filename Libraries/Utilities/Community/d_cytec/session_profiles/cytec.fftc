@@ -1,0 +1,162 @@
+<?xml version="1.0"?>
+<testCase version="5.1.0.77511">
+    <general>
+        <sessionClass includeTestCase="true" sessionType="cytec.ffsp"/>
+    </general>
+    <execution renderCommentsIntoIssues="true" autoUpdateExecutionTime="false"/>
+    <procedures>
+        <item name="main" defaultSessionProfile="cytec.ffsp">
+            <steps>
+                <item guid="3877ca52-148d-445e-9941-65285d7adf71" action="comment">
+                    <command>
+                        <body>Main procedure for Cytec Quick call </body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+        </item>
+        <item name="latch" isPublic="true" defaultSessionProfile="cytec.ffsp">
+            <steps>
+                <item guid="2d02f611-b3e7-47ec-ab03-d4f459bacf9c" action="eval">
+                    <command>
+                        <body>set ret 1</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="1a019e14-a14d-44eb-8061-d9337c86e82b" action="command" session="$session">
+                    <command>
+                        <body>l $port</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="contains">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                        <searchString>1</searchString>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$value == 1</expression>
+                                        <actionsWhenFalse>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message>Failed to latch port $port ($value)</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="Eval">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                    <statement>set ret 0</statement>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenFalse>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                        <storeResponseAt>latch_result</storeResponseAt>
+                        <appendRespToFile inherit="false">false</appendRespToFile>
+                        <appendAction inherit="false">true</appendAction>
+                        <appendCommand inherit="false">false</appendCommand>
+                        <appendSession inherit="false">true</appendSession>
+                        <appendTimestamp inherit="false">false</appendTimestamp>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                        <implicitCrWithLf inherit="false">true</implicitCrWithLf>
+                    </applicationProperties>
+                </item>
+                <item guid="0c365ff6-d67e-4074-be8b-6d9cf1304c80" action="return">
+                    <command>
+                        <body>$ret</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <arguments>
+                <item name="port"/>
+            </arguments>
+        </item>
+        <item name="unlatch" isPublic="true" defaultSessionProfile="cytec.ffsp">
+            <steps>
+                <item guid="5a26cf29-86aa-4810-8280-2cb44ea90882" action="eval">
+                    <command>
+                        <body>set ret 1</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="b6a7adbf-c9f1-4b8f-92c6-c889e510a552" action="command" session="$session">
+                    <command>
+                        <body>u $port</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="contains">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                        <searchString>0</searchString>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$value == 1</expression>
+                                        <actionsWhenFalse>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message>Failed to unlatch port $port ($value)</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="Eval">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                    <statement>set ret 0</statement>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenFalse>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                        <storeResponseAt>unlatch_result</storeResponseAt>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="a7583eed-94da-4f01-a8a5-ecf0f151de24" action="return">
+                    <command>
+                        <body>$ret</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <arguments>
+                <item name="port"/>
+            </arguments>
+        </item>
+        <item name="clear_card" isPublic="true">
+            <steps>
+                <item guid="13de8e3e-da18-4956-afd3-e1fc645ab0a3" action="for">
+                    <command>
+                        <body>{set i 0} {$i &lt;= 11} {incr i}</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="7ca882de-4c7a-4cf4-9494-3723c08ae18d" action="unlatch" session="$session">
+                            <command>
+                                <body>-port $cardId,$i</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <arguments>
+                <item name="cardId">
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+    </procedures>
+</testCase>

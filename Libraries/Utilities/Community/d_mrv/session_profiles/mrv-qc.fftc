@@ -1,0 +1,324 @@
+<?xml version="1.0"?>
+<testCase version="6.0.0.18638fa">
+    <general>
+        <owner>aplofker</owner>
+        <sessionClass includeTestCase="true" sessionType="mrv_ref_telnet.ffsp"/>
+    </general>
+    <procedures>
+        <item name="main" defaultSessionProfile="mrv_ref_telnet.ffsp">
+            <steps>
+                <item guid="7afebd42-36dc-47a0-b7fb-521f0b428b90" action="comment">
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+        </item>
+        <item name="MRV_showport" isPublic="true">
+            <description>Run the show command for the port argument and return the data</description>
+            <steps>
+                <item guid="01baf006-0298-45dc-983e-bbbe82b6f40c" action="command" session="$session">
+                    <command>
+                        <body>show $port</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+            </steps>
+            <arguments>
+                <item name="session">
+                    <description>Session Id</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="port">
+                    <description>One or more ports to query. The format can be c.s.p, s.p, or p, depending on the level</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="MRV_portUp" isPublic="true">
+            <description>No - shut a mapped port</description>
+            <steps>
+                <item guid="bdcd014c-3e7c-4363-8446-e08a61e55b2d" action="comment">
+                    <command>
+                        <body>Enter configure mode</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="76bffd0b-b453-45a5-9c64-c36aa9ff00e8" action="command" session="$session">
+                            <command>
+                                <body>configure terminal</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="ce00243b-20c9-4e15-920e-1071235e0502" action="command" session="$session">
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="326014d9-3119-490e-b423-e2f3afacd1a6" action="comment">
+                    <command>
+                        <body>Navigate to the port and bring it up</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="1c03129a-3703-42df-bcb9-afb017a31172" action="command" session="$session">
+                            <command>
+                                <body>port $port</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                        </item>
+                        <item guid="c8f5deba-36c6-464c-8a13-c9e55186778c" action="command" session="$session">
+                            <command>
+                                <body>no shutdown</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="ae1c77bc-c183-4b97-a9a7-1124d51496f1" action="comment">
+                    <command>
+                        <body>Exit configure mode</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="a5aaf802-1cef-4570-984e-e1b5d2472543" action="command" session="$session">
+                            <command>
+                                <body>end</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <multilineDescription>This qc brings up a mapped port. 
+NOTE: The port is assumed to be mapped. It does not check and will not work on an unmapped port.</multilineDescription>
+            <arguments>
+                <item name="session">
+                    <description>Session Id</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="port">
+                    <description>Port to turn up</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="MRV_portDown" isPublic="true">
+            <description>Shutdown a mapped port</description>
+            <steps>
+                <item guid="02536652-4c4a-4c62-891a-b34b2f61a961" action="comment">
+                    <command>
+                        <body>Enter configure mode</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="96e21182-8742-44b0-a8aa-6e5ebe9b9988" action="command" session="$session">
+                            <command>
+                                <body>configure terminal</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="794d1e48-ff10-46f9-818b-3f30ae9677e5" action="comment">
+                    <command>
+                        <body>Navigate to the port and shut it down</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="d3509539-0d85-4c26-b8de-38925b0368ff" action="command" session="$session">
+                            <command>
+                                <body>port $port</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                        </item>
+                        <item guid="d0a7b20b-137e-4209-83bd-aeb56e150cb2" action="command" session="$session">
+                            <command>
+                                <body>shutdown</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="cade62ea-574f-44da-94bc-fb7e959e0e26" action="comment">
+                    <command>
+                        <body>Exit configure mode</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="9dab59f7-e608-4ff2-8d2f-57defce03fa9" action="command" session="$session">
+                            <command>
+                                <body>end</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <multilineDescription>This qc shuts down a mapped port. 
+NOTE: The port is assumed to be mapped. It does not check and will not work on an unmapped port.</multilineDescription>
+            <arguments>
+                <item name="session">
+                    <description>Session Id</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="port">
+                    <description>Port to shutdown</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="MRV_isPortUp" isPublic="true">
+            <steps>
+                <item guid="8ccc3cf6-e6eb-403f-8730-63caa96c23f8" action="comment">
+                    <command>
+                        <body>Enter configure mode</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="ad35e89b-7bef-420d-9136-d22ac7a6f3eb" action="command" session="$session">
+                            <command>
+                                <body>configure terminal</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="10789cb0-92e2-44f2-9887-58e93f232a28" action="command" session="$session">
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="91358d5e-0595-4262-aa92-92e1201b0eab" action="comment">
+                    <command>
+                        <body>Exit configure mode</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="20a765c7-5a29-46bb-a4f0-e5ca1c571dee" action="command" session="$session">
+                            <command>
+                                <body>end</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <arguments>
+                <item name="session">
+                    <description>Session Id</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="port">
+                    <description>Port to query</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="MRV_isPortDown" isPublic="true">
+            <steps>
+                <item guid="cd57bc4a-28d2-43fd-96d7-82d9d4c1c56d" action="comment">
+                    <command>
+                        <body>Enter configure mode</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="9b8cc580-5ce5-46a0-9d17-e3d29e0ce372" action="command" session="$session">
+                            <command>
+                                <body>configure terminal</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="e26d148b-4a57-407d-9141-37dec136b228" action="command" session="$session">
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="5480329f-5727-44c3-b9ad-3d59a0e24b09" action="comment">
+                    <command>
+                        <body>Exit configure mode</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="9f0d6511-980d-461a-b2c4-9b7c18b72755" action="command" session="$session">
+                            <command>
+                                <body>end</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <arguments>
+                <item name="session">
+                    <description>Session Id</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="port">
+                    <description>Port to query</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="MRV_showProcCPU" isPublic="true">
+            <steps>
+                <item guid="bbe4b2ab-9424-4be4-ad0c-8d740faf7c44" action="comment">
+                    <command>
+                        <body>Enter configure mode</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="db688030-dd67-4fcf-8bc8-6b30c38a73b4" action="command" session="$session">
+                            <command>
+                                <body>configure terminal</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="37c9dfac-5a83-4439-b238-01ad6cfa15ed" action="command" session="$session">
+                    <command>
+                        <body>show proc cpu</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="26d5f4cf-73e1-42cc-8d54-45f4c4f6633f" action="comment">
+                    <command>
+                        <body>Exit configure mode</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="8f44c97a-60b6-4210-9f46-e0a635e5b298" action="command" session="$session">
+                            <command>
+                                <body>end</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="25aed799-d8c7-491b-a011-7bfe2823502f" action="comment">
+                    <command>
+                        <body>return $utilzation</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <arguments>
+                <item name="session">
+                    <description>Session Id</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+    </procedures>
+</testCase>

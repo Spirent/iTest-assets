@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<SessionTemplate version="6.1.0.e2e4ec0">
+    <baseApplication>com.fnfr.svt.applications.telnet</baseApplication>
+    <sessionProperties type="com.fnfr.svt.applications.telnet.documents.TelnetSessionProperties">
+        <negOpt inherit="false">false</negOpt>
+        <retryCount inherit="false" defaultValue=""/>
+        <connectTimeout inherit="false">10</connectTimeout>
+        <TerminalProperties>
+            <localEcho inherit="false">true</localEcho>
+            <stepDefaults>
+                <customTerminator inherit="false">;</customTerminator>
+                <lineTerminator inherit="false">SLASH_R_SLASH_N</lineTerminator>
+                <completionProperties>
+                    <idleChannel inherit="false">250</idleChannel>
+                    <completeWhen inherit="false">AUTO_OR_IDLE</completeWhen>
+                    <promptExtraction inherit="false">LAST_NONEMPTY_LINE</promptExtraction>
+                </completionProperties>
+                <implicitCrWithLf inherit="false">true</implicitCrWithLf>
+            </stepDefaults>
+            <captureProperties>
+                <useSessionPrompts inherit="false">false</useSessionPrompts>
+                <extractPromptFromResponse inherit="false">false</extractPromptFromResponse>
+                <extractEchoFromResponse inherit="false" defaultValue=""/>
+            </captureProperties>
+            <keyboardProperties>
+                <carriageReturn inherit="false">SLASH_R</carriageReturn>
+            </keyboardProperties>
+            <prompts inherit="false">
+                <item name="prompt1" MatchMethod="REGULAR_EXPRESSION" TypeOfPrompt="PASSWORD">
+                    <Content>\\d</Content>
+                </item>
+            </prompts>
+        </TerminalProperties>
+    </sessionProperties>
+    <eventHandlers>
+        <item name="OnTerminalOpenConnectionFail">
+            <item actionId="DeclareExecutionIssue">
+                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="Information">
+                    <message>Error attempting to open connection to server: {0}</message>
+                </actionProperties>
+            </item>
+            <item actionId="RepeatStep">
+                <actionProperties type="com.fnfr.svt.execution.builtin.actions.RepeatStepPropertyGroup" delayBetweenRepeats="10.0"/>
+            </item>
+        </item>
+    </eventHandlers>
+    <sessionClassTestCase inherit="false">cytec.fftc</sessionClassTestCase>
+    <nickName>Cytec</nickName>
+    <Overview>Layer 1 Switch</Overview>
+    <Description>Telnet connection to Layer 1 Switch
+</Description>
+    <isReferenceProfile>true</isReferenceProfile>
+</SessionTemplate>
