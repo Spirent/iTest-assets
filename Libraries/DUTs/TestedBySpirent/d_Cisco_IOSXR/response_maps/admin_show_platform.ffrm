@@ -1,0 +1,106 @@
+<?xml version="1.0"?>
+<ResponseMap version="6.1.0.e2e4ec0">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="command">
+                <command>
+                    <body>admin show platform</body>
+                </command>
+            </action>
+            <responseBody>Tue Oct 17 11:14:49.412 MDT
+Node            Type                      State            Config State
+-----------------------------------------------------------------------------
+0/RSP0/CPU0     A9K-RSP-4G(Active)        IOS XR RUN       PWR,NSHUT,MON
+0/RSP1/CPU0     A9K-RSP-4G(Standby)       IOS XR RUN       PWR,NSHUT,MON
+0/FT0/SP        FAN TRAY                  READY            
+0/FT1/SP        FAN TRAY                  READY            
+0/0/CPU0        A9K-2T20GE-L              IOS XR RUN       PWR,NSHUT,MON
+0/1/CPU0        A9K-MOD80-TR              IOS XR RUN       PWR,NSHUT,MON
+0/1/0           A9K-MPA-1X40GE            OK               PWR,NSHUT,MON
+0/1/1           A9K-MPA-1X40GE            OK               PWR,NSHUT,MON
+0/2/CPU0        A9K-8T-L                  IOS XR RUN       PWR,NSHUT,MON
+0/3/CPU0        A9K-2x100GE-TR            IOS XR RUN       PWR,NSHUT,MON
+0/PM0/SP        A9K-2KW-DC                READY            PWR,NSHUT,MON
+0/PM1/SP        A9K-2KW-DC                READY            PWR,NSHUT,MON
+0/PM2/SP        A9K-2KW-DC                READY            PWR,NSHUT,MON
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;isEmpty&gt;false&lt;/isEmpty&gt;
+    &lt;promptName&gt;prompt1&lt;/promptName&gt;
+    &lt;echo&gt;admin show platform&lt;/echo&gt;
+    &lt;prompt&gt;RP/0/RSP0/CPU0:acr01awsccc#&lt;/prompt&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="isEmpty">
+                    <queryFormatString>.//isEmpty</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+            </aliases>
+            <duration>1.5</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.table.TabularMapperProperties">
+            <tabularMaps>
+                <item name="table1">
+                    <additionalBannerLineCount>1</additionalBannerLineCount>
+                    <banner>Node\\s+Type\\s+State\\s+Config State\\s*</banner>
+                    <bannerStructure>Regex</bannerStructure>
+                    <columnBoundaries>Positional</columnBoundaries>
+                    <minOccurences>0</minOccurences>
+                    <columns>
+                        <item name="Node">
+                            <isKey>true</isKey>
+                            <width>16</width>
+                            <lastFullCell></lastFullCell>
+                            <uid>7fd5b780-20ca-4733-9ba3-bf9745cfb9eb</uid>
+                        </item>
+                        <item name="Type">
+                            <width>26</width>
+                            <lastFullCell></lastFullCell>
+                            <uid>68509611-ca5f-4087-80dd-aa802751bdb0</uid>
+                        </item>
+                        <item name="State">
+                            <width>17</width>
+                            <lastFullCell></lastFullCell>
+                            <uid>a391e20c-618d-49f7-8c24-d10d2472350f</uid>
+                        </item>
+                        <item name="Config_State">
+                            <width>989</width>
+                            <lastFullCell></lastFullCell>
+                            <uid>0a938cef-ec8a-45e9-a113-15df8d7f22ca</uid>
+                        </item>
+                    </columns>
+                    <ignoreBlankLines>false</ignoreBlankLines>
+                    <autoUpdateNames>false</autoUpdateNames>
+                </item>
+            </tabularMaps>
+        </item>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties"/>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="admin show platform">
+        <application>
+            <item>com.fnfr.svt.applications.ssh</item>
+            <item>com.fnfr.svt.applications.telnet</item>
+        </application>
+    </applicabilityProperties>
+    <aliases>
+        <item name="Number_of_power_supplies">
+            <queryFormatString>count(mapped/Tabular/table1/table/row[contains(Node,&apos;PM&apos;)])</queryFormatString>
+        </item>
+        <item name="all_ps_up">
+            <queryFormatString>count(mapped/Tabular/table1/table/row[contains(Node,&apos;PM&apos;) and State = &quot;READY&quot;]) = count(mapped/Tabular/table1/table/row[contains(Node,&apos;PM&apos;)])</queryFormatString>
+        </item>
+    </aliases>
+</ResponseMap>
