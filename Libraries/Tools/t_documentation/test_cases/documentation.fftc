@@ -1,0 +1,532 @@
+<?xml version="1.0"?>
+<testCase version="6.1.0.e2e4ec0">
+    <execution estimatedExecutionTime="-673">
+        <parameters version="6.1.0.e2e4ec0">
+            <parameters escape="true">
+                <parameters xmlns:pt="http://www.fnfr.com/schemas/parameterTree">
+                    <uriPath>project://d_STC</uriPath>
+                </parameters>
+            </parameters>
+        </parameters>
+    </execution>
+    <procedures>
+        <item name="main">
+            <steps>
+                <item guid="bf9a21a5-992d-498c-a264-1f53c68fbcd8" action="eval">
+                    <command>
+                        <body>set uriPath [param uriPath]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="83f2fd9e-fc5d-4d60-9fff-387d233ec9d5" action="comment">
+                    <command>
+                        <body>Get the list of files in the URI path</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="b6558415-d33e-49ab-abf4-3873340b45c3" action="eval">
+                            <command>
+                                <body>puts [file list -r -nolimit $uriPath]</body>
+                            </command>
+                            <postProcessing>
+                                <storeResponseAt>fileList</storeResponseAt>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="9397bcfb-2c87-4797-8b04-9e499a70b4fc" action="comment">
+                    <command>
+                        <body>Initial HTML page creation</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="147c0566-d97d-451f-bbcc-c1925a5b3b70" action="writeFile">
+                            <command>
+                                <body>$uriPath/documentation/index.html &quot;&lt;HTML&gt;&lt;BODY&gt;
+&lt;style&gt;TABLE,TD,TH{border:1px solid black;border-collapse:collapse;}
+th{text-align:left;background-color:AliceBlue;}
+H1,H2{padding-left:15px}
+.smallText{font-size:10px; color:black; font-family:courier}
+.normalText{font-size:14px; color:black; font-family:arial}
+.procText{font-size:14px; color:black; font-family:arial; padding-left:35px}
+.headerText{font-size:30px; color:black; font-weight:bold; font-family:arial ;text-align:left; padding-left:5px}
+.header2Text{font-size:20px; color:darkblue; font-weight:bold; font-family:arial ;text-align:left; padding-left:5px}
+.header3Text{font-size:18px; color:darkblue; font-weight:bold; font-family:arial ;text-align:left; padding-left:10px}
+&lt;/style&gt;&quot;</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.execution.builtin.exec.WriteFilePropertyGroup">
+                                <appendMode>Overwrite</appendMode>
+                            </applicationProperties>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="a6047d28-783a-4334-a4cc-313526336066" action="comment">
+                    <command>
+                        <body>Print info from the readme file and find all the QC libs</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="9ea29c20-05da-4108-a804-8e6d4aa571a8" action="readFile">
+                            <command>
+                                <body>$uriPath/documentation/readme.txt</body>
+                            </command>
+                            <postProcessing>
+                                <storeResponseAt>readme</storeResponseAt>
+                                <storeResponseText>true</storeResponseText>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.svt.execution.builtin.exec.ReadFilePropertyGroup"/>
+                        </item>
+                        <item guid="3a5a32f3-8931-4ae0-ba0f-504f2165c84f" action="comment">
+                            <command>
+                                <body>Use the first line of the readme as the title</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="b76a26b2-4ca1-442b-a067-1848705ad7f7" action="eval">
+                                    <command>
+                                        <body>set readmeLines [split $readme &apos;\\n&apos;]</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="572652c8-50ed-44d1-96da-7bcbdb3aaabc" action="writeFile">
+                                    <command>
+                                        <body>$uriPath/documentation/index.html &quot;&lt;BR&gt;&lt;DIV class=&apos;headerText&apos;&gt;[lindex $readmeLines 0]&lt;/DIV&gt;&quot;</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.execution.builtin.exec.WriteFilePropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="ab8622a0-329f-47cc-af1d-2bc1e9a490b7" action="eval">
+                                    <command>
+                                        <body>set readmeLines [lreplace $readmeLines 0 0]</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="8bc707b4-30f4-4486-8035-641a67910458" action="comment">
+                            <command>
+                                <body>Print the remaining lines as body text</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="8e9396dc-6d12-4bc9-830d-82c23a832cff" action="foreach">
+                                    <command>
+                                        <body>line $readmeLines</body>
+                                    </command>
+                                    <nestedSteps>
+                                        <item guid="060b048b-f234-4c2d-a3cf-b94c242a1497" action="writeFile">
+                                            <command>
+                                                <body>$uriPath/documentation/index.html &quot;&lt;DIV style=&apos;margin-left:30px; &apos; class=&apos;normalText&apos;&gt;$line&lt;/DIV&gt;&quot;</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.execution.builtin.exec.WriteFilePropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="e1537ef6-4c85-464d-98ba-a08a3a8a2025" action="comment">
+                            <command>
+                                <body>Get number of QC libs in project</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="1a636c72-a89b-4c5c-a30d-1e8614247bfd" action="foreach">
+                                    <command>
+                                        <body>testCase [response fileList]</body>
+                                    </command>
+                                    <nestedSteps>
+                                        <item guid="da0b37d5-7887-4c9d-b550-b867c0e61f2c" action="comment">
+                                            <command>
+                                                <body>if current file is a test case, check if its a QC Lib</body>
+                                            </command>
+                                            <nestedSteps>
+                                                <item guid="b5d221c9-afb2-4ded-8af9-245723656883" action="if">
+                                                    <command>
+                                                        <body>[string match *.fftc $testCase]</body>
+                                                    </command>
+                                                    <nestedSteps>
+                                                        <item guid="f228a34e-a3f6-4b9a-838e-26c36a7d089d" action="then">
+                                                            <nestedSteps>
+                                                                <item guid="6d109d42-e9b1-43f3-bfba-794743cc6afd" action="comment">
+                                                                    <command>
+                                                                        <body>This is a test case</body>
+                                                                    </command>
+                                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                                </item>
+                                                                <item guid="ef1f5a89-1311-47f6-bb01-e72052a2718a" action="readFile">
+                                                                    <command>
+                                                                        <body>$testCase</body>
+                                                                    </command>
+                                                                    <postProcessing>
+                                                                        <analysisRules>
+                                                                            <item>
+                                                                                <extractorInfo extractorType="query">
+                                                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                                                        <query>mapped/Xml/testCase/general/sessionClass/@includeTestCase</query>
+                                                                                    </extractorProperties>
+                                                                                </extractorInfo>
+                                                                                <processorInfo ruleType="assert">
+                                                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                                                        <expression>$value eq &quot;true&quot;</expression>
+                                                                                        <actionsWhenTrue>
+                                                                                            <item actionId="Eval">
+                                                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                                                                    <statement>set isQc true</statement>
+                                                                                                </actionProperties>
+                                                                                            </item>
+                                                                                        </actionsWhenTrue>
+                                                                                        <actionsWhenFalse>
+                                                                                            <item actionId="Eval">
+                                                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                                                                    <statement>set isQc false</statement>
+                                                                                                </actionProperties>
+                                                                                            </item>
+                                                                                        </actionsWhenFalse>
+                                                                                    </ruleProperties>
+                                                                                </processorInfo>
+                                                                            </item>
+                                                                        </analysisRules>
+                                                                        <storeResponseAt>xmlResponse</storeResponseAt>
+                                                                    </postProcessing>
+                                                                    <eventHandlers>
+                                                                        <item name="OnInternalError">
+                                                                            <item actionId="FailTest">
+                                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                                            </item>
+                                                                        </item>
+                                                                    </eventHandlers>
+                                                                    <applicationProperties type="com.fnfr.svt.execution.builtin.exec.ReadFilePropertyGroup"/>
+                                                                </item>
+                                                                <item guid="b6ebe25a-e619-41fa-96a1-faa3711e9e36" action="if">
+                                                                    <command>
+                                                                        <body>$isQc == &quot;true&quot;</body>
+                                                                    </command>
+                                                                    <nestedSteps>
+                                                                        <item guid="2cfb9023-cdb1-49df-9209-d3c07ff52064" action="then">
+                                                                            <nestedSteps>
+                                                                                <item guid="e23819da-5701-4fe3-b9eb-394310f986b0" action="comment">
+                                                                                    <command>
+                                                                                        <body>If current file is a QC lib, add it to the QC list </body>
+                                                                                    </command>
+                                                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                                                </item>
+                                                                                <item guid="604f2265-ea66-4b09-923b-7ec3e104e05d" action="eval">
+                                                                                    <command>
+                                                                                        <body>lappend qcList $testCase</body>
+                                                                                    </command>
+                                                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                                                </item>
+                                                                            </nestedSteps>
+                                                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                                                        </item>
+                                                                    </nestedSteps>
+                                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                                </item>
+                                                            </nestedSteps>
+                                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                                        </item>
+                                                    </nestedSteps>
+                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                </item>
+                                            </nestedSteps>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="29e31ec6-033b-42c2-b9a4-430d272e0a85" action="comment">
+                            <command>
+                                <body>Print number of QC Libs</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="64888b1b-6ef4-47b3-a1b8-740517a22b85" action="if">
+                                    <command>
+                                        <body>[llength qcList] == 1</body>
+                                    </command>
+                                    <nestedSteps>
+                                        <item guid="041a754c-aeab-490c-82ff-cdcba2df6f30" action="then">
+                                            <nestedSteps>
+                                                <item guid="255becdc-6bb8-409f-b193-7c4e9e2e56c5" action="comment">
+                                                    <command>
+                                                        <body>Write out &quot;library&quot; if one QC lib in list</body>
+                                                    </command>
+                                                    <nestedSteps>
+                                                        <item guid="c54b7eba-9139-4d0d-bb2b-0098beab2b59" action="writeFile">
+                                                            <command>
+                                                                <body>$uriPath/documentation/index.html &quot;&lt;BR&gt;&lt;DIV class=&apos;header2Text&apos;&gt;[llength qcList] QuickCall Library in $uriPath:&lt;/DIV&gt;&quot;</body>
+                                                            </command>
+                                                            <applicationProperties type="com.fnfr.svt.execution.builtin.exec.WriteFilePropertyGroup"/>
+                                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                                        </item>
+                                                    </nestedSteps>
+                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                </item>
+                                            </nestedSteps>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                        <item guid="7177aa3f-32a8-473d-a018-24379298e45b" action="else">
+                                            <nestedSteps>
+                                                <item guid="6878279d-ab0f-49a2-8bf0-13b0de957dd0" action="comment">
+                                                    <command>
+                                                        <body>Write out &quot;libraries&quot; if zero or more than one QC lib in list</body>
+                                                    </command>
+                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                </item>
+                                                <item guid="a37629b9-343b-496f-b190-3bbbf172e1ae" action="writeFile">
+                                                    <command>
+                                                        <body>$uriPath/documentation/index.html &quot;&lt;BR&gt;&lt;DIV class=&apos;header2Text&apos;&gt;[llength qcList] QuickCall Libraries in $uriPath:&lt;/DIV&gt;&quot;</body>
+                                                    </command>
+                                                    <applicationProperties type="com.fnfr.svt.execution.builtin.exec.WriteFilePropertyGroup"/>
+                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                </item>
+                                            </nestedSteps>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="8966c8b3-b1d0-44f8-8031-1dd34ce5741c" action="comment">
+                    <command>
+                        <body>For each of the QC Libs found</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="ee2dcc88-3a2e-4a5f-a898-e928fde327c7" action="eval">
+                            <command>
+                                <body>set qcIndex 1</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="c5f59c1f-0155-4975-bc5a-d734c0bd2cad" action="foreach">
+                            <command>
+                                <body>qcLib $qcList</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="87b4523f-3173-45e7-aaee-012d5633a279" action="readFile">
+                                    <command>
+                                        <body>$qcLib</body>
+                                    </command>
+                                    <postProcessing>
+                                        <analysisRules>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                        <query>mapped/Xml/testCase/general/documentation</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="store">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                        <storageLocation>qcTitle</storageLocation>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                        </analysisRules>
+                                        <storeResponseAt>xmlResponse</storeResponseAt>
+                                    </postProcessing>
+                                    <eventHandlers>
+                                        <item name="OnInternalError">
+                                            <item actionId="FailTest">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                        </item>
+                                    </eventHandlers>
+                                    <applicationProperties type="com.fnfr.svt.execution.builtin.exec.ReadFilePropertyGroup"/>
+                                </item>
+                                <item guid="bff05ece-2c5c-40ac-b37c-b36b9d963cf1" action="writeFile">
+                                    <command>
+                                        <body>$uriPath/documentation/index.html &quot;&lt;DIV style=&apos;margin-left:17px;&apos; class=&apos;header3Text&apos;&gt;$qcTitle ($qcLib)&lt;/DIV&gt;&quot;</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.execution.builtin.exec.WriteFilePropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="9b3c5806-d3b0-4768-ac49-ac0cfe20d150" action="writeFile">
+                                    <command>
+                                        <body>$uriPath/documentation/index.html &quot;&lt;DIV style=&apos;margin-left:35px; font-size:12px;color:black; font-family:arial&apos;&gt;[query xmlResponse //general/notes]&lt;/DIV&gt;&quot;</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.execution.builtin.exec.WriteFilePropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="dceb27f4-8c1c-46da-a151-eafb4d0c67e4" action="comment">
+                                    <command>
+                                        <body>Print each procedure</body>
+                                    </command>
+                                    <nestedSteps>
+                                        <item guid="32a62a9b-aeb2-4dcf-8e9d-80d3dd3fb58d" action="foreach">
+                                            <command>
+                                                <body>procedure [query xmlResponse mapped/Xml/testCase/procedures/item/@name]</body>
+                                            </command>
+                                            <nestedSteps>
+                                                <item guid="247cff1d-bd18-4e43-b977-466d5408aa17" action="writeFile">
+                                                    <command>
+                                                        <body>$uriPath/documentation/index.html &quot;&lt;DIV style=&apos;margin-left:30px; font-size:18px;color:darkgreen;font-weight:bold; font-family:courier&apos;&gt;$procedure&lt;/DIV&gt;&quot;</body>
+                                                    </command>
+                                                    <applicationProperties type="com.fnfr.svt.execution.builtin.exec.WriteFilePropertyGroup"/>
+                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                </item>
+                                                <item guid="8b463005-dd54-41bb-a851-27c76f5f0138" action="writeFile">
+                                                    <command>
+                                                        <body>$uriPath/documentation/index.html &quot;&lt;DIV class=&apos;procText&apos;&gt;[query xmlResponse mapped/Xml/testCase/procedures/item\\[@name=&apos;$procedure&apos;\\]/multilineDescription]&lt;/DIV&gt;&lt;BR&gt;&quot;</body>
+                                                    </command>
+                                                    <applicationProperties type="com.fnfr.svt.execution.builtin.exec.WriteFilePropertyGroup"/>
+                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                </item>
+                                                <item guid="04981bf6-4146-4757-b84e-a13b9a7ce927" action="comment">
+                                                    <command>
+                                                        <body>If there are arguments, create a table for these</body>
+                                                    </command>
+                                                    <nestedSteps>
+                                                        <item guid="093ede3d-df37-4c24-93f2-269674b8c92c" action="if">
+                                                            <command>
+                                                                <body>[query xmlResponse count(//procedures/item\\[@name=&apos;$procedure&apos;\\]/arguments/item/@name)] &gt; 0</body>
+                                                            </command>
+                                                            <nestedSteps>
+                                                                <item guid="c4b21168-d398-47fb-9c58-ad3e80f49965" action="then">
+                                                                    <nestedSteps>
+                                                                        <item guid="782a6ca4-8ed6-46ec-81bb-9b978f9444d3" action="writeFile">
+                                                                            <command>
+                                                                                <body>$uriPath/documentation/index.html &quot;&lt;DIV class=&apos;normalText&apos;&gt;&lt;TABLE style=&apos;margin-left:35px; width=600px&apos;&gt;&quot;</body>
+                                                                            </command>
+                                                                            <applicationProperties type="com.fnfr.svt.execution.builtin.exec.WriteFilePropertyGroup"/>
+                                                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                                                        </item>
+                                                                        <item guid="d77a8e91-1e5d-42a1-a2e8-a1973e5eabb8" action="writeFile">
+                                                                            <command>
+                                                                                <body>$uriPath/documentation/index.html  &quot;&lt;TR&gt;&lt;TH style=&apos;width:200px; padding:5px;color:darkblue;&apos; class=&apos;normalText&apos;&gt;Argument&lt;/TH&gt;
+&lt;TH style=&apos;width:400px; padding:5px;color:darkblue;&apos; class=&apos;normalText&apos;&gt;Description&lt;/TH&gt;&lt;/TR&gt;&quot;</body>
+                                                                            </command>
+                                                                            <applicationProperties type="com.fnfr.svt.execution.builtin.exec.WriteFilePropertyGroup"/>
+                                                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                                                        </item>
+                                                                        <item guid="1e1a9a74-7921-405b-b839-7b2d44f83a40" action="comment">
+                                                                            <command>
+                                                                                <body>Each argument is a new line in the table</body>
+                                                                            </command>
+                                                                            <nestedSteps>
+                                                                                <item guid="d08f2a40-042f-4581-87a9-fdbd954892dc" action="foreach">
+                                                                                    <command>
+                                                                                        <body>argument [query xmlResponse //procedures/item\\[@name=&apos;$procedure&apos;\\]/arguments/item/@name]</body>
+                                                                                    </command>
+                                                                                    <nestedSteps>
+                                                                                        <item guid="52bdc797-7c26-4ff5-aaf8-5f02a84329bf" action="writeFile">
+                                                                                            <command>
+                                                                                                <body>$uriPath/documentation/index.html &quot;&lt;TR&gt;&lt;TD style=&apos;width:200px; padding:5px;color:darkblue&apos; class=&apos;normalText&apos;&gt;$argument&lt;/TD&gt;
+&lt;TD style=&apos;width:400px; padding:5px;color:darkblue&apos; class=&apos;normalText&apos;&gt;[query xmlResponse //procedures/item\\[@name=&apos;$procedure&apos;\\]/arguments/item\\[@name=&apos;$argument&apos;\\]/description] &lt;/TD&gt;
+&lt;/TR&gt;&quot;</body>
+                                                                                            </command>
+                                                                                            <applicationProperties type="com.fnfr.svt.execution.builtin.exec.WriteFilePropertyGroup"/>
+                                                                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                                                                        </item>
+                                                                                    </nestedSteps>
+                                                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                                                </item>
+                                                                            </nestedSteps>
+                                                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                                                        </item>
+                                                                        <item guid="d8bc7271-e491-4d5b-bfd4-77b590c4698a" action="writeFile">
+                                                                            <command>
+                                                                                <body>$uriPath/documentation/index.html &quot;&lt;/TABLE&gt;&lt;/DIV&gt;&lt;br&gt;&quot;</body>
+                                                                            </command>
+                                                                            <applicationProperties type="com.fnfr.svt.execution.builtin.exec.WriteFilePropertyGroup"/>
+                                                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                                                        </item>
+                                                                    </nestedSteps>
+                                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                                </item>
+                                                            </nestedSteps>
+                                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                                        </item>
+                                                    </nestedSteps>
+                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                </item>
+                                            </nestedSteps>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="a13db9cd-f11f-4468-a3e9-1f3cdecb2bff" action="writeFile">
+                                    <command>
+                                        <body>$uriPath/documentation/index.html &quot;&lt;br&gt;&quot;</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.execution.builtin.exec.WriteFilePropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="a504bf0d-ce24-4ac3-968c-e29fbc561959" action="eval">
+                                    <command>
+                                        <body>incr qcIndex</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="df5d69d5-ada5-4fd9-8bb2-5754f40121ff" action="comment">
+                    <command>
+                        <body>Print footer text</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="c60966e0-5372-47eb-88cb-10b15bc0ae3c" action="writeFile">
+                            <command>
+                                <body>$uriPath/documentation/index.html &quot;&lt;DIV class=&apos;normalText&apos;&gt;Created on: [info timestamp &quot;EEEE MMMM dd yyyy HH:mm:ss z&quot;]&lt;/DIV&gt;&lt;/BODY&gt;&lt;/HTML&gt;&quot;</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.execution.builtin.exec.WriteFilePropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+        </item>
+    </procedures>
+</testCase>
