@@ -322,7 +322,7 @@ H1,H2{padding-left:15px}
                             <nestedSteps>
                                 <item guid="64888b1b-6ef4-47b3-a1b8-740517a22b85" action="if">
                                     <command>
-                                        <body>[llength qcList] == 1</body>
+                                        <body>[llength $qcList] == 1</body>
                                     </command>
                                     <nestedSteps>
                                         <item guid="041a754c-aeab-490c-82ff-cdcba2df6f30" action="then">
@@ -334,7 +334,7 @@ H1,H2{padding-left:15px}
                                                     <nestedSteps>
                                                         <item guid="c54b7eba-9139-4d0d-bb2b-0098beab2b59" action="writeFile">
                                                             <command>
-                                                                <body>$uriPath/documentation/index.html &quot;&lt;BR&gt;&lt;DIV class=&apos;header2Text&apos;&gt;[llength qcList] QuickCall Library in $uriPath:&lt;/DIV&gt;&quot;</body>
+                                                                <body>$uriPath/documentation/index.html &quot;&lt;BR&gt;&lt;DIV class=&apos;header2Text&apos;&gt;[llength $qcList] QuickCall Library in $uriPath:&lt;/DIV&gt;&quot;</body>
                                                             </command>
                                                             <applicationProperties type="com.fnfr.svt.execution.builtin.exec.WriteFilePropertyGroup"/>
                                                             <useFieldsInCommand>false</useFieldsInCommand>
@@ -358,7 +358,7 @@ H1,H2{padding-left:15px}
                                                 </item>
                                                 <item guid="a37629b9-343b-496f-b190-3bbbf172e1ae" action="writeFile">
                                                     <command>
-                                                        <body>$uriPath/documentation/index.html &quot;&lt;BR&gt;&lt;DIV class=&apos;header2Text&apos;&gt;[llength qcList] QuickCall Libraries in $uriPath:&lt;/DIV&gt;&quot;</body>
+                                                        <body>$uriPath/documentation/index.html &quot;&lt;BR&gt;&lt;DIV class=&apos;header2Text&apos;&gt;[llength $qcList] QuickCall Libraries in $uriPath:&lt;/DIV&gt;&quot;</body>
                                                     </command>
                                                     <applicationProperties type="com.fnfr.svt.execution.builtin.exec.WriteFilePropertyGroup"/>
                                                     <useFieldsInCommand>false</useFieldsInCommand>
@@ -402,6 +402,28 @@ H1,H2{padding-left:15px}
                                     </command>
                                     <postProcessing>
                                         <analysisRules>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                        <query>fn:count(mapped/Xml/testCase/general/documentation)</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>$value == 1</expression>
+                                                        <actionsWhenFalse>
+                                                            <item actionId="Eval">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                                    <statement>set qcTitle $qcLib</statement>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="SkipRemainingRules">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenFalse>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
                                             <item>
                                                 <extractorInfo extractorType="query">
                                                     <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
