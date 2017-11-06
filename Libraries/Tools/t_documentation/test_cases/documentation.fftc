@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
-<testCase version="6.1.0.e2e4ec0">
+<testCase version="7.0.0.3d22673">
     <execution estimatedExecutionTime="-673">
-        <parameters version="6.1.0.e2e4ec0">
+        <parameters version="7.0.0.3d22673">
             <parameters escape="true">
                 <parameters xmlns:pt="http://www.fnfr.com/schemas/parameterTree">
-                    <uriPath>project://d_STC</uriPath>
+                    <uriPath>project://Cisco</uriPath>
                 </parameters>
             </parameters>
         </parameters>
@@ -71,15 +71,50 @@ H1,H2{padding-left:15px}
                         <body>Print info from the readme file and find all the QC libs</body>
                     </command>
                     <nestedSteps>
-                        <item guid="9ea29c20-05da-4108-a804-8e6d4aa571a8" action="readFile">
+                        <item guid="7b089347-3efd-40b8-87f3-771dbf2c7e70" action="eval">
                             <command>
-                                <body>$uriPath/documentation/readme.txt</body>
+                                <body>set readmeFile $uriPath/documentation/readme.txt</body>
                             </command>
-                            <postProcessing>
-                                <storeResponseAt>readme</storeResponseAt>
-                                <storeResponseText>true</storeResponseText>
-                            </postProcessing>
-                            <applicationProperties type="com.fnfr.svt.execution.builtin.exec.ReadFilePropertyGroup"/>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="c3b6869a-3600-4e18-9691-a636e279de80" action="if">
+                            <command>
+                                <body>[file exists $readmeFile]</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="26603039-8329-4aec-8cf0-a0f91ac0cd83" action="then">
+                                    <nestedSteps>
+                                        <item guid="9ea29c20-05da-4108-a804-8e6d4aa571a8" action="readFile">
+                                            <command>
+                                                <body>$readmeFile</body>
+                                            </command>
+                                            <postProcessing>
+                                                <storeResponseAt>readme</storeResponseAt>
+                                                <storeResponseText>true</storeResponseText>
+                                            </postProcessing>
+                                            <applicationProperties type="com.fnfr.svt.execution.builtin.exec.ReadFilePropertyGroup"/>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="ddbd77cf-27a2-43c3-a4c4-b25b840ce5b2" action="else">
+                                    <nestedSteps>
+                                        <item guid="dfc92806-adb1-4fbb-9ad0-eb56f6be076a" action="eval">
+                                            <command>
+                                                <body>set readme $uriPath</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
                         </item>
                         <item guid="3a5a32f3-8931-4ae0-ba0f-504f2165c84f" action="comment">
                             <command>
