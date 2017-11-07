@@ -20,7 +20,7 @@ software |
 Argument | Description
 ------------ | -------------
 file | 
-tftp_server | 
+tftp_server | ip address or hostname
 ### get_port_state
 
 Argument | Description
