@@ -11,14 +11,14 @@ The assets are categorized into three different levels:
  
 ![alt text](https://github.com/Spirent/iTest-assets/blob/master/images/copy.url.to.clipboard.png "Copy https URL")
 
-![alt text](https://github.com/Spirent/iTest-assets/blob/master/images/clone.the.repository.png “Clone a Git Repo”)
+![alt text](https://github.com/Spirent/iTest-assets/blob/master/images/clone.the.repository.png "Clone a Git Repo")
 
-![alt text](https://github.com/Spirent/iTest-assets/blob/master/images/paste.uri.contents.png “Paste URI contents”)
+![alt text](https://github.com/Spirent/iTest-assets/blob/master/images/paste.uri.contents.png "Paste URI contents")
 
-![alt text](https://github.com/Spirent/iTest-assets/blob/master/images/open.git.repositories.png “Open a Git Repo”)
+![alt text](https://github.com/Spirent/iTest-assets/blob/master/images/open.git.repositories.png "Open a Git Repo")
 
-![alt text](https://github.com/Spirent/iTest-assets/blob/master/images/select.entire.working.tree.png “Select working tree”)
+![alt text](https://github.com/Spirent/iTest-assets/blob/master/images/select.entire.working.tree.png "Select working tree")
 
-![alt text](https://github.com/Spirent/iTest-assets/blob/master/images/import.all.projects.png “Import all projects”)
+![alt text](https://github.com/Spirent/iTest-assets/blob/master/images/import.all.projects.png "Import all projects")
 
-![alt text](https://github.com/Spirent/iTest-assets/blob/master/images/or.just.certain.projects.png “Import individual projects”)
+![alt text](https://github.com/Spirent/iTest-assets/blob/master/images/or.just.certain.projects.png "Import individual projects")
