@@ -9,7 +9,7 @@ The assets are categorized into three different levels:
 
 ## Quick Start
  
-![alt text](https://github.com/Spirent/iTest-assets/blob/master/images/copy.url.to.clipboard.png “Copy https URL”)
+![alt text](https://github.com/Spirent/iTest-assets/blob/master/images/copy.url.to.clipboard.png "Copy https URL")
 
 ![alt text](https://github.com/Spirent/iTest-assets/blob/master/images/clone.the.repository.png “Clone a Git Repo”)
 
