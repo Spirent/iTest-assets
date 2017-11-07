@@ -127,4 +127,6 @@ Message Type: 0x32 (GTP_SGSN_CONTEXT_REQ_MSG)
 Argument | Description
 ------------ | -------------
 IMSI | 
-Created on: Monday November 06 2017 15:48:07 CST
+
+
+Created on: Monday November 06 2017 19:39:50 CST

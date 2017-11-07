@@ -86,4 +86,6 @@ Returns structured output displaying the target address, number of bytes sent, n
 Argument | Description
 ------------ | -------------
 target | IP address to ping
-Created on: Monday November 06 2017 15:25:08 CST
+
+
+Created on: Monday November 06 2017 19:19:59 CST

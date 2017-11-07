@@ -25,4 +25,6 @@ Argument | Description
 interface | Port number to modify
 example 2/2/1
 disable | If "no", will enable LLDP, else, will disable LLDP
-Created on: Monday November 06 2017 15:47:42 CST
+
+
+Created on: Monday November 06 2017 19:39:33 CST

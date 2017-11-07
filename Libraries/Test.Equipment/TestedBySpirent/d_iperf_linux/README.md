@@ -21,4 +21,6 @@ Returns status "OK" on success, "error" on failure"
 Argument | Description
 ------------ | -------------
 pid | Process ID of process to kill
-Created on: Monday November 06 2017 15:41:55 CST
+
+
+Created on: Monday November 06 2017 19:35:04 CST

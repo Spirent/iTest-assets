@@ -146,4 +146,6 @@ log_wait | seconds to wait before getting log
 Argument | Description
 ------------ | -------------
 host | 
-Created on: Monday November 06 2017 15:25:03 CST
+
+
+Created on: Monday November 06 2017 19:19:56 CST

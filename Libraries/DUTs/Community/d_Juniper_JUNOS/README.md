@@ -677,4 +677,6 @@ For this session return the re# (0 or 1). Also return the 'other re #'
 Use 'show version invoke-on other-routing-engine' which contains "re0" or "re1" at the top of the output.
 If 0, this re must be 1
 If 1, this re must be 0
-Created on: Monday November 06 2017 15:47:34 CST
+
+
+Created on: Monday November 06 2017 19:39:29 CST
