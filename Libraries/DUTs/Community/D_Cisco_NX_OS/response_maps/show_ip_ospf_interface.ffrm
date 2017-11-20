@@ -1,4 +1,5 @@
-<?xml version="1.0" ?><ResponseMap version="5.1.0.77511">
+<?xml version="1.0"?>
+<ResponseMap version="7.0.0.9d01ac1">
     <sampleDictionary>
         <item name="sample1">
             <action actionType="command">
@@ -72,24 +73,45 @@
             </aliases>
             <duration>0.1</duration>
         </item>
+        <item name="sample3">
+            <responseBody> Ethernet2/5 is up, line protocol is up
+    IP address 172.16.4.10/24
+Process ID 1 VRF default, area 0.0.0.0
+    Enabled by interface configuration
+    State DR, Network type BROADCAST, cost 1
+    Index 3, Transmit delay 1 sec, Router Priority 1
+    No designated router on this network
+    No backup designated router on this network
+    0 Neighbors, flooding to 0, adjacent with 0
+    Timer intervals: Hello 10, Dead 40, Wait 40, Retransmit 5
+      Hello timer due in 00:00:03
+    No authentication
+    Number of opaque link LSAs: 0, checksum sum 0
+</responseBody>
+        </item>
     </sampleDictionary>
     <mapperProperties>
         <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
             <regexMaps>
-                <item name="ospf_interface_status">
+                <item name="ospf_interface_topline">
                     <groups>
-                        <item name="ospf_interface_name">
-                            <regex>[^\\r\\n]+</regex>
-                            <named>true</named>
+                        <item name="anchor0">
+                            <regex>\\s+</regex>
                             <start>0</start>
+                            <end>1</end>
+                        </item>
+                        <item name="ospf_interface_name">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>1</start>
                             <end>12</end>
                             <suggestions>
                                 <item name=".+">one or more of any character</item>
                                 <item name="[^\r\n]+">one or more of any character except line endings</item>
-                                <item name=".{12}">exactly 12 of any character</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
                             </suggestions>
                         </item>
-                        <item name="anchor0">
+                        <item name="anchor1">
                             <regex>\\s+is\\s+</regex>
                             <start>12</start>
                             <end>16</end>
@@ -107,7 +129,7 @@
                                 <item name="\w+">one or more word characters</item>
                             </suggestions>
                         </item>
-                        <item name="anchor1">
+                        <item name="anchor2">
                             <regex>, line protocol is\\s+</regex>
                             <start>18</start>
                             <end>37</end>
@@ -153,7 +175,7 @@
                             <start>22</start>
                             <end>23</end>
                         </item>
-                        <item name="netmask">
+                        <item name="group1">
                             <regex>\\d+</regex>
                             <named>true</named>
                             <start>23</start>
@@ -167,16 +189,22 @@
                                 <item name="\d+">one or more digits</item>
                             </suggestions>
                         </item>
-                        <item name="anchor2">
-                            <regex>, Process ID\\s+</regex>
-                            <start>25</start>
-                            <end>38</end>
+                    </groups>
+                    <sampleMatch>    IP address 0.0.0.0/31</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+                <item name="process_and_area">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>.*Process ID\\s+</regex>
+                            <start>0</start>
+                            <end>11</end>
                         </item>
                         <item name="Process_ID">
                             <regex>\\d+</regex>
                             <named>true</named>
-                            <start>38</start>
-                            <end>43</end>
+                            <start>11</start>
+                            <end>16</end>
                             <suggestions>
                                 <item name=".+">one or more of any character</item>
                                 <item name="[^\r\n]+">one or more of any character except line endings</item>
@@ -186,16 +214,16 @@
                                 <item name="\d+">one or more digits</item>
                             </suggestions>
                         </item>
-                        <item name="anchor3">
+                        <item name="anchor1">
                             <regex>\\s+VRF default, area\\s+</regex>
-                            <start>43</start>
-                            <end>62</end>
+                            <start>16</start>
+                            <end>35</end>
                         </item>
                         <item name="area">
                             <regex>((\\d+\\.)+\\d+)</regex>
                             <named>true</named>
-                            <start>62</start>
-                            <end>69</end>
+                            <start>35</start>
+                            <end>42</end>
                             <suggestions>
                                 <item name=".+">one or more of any character</item>
                                 <item name="[^\r\n]+">one or more of any character except line endings</item>
@@ -204,7 +232,7 @@
                             </suggestions>
                         </item>
                     </groups>
-                    <sampleMatch>    IP address 0.0.0.0/31, Process ID 33070 VRF default, area 0.0.0.0</sampleMatch>
+                    <sampleMatch>Process ID 33070 VRF default, area 0.0.0.0</sampleMatch>
                     <regexMapMode>Line</regexMapMode>
                 </item>
                 <item name="ospf_state_network_type">

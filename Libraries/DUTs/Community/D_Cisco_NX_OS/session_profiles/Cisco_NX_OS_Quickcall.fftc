@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<testCase version="6.1.0.e2e4ec0">
+<testCase version="7.0.0.9d01ac1">
     <general>
         <sessionClass includeTestCase="true" sessionType="Cisco_NX_OS_SSH_Base.ffsp"/>
     </general>
@@ -114,8 +114,20 @@
             <steps>
                 <item guid="29739ef4-67eb-4f00-9e21-0c7caf55e527" action="ShowOSPFInterfaces" session="$session">
                     <postProcessing>
-                        <storeResponseAt>ospf_interfaces</storeResponseAt>
-                        <storeResponseText>true</storeResponseText>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>interfaces()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>ospf_interfaces</storageLocation>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
                     </postProcessing>
                     <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
                     <useFieldsInCommand>false</useFieldsInCommand>
@@ -238,7 +250,42 @@
                 </item>
                 <item guid="925b2aac-b068-4ba7-bb14-adcf6305ce0a" action="return">
                     <command>
-                        <body>$ospf_interfaces</body>
+                        <body>interfaces: $ospf_interfaces</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+        </item>
+        <item name="ShowOSPFNeighbors" isPublic="true">
+            <steps>
+                <item guid="53a00a7f-25aa-4963-a1b5-f634332cd18d" action="command" session="$session" estimatedStepExecutionTime="0.014">
+                    <command>
+                        <body>show ip ospf neighbors</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>NeighborId()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>ospf_neighbors</storageLocation>
+                                        <storeInAList>true</storeInAList>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                        <completionProperties expectedIdleTime="0.569" expectedIdleTime.inherit="false"/>
+                    </applicationProperties>
+                </item>
+                <item guid="ff6a3cd0-198f-4db4-bd26-5e0e8ed2928d" action="return">
+                    <command>
+                        <body>neighbors: $ospf_neighbors</body>
                     </command>
                     <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
                 </item>
@@ -2545,9 +2592,15 @@
             </steps>
             <multilineDescription>Get a list of the bgp neighbors of the specified type that are in the specified state.</multilineDescription>
             <arguments>
-                <item name="neighbor"/>
-                <item name="interface"/>
-                <item name="cmd_suffix"/>
+                <item name="neighbor">
+                    <description>IP address of the OSPF neighbor</description>
+                </item>
+                <item name="interface">
+                    <description>Interface name where neighbor should appear</description>
+                </item>
+                <item name="cmd_suffix">
+                    <description>Optional command suffix to append to the ospf neighbor command, vrf for example</description>
+                </item>
             </arguments>
             <response>{&quot;state&quot;:&quot;down&quot;,&quot;interface&quot;:&quot;none&quot;,&quot;neighbor&quot;:&quot;none&quot;}</response>
         </item>
