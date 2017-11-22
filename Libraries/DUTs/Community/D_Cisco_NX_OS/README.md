@@ -1,6 +1,6 @@
-# project://D_Cisco_NX_OS
-1 QuickCall Library in project://D_Cisco_NX_OS:
-## project://D_Cisco_NX_OS/session_profiles/Cisco_NX_OS_Quickcall.fftc (project://D_Cisco_NX_OS/session_profiles/Cisco_NX_OS_Quickcall.fftc)
+# project://d_Cisco_NX_OS
+1 QuickCall Library in project://d_Cisco_NX_OS:
+## project://d_Cisco_NX_OS/session_profiles/Cisco_NX_OS_Quickcall.fftc (project://d_Cisco_NX_OS/session_profiles/Cisco_NX_OS_Quickcall.fftc)
 
 ### CheckRSP
 ### LoadDeviceConfig
