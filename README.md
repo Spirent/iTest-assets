@@ -9,6 +9,11 @@ The assets are categorized into three levels of maturity/testing:
 
 You are encouraged to submit your projects back to the Warehouse for others to benefit from.
 
+Each project within this repository conforms to a standard naming convention:
+- \_a projects are automation projects that contain test cases
+- \_d projects are device projects that contain quick calls and response maps for devices
+- \_t projects are tools projects that contain generic utilities 
+
 ## Quick Start
  
 ![alt text](https://github.com/Spirent/iTest-assets/blob/master/images/copy.url.to.clipboard.png "Copy https URL")
