@@ -1,6 +1,9 @@
 # Spirent Automation Asset Warehouse - iTest
 
-Welcome to the Spirent Automation Asset Warehouse. You will find a wide variety of automation assets useful for your iTest and projects and/or Velocity deployments. This repository is specific to iTest.  The Velocity repository is located here.  The iTest repository contains  quick calls and response maps for immediate download and use. This warehouse contains a selection of projects useful for gaining the greatest value from your test equipment, devices, and frameworks. The assets are rich in reusable QuickCall libraries and response maps, key capabilities that will help you create your own automation most efficiently.
+Welcome to the Spirent Automation Asset Warehouse. You will find a wide variety of automation assets useful for your iTest and projects and/or Velocity deployments. This repository is specific to iTest.  The Velocity repository is located here.  All Automation Asset Warehouse assets are avaialble for your immediate download and use. 
+
+This portion of the Warehouse contains a selection of iTest projects. They are useful for gaining the greatest value from your test equipment, devices, and frameworks. The assets are rich in reusable QuickCall libraries and Response Maps.  Both are key capabilities that will help you create your own automation most efficiently.  They will help you whether or not you are using Python or an Automation framework (e.g., Robot).
+
 
 The assets are categorized into three levels of maturity/testing:
 - Certified:  provided and tested by Spirent
