@@ -2,9 +2,6 @@
 
 Welcome to the Spirent Automation Asset Warehouse. You will find a wide variety of automation assets useful for your iTest and projects and/or Velocity deployments. This repository is specific to iTest.  The Velocity repository is located here.  All Automation Asset Warehouse assets are avaialble for your immediate download and use. 
 
-This portion of the Warehouse contains a selection of iTest projects. They are useful for gaining the greatest value from your test equipment, devices, and frameworks. The assets are rich in reusable QuickCall libraries and Response Maps.  Both are key capabilities that will help you create your own automation most efficiently.  They will help you whether or not you are using Python or an Automation framework (e.g., Robot).
-
-
  <table style="width:100%; border: 5px solid gray;">
   <tr>
      <td style="color:white"><img src="https://github.com/Spirent/iTest-assets/blob/master/images/Speedometer-QuickCalls.png" alt="Over 1000 QuickCalls!">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</td> 
@@ -27,11 +24,6 @@ Each project within this repository conforms to a standard naming convention:
 | \_a      | Automation  | Test Cases    | 
 | \_d      | Device      | QuickCalls and Response Maps | 
 | \_t      | Tools       | Generic utilities       |  
-
- Prefix   | Project Type       | Contents    
- -------- |-------------| ------------
- \_a      | Automation  | Test Cases    
-
 
 ## Quick Start
  
