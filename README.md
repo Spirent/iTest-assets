@@ -1,6 +1,6 @@
 # Spirent Automation Asset Warehouse - iTest
 
-Welcome to the Spirent Automation Asset Warehouse. You will find a wide variety of automation assets useful for your iTest and projects and/or Velocity deployments. This repository is specific to iTest.  The Velocity repository is located here.  All Automation Asset Warehouse assets are avaialble for your immediate download and use. 
+Welcome to the Spirent Automation Asset Warehouse! You will find a wide variety of useful automation assets for your iTest projects and/or Velocity deployments.  This repository is specific to iTest.  The Velocity repository is located [here](https://github.com/Spirent/Velocity-assets).  All Automation Asset Warehouse assets are avaialble for your immediate download and use. 
 
  <table style="width:100%; border: 5px solid gray;">
   <tr>
