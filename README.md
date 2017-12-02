@@ -5,16 +5,13 @@ Welcome to the Spirent Automation Asset Warehouse. You will find a wide variety 
 This portion of the Warehouse contains a selection of iTest projects. They are useful for gaining the greatest value from your test equipment, devices, and frameworks. The assets are rich in reusable QuickCall libraries and Response Maps.  Both are key capabilities that will help you create your own automation most efficiently.  They will help you whether or not you are using Python or an Automation framework (e.g., Robot).
 
 
- <table style="width:100%; border: 5px solid black;">
+ <table style="width:100%; border: 5px solid gray;">
   <tr>
+     <td style="color:white"><img src="https://github.com/Spirent/iTest-assets/blob/master/images/Speedometer-QuickCalls.png" alt="Over 1000 QuickCalls!">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</td> 
     <td style="border: 0px solid black;">This portion of the Warehouse contains a selection of iTest projects. They are useful for gaining the greatest value from your test equipment, devices, and frameworks. The assets are rich in reusable QuickCall libraries and Response Maps.  Both are key capabilities that will help you create your own automation most efficiently.  They will help you whether or not you are using Python or an Automation framework (e.g., Robot).</td>
-    <td>![alt text](https://github.com/Spirent/iTest-assets/blob/master/images/Speedometer-QuickCalls.png "Over 1000 QuickCalls!")</td> 
-    <td>"Over 1000 Response Maps!"</td>
+    <td><img src="https://github.com/Spirent/iTest-assets/blob/master/images/Speedometer-ResponseMaps.png" alt="Over 700 Response Maps!">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</td>
   </tr>
 </table>
-
-![alt text](https://github.com/Spirent/iTest-assets/blob/master/images/Speedometer-QuickCalls.png "Over 1000 QuickCalls!")
-![alt text](https://github.com/Spirent/iTest-assets/blob/master/images/Speedometer-ResponseMaps.png "Over 700 Response Maps!")
 
 The assets are categorized into three levels of maturity/testing:
 - Certified:  provided and tested by Spirent
