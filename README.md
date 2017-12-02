@@ -10,10 +10,10 @@ Welcome to the Spirent Automation Asset Warehouse! You will find a wide variety 
   </tr>
 </table>
 
-All assets in the Automaton Asset Warehouse  are categorized into three levels of maturity/testing:
+All assets in the Automation Asset Warehouse are categorized into three levels of maturity/testing:
 - Certified:  provided and tested by Spirent
 - Reference:  provided by Spirent with intent to serve as “blueprint” for your project's structure and usage
-- Community:  submitted by community or Spirent personnel with no review by Spirent       
+- Community:  submitted by community or Spirent personnel with no review or testing by Spirent       
 
 You are encouraged to submit your projects back to the Warehouse for others to benefit from.
 
