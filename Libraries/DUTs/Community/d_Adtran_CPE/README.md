@@ -164,6 +164,3 @@ ______________________________________________________
 2. second_codec\t       |   M   |   Codec to set as second priority
 3. voice_class\t\t\t|   O    |   Voice class to change. Defaults to 5.
 4. is_sip \t\t\t\t|   M   |   Set to 'true' if using a SIP config
-
-
-Created on: Monday November 06 2017 19:06:40 CST

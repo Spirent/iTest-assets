@@ -41,6 +41,3 @@ port | Port to query
 Argument | Description
 ------------ | -------------
 session | Session Id
-
-
-Created on: Monday November 06 2017 19:39:32 CST

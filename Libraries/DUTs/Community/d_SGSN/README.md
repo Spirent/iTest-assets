@@ -40,6 +40,3 @@ config RAU Timer(T3312) in SGSN
 Argument | Description
 ------------ | -------------
 RauTimer | 
-
-
-Created on: Monday November 06 2017 19:39:46 CST

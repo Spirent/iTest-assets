@@ -103,6 +103,3 @@ Argument | Description
 ------------ | -------------
 mmeServiceName | The service name of the MME
 timeoutTimer | The timer value for the implicit detach timer
-
-
-Created on: Monday November 06 2017 19:39:31 CST

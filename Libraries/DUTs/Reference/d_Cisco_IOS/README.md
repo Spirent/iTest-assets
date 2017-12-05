@@ -34,6 +34,3 @@ Argument | Description
 ------------ | -------------
 vlan | VLAN tag to map to bridge domain
 remove | set to 'true' to remove bridge domain config
-
-
-Created on: Monday November 06 2017 19:18:45 CST

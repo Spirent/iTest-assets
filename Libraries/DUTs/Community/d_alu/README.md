@@ -84,6 +84,3 @@ lag_id | lag-id
 Argument | Description
 ------------ | -------------
 required_version | The ESS version to check
-
-
-Created on: Monday November 06 2017 19:06:44 CST

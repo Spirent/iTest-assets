@@ -66,6 +66,3 @@ Argument | Description
 dial_plan | number used in config to represent dial-plan
 ### EnableCCSIPMessages
 ### DisableDebug
-
-
-Created on: Monday November 06 2017 19:18:44 CST

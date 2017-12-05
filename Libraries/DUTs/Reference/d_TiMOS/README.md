@@ -80,6 +80,3 @@ Get info on chassis power supplies.
 Returns a block JSON string:
 \tnum_power_supplies - number of power supplies available
 \toverall_status - "true" if all power supplies are up, "false" otherwise
-
-
-Created on: Monday November 06 2017 19:39:53 CST

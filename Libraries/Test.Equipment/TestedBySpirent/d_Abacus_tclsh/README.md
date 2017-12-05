@@ -145,6 +145,3 @@ new_error_reaction | New reaction to take when threshold is met. Examples:
 No Reaction
 Freeze
 Stop script and test
-
-
-Created on: Monday November 06 2017 19:05:38 CST

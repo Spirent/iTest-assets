@@ -160,6 +160,3 @@ card_port_num | List of card/slot/port
 Examples:
 1/1/1
 1/2/1 1/2/2
-
-
-Created on: Monday November 06 2017 19:21:24 CST

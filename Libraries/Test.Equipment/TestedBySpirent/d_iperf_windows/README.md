@@ -17,6 +17,3 @@ Returns status "OK" on success, "error" on failure"
 ### StopServer
 Stops Iperf server. Returns success/failure status in JSON block:
 Returns status "OK" on success, "error" on failure"
-
-
-Created on: Monday November 06 2017 19:35:04 CST

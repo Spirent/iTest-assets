@@ -67,6 +67,3 @@ Runs traffic by starting all enabled traffic items on Ixia.
 Argument | Description
 ------------ | -------------
 duration | Time in seconds to run traffic
-
-
-Created on: Monday November 06 2017 19:35:06 CST

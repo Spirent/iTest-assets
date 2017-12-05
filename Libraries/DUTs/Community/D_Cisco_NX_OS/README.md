@@ -10,6 +10,7 @@ Argument | Description
 config_file_name | Local file name of the configuration.
 ### VerifyOSPF
 ### ShowOSPFInterfaces
+### ShowOSPFNeighbors
 ### load_software
 
 Argument | Description
@@ -20,7 +21,7 @@ software |
 Argument | Description
 ------------ | -------------
 file | 
-tftp_server | ip address or hostname
+tftp_server | 
 ### get_port_state
 
 Argument | Description
@@ -54,9 +55,9 @@ Get a list of the bgp neighbors of the specified type that are in the specified 
 
 Argument | Description
 ------------ | -------------
-neighbor | 
-interface | 
-cmd_suffix | 
+neighbor | IP address of the OSPF neighbor
+interface | Interface name where neighbor should appear
+cmd_suffix | Optional command suffix to append to the ospf neighbor command, vrf for example
 ### get_ospfv3_neighbor_state
 Get a list of the bgp neighbors of the specified type that are in the specified state.
 
@@ -146,6 +147,3 @@ log_wait | seconds to wait before getting log
 Argument | Description
 ------------ | -------------
 host | 
-
-
-Created on: Monday November 06 2017 19:19:56 CST

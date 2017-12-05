@@ -185,6 +185,3 @@ Argument | Description
 ------------ | -------------
 response | 
 entityNumber | 
-
-
-Created on: Monday November 06 2017 19:40:12 CST

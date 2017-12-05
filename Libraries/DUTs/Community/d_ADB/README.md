@@ -357,6 +357,3 @@ APN | The value of the new APN
 ### shellGetInternalId
 Returns the internal ADB ID for the session
 ### shellGetSessionADBId
-
-
-Created on: Monday November 06 2017 19:05:59 CST

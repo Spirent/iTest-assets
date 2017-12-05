@@ -290,6 +290,3 @@ Argument | Description
 card_port_num | 
 card_name | 
 dslam_profile | 
-
-
-Created on: Monday November 06 2017 19:34:56 CST
