@@ -1,18 +1,29 @@
-# Spirent iTest Automation Asset Warehouse
+# Spirent Automation Asset Warehouse - iTest
 
-Welcome to the Spirent iTest Automation Asset Warehouse. You will find a wide variety of automation assets useful for your iTest projects and/or Velocity deployments. Altogether, this repository contains 1,360 quick calls and 745 response maps, and all are available for immediate download and use. This warehouse contains a selection of projects useful for gaining the greatest value from your test equipment, devices, and frameworks. The assets are rich in reusable QuickCall libraries and response maps, key capabilities that will help you create your own automation most efficiently.
+Welcome to the Spirent Automation Asset Warehouse! You will find a wide variety of useful automation assets for your iTest projects and/or Velocity deployments.  This repository is specific to iTest.  The Velocity repository is located [here](https://github.com/Spirent/Velocity-assets).  All Automation Asset Warehouse assets are available for your immediate download and use. 
 
-The assets are categorized into three levels of maturity/testing:
+ <table style="width:100%; border: 5px solid gray;">
+  <tr>
+     <td style="color:white"><img src="https://github.com/Spirent/iTest-assets/blob/master/images/Speedometer-QuickCalls.png" alt="Over 1000 QuickCalls!">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</td> 
+    <td style="border: 0px solid black;">This portion of the Warehouse contains a selection of iTest projects. They are useful for gaining the greatest value from your test equipment, devices, and frameworks. The assets are rich in reusable QuickCall libraries and Response Maps.  Both are key capabilities that will help you create your own automation most efficiently.  They will help you whether or not you are using Python or an Automation framework (e.g., Robot).</td>
+    <td><img src="https://github.com/Spirent/iTest-assets/blob/master/images/Speedometer-ResponseMaps.png" alt="Over 700 Response Maps!">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</td>
+  </tr>
+</table>
+
+All assets in the Automation Asset Warehouse are categorized into three levels of maturity/testing:
 - Certified:  provided and tested by Spirent
-- Reference:  provided by Spirent with intent to serve as “blueprint” on structure and usage
-- Community:  submitted by community or Spirent personnel with no review by Spirent       
+- Reference:  provided by Spirent with intent to serve as “blueprint” for your project's structure and usage
+- Community:  submitted by community or Spirent personnel with no review or testing by Spirent       
 
 You are encouraged to submit your projects back to the Warehouse for others to benefit from.
 
 Each project within this repository conforms to a standard naming convention:
-- \_a projects are automation projects that contain test cases
-- \_d projects are device projects that contain quick calls and response maps for devices
-- \_t projects are tools projects that contain generic utilities 
+
+| Prefix   | Project Type       | Contents    |
+| -------- |-------------| -------------| 
+| \_a      | Automation  | Test Cases    | 
+| \_d      | Device      | QuickCalls and Response Maps | 
+| \_t      | Tools       | Generic utilities       |  
 
 ## Quick Start
  
