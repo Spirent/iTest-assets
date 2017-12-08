@@ -5,7 +5,7 @@ Welcome to the Spirent Developer Community! You will find a wide variety of usef
  <table style="width:100%; border: 5px solid gray;">
   <tr>
      <td style="color:white"><img src="https://github.com/Spirent/iTest-assets/blob/master/images/Speedometer-QuickCalls.png" alt="Over 1000 QuickCalls!">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</td> 
-    <td style="border: 0px solid black;">This portion of the Warehouse contains a selection of iTest projects. They are useful for gaining the greatest value from your test equipment, devices, and frameworks. The assets are rich in reusable QuickCall libraries and Response Maps.  Both are key capabilities that will help you create your own automation most efficiently.  They will help you whether or not you are using Python or an Automation framework (e.g., Robot).</td>
+    <td style="border: 0px solid black;">This portion of the Spirent Developer Community contains a selection of iTest projects. They are useful for gaining the greatest value from your test equipment, devices, and frameworks. The assets are rich in reusable QuickCall libraries and Response Maps.  Both are key capabilities that will help you create your own automation most efficiently.  They will help you whether or not you are using Python or an Automation framework (e.g., Robot).</td>
     <td><img src="https://github.com/Spirent/iTest-assets/blob/master/images/Speedometer-ResponseMaps.png" alt="Over 700 Response Maps!">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</td>
   </tr>
 </table>
