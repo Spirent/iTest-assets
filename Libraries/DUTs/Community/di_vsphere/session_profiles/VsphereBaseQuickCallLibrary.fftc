@@ -1,0 +1,1010 @@
+<?xml version="1.0"?>
+<testCase version="6.1.0.e2e4ec0">
+    <general>
+        <sessionClass includeTestCase="true" sessionType="VsphereBaseSessionProfile.ffsp"/>
+    </general>
+    <procedures>
+        <item name="main">
+            <steps>
+                <item guid="aeea6c8a-1fb3-442d-87f3-0935c4c6dc81" action="comment">
+                    <command>
+                        <body>Unit Tests go here</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+        </item>
+        <item name="getSnapShotList" isPublic="true">
+            <description>Get a list of snapshots for a specified VM</description>
+            <responseMap>project://di_vsphere/response_maps/getSnapshotList.ffrm</responseMap>
+            <steps>
+                <item guid="c73b461a-7d45-4dc4-ab6d-83dab4c1bb9b" action="open" session="$threadSession">
+                    <command>
+                        <body>application:com.fnfr.svt.applications.process</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.OpenStepPropertyGroup">
+                        <stepProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionProperties type="com.fnfr.svt.applications.process.ProcessSessionProperties">
+                            <workingDirectory inherit="false">[file uriToPath &quot;../pysphere&quot;]</workingDirectory>
+                            <useEnvironment inherit="false" defaultValue=""/>
+                        </sessionProperties>
+                        <sessionClass type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionVersion type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    </applicationProperties>
+                    <advancedProperties defaultSessionProfile="application:com.fnfr.svt.applications.process"/>
+                </item>
+                <item guid="754649b6-51f3-4a66-9c60-c0d2bdde052c" action="command" session="$threadSession" useResponseMapLibraryApplicability="false">
+                    <command>
+                        <body>run python getSnapshotList.py $serverName $username $password $vmName</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>exit_code()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$value == 0</expression>
+                                        <actionsWhenFalse>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message>Abnormal exit</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="SkipRemainingRules">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                        </actionsWhenFalse>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>snapshotName()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>snapshotNames</storageLocation>
+                                        <storeInAList>true</storeInAList>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <responseMap>project://di_vsphere/response_maps/py_getSnapshotList.ffrm</responseMap>
+                    <useResponseMapLibraryFromSession>false</useResponseMapLibraryFromSession>
+                    <advancedProperties defaultSessionProfile="application:com.fnfr.svt.applications.process"/>
+                </item>
+                <item guid="482d13bb-30f0-469d-8fcb-d23d1b7b2eb0" action="command" session="$threadSession">
+                    <command>
+                        <body>wait 0</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <advancedProperties defaultSessionProfile="application:com.fnfr.svt.applications.process"/>
+                </item>
+                <item guid="3772d5a1-0282-4f9a-bf06-53938ade2e22" action="close" session="$threadSession">
+                    <command>
+                        <body>application:com.fnfr.svt.applications.process</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <advancedProperties defaultSessionProfile="application:com.fnfr.svt.applications.process"/>
+                </item>
+                <item guid="e4bd0d4c-ce9e-4fa0-af67-bbf797be5e7c" action="foreach">
+                    <command>
+                        <body>name $snapshotNames</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="c5350ff4-0c81-4714-a04d-19b362515c53" action="write">
+                            <command>
+                                <body>snapshotName = $name\\n</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <multilineDescription>query a specified virtual machine for a list of all snapshots related to that VM.  This functionality does not exist in the VMWare module for iTest as of 4.4, so we use the pysphere module.</multilineDescription>
+            <arguments>
+                <item name="serverName">
+                    <description>hostname of the vcenter instance.  This shouldn&apos;t be required, but since we&apos;re calling out to a python script, we have to do it.</description>
+                    <defaultValue>evci1-vcenter.rich.tek.com</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="username">
+                    <description>login username</description>
+                    <defaultValue>siadmin@vsphere.local</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="password">
+                    <description>password.  Duh.</description>
+                    <defaultValue>siadmin</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="vmName">
+                    <description>name of VM to query for snapshots</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="threadSession">
+                    <description>the session name must be a variable so that the procedure is threadsafe.  If there is more than one open step with the same session ID, an error will be thrown.
+
+This argument only needs to be passed in when it is called in a thread</description>
+                    <defaultValue>s1</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="revertToNamedSnapshot" isPublic="true">
+            <description>Revert a VM to a named snapshot</description>
+            <steps>
+                <item guid="f1c5a52d-9453-48ac-b890-7a2b604f2124" action="open" session="$threadSession">
+                    <command>
+                        <body>application:com.fnfr.svt.applications.process</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.OpenStepPropertyGroup">
+                        <stepProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionProperties type="com.fnfr.svt.applications.process.ProcessSessionProperties">
+                            <workingDirectory inherit="false">[file uriToPath &quot;../pysphere&quot;]</workingDirectory>
+                            <useEnvironment inherit="false" defaultValue=""/>
+                        </sessionProperties>
+                        <sessionClass type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionVersion type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    </applicationProperties>
+                    <advancedProperties defaultSessionProfile="application:com.fnfr.svt.applications.process"/>
+                </item>
+                <item guid="e52d0059-0cac-4f20-821d-9f58a44befd5" action="command" session="$threadSession">
+                    <command>
+                        <body>run python revertToNamedSnapshot.py $serverName $username $password $vmName $targetSnapshotName</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>RevertResult()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>retVal</storageLocation>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="none">
+                                    <extractorProperties type="com.fnfr.svt.documents.EmptyExtractorPropertyGroup"/>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$retVal eq &quot;success&quot;</expression>
+                                        <actionsWhenFalse>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message>Abnormal exit</message>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenFalse>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <responseMap>project://support/pysphere/py_getSnapshotList.ffrm</responseMap>
+                    <advancedProperties defaultSessionProfile="application:com.fnfr.svt.applications.process"/>
+                </item>
+                <item guid="6c66e60a-9ca5-4d7b-a208-584f0174fb8b" action="close" session="$threadSession">
+                    <command>
+                        <body>application:com.fnfr.svt.applications.process</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <advancedProperties defaultSessionProfile="application:com.fnfr.svt.applications.process"/>
+                </item>
+                <item guid="79fb55e0-9b39-431e-bb9e-3b0f18693521" action="return">
+                    <command>
+                        <body>RevertResult = $retVal</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <arguments>
+                <item name="serverName">
+                    <description>hostname of the vcenter instance.  This shouldn&apos;t be required, but since we&apos;re calling out to a python script, we have to do it.</description>
+                    <defaultValue>evci1-vcenter.rich.tek.com</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="username">
+                    <description>login username</description>
+                    <defaultValue>siadmin@vsphere.local</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="password">
+                    <description>password.  Duh.</description>
+                    <defaultValue>siadmin</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="vmName">
+                    <description>name of VM to query for snapshots</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="targetSnapshotName">
+                    <defaultValue>baseline</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="threadSession">
+                    <description>the session name must be a variable so that the procedure is threadsafe.  If there is more than one open step with the same session ID, an error will be thrown.
+
+This argument only needs to be passed in when it is called in a thread</description>
+                    <defaultValue>s1</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="deleteNamedSnapshot" isPublic="true">
+            <description>Revert a VM to a named snapshot</description>
+            <steps>
+                <item guid="7fb866da-39c0-49ac-b734-969a86ace624" action="open" session="s1">
+                    <command>
+                        <body>application:com.fnfr.svt.applications.process</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.OpenStepPropertyGroup">
+                        <stepProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionProperties type="com.fnfr.svt.applications.process.ProcessSessionProperties">
+                            <workingDirectory inherit="false">[file uriToPath &quot;../pysphere&quot;]</workingDirectory>
+                            <useEnvironment inherit="false" defaultValue=""/>
+                        </sessionProperties>
+                        <sessionClass type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionVersion type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    </applicationProperties>
+                    <advancedProperties defaultSessionProfile="application:com.fnfr.svt.applications.process"/>
+                </item>
+                <item guid="ed5c9a4f-b671-420e-a94e-634b004f1ca1" action="command" session="s1">
+                    <command>
+                        <body>run python deleteNamedSnapshot.py $serverName $username $password $vmName $targetSnapshotName</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>DeleteResult()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>retVal</storageLocation>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="none">
+                                    <extractorProperties type="com.fnfr.svt.documents.EmptyExtractorPropertyGroup"/>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$retVal eq &quot;success&quot;</expression>
+                                        <actionsWhenFalse>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="Warning">
+                                                    <message>$retVal</message>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenFalse>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <responseMap>project://support/pysphere/py_getSnapshotList.ffrm</responseMap>
+                </item>
+                <item guid="052c31c4-cbd0-431c-b673-110af469084f" action="close" session="s1">
+                    <command>
+                        <body>application:com.fnfr.svt.applications.process</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="7226a3be-ef6f-46b1-9354-fadbea982105" action="return">
+                    <command>
+                        <body>DeleteResult = $retVal</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <arguments>
+                <item name="serverName">
+                    <description>hostname of the vcenter instance.  This shouldn&apos;t be required, but since we&apos;re calling out to a python script, we have to do it.</description>
+                    <defaultValue>evci1-vcenter.rich.tek.com</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="username">
+                    <description>login username</description>
+                    <defaultValue>siadmin@vsphere.local</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="password">
+                    <description>password.  Duh.</description>
+                    <defaultValue>siadmin</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="vmName">
+                    <description>name of VM to query for snapshots</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="targetSnapshotName">
+                    <defaultValue>baseline</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="revertVm" isPublic="true">
+            <description>Poweroff, revert and poweron a VM</description>
+            <steps>
+                <item guid="713b6c34-ca75-4c5c-b322-238f949f77ab" action="getSnapShotList" session="$session">
+                    <command>
+                        <body>-vmName $vmName -threadSession $threadSession</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>snapshotName()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>snapshotNames</storageLocation>
+                                        <storeInAList>true</storeInAList>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="ad37e793-9c39-4963-a748-de37f5fa7771" action="if">
+                    <command>
+                        <body>[lsearch $snapshotNames $targetSnapshotName]  &gt; -1</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="eed147c1-de37-4373-b92a-4821badc3587" action="then">
+                            <nestedSteps>
+                                <item guid="b81cc292-dbf2-49d9-9f70-8a9dc2311b9c" action="comment">
+                                    <command>
+                                        <body>Revert snapshot and then power on - snapshot name must be called &quot;$targetSnapshotName&quot;</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="6695f37e-e725-4fb6-84b6-7a27d9c38b12" action="powerOffVM" session="$session">
+                                    <command>
+                                        <body>$vmName</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                                <item guid="c6fe1b86-f96c-4a17-9107-e2f1fe7decdd" action="revertToNamedSnapshot" session="$session">
+                                    <command>
+                                        <body>-vmName $vmName -targetSnapshotName $targetSnapshotName -threadSession $threadSession</body>
+                                    </command>
+                                    <postProcessing>
+                                        <analysisRules>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup" declareNoMatchIssue="false">
+                                                        <query>RevertResult()</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>$value eq &quot;success&quot;</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="DeclareExecutionIssue">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="OK">
+                                                                    <message>VM $vmName was reverted to $targetSnapshotName snapshot</message>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="Eval">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                                    <statement>set retVal &quot;OK&quot;</statement>
+                                                                </actionProperties>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                        <actionsWhenFalse>
+                                                            <item actionId="DeclareExecutionIssue">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                                    <message>Snapshot failed to revert</message>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="Eval">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                                    <statement>set retVal &quot;NOK&quot;</statement>
+                                                                </actionProperties>
+                                                            </item>
+                                                        </actionsWhenFalse>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                        </analysisRules>
+                                    </postProcessing>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="bda92f57-d255-4b3a-a15e-5ba887712e8d" action="powerOnVM" session="$session">
+                                    <command>
+                                        <body>$vmName</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="0323ea2b-cc12-4a42-b62e-e6f8a78435b7" action="else">
+                            <nestedSteps>
+                                <item guid="0cca34b6-eaa0-42a3-a886-f6dd2328ec5e" action="eval">
+                                    <command>
+                                        <body>set retVal &quot;NOK&quot;</body>
+                                    </command>
+                                    <postProcessing>
+                                        <analysisRules>
+                                            <item>
+                                                <extractorInfo extractorType="none">
+                                                    <extractorProperties type="com.fnfr.svt.documents.EmptyExtractorPropertyGroup"/>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="message">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.MessageProcessorPropertyGroup">
+                                                        <message>&quot;There is no image named $targetSnapshotName for $vmName. Please create the snapshot with the name $targetSnapshotName.&quot;</message>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                        </analysisRules>
+                                    </postProcessing>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="883325cc-7f20-43e6-bb13-31d9ab9d5339" action="return">
+                    <command>
+                        <body>RevertResult = $retVal</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <multilineDescription>revertVm powers down a target VM, and reverts its state to the specfied snapshot.  By default, this is the snapshot named &quot;baseline&quot;</multilineDescription>
+            <arguments>
+                <item name="vmName">
+                    <description>Name of the VM to manipulate; the parent of the snapshot</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="targetSnapshotName">
+                    <description>name of the snapshot to revert to.  By default, we revert to the snapshot named &quot;baseline&quot;</description>
+                    <defaultValue>baseline</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="threadSession">
+                    <description>the session name must be a variable so that the procedure is threadsafe.  If there is more than one open step with the same session ID, an error will be thrown.
+
+This argument only needs to be passed in when it is called in a thread</description>
+                    <defaultValue>s1</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="snapshotVm" isPublic="true">
+            <description>Create a snapshot of the specified VM, and delete existing snapshots with the same name</description>
+            <steps>
+                <item guid="2435184a-cb50-4946-abf7-c2e198c41ebe" action="getVMInfo" session="$session">
+                    <command>
+                        <body>${vmName}</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>(.//vmInfoTable/row/Value)[7]</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>vmState</storageLocation>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="8a2aea6c-da28-4edd-b9ae-45866d36898e" action="eval">
+                    <command>
+                        <body>set message [format &quot;owner:%s\\tstate:%s&quot; &quot;automation&quot; ${vmState}]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="4e35c6d3-725d-4767-8d2c-f9ad335572cb" action="createSnapshot" session="$session" estimatedStepExecutionTime="613.312">
+                    <command>
+                        <body>${vmName}</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>snapshotID()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>i</storageLocation>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.vmware.vi.core.tool" transferableType="com.fnfr.itest.applications.vmware.vi.core.properties.CreateSnapshotProperties" snapshotName="${snapshotName}" snapshotName.inherit="false" snapshotMemory="true" snapshotMemory.inherit="false">
+                        <snapshotDescription inherit="false">${message}
+
+[info timestamp {yyyy-MM-dd HH:mm:ss.SSS}]</snapshotDescription>
+                    </applicationProperties>
+                </item>
+                <item guid="9eb854ce-67d9-4d37-9d92-fc9c19a45cca" action="comment">
+                    <command>
+                        <body>I can&apos;t believe we have to sleep here.  With no wait, the deletion of the snapshots fails</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="da2a52aa-e1d1-4910-9a55-d705d03522da" action="sleep">
+                    <command>
+                        <body>30</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="042d04ce-d707-4f1c-b84f-ef8f2f3765a8" action="getSnapShotList" session="$session">
+                    <command>
+                        <body>-vmName $vmName</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>snapshotName()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>snapshotNames</storageLocation>
+                                        <storeInAList>true</storeInAList>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="20468936-532c-4de5-a1a1-4e4a96033be8" action="eval">
+                    <command>
+                        <body>set snapshotNames [lrange $snapshotNames 0 end-1]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="5a49a4e8-8f73-4f46-a2cb-164c21c9ca26" action="foreach">
+                    <command>
+                        <body>name $snapshotNames</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="01b69de4-1be0-40ae-aa2e-4b03a1c1c734" action="if">
+                            <command>
+                                <body>$name eq $snapshotName</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="58608bce-97c9-4c7d-aba1-11aa11ba3ccc" action="then">
+                                    <nestedSteps>
+                                        <item guid="329549e2-6b38-4c73-8219-290d34dd7e39" action="comment">
+                                            <command>
+                                                <body>remove other snapshots with the same name</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                        <item guid="a7d68a2d-63d2-4661-a978-b74f6183b841" action="deleteNamedSnapshot" session="$session">
+                                            <command>
+                                                <body>-vmName $vmName -targetSnapshotName $snapshotName</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <multilineDescription>Create a new snapshot of the target VM.  Also, delete any snapshots with the same name.</multilineDescription>
+            <arguments>
+                <item name="vmName">
+                    <description>VM to snapshot</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="snapshotName">
+                    <description>name of new snapshot</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="waitForVM" isPublic="true">
+            <steps>
+                <item guid="1a3799f0-c5b0-4886-9a8d-28e0702cbd97" action="getVMInfo" session="$session" normalOffset="23.76" estimatedStepExecutionTime="0.094">
+                    <command>
+                        <body>${vmName}</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>(.//vmInfoTable/row/Property)[5]</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>value</storageLocation>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>(.//vmInfoTable/row/Value)[5]</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>value</storageLocation>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="acee14e0-c8ca-4510-9571-7c9a907b5c89" action="eval">
+                    <command>
+                        <body>scan ${value} &quot;%d MB&quot; allocated</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="28d3e9ff-1256-4bd5-8dff-895183b6788e" action="eval">
+                    <command>
+                        <body>set index 0</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="cd58bc2a-474d-4a0b-9b50-8773f04e9188" action="eval">
+                    <command>
+                        <body>set limit [expr ${allocated} / 1024]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="bd67b094-5c32-4e9f-9ca9-64e53476fa3c" action="eval">
+                    <command>
+                        <body>incr limit 2</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="6668a370-f674-4d8e-9ae5-426dc3f66a6d" action="eval">
+                    <command>
+                        <body>set duty 60</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="c2ffeef8-9a6e-400e-aa69-f7ab1ec19c4e" action="while">
+                    <command>
+                        <body>${index} &lt; ${limit}</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="03b27a7f-cbde-4711-bce4-5733fcfce60e" action="sleep">
+                            <command>
+                                <body>${duty}</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="b0d7c57c-44f8-488c-b5f0-9ccf87c33fce" action="getVMInfo" session="$session">
+                            <command>
+                                <body>${vmName}</body>
+                            </command>
+                            <postProcessing>
+                                <analysisRules>
+                                    <item>
+                                        <extractorInfo extractorType="query">
+                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                <query>result()</query>
+                                            </extractorProperties>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="store">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                <storageLocation>status</storageLocation>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                    <item>
+                                        <extractorInfo extractorType="query">
+                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup" declareNoMatchIssue="false">
+                                                <query>(.//vmInfoTable/row/Value)[14]</query>
+                                            </extractorProperties>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="store">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                <storageLocation>value</storageLocation>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                </analysisRules>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="7fe4a810-90fe-40f9-b34a-8408f60decef" action="eval">
+                            <command>
+                                <body>set current -1</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="1e37f7b2-0e66-488f-9e24-01f314547462" action="eval">
+                            <command>
+                                <body>scan ${value} &quot;%f MB&quot; current</body>
+                            </command>
+                            <postProcessing>
+                                <analysisRules>
+                                    <item>
+                                        <extractorInfo extractorType="none">
+                                            <extractorProperties type="com.fnfr.svt.documents.EmptyExtractorPropertyGroup"/>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="message">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.MessageProcessorPropertyGroup" severity="Information">
+                                                <message>${vmName} loading @ ${value}</message>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                </analysisRules>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="46044954-e730-4715-a467-0d8071f3921f" action="if">
+                            <command>
+                                <body>${status} != &quot;success&quot;</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="710c1d21-1767-452c-a976-18fbe52d7b51" action="then">
+                                    <nestedSteps>
+                                        <item guid="96dabb2e-6bbf-4646-ab5d-62e5b50b2863" action="continue">
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="89b93f0c-ded4-4ca4-9161-563b197c665f" action="elseif">
+                                    <command>
+                                        <body>[info exists local last] &amp;&amp; ${current} != -1</body>
+                                    </command>
+                                    <nestedSteps>
+                                        <item guid="6d9e7375-3150-4dbc-aaeb-6cce0049d052" action="eval">
+                                            <command>
+                                                <body>set delta [expr (${current}-${last})/${duty}]</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                        <item guid="520e1e56-4b52-4ae9-9e60-0b276c201c37" action="if">
+                                            <command>
+                                                <body>${delta} &lt; 1.1</body>
+                                            </command>
+                                            <nestedSteps>
+                                                <item guid="573a747c-ae21-4915-9db1-00329ba75c03" action="then">
+                                                    <nestedSteps>
+                                                        <item guid="f36967d2-114b-4b69-a43f-00fed8e4fce6" action="comment">
+                                                            <command>
+                                                                <body>${vmName} loaded</body>
+                                                            </command>
+                                                            <postProcessing>
+                                                                <analysisRules>
+                                                                    <item>
+                                                                        <extractorInfo extractorType="none">
+                                                                            <extractorProperties type="com.fnfr.svt.documents.EmptyExtractorPropertyGroup"/>
+                                                                        </extractorInfo>
+                                                                        <processorInfo ruleType="message">
+                                                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.MessageProcessorPropertyGroup" severity="Information">
+                                                                                <message>${vmName} loaded ${value}</message>
+                                                                            </ruleProperties>
+                                                                        </processorInfo>
+                                                                    </item>
+                                                                </analysisRules>
+                                                            </postProcessing>
+                                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                                        </item>
+                                                        <item guid="967d27ea-d287-45d7-a0d8-4d186aa3ac7f" action="break">
+                                                            <command>
+                                                                <body>Insert steps here for when expression is true</body>
+                                                            </command>
+                                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                                        </item>
+                                                    </nestedSteps>
+                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                </item>
+                                            </nestedSteps>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="168f6757-f31f-4f3b-a095-cd785327be2b" action="eval">
+                            <command>
+                                <body>incr index</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="71344660-28cc-44c5-b0ed-e331386090c5" action="if">
+                            <command>
+                                <body>${current} != -1</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="794a1348-ba7b-4a4a-96f4-45a2663d5226" action="then">
+                                    <nestedSteps>
+                                        <item guid="d29cafe9-65f0-4884-a79d-ccdf3321b8b9" action="eval">
+                                            <command>
+                                                <body>set last ${current}</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="0174f480-2be6-4571-a767-85595f5ca427" action="if">
+                    <command>
+                        <body>$index &gt;= ${limit}</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="53088ae4-9515-4331-a0c6-7f309c1cff46" action="then">
+                            <nestedSteps>
+                                <item guid="ec729d04-36f1-464f-9acf-59d9b1a3aa12" action="comment">
+                                    <command>
+                                        <body>vm loading exceeded expectation</body>
+                                    </command>
+                                    <postProcessing>
+                                        <analysisRules>
+                                            <item>
+                                                <extractorInfo extractorType="none">
+                                                    <extractorProperties type="com.fnfr.svt.documents.EmptyExtractorPropertyGroup"/>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="message">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.MessageProcessorPropertyGroup" severity="Warning">
+                                                        <message>loading ${vmName} exceeded expectation ${index}/${limit}</message>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                        </analysisRules>
+                                    </postProcessing>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <arguments>
+                <item name="vmName">
+                    <description>Name of VM to manipulate</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="revertAndStartVm" isPublic="true">
+            <steps>
+                <item guid="c6b9962c-9e5b-4368-876d-95461420c029" action="comment">
+                    <command>
+                        <body>Revert snapshot to a stable baseline image.</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="7d4e4fa0-50bc-466b-becc-a51419a16d9f" action="revertVm" session="$session">
+                            <command>
+                                <body>-vmName $vmName -threadSession $threadSession</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="ec1fc4a6-6a8e-4885-b4e3-09f66f3e9ed2" action="comment">
+                    <command>
+                        <body>Hold and monitor until VMs are ready</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="59f62593-ac95-4e04-82d6-c54684d3732a" action="waitForVM" session="$session">
+                            <command>
+                                <body>-vmName $vmName</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <arguments>
+                <item name="vmName"/>
+                <item name="threadSession">
+                    <description>the session name must be a variable so that the procedure is threadsafe.  If there is more than one open step with the same session ID, an error will be thrown.
+
+This argument only needs to be passed in when it is called in a thread</description>
+                    <defaultValue>s1</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+    </procedures>
+</testCase>

@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<SessionTemplate version="6.1.0.e2e4ec0">
+    <baseApplication>com.fnfr.svt.applications.telnet</baseApplication>
+    <sessionProperties type="com.fnfr.svt.applications.telnet.documents.TelnetSessionProperties">
+        <TerminalProperties>
+            <terminalSizeProperties>
+                <termHeight inherit="false">80</termHeight>
+            </terminalSizeProperties>
+            <captureProperties>
+                <commandBreakChars inherit="false">
+                    <item>[char Ctrl-C]</item>
+                </commandBreakChars>
+            </captureProperties>
+            <prompts merge="true">
+                <item name="login" MatchMethod="WILDCARD">
+                    <Content>*login:</Content>
+                </item>
+                <item name="password" MatchMethod="WILDCARD">
+                    <Content>*password:</Content>
+                </item>
+                <item name="normal" MatchMethod="WILDCARD">
+                    <Content>*#</Content>
+                </item>
+                <item name="Select" MatchMethod="WILDCARD">
+                    <Content>*Select:</Content>
+                </item>
+                <item name="MonSubMenu" MatchMethod="WILDCARD" TypeOfPrompt="PASSWORD">
+                    <Content>*&lt;ENTER&gt; Re-Display Options</Content>
+                </item>
+                <item name="AreYouSure" MatchMethod="WILDCARD" TypeOfPrompt="MORE">
+                    <Content>Are you sure? [Yes|No]:*</Content>
+                    <MoreNextCommand>Yes\\n</MoreNextCommand>
+                    <MoreQuitCommand>No\\n</MoreQuitCommand>
+                </item>
+            </prompts>
+        </TerminalProperties>
+    </sessionProperties>
+    <responseLibrary inherit="false">project://di_Cisco_ASR5K/</responseLibrary>
+    <sessionClassTestCase inherit="false">project://di_Cisco_ASR5K/session_profiles/Cisco_ASR5K_telnet_quickcall_library.fftc</sessionClassTestCase>
+    <initializationProcedure inherit="false">login</initializationProcedure>
+    <responseFilters merge="true">
+        <item name="TimeStamp" patternType="REGEX" filterAction="EXC_LINES_CONTAINING">
+            <pattern>\\w+\\s+\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+\\w+</pattern>
+        </item>
+    </responseFilters>
+    <isReferenceProfile>true</isReferenceProfile>
+</SessionTemplate>
