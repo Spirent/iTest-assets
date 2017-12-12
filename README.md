@@ -17,13 +17,23 @@ All assets in are categorized into three levels of maturity/testing:
 
 You are encouraged to submit your projects back to the Spirent Developer Community for others to benefit from.
 
-Each project within this repository conforms to a standard naming convention:
+Each project within this repository conforms to a standard naming convention. Project names are pre-pended with two letters. The first letter indicates what type of content exists in the project, and the second letter indicates the language in which the project was written. For example, a project called di_foobar contains a device project written in iTest. The tables below list the prefix values:
 
-| Prefix   | Project Type       | Contents    |
+|First Letter|Project Content|Description|
 | -------- |-------------| -------------| 
-| \_a      | Automation  | Test Cases    | 
-| \_d      | Device      | QuickCalls and Response Maps | 
-| \_t      | Tools       | Generic utilities       |  
+|d|Libraries|Response maps and QuickCalls|
+|a|Automation|Test cases|
+|r|Drivers|Velocity drivers|
+|t|Tasks|Velocity startup, teardown, and triggered automation tasks|
+|k|Dashboards|Velocity dashboards|
+|u|Utilities|Tools and utilities|
+
+|Second Letter|Language|Description|
+| -------- |-------------| -------------|
+|i|iTest|All content in project is iTest content|
+|p|Python|All content in project is Python content|
+|b|Bash|All content in project is Bash content|
+|s|Scripts|Project content is written in another language or a combination of iTest, Python, Bash|
 
 ## Quick Start
  
