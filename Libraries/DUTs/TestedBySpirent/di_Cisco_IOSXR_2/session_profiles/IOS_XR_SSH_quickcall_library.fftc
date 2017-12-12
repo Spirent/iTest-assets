@@ -1,0 +1,957 @@
+<?xml version="1.0"?>
+<testCase version="6.1.0.e2e4ec0">
+    <general>
+        <sessionClass includeTestCase="true" sessionType="project://di_Cisco_IOSXR_2/session_profiles/cisco_ios_xr_ssh_base.ffsp"/>
+    </general>
+    <procedures>
+        <item name="main">
+            <steps>
+                <item guid="27775ed7-3edc-4386-980e-200ee6b422f8" action="comment">
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+        </item>
+        <item name="ClearInterfaceArpCache" isPublic="true">
+            <description>Clear the ARP cache on an interface</description>
+            <steps>
+                <item guid="59703131-dbfc-4313-be6d-e9eda79feb37" action="command" session="$session">
+                    <command>
+                        <body>clear arp-cache $interface</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+            </steps>
+            <arguments>
+                <item name="interface">
+                    <description>Name of interface to clear ARP on</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="ClearInterfaceCounters" isPublic="true">
+            <description>Clear Interface Counters</description>
+            <steps>
+                <item guid="2bf2f624-0143-49ac-95ac-ce9a610f9dbb" action="command" session="$session">
+                    <command>
+                        <body>clear counters $interface</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+            </steps>
+            <multilineDescription>Clear interface counters for one interface or all</multilineDescription>
+            <arguments>
+                <item name="interface">
+                    <description>Name of interface to clear counters on. 
+NOTE: If not given, will clear counters on all interfaces.</description>
+                </item>
+            </arguments>
+        </item>
+        <item name="ConfigureInterfaceAcl" isPublic="true">
+            <description>Configure Interface ACL</description>
+            <steps>
+                <item guid="91c2c3b6-bd40-4dfa-9082-4ecd088af92b" action="EnterConfigMode" session="$session">
+                    <command>
+                        <body> -interface $interface</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="93a97277-4af4-4663-8b10-5978973ad1fa" action="command" session="$session">
+                    <command>
+                        <body>no ipv4 access-list $acl_name_remove</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="8dd6cdf9-a507-45e7-9a51-6dc9830274c8" action="command" session="$session">
+                    <command>
+                        <body>ipv4 access-list $acl_name_add</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="6cd2a25b-70c4-47dc-83e0-7eee1bd8f429" action="ExitConfigMode" session="$session">
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <multilineDescription>Add or remove an ACL from an interface</multilineDescription>
+            <arguments>
+                <item name="interface">
+                    <description>Name of interface to modify</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="acl_name_add">
+                    <description>Name of ACL to add</description>
+                </item>
+                <item name="acl_name_remove">
+                    <description>Name of acl to remove</description>
+                </item>
+            </arguments>
+        </item>
+        <item name="ConfigureInterfaceIP" isPublic="true">
+            <description>Configure Interface IPv4 Address</description>
+            <steps>
+                <item guid="ea5e3f8b-eedb-4d50-b8d4-44ed58e0240f" action="EnterConfigMode" session="$session">
+                    <command>
+                        <body> -interface $interface</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="5ad53df5-6e28-47f0-ad1e-bf84f0ccca2c" action="comment">
+                    <command>
+                        <body>If an IPv4 address is given, add it to the interface. If not, remove any existing IPv4 address.</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="a2244f88-97c3-433e-ab45-e169435e5bcc" action="if">
+                            <command>
+                                <body>$ip_v4_address != &quot;remove&quot;</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="1a643fa7-9bbf-48d5-8f9d-a757b5ffaeb3" action="then">
+                                    <nestedSteps>
+                                        <item guid="5f77a6e7-918c-4f34-8c6a-71008c97175d" action="command" session="$session">
+                                            <command>
+                                                <body>ipv4 address ${ip_v4_address}/${netmask_v4}</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="1fb16e02-6b17-4132-b2c7-3193c9e64e0e" action="else">
+                                    <nestedSteps>
+                                        <item guid="7d841f82-d6bd-471f-b182-468448c30659" action="command" session="$session">
+                                            <command>
+                                                <body>no ipv4 address</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="a07850ca-1117-4887-9bfb-6724abee1bfc" action="comment">
+                    <command>
+                        <body>If an IPv6 address is given, add it to the interface. If not, remove any existing IPv6 address.</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="c82bd628-4972-4c66-9c74-b22de446c283" action="if">
+                            <command>
+                                <body>$ip_v4_address != &quot;remove&quot;</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="c3309cc4-bb25-49f8-8db1-383c375dcda3" action="then">
+                                    <nestedSteps>
+                                        <item guid="29a74ab7-02da-4ef0-a66e-2c5b510a14e8" action="command" session="$session">
+                                            <command>
+                                                <body>ipv6 address ${ip_v6_address}/${netmask_v6}</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="1976eecd-66b8-44e9-b5c9-a7387b0740a8" action="else">
+                                    <nestedSteps>
+                                        <item guid="add871ab-5112-4898-aa15-50a4f56e0ed1" action="command" session="$session">
+                                            <command>
+                                                <body>no ipv6 address</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="837b6db5-e0b1-44a2-80c8-128f3efe7014" action="ExitConfigMode" session="$session">
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <multilineDescription>Configure or remove an IPv4 address on an interface. </multilineDescription>
+            <arguments>
+                <item name="ipv4_address">
+                    <description>If given, will configure IPv4 address on the interface. If left as defualt, will remove the IPv4 address from the interface. 
+</description>
+                    <defaultValue>remove</defaultValue>
+                </item>
+                <item name="netmask_v4">
+                    <description>Required if supplying IPv4 address. Integer.
+Length of v4 subnet mask to apply to the interface. </description>
+                </item>
+                <item name="ipv6_address">
+                    <description>If given, will configure IPv6 address on the interface. If left as defualt, will remove the IPv6 address from the interface. 
+</description>
+                    <defaultValue>remove</defaultValue>
+                </item>
+                <item name="netmask_v6">
+                    <description>Required if supplying IPv4 address. Integer.
+Length of v6 prefix to apply to the interface. </description>
+                </item>
+                <item name="interface">
+                    <description>Name of interface to alter</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="ConfigureInterfaceMtu" isPublic="true">
+            <description>Change MTU</description>
+            <steps>
+                <item guid="6fb356e0-dc7a-4466-9695-fd4e78a4ee86" action="EnterConfigMode" session="$session">
+                    <command>
+                        <body> -interface $interface</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="bc30fad7-089c-407d-b16c-b096ec9545d1" action="command" session="$session">
+                    <command>
+                        <body>mtu $new_mtu</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="ed3ab5c2-67bd-49be-ba22-d3da83cb1204" action="ExitConfigMode" session="$session">
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <multilineDescription>Configure MTU size on an interface</multilineDescription>
+            <arguments>
+                <item name="interface">
+                    <description>Name of the interface to alter.</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="new_mtu">
+                    <description>New MTU size to apply.</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="CreateAcl" isPublic="true">
+            <description>Create ACL</description>
+            <steps>
+                <item guid="538612db-ea73-4d56-9cb2-b70ae4e40b51" action="EnterConfigMode" session="$session">
+                    <command>
+                        <body> -interface none</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="34a6fbaf-2a9e-4d00-bef3-53f0a7154dd1" action="command" session="$session">
+                    <command>
+                        <body>ipv4 access-list $acl_name</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="0d457ff6-4d3c-428d-b2dc-b6c51e994094" action="command" session="$session">
+                    <command>
+                        <body>1 remark ACL created by automated iTest script. ACL should be deleted upon script completion.</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="4e73d9c7-8077-4350-8e15-0ee736dde1cb" action="command" session="$session">
+                    <command>
+                        <body>2 deny $deny_string</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="555b94b1-86ed-4df4-bc28-f4a0815b859c" action="command" session="$session">
+                    <command>
+                        <body>3 permit $permit_string</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="5ad0cc8d-ef0d-4380-b4d1-fe310f407aff" action="ExitConfigMode" session="$session">
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <multilineDescription>Create an Access Control List on the global config</multilineDescription>
+            <arguments>
+                <item name="acl_name">
+                    <description>Name to give to newly created ACL</description>
+                    <defaultValue>itest_acl</defaultValue>
+                </item>
+                <item name="deny_string">
+                    <description>String to be placed on the &apos;deny&apos; line of the ACL. Example &quot;tcp any any eq www log&quot;</description>
+                    <defaultValue> </defaultValue>
+                </item>
+                <item name="permit_string">
+                    <description>String to be placed on the &apos;permit&apos; line of the ACL. Example &quot;ipv4 any any&quot;</description>
+                    <defaultValue> </defaultValue>
+                </item>
+            </arguments>
+        </item>
+        <item name="EnterConfigMode" isPublic="true">
+            <description>Enter Config Mode</description>
+            <steps>
+                <item guid="c8b7f23d-5e10-461c-a25c-bd2e86b32f1e" action="command" session="$session">
+                    <command>
+                        <body>configure terminal</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="b952bd96-0a0b-45a0-9d61-ef033b399d67" action="comment">
+                    <command>
+                        <body>Enter interface config mode if interface name is given</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="d6299c98-6cf2-463f-abfb-82df23af3bfb" action="if">
+                            <command>
+                                <body>$interface != &quot;none&quot;</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="b428eaa2-660c-49bb-a4af-cd77255adae3" action="then">
+                                    <nestedSteps>
+                                        <item guid="b7e59088-0f0c-44ed-822b-28ff96a4b9cb" action="command" session="$session">
+                                            <command>
+                                                <body>interface $interface</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <arguments>
+                <item name="interface">
+                    <description>Optional. Interface to configure. </description>
+                    <defaultValue>none</defaultValue>
+                </item>
+            </arguments>
+        </item>
+        <item name="ExitConfigMode" isPublic="true">
+            <description>Exit Config Mode</description>
+            <steps>
+                <item guid="c4d3e269-a558-4ec1-8ad4-89ef604afbff" action="command" session="$session">
+                    <command>
+                        <body>commit</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="47ffeefe-4cc4-47e4-a6d0-45c2450c456b" action="command" session="$session">
+                    <command>
+                        <body>end</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+            </steps>
+        </item>
+        <item name="GetInterfaceCounters" isPublic="true" isVBlock="true">
+            <description>Get Interface Counters</description>
+            <steps>
+                <item guid="f91509c7-7813-43f7-8d0b-9301a142279e" action="command" session="$session">
+                    <command>
+                        <body>show interfaces $interface detail</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>bits_sec_input()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>bits_sec_input</storageLocation>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>bits_sec_output()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>bits_sec_output</storageLocation>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>total_input_drops()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>var1</storageLocation>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>bytes_input()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>var1</storageLocation>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>broadcast_recvd()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>var1</storageLocation>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>multicast_recvd()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>var1</storageLocation>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>runts()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>var1</storageLocation>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>giants()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>var1</storageLocation>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>CRC()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>var1</storageLocation>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>bytes_output()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>var1</storageLocation>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                    <emulation>
+                        <behavior>
+                            <response>Mon Apr 24 19:05:24.019 EST TenGigE0/5/1/2 is up, line protocol is up
+Interface state transitions: 71
+Hardware is TenGigE, address is 5087.8907.637e (bia 5087.8907.637e) Layer 1 Transport Mode is LAN
+Description: SPIRENT 2:5
+Internet address is 24.73.51.100/31
+MTU 9216 bytes, BW 10000000 Kbit (Max: 10000000 Kbit)
+reliability 255/255, txload 0/255, rxload 0/255 Encapsulation ARPA,
+Full-duplex, 10000Mb/s, link type is force-up
+output flow control is off, input flow control is off Carrier delay (up) is 10 msec
+loopback not set,
+Last link flapped 00:01:55
+ARP type ARPA, ARP timeout 04:00:00
+Last input 00:02:20, output 00:00:01
+Last clearing of &quot;show interface&quot; counters 9w3d 30 second input rate 0 bits/sec, 0 packets/sec 30 second output rate 0 bits/sec, 0 packets/sec
+10219764456 packets input, 672960099472 bytes, 2255389032 total input drops 7588521 drops for unrecognized upper-level protocol
+Received 1 broadcast packets, 6 multicast packets
+0 runts, 0 giants, 0 throttles, 0 parity
+0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored, 0 abort 70967079 packets output, 28965645480 bytes, 447966 total output drops Output 2563 broadcast packets, 2056121 multicast packets
+0 output errors, 0 underruns, 0 applique, 0 resets
+0 output buffer failures, 0 output buffers swapped out
+70 carrier transitions</response>
+                        </behavior>
+                    </emulation>
+                </item>
+            </steps>
+            <multilineDescription>Get interface coutners shown in the &apos;show interface detail&apos; command.
+Returns block JSON string:
+\tbits_sec_in
+\tbits_sec_out
+\tinput_drops
+\tbytes_in
+\tbroadcast_in
+\tmulticast_in
+\trunts
+\tgiants
+\tcrc
+\tbytes_out
+</multilineDescription>
+            <arguments>
+                <item name="interface">
+                    <description>Name of interface to get counter info from</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+            <response>{&quot;bits_sec_in&quot;:&quot;value&quot;,&quot;bits_sec_out&quot;:&quot;value&quot;,&quot;input_drops&quot;:&quot;value&quot;,&quot;bytes_in&quot;:&quot;value&quot;,&quot;broadcast_in&quot;:&quot;value&quot;,&quot;multicast_in&quot;:&quot;value&quot;,&quot;runts&quot;:&quot;value&quot;,&quot;giants&quot;:&quot;value&quot;,&quot;crc&quot;:&quot;value&quot;,&quot;bytes_out&quot;:&quot;value&quot;}</response>
+        </item>
+        <item name="Ping" isPublic="true" isVBlock="true">
+            <description>Ping</description>
+            <steps>
+                <item guid="b5ad2ab4-82a3-4eb3-9396-10ecbacd77d2" action="comment">
+                    <command>
+                        <body>Create regexes for v4 and v6 addresses</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="fb66fd58-9436-433a-b8b7-407d5ed09bc3" action="eval">
+                            <command>
+                                <body>set v4_regex {\\b((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\\.|$)){4}\\b}</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="9035ff4d-8a1d-4c6f-addc-bd46877a5fab" action="eval">
+                            <command>
+                                <body>set v6_regex {^s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]d|1dd|[1-9]?d)(.(25[0-5]|2[0-4]d|1dd|[1-9]?d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]d|1dd|[1-9]?d)(.(25[0-5]|2[0-4]d|1dd|[1-9]?d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]d|1dd|[1-9]?d)(.(25[0-5]|2[0-4]d|1dd|[1-9]?d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]d|1dd|[1-9]?d)(.(25[0-5]|2[0-4]d|1dd|[1-9]?d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]d|1dd|[1-9]?d)(.(25[0-5]|2[0-4]d|1dd|[1-9]?d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]d|1dd|[1-9]?d)(.(25[0-5]|2[0-4]d|1dd|[1-9]?d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]d|1dd|[1-9]?d)(.(25[0-5]|2[0-4]d|1dd|[1-9]?d)){3}))|:)))(%.+)?s*(\\/([0-9]|[1-9][0-9]|1[0-1][0-9]|12[0-8]))?$}</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="875d35f6-4351-4684-8447-803e9328f169" action="comment">
+                    <command>
+                        <body>Do v4 ping if v4 address is given, v6 poing if v6 address is given, return error if invalid IP is given</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="e98f2d8c-a470-47ef-9f47-a515fb7630ba" action="if">
+                            <command>
+                                <body>[regexp $v4_regex $ip_address] ==1</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="fbed2375-1648-4c24-a2fb-84f74ec712b6" action="then">
+                                    <nestedSteps>
+                                        <item guid="fce4fe73-73bb-4538-b2c8-d5a9fd36dc6b" action="command" session="$session">
+                                            <command>
+                                                <body>ping $ip_address</body>
+                                            </command>
+                                            <postProcessing>
+                                                <analysisRules>
+                                                    <item>
+                                                        <extractorInfo extractorType="query">
+                                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                                <query>Success_rate()</query>
+                                                            </extractorProperties>
+                                                        </extractorInfo>
+                                                        <processorInfo ruleType="store">
+                                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                                <storageLocation>success_rate</storageLocation>
+                                                                <query>[return success_rate]</query>
+                                                            </ruleProperties>
+                                                        </processorInfo>
+                                                    </item>
+                                                    <item>
+                                                        <extractorInfo extractorType="query">
+                                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                                <query>received_pkts()</query>
+                                                            </extractorProperties>
+                                                        </extractorInfo>
+                                                        <processorInfo ruleType="store">
+                                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                                <storageLocation>recvd_pkts</storageLocation>
+                                                                <query>[return packets_received]</query>
+                                                            </ruleProperties>
+                                                        </processorInfo>
+                                                    </item>
+                                                    <item>
+                                                        <extractorInfo extractorType="query">
+                                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                                <query>sent_packets()</query>
+                                                            </extractorProperties>
+                                                        </extractorInfo>
+                                                        <processorInfo ruleType="store">
+                                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                                <storageLocation>sent_pkts</storageLocation>
+                                                                <query>[return packets_sent]</query>
+                                                            </ruleProperties>
+                                                        </processorInfo>
+                                                    </item>
+                                                    <item>
+                                                        <extractorInfo extractorType="query">
+                                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                                <query>round_trip_min()</query>
+                                                            </extractorProperties>
+                                                        </extractorInfo>
+                                                        <processorInfo ruleType="store">
+                                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                                <storageLocation>round_trip_min</storageLocation>
+                                                                <query>[return round_trip_min]</query>
+                                                            </ruleProperties>
+                                                        </processorInfo>
+                                                    </item>
+                                                    <item>
+                                                        <extractorInfo extractorType="query">
+                                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                                <query>round_trip_avg()</query>
+                                                            </extractorProperties>
+                                                        </extractorInfo>
+                                                        <processorInfo ruleType="store">
+                                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                                <storageLocation>round_trip_avg</storageLocation>
+                                                                <query>[return round_trip_avg]</query>
+                                                            </ruleProperties>
+                                                        </processorInfo>
+                                                    </item>
+                                                    <item>
+                                                        <extractorInfo extractorType="query">
+                                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                                <query>round_trip_max()</query>
+                                                            </extractorProperties>
+                                                        </extractorInfo>
+                                                        <processorInfo ruleType="store">
+                                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                                <storageLocation>round_trip_max</storageLocation>
+                                                                <query>[return round_trip_max]</query>
+                                                            </ruleProperties>
+                                                        </processorInfo>
+                                                    </item>
+                                                </analysisRules>
+                                            </postProcessing>
+                                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                                            <emulation>
+                                                <behavior>
+                                                    <response>Mon Apr 24 19:00:16.805 EST
+Type escape sequence to abort.
+Sending 5, 100-byte ICMP Echos to 24.73.51.101, timeout is 2 seconds:
+!!!!!
+Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/3 ms</response>
+                                                </behavior>
+                                            </emulation>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="c3839095-25d2-4a6f-8810-ca6418457024" action="elseif">
+                                    <command>
+                                        <body>[regexp $v6_regex $ip_address] ==1</body>
+                                    </command>
+                                    <nestedSteps>
+                                        <item guid="cc989905-272b-4308-85a8-33eaf611476b" action="command" session="$session">
+                                            <command>
+                                                <body>ping ipv6 $ip_address</body>
+                                            </command>
+                                            <postProcessing>
+                                                <analysisRules>
+                                                    <item>
+                                                        <extractorInfo extractorType="query">
+                                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                                <query>Success_rate()</query>
+                                                            </extractorProperties>
+                                                        </extractorInfo>
+                                                        <processorInfo ruleType="store">
+                                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                                <storageLocation>success_rate</storageLocation>
+                                                                <query>[return success_rate]</query>
+                                                            </ruleProperties>
+                                                        </processorInfo>
+                                                    </item>
+                                                    <item>
+                                                        <extractorInfo extractorType="query">
+                                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                                <query>received_pkts()</query>
+                                                            </extractorProperties>
+                                                        </extractorInfo>
+                                                        <processorInfo ruleType="store">
+                                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                                <storageLocation>recvd_pkts</storageLocation>
+                                                                <query>[return packets_received]</query>
+                                                            </ruleProperties>
+                                                        </processorInfo>
+                                                    </item>
+                                                    <item>
+                                                        <extractorInfo extractorType="query">
+                                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                                <query>sent_packets()</query>
+                                                            </extractorProperties>
+                                                        </extractorInfo>
+                                                        <processorInfo ruleType="store">
+                                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                                <storageLocation>sent_pkts</storageLocation>
+                                                                <query>[return packets_sent]</query>
+                                                            </ruleProperties>
+                                                        </processorInfo>
+                                                    </item>
+                                                    <item>
+                                                        <extractorInfo extractorType="query">
+                                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                                <query>round_trip_min()</query>
+                                                            </extractorProperties>
+                                                        </extractorInfo>
+                                                        <processorInfo ruleType="store">
+                                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                                <storageLocation>round_trip_min</storageLocation>
+                                                                <query>[return round_trip_min]</query>
+                                                            </ruleProperties>
+                                                        </processorInfo>
+                                                    </item>
+                                                    <item>
+                                                        <extractorInfo extractorType="query">
+                                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                                <query>round_trip_avg()</query>
+                                                            </extractorProperties>
+                                                        </extractorInfo>
+                                                        <processorInfo ruleType="store">
+                                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                                <storageLocation>round_trip_avg</storageLocation>
+                                                                <query>[return round_trip_avg]</query>
+                                                            </ruleProperties>
+                                                        </processorInfo>
+                                                    </item>
+                                                    <item>
+                                                        <extractorInfo extractorType="query">
+                                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                                <query>round_trip_max()</query>
+                                                            </extractorProperties>
+                                                        </extractorInfo>
+                                                        <processorInfo ruleType="store">
+                                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                                <storageLocation>round_trip_max</storageLocation>
+                                                                <query>[return round_trip_max]</query>
+                                                            </ruleProperties>
+                                                        </processorInfo>
+                                                    </item>
+                                                </analysisRules>
+                                            </postProcessing>
+                                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                                            <emulation>
+                                                <behavior>
+                                                    <response>Mon Apr 24 19:00:17.842 EST
+Type escape sequence to abort.
+Sending 5, 100-byte ICMP Echos to 2001:24:73:51::101, timeout is 2 seconds: !!!!!
+Success rate is 100 percent (5/5), round-trip min/avg/max = 1/2/6 ms</response>
+                                                </behavior>
+                                            </emulation>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="c22ad545-f773-4356-bc05-d213ad301b7d" action="else">
+                                    <nestedSteps>
+                                        <item guid="d8990c1f-78e1-4df5-bcfb-82b27964d7fb" action="eval">
+                                            <command>
+                                                <body>puts &quot;IP Address Invalid&quot;</body>
+                                            </command>
+                                            <postProcessing>
+                                                <analysisRules>
+                                                    <item>
+                                                        <extractorInfo extractorType="regex">
+                                                            <extractorProperties type="com.fnfr.svt.mapping.regex.extractors.RegexExtractorPropertyGroup">
+                                                                <regex>.+</regex>
+                                                            </extractorProperties>
+                                                        </extractorInfo>
+                                                        <processorInfo ruleType="store">
+                                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                                <storageLocation>var1</storageLocation>
+                                                                <query>[return error]</query>
+                                                            </ruleProperties>
+                                                        </processorInfo>
+                                                    </item>
+                                                </analysisRules>
+                                            </postProcessing>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <multilineDescription>Ping an IPv4 or IPv6 address.
+Returns a block JSON string:
+\tsuccess_rate
+\tpackets_received
+\tpackets_sent
+\tround_trip_min
+\tround_trip_avg
+\tround_trip_max
+\terror</multilineDescription>
+            <arguments>
+                <item name="ip_address">
+                    <description>IPv4 or IPv6 address to ping. </description>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+            <response>{&quot;success_rate&quot;:&quot;value&quot;,&quot;packets_received&quot;:&quot;value&quot;,&quot;packets_sent&quot;:&quot;value&quot;,&quot;round_trip_min&quot;:&quot;value&quot;,&quot;round_trip_avg&quot;:&quot;value&quot;,&quot;round_trip_max&quot;:&quot;value&quot;,&quot;error&quot;:&quot;value&quot;}</response>
+        </item>
+        <item name="RemoveAcl" isPublic="true">
+            <description>Remove ACL</description>
+            <steps>
+                <item guid="e35a7b7e-9ea0-4f11-88a7-1fb0a92efe98" action="EnterConfigMode" session="$session">
+                    <command>
+                        <body> -interface none</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="b9a17012-e918-4bf9-ad18-c259bb570b42" action="command" session="$session">
+                    <command>
+                        <body>no ipv4 access-list $acl_name</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="2a4cf565-b6d7-4c90-92dd-ace54287457b" action="ExitConfigMode" session="$session">
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <multilineDescription>Remove an ACL from the global config</multilineDescription>
+            <arguments>
+                <item name="acl_name">
+                    <description>Name of ACL to remove</description>
+                    <defaultValue>itest_acl</defaultValue>
+                </item>
+            </arguments>
+        </item>
+        <item name="GetHostname" isPublic="true" isVBlock="true">
+            <description>Get Hostname</description>
+            <steps>
+                <item guid="207f53ce-12f1-4919-b2a4-24891e71cb30" action="command" session="$session" estimatedStepExecutionTime="0.104">
+                    <command>
+                        <body>show run | include hostname</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>hostname()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>var1</storageLocation>
+                                        <query>[return hostname]</query>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+            </steps>
+            <multilineDescription>Returns block JSON string:
+\thostname</multilineDescription>
+            <response>{&quot;hostname&quot;:&quot;value&quot;}</response>
+        </item>
+        <item name="GetPowerSupplyInfo" isPublic="true" isVBlock="true">
+            <description>Get Power Supply Info</description>
+            <steps>
+                <item guid="cd4a0d25-3a70-47de-85ce-be7d20451e51" action="command" session="$session" normalOffset="2.398" estimatedStepExecutionTime="2.472">
+                    <command>
+                        <body>admin show platform</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>Number_of_power_supplies()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>var1</storageLocation>
+                                        <query>[return num_power_supplies]</query>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>all_ps_up()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storeInAList>true</storeInAList>
+                                        <query>[return overall_status]</query>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                        <completionProperties expectedIdleTime="2.017" expectedIdleTime.inherit="false"/>
+                    </applicationProperties>
+                </item>
+            </steps>
+            <multilineDescription>Get info on a chassis power supplies
+Returns a block JSON string:
+\tnum_power_supplies
+\toverall_status - &quot;true&quot; if all power supplies are up, &quot;false&quot; otherwise</multilineDescription>
+            <response>{&quot;num_power_supplies&quot;:&quot;value&quot;,&quot;overall_status&quot;:&quot;value&quot;}</response>
+        </item>
+    </procedures>
+</testCase>

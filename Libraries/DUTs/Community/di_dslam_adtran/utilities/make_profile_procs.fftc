@@ -1,0 +1,520 @@
+<?xml version="1.0"?>
+<testCase version="5.3.0.338ed32">
+    <execution>
+        <parameters version="5.3.0.338ed32">
+            <parameters escape="true">
+                <parameters xmlns:pt="http://www.fnfr.com/schemas/parameterTree">
+                    <output_file>all_profiles.xml</output_file>
+                    <vdsl>
+                        <file>vdsl_unbonded.xml</file>
+                        <profiles>10240x3072_8a 10240x640_8a 11776x1024_LCTL 12128x5120_8a 12128x896_8a 15008x1504_LCTL 15136x3072_8a 1536x640_8a 1536x896_8a 1760x288_LCTL 1760x576_LCTL 18128x896_8a 20000x2016_LCTL 20128x5120_8a 20128x896_8a 20Mx2M_LCIPTV 25024x2016_LCTL 25Mx2M_8a 30016x2016_LCTL 3072x2048_8a 3072x640_8a 35136x15136_12a 35136x3072_8a 3520x576_LCTL 40000x5024_LCTL 40128x20128_12a 40128x5120_8a 40Mx5M_8a 50016x5024_LCTL 5120x3072_8a 5120x5120_8a 5120x896_8a 5888x896_LCTL 640x256_8a 6SNR_8D_1INP_12a 6SNR_8D_1INP_12a_UPBO 6SNR_8D_1INP_17a 6SNR_8D_1INP_17a_UPBO 6SNR_8D_1INP_8a 6SNR_8D_1INP_8a_UPBO 7168x2048_8a 7168x5120_8a 7168x896_8a 896x288_LCTL 896x448_LCTL 9SNR_8x5D_2INP_12a 9SNR_8x5D_2INP_17a 9SNR_8x5D_2INP_8a 9SNR_8x5D_2x1INP_12a_UPBO 9SNR_8x5D_2x1INP_17a_UPBO 9SNR_8x5D_2x1INP_8a_UPBO V1.5Mx768K V10MX1M V10Mx10M_IPC V10Mx768K V12Mx1.5M V12Mx5M V15Mx768K V20Mx1.5M V20Mx20M_IPC V20Mx5M V20Mx896K V25Mx1.5M_IPTV V30Mx1.5M V30Mx30M_IPC V3Mx3M_IPC V3Mx768K V40Mx20M_12a V40Mx20M_17a V40Mx40M_IPC V40Mx5M V40Mx5M_IPTV V4Mx1M V5Mx5M_IPC V60Mx5M V60Mx5M_IPTV V6Mx1.5M V6Mx768K V7Mx7M_IPC</profiles>
+                    </vdsl>
+                    <adsl2>
+                        <file>adsl_unbonded.xml</file>
+                        <profiles>10240x640 11776x1024_LC 11776x896_LC 12128x896 18128x896 20128x896 32000x2048 32000x2048_IPTV 6SNR_8D_1INP_2+ 6SNR_8D_1INP_2+ATM 9440x896_LC AF1.5Mx768K AF3Mx768K</profiles>
+                    </adsl2>
+                    <adsl>
+                        <file>adsl_unbonded.xml</file>
+                        <profiles pt:description="1536x640 1536x896 1760x288_LC 1760x576_LC 256x256 3072x640 3520x576_LC 3520x736_LC 4704x576_LC 5120x896 576x288_LC 5888x896_LC 640x256 7072x576_LC 7168x896 8032x1024 8032x1024_ansi 8032x1024_dmt 896x288_LC 896x448_LC">1536x640 1536x896 1760x288_LC 1760x576_LC 256x256 3072x640 3520x576_LC 3520x736_LC 4704x576_LC 5120x896 576x288_LC 5888x896_LC 640x256 7072x576_LC 7168x896 8032x1024 8032x1024_ansi 8032x1024_dmt 896x288_LC 896x448_LC</profiles>
+                    </adsl>
+                </parameters>
+            </parameters>
+        </parameters>
+    </execution>
+    <procedures>
+        <item name="main">
+            <steps>
+                <item guid="0a96b267-926b-4831-a241-cd5e36956fd3" action="writeFile">
+                    <command>
+                        <body>[param output_file] {}</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.execution.builtin.exec.WriteFilePropertyGroup">
+                        <appendMode>Overwrite</appendMode>
+                    </applicationProperties>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="1279bb45-a9f2-41ca-9121-1cf5890b5ad4" action="foreach">
+                    <command>
+                        <body>type {vdsl adsl2 adsl}</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="782a8648-ad12-41f0-b2ba-12707554e7ec" action="readFile">
+                            <command>
+                                <body>[param ${type}/file]</body>
+                            </command>
+                            <postProcessing>
+                                <storeResponseAt>base_test_case</storeResponseAt>
+                                <storeResponseText>true</storeResponseText>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.svt.execution.builtin.exec.ReadFilePropertyGroup"/>
+                        </item>
+                        <item guid="d61be2bd-1ba2-44f0-8aaa-12517642f054" action="eval" skip="true">
+                            <command>
+                                <body>puts [param ${type}/profiles]</body>
+                            </command>
+                            <postProcessing>
+                                <storeResponseAt>base_test_case</storeResponseAt>
+                                <storeResponseText>true</storeResponseText>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="7e696e9e-dd82-4656-ad88-430828b42017" action="foreach">
+                            <command>
+                                <body>i [param ${type}/profiles]</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="33f5689a-89ce-4dc4-9247-dc84c9226ca9" action="call">
+                                    <command>
+                                        <body>getProfileArgs -profile_name $i</body>
+                                    </command>
+                                    <postProcessing>
+                                        <analysisRules>
+                                            <item>
+                                                <extractorInfo extractorType="none">
+                                                    <extractorProperties type="com.fnfr.svt.documents.EmptyExtractorPropertyGroup"/>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="message">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.MessageProcessorPropertyGroup" severity="Information">
+                                                        <message>$i $type</message>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="contains">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                                        <searchString>not found</searchString>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>$value == 1</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="DeclareExecutionIssue">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                                    <message>Profile $i NOT found</message>
+                                                                </actionProperties>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                        </analysisRules>
+                                        <storeResponseAt>args</storeResponseAt>
+                                        <storeResponseText>true</storeResponseText>
+                                    </postProcessing>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="96a23a20-999d-41dc-825c-34de3185baa1" action="eval">
+                                    <command>
+                                        <body>set args &quot;[string trim $args] -card_port_num \\$card_port_num&quot;</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="16141838-9ad2-4622-9a96-2ab08dd57217" action="eval">
+                                    <command>
+                                        <body>set i [string map {{.} {_} {+} {p}} $i]</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="02e3309d-13f5-4d45-b652-c1ccef69b7ce" action="writeFile">
+                                    <command>
+                                        <body>[param output_file] [string map &quot;{***} {$i} {^^^} {$args}&quot; $base_test_case]</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.execution.builtin.exec.WriteFilePropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+        </item>
+        <item name="getProfileArgs_old">
+            <steps>
+                <item guid="dc7f0d08-320c-4c3c-94ef-9e4bebcd47c5" action="eval">
+                    <command>
+                        <body>set retval &quot;&quot;</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="93aad15a-bf25-4a60-ade5-d11c96e8c2f4" action="eval">
+                    <command>
+                        <body>set script [file uriToPath &quot;project://di_dslam_adtran/documents/getProfileArgs.tcl&quot;]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="8f63cd3c-dafd-4c5a-8af3-0baa9d5e4143" action="eval">
+                    <command>
+                        <body>set script [string map {\\\\ /} $script]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="6b9a77c1-a431-41a5-9a0f-db83e503dbdd" action="if">
+                    <command>
+                        <body>![file exists [file pathToUri $script]]</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="37825366-c2a8-422c-ac4c-21d5e54dd58f" action="then">
+                            <nestedSteps>
+                                <item guid="3a6dffce-5c9d-4d18-959a-0f2cef3e9e76" action="comment">
+                                    <postProcessing>
+                                        <analysisRules>
+                                            <item>
+                                                <extractorInfo extractorType="none">
+                                                    <extractorProperties type="com.fnfr.svt.documents.EmptyExtractorPropertyGroup"/>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>1</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="DeclareExecutionIssue">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                                    <message> File not found: $script</message>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="FailTest">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                            <item actionId="ExitProcedure">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExitProcedurePropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                        </analysisRules>
+                                    </postProcessing>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="2c3d8677-1f50-46df-8d01-b7113108f2a8" action="eval">
+                    <command>
+                        <body>set fn [file uriToPath &quot;project://di_dslam_adtran/documents/Rate_Reach_and_Profiles.csv&quot; ]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="3132026e-bc8d-478a-9cb6-c913ff93b5f2" action="eval">
+                    <command>
+                        <body>set fn [string map {\\\\ /} $fn]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="1b1ab2e0-df57-4748-b98a-8ffc44a8e72a" action="if">
+                    <command>
+                        <body>![file exists [file pathToUri $script]]</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="4e761f13-f80c-4995-8cd4-384caa2238eb" action="then">
+                            <nestedSteps>
+                                <item guid="4d0825c6-ca96-4a56-b1cb-f310a2cc3046" action="comment">
+                                    <postProcessing>
+                                        <analysisRules>
+                                            <item>
+                                                <extractorInfo extractorType="none">
+                                                    <extractorProperties type="com.fnfr.svt.documents.EmptyExtractorPropertyGroup"/>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>1</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="DeclareExecutionIssue">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                                    <message> File not found: $fn</message>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="FailTest">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                            <item actionId="ExitProcedure">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExitProcedurePropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                        </analysisRules>
+                                    </postProcessing>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="0294c416-c629-409d-9b6b-400a53e7ec00" action="open" session="tclsh">
+                    <command>
+                        <body>application:com.fnfr.svt.applications.tclsh</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.OpenStepPropertyGroup">
+                        <stepProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionProperties type="com.fnfr.svt.applications.tclsh.TclshSessionProperties">
+                            <tclProperties>
+                                <interpreterLocation inherit="false">C:/Tcl/bin/tclsh.exe</interpreterLocation>
+                            </tclProperties>
+                        </sessionProperties>
+                        <sessionClass type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionVersion type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    </applicationProperties>
+                </item>
+                <item guid="2600986e-8262-4626-8821-e722b856b11a" action="command" session="tclsh">
+                    <command>
+                        <body>set fn $fn</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="f369861b-6c49-42eb-b7a6-c73124ae9ff9" action="command" session="tclsh">
+                    <command>
+                        <body>set key_value $profile_name</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="3af07c67-dfd8-4d85-bdc7-a291d3fca2e1" action="command" session="tclsh">
+                    <command>
+                        <body>source $script</body>
+                    </command>
+                    <postProcessing>
+                        <storeResponseAt>retval</storeResponseAt>
+                        <storeResponseText>true</storeResponseText>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="cc6669d8-6695-416b-b4ae-2e9dc7c82ffe" action="return">
+                    <command>
+                        <body>$retval</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <arguments>
+                <item name="profile_name">
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="getProfileArgs">
+            <description>Return string of argument name/value pairs by profile name</description>
+            <steps>
+                <item guid="bb1c7c4f-f26e-441c-ae46-f2ff6a8ce196" action="eval">
+                    <command>
+                        <body>set retval &quot;&quot;</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="55f1098b-bc88-413a-b6bf-952c6cb853e2" action="eval">
+                    <command>
+                        <body>set script [string map {\\\\ /} [file uriToPath &quot;project://di_dslam_adtran/documents/getProfileArgs.tcl&quot;]]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="1dd338e5-d89d-46c5-8bfa-ec86b44d2842" action="if">
+                    <command>
+                        <body>![file exists [file pathToUri $script]]</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="3797f0a7-35c0-4ab5-b5da-18f414473398" action="then">
+                            <nestedSteps>
+                                <item guid="9eb3a431-86e0-44ff-bb2d-85020e218c68" action="comment">
+                                    <postProcessing>
+                                        <analysisRules>
+                                            <item>
+                                                <extractorInfo extractorType="none">
+                                                    <extractorProperties type="com.fnfr.svt.documents.EmptyExtractorPropertyGroup"/>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>1</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="DeclareExecutionIssue">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                                    <message> File not found: $script</message>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="FailTest">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                            <item actionId="ExitProcedure">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExitProcedurePropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                        </analysisRules>
+                                    </postProcessing>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="ab43ac12-7084-4cad-b779-b27b9bdaee88" action="eval">
+                    <command>
+                        <body>set file_name [string map {\\\\ /} [file uriToPath &quot;project://di_dslam_adtran/documents/Rate_Reach_and_Profiles.csv&quot; ]]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="5cf7587f-13bd-4a86-a074-04fa03f2e228" action="if">
+                    <command>
+                        <body>![file exists [file pathToUri $script]]</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="b1723a8a-2571-4b98-961c-6ca2236f5dcd" action="then">
+                            <nestedSteps>
+                                <item guid="6190ea86-78f4-47d1-b7fb-048204707777" action="comment">
+                                    <postProcessing>
+                                        <analysisRules>
+                                            <item>
+                                                <extractorInfo extractorType="none">
+                                                    <extractorProperties type="com.fnfr.svt.documents.EmptyExtractorPropertyGroup"/>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>1</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="DeclareExecutionIssue">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                                    <message> File not found: $file_name</message>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="FailTest">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                            <item actionId="ExitProcedure">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExitProcedurePropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                        </analysisRules>
+                                    </postProcessing>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="4d7e4c6a-ea9e-4c95-93af-591d125eb566" action="open" session="tclsh">
+                    <command>
+                        <body>application:com.fnfr.svt.applications.tclsh</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.OpenStepPropertyGroup">
+                        <stepProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionProperties type="com.fnfr.svt.applications.tclsh.TclshSessionProperties">
+                            <tclProperties>
+                                <interpreterLocation inherit="false">C:/Tcl/bin/tclsh.exe</interpreterLocation>
+                            </tclProperties>
+                        </sessionProperties>
+                        <sessionClass type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionVersion type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    </applicationProperties>
+                </item>
+                <item guid="89942f63-9ff4-4ebc-8a66-f05322443729" action="command" session="tclsh">
+                    <command>
+                        <body>set file_name $file_name</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="d5e900bd-e3b5-4178-b378-c93563ab492b" action="command" session="tclsh">
+                    <command>
+                        <body>set key_value $profile_name</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="77c3a630-3cbf-4146-86af-f72808841300" action="command" session="tclsh">
+                    <command>
+                        <body>set key_column D</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="761541e3-cb81-4402-b687-24926f718017" action="command" session="tclsh">
+                    <command>
+                        <body>set last_column AK</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="d239ea48-ccf8-4090-b603-d0e04d496a51" action="command" session="tclsh">
+                    <command>
+                        <body>set first_row 5</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="7d5db76c-8725-41ec-8bf0-236fb8533201" action="command" session="tclsh">
+                    <command>
+                        <body>set last_row 210</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="c5c063c6-fc6c-471c-bfd5-beb4e27250f5" action="command" session="tclsh">
+                    <command>
+                        <body>set arg_name_row 1</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="bd963088-35e8-414b-b4b8-4a48d28d0f4a" action="command" session="tclsh">
+                    <command>
+                        <body>source $script</body>
+                    </command>
+                    <postProcessing>
+                        <storeResponseAt>retval</storeResponseAt>
+                        <storeResponseText>true</storeResponseText>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="55bbe1eb-fbaa-4863-a50d-fbab88a7bd42" action="return">
+                    <command>
+                        <body>$retval</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <author>Malcom Terry</author>
+            <version>1.0</version>
+            <multilineDescription>Get values from a CSV format spreadsheet and return a string of argument name/value pairs.</multilineDescription>
+            <arguments>
+                <item name="profile_name">
+                    <description>Profile name to select a row of data.</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+    </procedures>
+</testCase>
