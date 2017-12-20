@@ -37,7 +37,7 @@ Each project within this repository conforms to a standard naming convention. Pr
 
 ## Quick Start
  
-<img src=https://github.com/Spirent/iTest-assets/blob/master/images/copy.url.to.clipboard.png />
+<img src=https://github.com/Spirent/iTest-assets/blob/master/images/copy.url.to.clipboard.png?raw=true />
 
 ![alt text](https://github.com/Spirent/iTest-assets/blob/master/images/clone.the.repository.png "Clone a Git Repo")
 
