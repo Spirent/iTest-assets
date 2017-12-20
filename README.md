@@ -4,9 +4,9 @@ Welcome to the Spirent Developer Community! You will find a wide variety of usef
 
  <table style="width:100%; border: 5px solid gray;">
   <tr>
-     <td style="color:white"><img src="https://github.com/Spirent/iTest-assets/blob/master/images/Speedometer-QuickCalls.png" alt="Over 1000 QuickCalls!">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</td> 
+     <td style="color:white"><img src="images/Speedometer-QuickCalls.png" alt="Over 1000 QuickCalls!">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</td> 
     <td style="border: 0px solid black;">This portion of the Spirent Developer Community contains a selection of iTest projects. They are useful for gaining the greatest value from your test equipment, devices, and frameworks. The assets are rich in reusable QuickCall libraries and Response Maps.  Both are key capabilities that will help you create your own automation most efficiently.  They will help you whether or not you are using Python or an Automation framework (e.g., Robot).</td>
-    <td><img src="https://github.com/Spirent/iTest-assets/blob/master/images/Speedometer-ResponseMaps.png" alt="Over 700 Response Maps!">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</td>
+    <td><img src="images/Speedometer-ResponseMaps.png" alt="Over 700 Response Maps!">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</td>
   </tr>
 </table>
 
@@ -37,16 +37,16 @@ Each project within this repository conforms to a standard naming convention. Pr
 
 ## Quick Start
  
-![alt text](images/copy.url.to.clipboard.png "Copy https URL")
+![Copy https URL](images/copy.url.to.clipboard.png)
 
-![alt text](https://github.com/Spirent/iTest-assets/blob/master/images/clone.the.repository.png "Clone a Git Repo")
+![Clone a Git Repo](images/clone.the.repository.png)
 
-![alt text](https://github.com/Spirent/iTest-assets/blob/master/images/paste.uri.contents.png "Paste URI contents")
+![Paste URI contents](images/paste.uri.contents.png)
 
-![alt text](https://github.com/Spirent/iTest-assets/blob/master/images/open.git.repositories.png "Open a Git Repo")
+![Open a Git Repo](images/open.git.repositories.png)
 
-![alt text](https://github.com/Spirent/iTest-assets/blob/master/images/select.entire.working.tree.png "Select working tree")
+![Select working tree](images/select.entire.working.tree.png)
 
-![alt text](https://github.com/Spirent/iTest-assets/blob/master/images/import.all.projects.png "Import all projects")
+![Import all projects](images/import.all.projects.png)
 
-![alt text](https://github.com/Spirent/iTest-assets/blob/master/images/or.just.certain.projects.png "Import individual projects")
+![Import individual projects](images/or.just.certain.projects.png)
