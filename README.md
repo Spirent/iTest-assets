@@ -1,8 +1,8 @@
-# Spirent Developer Community
+
  <table>
   <tr>
      <td><img src="images/Developer_Community_Icon.png" alt="Spirent Developer Community"></td> 
-   <td><b>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Welcome to Spirent's Developer Community&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</b></td>
+   <td style="border: 0px solid black;">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<font size="16">Spirent Developer Community</font>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</td>
     <td><img src="images/itest-color-small.png" alt="iTest Logo"</td>
   </tr>
 </table>
