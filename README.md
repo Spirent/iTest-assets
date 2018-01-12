@@ -2,7 +2,7 @@
  <table>
   <tr>
      <td><img src="images/Spirent_Developer_Community.png" alt="Spirent Developer Community"></td> 
-   <td><b>Spirent Developer Community</b></td>
+   <td><b>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Spirent Developer Community&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</b></td>
     <td><img src="images/itest-color.png" alt="iTest Logo"</td>
   </tr>
 </table>
