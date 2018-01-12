@@ -1,8 +1,8 @@
-# Spirent Developer Community - iTest
+# Spirent Developer Community
  <table>
   <tr>
      <td><img src="images/Developer_Community_Icon.png" alt="Spirent Developer Community"></td> 
-   <td><b>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;# Spirent Developer Community&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</b></td>
+   <td><b>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Welcome to Spirent's Developer Community&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</b></td>
     <td><img src="images/itest-color-small.png" alt="iTest Logo"</td>
   </tr>
 </table>
