@@ -1,7 +1,7 @@
 # &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Spirent Developer Community
  <table>
   <tr>
-     <td><img src="images/Developer_Community_Icon_v2.png" alt="Spirent Developer Community"></td> 
+     <td><img src="images/Developer_Community_Icon.png" alt="Spirent Developer Community"></td> 
    <td style="font-size:x-large"> &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</td>
     <td><img src="images/itest-color-small.png" alt="iTest Logo"</td>
   </tr>
