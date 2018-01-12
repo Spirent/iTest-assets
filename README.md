@@ -2,12 +2,12 @@
  <table>
   <tr>
      <td><img src="images/Developer_Community_Icon.png" alt="Spirent Developer Community"></td> 
-   <td style="font-size:x-large">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</td>
+   <td style="font-size:x-large"> &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</td>
     <td><img src="images/itest-color-small.png" alt="iTest Logo"</td>
   </tr>
 </table>
 
-Welcome to the Spirent Developer Community! You will find a wide variety of useful automation assets for your iTest projects and/or Velocity deployments.  This repository is specific to iTest.  The Velocity repository is located [here](https://github.com/Spirent/Velocity-assets).  All Spirent Developer Community assets are available for your immediate download and use. 
+Welcome to the Spirent Developer Community! You'll find a wide variety of useful automation assets for your iTest projects and Velocity deployments.  This repository is specific to iTest.  The Velocity repository is located [here](https://github.com/Spirent/Velocity-assets).  All Spirent Developer Community assets are available for your immediate download and use. 
 
  <table style="width:100%; border: 5px solid gray;">
   <tr>
