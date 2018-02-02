@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<testCase version="7.0.0.9d01ac1">
+<testCase version="7.0.0.fa27930">
     <general>
         <sessionClass includeTestCase="true" sessionType="Cisco_NX_OS_SSH_Base.ffsp"/>
     </general>
@@ -110,26 +110,41 @@
                 </item>
             </arguments>
         </item>
-        <item name="VerifyOSPF" isPublic="true">
+        <item name="VerifyOSPF" isPublic="true" isVBlock="true">
             <steps>
-                <item guid="29739ef4-67eb-4f00-9e21-0c7caf55e527" action="ShowOSPFInterfaces" session="$session">
-                    <postProcessing>
-                        <analysisRules>
-                            <item>
-                                <extractorInfo extractorType="query">
-                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
-                                        <query>interfaces()</query>
-                                    </extractorProperties>
-                                </extractorInfo>
-                                <processorInfo ruleType="store">
-                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
-                                        <storageLocation>ospf_interfaces</storageLocation>
-                                    </ruleProperties>
-                                </processorInfo>
-                            </item>
-                        </analysisRules>
-                    </postProcessing>
-                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                <item guid="6ad20313-9008-4220-978c-f54bf6e25115" action="if">
+                    <command>
+                        <body>$ospf_interfaces == &quot;all&quot;</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="590eeeda-0727-417c-ac25-045e6c3b4d8e" action="then">
+                            <nestedSteps>
+                                <item guid="29739ef4-67eb-4f00-9e21-0c7caf55e527" action="ShowOSPFInterfaces" session="$session">
+                                    <postProcessing>
+                                        <analysisRules>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                        <query>interfaces()</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="store">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                        <storageLocation>ospf_interfaces</storageLocation>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                        </analysisRules>
+                                    </postProcessing>
+                                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
                     <useFieldsInCommand>false</useFieldsInCommand>
                 </item>
                 <item guid="40a323c8-eca9-4b76-b5b8-5699147caf68" action="foreach">
@@ -156,6 +171,11 @@
                                                     <item actionId="SkipRemainingRules">
                                                         <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
                                                     </item>
+                                                    <item actionId="Eval">
+                                                        <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                            <statement>set ospfInt false</statement>
+                                                        </actionProperties>
+                                                    </item>
                                                 </actionsWhenTrue>
                                             </ruleProperties>
                                         </processorInfo>
@@ -172,6 +192,11 @@
                                                 <actionsWhenFalse>
                                                     <item actionId="SkipRemainingRules">
                                                         <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                    </item>
+                                                    <item actionId="Eval">
+                                                        <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                            <statement>set ospfInt false</statement>
+                                                        </actionProperties>
                                                     </item>
                                                 </actionsWhenFalse>
                                             </ruleProperties>
@@ -195,6 +220,11 @@
                                                             <message> $interface has $value OSPF neighbors</message>
                                                         </actionProperties>
                                                     </item>
+                                                    <item actionId="Eval">
+                                                        <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                            <statement>set ospfInt true ; set numNeighbors $value</statement>
+                                                        </actionProperties>
+                                                    </item>
                                                 </actionsWhenTrue>
                                                 <actionsWhenFalse>
                                                     <item actionId="FailTest">
@@ -203,6 +233,11 @@
                                                     <item actionId="DeclareExecutionIssue">
                                                         <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
                                                             <message> $interface has $value OSPF neighbors</message>
+                                                        </actionProperties>
+                                                    </item>
+                                                    <item actionId="Eval">
+                                                        <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                            <statement>set ospfInt true ; set numNeighbors $value</statement>
                                                         </actionProperties>
                                                     </item>
                                                 </actionsWhenFalse>
@@ -215,11 +250,45 @@
                                 <completionProperties expectedIdleTime="9.998" expectedIdleTime.inherit="false"/>
                             </applicationProperties>
                         </item>
+                        <item guid="992e7558-b4f2-4dec-98e5-5674bda4c3f7" action="if">
+                            <command>
+                                <body>$ospfInt</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="b327bf69-bf16-4765-b837-b3776fd7b622" action="then">
+                                    <nestedSteps>
+                                        <item guid="2ccc1b44-452c-4f49-9112-29b411710d5d" action="json">
+                                            <command>
+                                                <body>-action addJsonNode -editResponseStructure true -pathValue {&quot;ospf_interfaces/\\[0\\]&quot;:\\[{&quot;neighborCount&quot;:$numNeighbors,&quot;interface&quot;:&quot;$interface&quot;}\\]}</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.execution.builtin.json.JsonPropertiesGroup">
+                                                <action inherit="false">addJsonNode</action>
+                                                <pathValue inherit="false" sub="true">{&quot;ospf_interfaces/\\[0\\]&quot;:\\[{&quot;neighborCount&quot;:$numNeighbors,&quot;interface&quot;:&quot;$interface&quot;}\\]}</pathValue>
+                                                <editResponseStructure inherit="false">true</editResponseStructure>
+                                            </applicationProperties>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
                     </nestedSteps>
                     <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
                     <useFieldsInCommand>false</useFieldsInCommand>
                 </item>
             </steps>
+            <multilineDescription>Verify that all OPSF interfaces have at least one OSPF neighbor established</multilineDescription>
+            <arguments>
+                <item name="ospf_interfaces">
+                    <description>The interfaces to verify OSPF neighbor establishment. Default &apos;all&apos; verifies neighbor establishment on all OSPF interfaces.</description>
+                    <defaultValue>all</defaultValue>
+                </item>
+            </arguments>
+            <response>{&quot;ospf_interfaces&quot;:[]}</response>
         </item>
         <item name="ShowOSPFInterfaces" isPublic="true">
             <steps>
