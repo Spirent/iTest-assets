@@ -9,6 +9,11 @@ Argument | Description
 ------------ | -------------
 config_file_name | Local file name of the configuration.
 ### VerifyOSPF
+Verify that all OPSF interfaces have at least one OSPF neighbor established
+
+Argument | Description
+------------ | -------------
+ospf_interfaces | The interfaces to verify OSPF neighbor establishment. Default 'all' verifies neighbor establishment on all OSPF interfaces.
 ### ShowOSPFInterfaces
 ### ShowOSPFNeighbors
 ### load_software
