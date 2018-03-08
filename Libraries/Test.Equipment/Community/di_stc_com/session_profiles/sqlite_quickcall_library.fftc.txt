@@ -1,0 +1,89 @@
+============General==================
+sessionClass(includeTestCase="true")(sessionType="sqlite.ffsp")
+============Steps====================
+Procedure main
+	1 #main
+		useFieldsInCommand="false"
+Procedure sanityCheckL2
+	1 #Check for total stream count- count should be > 0
+		useFieldsInCommand="false"
+		1.1 execute $session select count(*) as 'TotalNumberOfStreams' from RxEotStreamResults
+			analyze
+				query TotalNumberOfStreams()
+				assert $value > "0"
+					When True
+						DeclareExecutionIssue OK:Stream count should be greater than 0: Actual $value
+						PassTestIfNotAlreadyFailed 
+					When False
+						DeclareExecutionIssue Error:Stream count should be greater than 0: Actual $value
+						FailTest 
+			analyze
+				query TotalNumberOfStreams()
+				store TotalNumberOfStreams
+	2 #Check for any dropped frames - count should be 0
+		useFieldsInCommand="false"
+		2.1 execute $session select count(*) as 'CountOfStreamsWithDroppedFrames' from RxEotStreamResults where DroppedFrameCount > 0
+			analyze
+				query CountOfStreamsWithDroppedFrames()
+				store CountOfStreamsWithDroppedFrames
+			analyze
+				query CountOfStreamsWithDroppedFrames()
+				assert $value == "0"
+					When True
+						DeclareExecutionIssue OK:Count of Streams with Dropped Frames: Expected 0, Actual $value
+						PassTestIfNotAlreadyFailed 
+					When False
+						DeclareExecutionIssue Error:Count of Streams with Dropped Frames: Expected 0, Actual $value
+						FailTest 
+	3 #Check for any duplicate frames - count should be 0
+		useFieldsInCommand="false"
+		3.1 execute $session select count(*) as 'CountOfStreamsWithDuplicateFrames' from RxEotStreamResults where DuplicateFrameCount > 0
+			analyze
+				query CountOfStreamsWithDuplicateFrames()
+				assert $value == "0"
+					When True
+						DeclareExecutionIssue OK:Count of Streams with Dupplicate Frames: Expected 0, Actual $value
+						PassTestIfNotAlreadyFailed 
+					When False
+						DeclareExecutionIssue Error:Count of Streams with Dupplicate Frames: Expected 0, Actual $value
+						FailTest 
+			analyze
+				query CountOfStreamsWithDuplicateFrames()
+				store CountOfStreamsWithDuplicateFrames
+	4 #Check for any out of order frames - count should be 0
+		useFieldsInCommand="false"
+		4.1 execute $session select count(*) as 'CountOfStreamsWithOutOfOrderFrames' from RxEotStreamResults where ReorderedFrameCount > 0
+			analyze
+				query CountOfStreamsWithOutOfOrderFrames()
+				assert $value == "0"
+					When True
+						DeclareExecutionIssue OK:Count of Streams with Out of Order Frames: Expected 0, Actual $value
+						PassTestIfNotAlreadyFailed 
+					When False
+						DeclareExecutionIssue Error:Count of Streams with Out of Order Frames: Expected 0, Actual $value
+						FailTest 
+			analyze
+				query CountOfStreamsWithOutOfOrderFrames()
+				store CountOfStreamsWithOutOfOrderFrames
+	5 #Check for any stream not transmitting - count should be 0
+		useFieldsInCommand="false"
+		5.1 execute $session select count(*) as 'CountOfStreamsNotTransmitting' from RxEotStreamResults where FrameCount = 0
+			analyze
+				query CountOfStreamsNotTransmitting()
+				assert $value == "0"
+					When True
+						DeclareExecutionIssue OK:Count of Streams Not Transmitting: Expected 0, Actual $value
+						PassTestIfNotAlreadyFailed 
+					When False
+						DeclareExecutionIssue Error:Count of Streams Not Transmitting: Expected 0, Actual $value
+						FailTest 
+			analyze
+				query CountOfStreamsNotTransmitting()
+				store CountOfStreamsNotTransmitting
+	6 #Write results back to procedure
+		useFieldsInCommand="false"
+		6.1 write Total number of streams: $TotalNumberOfStreams\\n
+		6.2 write Number of dropped frames: $CountOfStreamsWithDroppedFrames\\n
+		6.3 write Number of duplicate frames: $CountOfStreamsWithDuplicateFrames\\n
+		6.4 write Number of out of order frames: $CountOfStreamsWithOutOfOrderFrames\\n
+		6.5 write Number of streams not transmitting: $CountOfStreamsNotTransmitting
