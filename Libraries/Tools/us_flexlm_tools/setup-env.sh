@@ -14,12 +14,16 @@ if [ -e /sys/devices/virtual/dmi/id/product_uuid ]; then
     chmod 644 /sys/devices/virtual/dmi/id/product_uuid
 fi
 
+# Check for license(s) present
 target=/usr/local/apt-flexlm
 if test "$(ls -A "$target")"; then
     echo License files found
 else
     echo "WARNING: License files should be installed in $target/licenses/*.lic"
 fi
+
+# Change permissions to let anyone install license.  
+chmod 775 $target/licenses
 
 # Create log file - Used only when flexlm is running as a service.
 mkdir -p /var/log/spirent
