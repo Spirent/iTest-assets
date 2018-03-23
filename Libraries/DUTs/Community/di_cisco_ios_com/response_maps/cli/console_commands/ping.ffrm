@@ -1,0 +1,161 @@
+<?xml version="1.0"?>
+<ResponseMap version="6.0.0.18638fa">
+    <customParsers>
+        <item name="latency">
+            <groupName>latency</groupName>
+            <regexString>(?&lt;latency&gt;\\d+/\\d+/\\d+)</regexString>
+        </item>
+    </customParsers>
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="command">
+                <command>
+                    <body>ping 192.168.3.33</body>
+                </command>
+            </action>
+            <responseBody>
+Type escape sequence to abort.
+Sending 5, 100-byte ICMP Echos to 192.168.3.33, timeout is 2 seconds:
+!!!!!
+Success rate is 100 percent (5/5), round-trip min/avg/max = 24/44/96 ms</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;terminal RequiredForRendering=&quot;true&quot;&gt;
+        &lt;prompt&gt;R2#&lt;/prompt&gt;
+        &lt;promptExtraction&gt;LAST_LINE&lt;/promptExtraction&gt;
+        &lt;echo&gt;ping 192.168.3.33&lt;/echo&gt;
+        &lt;connClosed/&gt;
+        &lt;idleTime&gt;0.295&lt;/idleTime&gt;
+        &lt;contentType&gt;text&lt;/contentType&gt;
+        &lt;terminator&gt;SLASH_R_SLASH_N&lt;/terminator&gt;
+    &lt;/terminal&gt;
+&lt;/structure&gt;
+</structuredData>
+        </item>
+        <item name="sample2">
+            <responseBody>
+Type escape sequence to abort.
+Sending 5, 100-byte ICMP Echos to 192.168.3.36, timeout is 2 seconds:
+.....
+Success rate is 0 percent (0/5)
+</responseBody>
+        </item>
+        <item name="sample3">
+            <responseBody>
+Type escape sequence to abort.
+Sending 5, 100-byte ICMP Echos to 10.1.4.2, timeout is 2 seconds:
+.!!!!
+Success rate is 80 percent (4/5), round-trip min/avg/max = 8/22/36 ms</responseBody>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties"/>
+        <item type="com.fnfr.svt.mapping.block.documents.BlockMapperProperties">
+            <BlockMaps name="container">
+                <nodes>
+                    <item type="com.fnfr.svt.mapping.block.documents.ResponseMapBlock" name="header">
+                        <lines>
+                            <item>
+                                <tokens>
+                                    <item representativeValue="Type" parser="Word"/>
+                                    <item representativeValue=" " parser="Whitespace" isVariable="true"/>
+                                    <item representativeValue="escape" parser="Word"/>
+                                    <item representativeValue=" " parser="Whitespace" isVariable="true"/>
+                                    <item representativeValue="sequence" parser="Word"/>
+                                    <item representativeValue=" " parser="Whitespace" isVariable="true"/>
+                                    <item representativeValue="to" parser="Word"/>
+                                    <item representativeValue=" " parser="Whitespace" isVariable="true"/>
+                                    <item representativeValue="abort" parser="Word"/>
+                                    <item representativeValue="." parser="Punctuation"/>
+                                </tokens>
+                            </item>
+                            <item>
+                                <tokens>
+                                    <item representativeValue="Sending" parser="Word"/>
+                                    <item representativeValue=" " parser="Whitespace" isVariable="true"/>
+                                    <item name="pingsSent" representativeValue="5" parser="Number" isVariable="true"/>
+                                    <item representativeValue="," parser="Punctuation"/>
+                                    <item representativeValue=" " parser="Whitespace" isVariable="true"/>
+                                    <item name="packetSize" representativeValue="100" parser="Number" isVariable="true"/>
+                                    <item representativeValue="-" parser="Punctuation"/>
+                                    <item representativeValue="byte" parser="Word"/>
+                                    <item representativeValue=" " parser="Whitespace" isVariable="true"/>
+                                    <item representativeValue="ICMP" parser="Word"/>
+                                    <item representativeValue=" " parser="Whitespace" isVariable="true"/>
+                                    <item representativeValue="Echos" parser="Word"/>
+                                    <item representativeValue=" " parser="Whitespace" isVariable="true"/>
+                                    <item representativeValue="to" parser="Word"/>
+                                    <item representativeValue=" " parser="Whitespace" isVariable="true"/>
+                                    <item name="ip" representativeValue="192.168.3.36" parser="IPv4Address" isVariable="true" isWildcard="true"/>
+                                    <item representativeValue="," parser="Punctuation"/>
+                                    <item representativeValue=" " parser="Whitespace" isVariable="true"/>
+                                    <item representativeValue="timeout" parser="Word"/>
+                                    <item representativeValue=" " parser="Whitespace" isVariable="true"/>
+                                    <item representativeValue="is" parser="Word"/>
+                                    <item representativeValue=" " parser="Whitespace" isVariable="true"/>
+                                    <item name="timeout" representativeValue="2" parser="Number" isVariable="true"/>
+                                    <item representativeValue=" " parser="Whitespace" isVariable="true"/>
+                                    <item representativeValue="seconds" parser="Word"/>
+                                    <item representativeValue=":" parser="Punctuation"/>
+                                </tokens>
+                            </item>
+                            <item>
+                                <tokens>
+                                    <item name="pingSymbols" representativeValue="wild" parser="Word" isVariable="true" isWildcard="true"/>
+                                </tokens>
+                                <isOptional>true</isOptional>
+                            </item>
+                        </lines>
+                    </item>
+                    <item type="com.fnfr.svt.mapping.block.documents.ResponseMapBlock" name="payload">
+                        <lines>
+                            <item>
+                                <tokens>
+                                    <item representativeValue="Success" parser="Word"/>
+                                    <item representativeValue=" " parser="Whitespace" isVariable="true"/>
+                                    <item representativeValue="rate" parser="Word"/>
+                                    <item representativeValue=" " parser="Whitespace" isVariable="true"/>
+                                    <item representativeValue="is" parser="Word"/>
+                                    <item representativeValue=" " parser="Whitespace" isVariable="true"/>
+                                    <item name="successRate" representativeValue="100" parser="Number" isVariable="true"/>
+                                    <item representativeValue=" " parser="Whitespace" isVariable="true"/>
+                                    <item representativeValue="percent" parser="Word"/>
+                                    <item representativeValue=" " parser="Whitespace" isVariable="true"/>
+                                    <item representativeValue="(" parser="Punctuation"/>
+                                    <item name="numCompleted" representativeValue="0" parser="Number" isVariable="true"/>
+                                    <item representativeValue="/" parser="Punctuation"/>
+                                    <item name="numSent" representativeValue="0" parser="Number" isVariable="true"/>
+                                    <item representativeValue=")" parser="Punctuation"/>
+                                    <item representativeValue="," parser="Punctuation" isOptional="true"/>
+                                    <item representativeValue=" " parser="Whitespace" isOptional="true" isVariable="true"/>
+                                    <item representativeValue="round" parser="Word" isOptional="true"/>
+                                    <item representativeValue="-" parser="Punctuation" isOptional="true"/>
+                                    <item representativeValue="trip" parser="Word" isOptional="true"/>
+                                    <item representativeValue=" " parser="Whitespace" isOptional="true" isVariable="true"/>
+                                    <item representativeValue="min" parser="Word" isOptional="true"/>
+                                    <item representativeValue="/" parser="Punctuation" isOptional="true"/>
+                                    <item representativeValue="avg" parser="Word" isOptional="true"/>
+                                    <item representativeValue="/" parser="Punctuation" isOptional="true"/>
+                                    <item representativeValue="max" parser="Word" isOptional="true"/>
+                                    <item representativeValue=" " parser="Whitespace" isOptional="true" isVariable="true"/>
+                                    <item representativeValue="=" parser="Punctuation" isOptional="true"/>
+                                    <item representativeValue=" " parser="Whitespace" isOptional="true" isVariable="true"/>
+                                    <item name="roundTripLatency" representativeValue="24/44/96" parser="latency" isVariable="true"/>
+                                    <item representativeValue=" " parser="Whitespace" isOptional="true" isVariable="true"/>
+                                    <item representativeValue="ms" parser="Word" isOptional="true"/>
+                                </tokens>
+                            </item>
+                        </lines>
+                    </item>
+                </nodes>
+            </BlockMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="*ping *">
+        <application>
+            <item>com.fnfr.svt.applications.ssh</item>
+            <item>com.fnfr.svt.applications.telnet</item>
+        </application>
+    </applicabilityProperties>
+</ResponseMap>

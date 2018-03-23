@@ -1,0 +1,522 @@
+<?xml version="1.0"?>
+<testCase version="7.0.0.bc91e6c">
+    <general>
+        <documentation>Cisco SNMP QC library</documentation>
+        <notes>Use this for common SNMP procedures</notes>
+        <isProcedureLibrary>true</isProcedureLibrary>
+        <sessionClass includeTestCase="true" sessionType="project://di_cisco_ios_com/session_profiles/snmp/cisco_snmp.ffsp"/>
+    </general>
+    <procedures>
+        <item name="main">
+            <steps>
+                <item guid="b8dfef47-f856-44c7-a914-4409c611a6e8" action="comment">
+                    <command>
+                        <body>main</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+        </item>
+        <item name="getInterfaceStates" isPublic="true">
+            <description>Get interface state via SNMP</description>
+            <responseMap>project://di_cisco_ios_com/response_maps/custom/quickcalls/snmp/interfaceStates.ffrm</responseMap>
+            <steps>
+                <item guid="3e8b1fd6-f62e-465f-b403-2a59372a9695" action="getTable" session="$session" normalOffset="5.495" estimatedStepExecutionTime="0.432">
+                    <command>
+                        <body>MIB-2::interfaces.ifTable</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>keys()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>keys</storageLocation>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                        <storeResponseAt>ifcValues</storeResponseAt>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.applications.snmp.documents.StepDefaultProperties"/>
+                    <emulation>
+                        <behavior>
+                            <response>ifIndex            ifDescr         ifType ifMtu    ifSpeed                 ifPhysAddress ifAdminStatus ifOperStatus  ifLastChange ifInOctets ifInUcastPkts ifInNUcastPkts ifInDiscards ifInErrors ifInUnknownProtos ifOutOctets ifOutUcastPkts ifOutNUcastPkts ifOutDiscards ifOutErrors ifOutQLen ifSpecific
+------- ------------------ -------------- ----- ---------- ----------------------------- ------------- ------------ ------------- ---------- ------------- -------------- ------------ ---------- ----------------- ----------- -------------- --------------- ------------- ----------- --------- ---------- 
+
+      1    FastEthernet0/0 ethernetCsmacd  1500  100000000 0xCA 0x00 0x33 0xE0 0x00 0x08            up           up     5 seconds     260586          1572            954            0          0                 0      149229           1430             123             0           0         0       .0.0
+      2    FastEthernet0/1 ethernetCsmacd  1500  100000000 0xCA 0x00 0x33 0xE0 0x00 0x06          down         down     5 seconds          0             0              0            0          0                 0           0              0               0             0           0         0       .0.0
+      3    FastEthernet1/0 ethernetCsmacd  1500  100000000 0xCA 0x00 0x33 0xE0 0x00 0x1C          down         down     5 seconds          0             0              0            0          0                 0           0              0               0             0           0         0       .0.0
+      4    FastEthernet2/0 ethernetCsmacd  1500  100000000 0xCA 0x00 0x33 0xE0 0x00 0x38          down         down     5 seconds          0             0              0            0          0                 0           0              0               0             0           0         0       .0.0
+      5    FastEthernet3/0 ethernetCsmacd  1500  100000000 0xCA 0x00 0x33 0xE0 0x00 0x54          down         down     5 seconds          0             0              0            0          0                 0           0              0               0             0           0         0       .0.0
+      6    FastEthernet4/0 ethernetCsmacd  1500  100000000 0xCA 0x00 0x33 0xE0 0x00 0x70          down         down     5 seconds          0             0              0            0          0                 0           0              0               0             0           0         0       .0.0
+      7 GigabitEthernet5/0 ethernetCsmacd  1500 1000000000 0xCA 0x00 0x33 0xE0 0x00 0x8C          down         down     5 seconds          0             0              0            0          0                 0           0              0               0             0           0         0       .0.0
+      8 GigabitEthernet6/0 ethernetCsmacd  1500 1000000000 0xCA 0x00 0x33 0xE0 0x00 0xA8            up           up     5 seconds      83031           691            121            0          0                 0       83031            691             121             0           0         0       .0.0
+     10              Null0          other  1500 4294967295                                          up           up 0 millisecond          0             0              0            0          0                 0           0              0               0             0           0         0       .0.0
+</response>
+                            <responseType>text</responseType>
+                            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;ifTable map:line=&quot;0&quot; map:linecount=&quot;12&quot; map:nodetype=&quot;table&quot;&gt;
+        &lt;ifEntry key=&quot;1&quot; map:line=&quot;3&quot; map:linecount=&quot;1&quot; map:nodetype=&quot;row&quot;&gt;
+            &lt;ifIndex map:endcol=&quot;7&quot; map:line=&quot;3&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;6&quot; oidtype=&quot;Integer&quot;&gt;1&lt;/ifIndex&gt;
+            &lt;ifDescr map:endcol=&quot;26&quot; map:line=&quot;3&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;11&quot; oidtype=&quot;OctetString&quot;&gt;FastEthernet0/0&lt;/ifDescr&gt;
+            &lt;ifType map:endcol=&quot;41&quot; map:line=&quot;3&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;27&quot; oidtype=&quot;Integer&quot;&gt;ethernetCsmacd&lt;/ifType&gt;
+            &lt;ifMtu map:endcol=&quot;47&quot; map:line=&quot;3&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;43&quot; oidtype=&quot;Integer&quot;&gt;1500&lt;/ifMtu&gt;
+            &lt;ifSpeed map:endcol=&quot;58&quot; map:line=&quot;3&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;49&quot; oidtype=&quot;Gauge32&quot;&gt;100000000&lt;/ifSpeed&gt;
+            &lt;ifPhysAddress map:endcol=&quot;88&quot; map:line=&quot;3&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;59&quot; oidtype=&quot;OctetString&quot;&gt;0xCA 0x00 0x33 0xE0 0x00 0x08&lt;/ifPhysAddress&gt;
+            &lt;ifAdminStatus map:endcol=&quot;102&quot; map:line=&quot;3&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;100&quot; oidtype=&quot;Integer&quot;&gt;up&lt;/ifAdminStatus&gt;
+            &lt;ifOperStatus map:endcol=&quot;115&quot; map:line=&quot;3&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;113&quot; oidtype=&quot;Integer&quot;&gt;up&lt;/ifOperStatus&gt;
+            &lt;ifLastChange map:endcol=&quot;129&quot; map:line=&quot;3&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;120&quot; oidtype=&quot;TimeTicks&quot;&gt;5 seconds&lt;/ifLastChange&gt;
+            &lt;ifInOctets map:endcol=&quot;140&quot; map:line=&quot;3&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;134&quot; oidtype=&quot;Counter32&quot;&gt;260586&lt;/ifInOctets&gt;
+            &lt;ifInUcastPkts map:endcol=&quot;154&quot; map:line=&quot;3&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;150&quot; oidtype=&quot;Counter32&quot;&gt;1572&lt;/ifInUcastPkts&gt;
+            &lt;ifInNUcastPkts map:endcol=&quot;169&quot; map:line=&quot;3&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;166&quot; oidtype=&quot;Counter32&quot;&gt;954&lt;/ifInNUcastPkts&gt;
+            &lt;ifInDiscards map:endcol=&quot;182&quot; map:line=&quot;3&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;181&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifInDiscards&gt;
+            &lt;ifInErrors map:endcol=&quot;193&quot; map:line=&quot;3&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;192&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifInErrors&gt;
+            &lt;ifInUnknownProtos map:endcol=&quot;211&quot; map:line=&quot;3&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;210&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifInUnknownProtos&gt;
+            &lt;ifOutOctets map:endcol=&quot;223&quot; map:line=&quot;3&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;217&quot; oidtype=&quot;Counter32&quot;&gt;149229&lt;/ifOutOctets&gt;
+            &lt;ifOutUcastPkts map:endcol=&quot;238&quot; map:line=&quot;3&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;234&quot; oidtype=&quot;Counter32&quot;&gt;1430&lt;/ifOutUcastPkts&gt;
+            &lt;ifOutNUcastPkts map:endcol=&quot;254&quot; map:line=&quot;3&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;251&quot; oidtype=&quot;Counter32&quot;&gt;123&lt;/ifOutNUcastPkts&gt;
+            &lt;ifOutDiscards map:endcol=&quot;268&quot; map:line=&quot;3&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;267&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifOutDiscards&gt;
+            &lt;ifOutErrors map:endcol=&quot;280&quot; map:line=&quot;3&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;279&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifOutErrors&gt;
+            &lt;ifOutQLen map:endcol=&quot;290&quot; map:line=&quot;3&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;289&quot; oidtype=&quot;Gauge32&quot;&gt;0&lt;/ifOutQLen&gt;
+            &lt;ifSpecific map:endcol=&quot;301&quot; map:line=&quot;3&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;297&quot; oidtype=&quot;ObjectIdentifier&quot;&gt;.0.0&lt;/ifSpecific&gt;
+        &lt;/ifEntry&gt;
+        &lt;ifEntry key=&quot;2&quot; map:line=&quot;4&quot; map:linecount=&quot;1&quot; map:nodetype=&quot;row&quot;&gt;
+            &lt;ifIndex map:endcol=&quot;7&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;6&quot; oidtype=&quot;Integer&quot;&gt;2&lt;/ifIndex&gt;
+            &lt;ifDescr map:endcol=&quot;26&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;11&quot; oidtype=&quot;OctetString&quot;&gt;FastEthernet0/1&lt;/ifDescr&gt;
+            &lt;ifType map:endcol=&quot;41&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;27&quot; oidtype=&quot;Integer&quot;&gt;ethernetCsmacd&lt;/ifType&gt;
+            &lt;ifMtu map:endcol=&quot;47&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;43&quot; oidtype=&quot;Integer&quot;&gt;1500&lt;/ifMtu&gt;
+            &lt;ifSpeed map:endcol=&quot;58&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;49&quot; oidtype=&quot;Gauge32&quot;&gt;100000000&lt;/ifSpeed&gt;
+            &lt;ifPhysAddress map:endcol=&quot;88&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;59&quot; oidtype=&quot;OctetString&quot;&gt;0xCA 0x00 0x33 0xE0 0x00 0x06&lt;/ifPhysAddress&gt;
+            &lt;ifAdminStatus map:endcol=&quot;102&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;98&quot; oidtype=&quot;Integer&quot;&gt;down&lt;/ifAdminStatus&gt;
+            &lt;ifOperStatus map:endcol=&quot;115&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;111&quot; oidtype=&quot;Integer&quot;&gt;down&lt;/ifOperStatus&gt;
+            &lt;ifLastChange map:endcol=&quot;129&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;120&quot; oidtype=&quot;TimeTicks&quot;&gt;5 seconds&lt;/ifLastChange&gt;
+            &lt;ifInOctets map:endcol=&quot;140&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;139&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifInOctets&gt;
+            &lt;ifInUcastPkts map:endcol=&quot;154&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;153&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifInUcastPkts&gt;
+            &lt;ifInNUcastPkts map:endcol=&quot;169&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;168&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifInNUcastPkts&gt;
+            &lt;ifInDiscards map:endcol=&quot;182&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;181&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifInDiscards&gt;
+            &lt;ifInErrors map:endcol=&quot;193&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;192&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifInErrors&gt;
+            &lt;ifInUnknownProtos map:endcol=&quot;211&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;210&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifInUnknownProtos&gt;
+            &lt;ifOutOctets map:endcol=&quot;223&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;222&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifOutOctets&gt;
+            &lt;ifOutUcastPkts map:endcol=&quot;238&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;237&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifOutUcastPkts&gt;
+            &lt;ifOutNUcastPkts map:endcol=&quot;254&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;253&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifOutNUcastPkts&gt;
+            &lt;ifOutDiscards map:endcol=&quot;268&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;267&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifOutDiscards&gt;
+            &lt;ifOutErrors map:endcol=&quot;280&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;279&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifOutErrors&gt;
+            &lt;ifOutQLen map:endcol=&quot;290&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;289&quot; oidtype=&quot;Gauge32&quot;&gt;0&lt;/ifOutQLen&gt;
+            &lt;ifSpecific map:endcol=&quot;301&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;297&quot; oidtype=&quot;ObjectIdentifier&quot;&gt;.0.0&lt;/ifSpecific&gt;
+        &lt;/ifEntry&gt;
+        &lt;ifEntry key=&quot;3&quot; map:line=&quot;5&quot; map:linecount=&quot;1&quot; map:nodetype=&quot;row&quot;&gt;
+            &lt;ifIndex map:endcol=&quot;7&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;6&quot; oidtype=&quot;Integer&quot;&gt;3&lt;/ifIndex&gt;
+            &lt;ifDescr map:endcol=&quot;26&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;11&quot; oidtype=&quot;OctetString&quot;&gt;FastEthernet1/0&lt;/ifDescr&gt;
+            &lt;ifType map:endcol=&quot;41&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;27&quot; oidtype=&quot;Integer&quot;&gt;ethernetCsmacd&lt;/ifType&gt;
+            &lt;ifMtu map:endcol=&quot;47&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;43&quot; oidtype=&quot;Integer&quot;&gt;1500&lt;/ifMtu&gt;
+            &lt;ifSpeed map:endcol=&quot;58&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;49&quot; oidtype=&quot;Gauge32&quot;&gt;100000000&lt;/ifSpeed&gt;
+            &lt;ifPhysAddress map:endcol=&quot;88&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;59&quot; oidtype=&quot;OctetString&quot;&gt;0xCA 0x00 0x33 0xE0 0x00 0x1C&lt;/ifPhysAddress&gt;
+            &lt;ifAdminStatus map:endcol=&quot;102&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;98&quot; oidtype=&quot;Integer&quot;&gt;down&lt;/ifAdminStatus&gt;
+            &lt;ifOperStatus map:endcol=&quot;115&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;111&quot; oidtype=&quot;Integer&quot;&gt;down&lt;/ifOperStatus&gt;
+            &lt;ifLastChange map:endcol=&quot;129&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;120&quot; oidtype=&quot;TimeTicks&quot;&gt;5 seconds&lt;/ifLastChange&gt;
+            &lt;ifInOctets map:endcol=&quot;140&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;139&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifInOctets&gt;
+            &lt;ifInUcastPkts map:endcol=&quot;154&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;153&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifInUcastPkts&gt;
+            &lt;ifInNUcastPkts map:endcol=&quot;169&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;168&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifInNUcastPkts&gt;
+            &lt;ifInDiscards map:endcol=&quot;182&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;181&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifInDiscards&gt;
+            &lt;ifInErrors map:endcol=&quot;193&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;192&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifInErrors&gt;
+            &lt;ifInUnknownProtos map:endcol=&quot;211&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;210&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifInUnknownProtos&gt;
+            &lt;ifOutOctets map:endcol=&quot;223&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;222&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifOutOctets&gt;
+            &lt;ifOutUcastPkts map:endcol=&quot;238&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;237&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifOutUcastPkts&gt;
+            &lt;ifOutNUcastPkts map:endcol=&quot;254&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;253&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifOutNUcastPkts&gt;
+            &lt;ifOutDiscards map:endcol=&quot;268&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;267&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifOutDiscards&gt;
+            &lt;ifOutErrors map:endcol=&quot;280&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;279&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifOutErrors&gt;
+            &lt;ifOutQLen map:endcol=&quot;290&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;289&quot; oidtype=&quot;Gauge32&quot;&gt;0&lt;/ifOutQLen&gt;
+            &lt;ifSpecific map:endcol=&quot;301&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;297&quot; oidtype=&quot;ObjectIdentifier&quot;&gt;.0.0&lt;/ifSpecific&gt;
+        &lt;/ifEntry&gt;
+        &lt;ifEntry key=&quot;4&quot; map:line=&quot;6&quot; map:linecount=&quot;1&quot; map:nodetype=&quot;row&quot;&gt;
+            &lt;ifIndex map:endcol=&quot;7&quot; map:line=&quot;6&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;6&quot; oidtype=&quot;Integer&quot;&gt;4&lt;/ifIndex&gt;
+            &lt;ifDescr map:endcol=&quot;26&quot; map:line=&quot;6&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;11&quot; oidtype=&quot;OctetString&quot;&gt;FastEthernet2/0&lt;/ifDescr&gt;
+            &lt;ifType map:endcol=&quot;41&quot; map:line=&quot;6&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;27&quot; oidtype=&quot;Integer&quot;&gt;ethernetCsmacd&lt;/ifType&gt;
+            &lt;ifMtu map:endcol=&quot;47&quot; map:line=&quot;6&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;43&quot; oidtype=&quot;Integer&quot;&gt;1500&lt;/ifMtu&gt;
+            &lt;ifSpeed map:endcol=&quot;58&quot; map:line=&quot;6&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;49&quot; oidtype=&quot;Gauge32&quot;&gt;100000000&lt;/ifSpeed&gt;
+            &lt;ifPhysAddress map:endcol=&quot;88&quot; map:line=&quot;6&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;59&quot; oidtype=&quot;OctetString&quot;&gt;0xCA 0x00 0x33 0xE0 0x00 0x38&lt;/ifPhysAddress&gt;
+            &lt;ifAdminStatus map:endcol=&quot;102&quot; map:line=&quot;6&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;98&quot; oidtype=&quot;Integer&quot;&gt;down&lt;/ifAdminStatus&gt;
+            &lt;ifOperStatus map:endcol=&quot;115&quot; map:line=&quot;6&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;111&quot; oidtype=&quot;Integer&quot;&gt;down&lt;/ifOperStatus&gt;
+            &lt;ifLastChange map:endcol=&quot;129&quot; map:line=&quot;6&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;120&quot; oidtype=&quot;TimeTicks&quot;&gt;5 seconds&lt;/ifLastChange&gt;
+            &lt;ifInOctets map:endcol=&quot;140&quot; map:line=&quot;6&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;139&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifInOctets&gt;
+            &lt;ifInUcastPkts map:endcol=&quot;154&quot; map:line=&quot;6&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;153&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifInUcastPkts&gt;
+            &lt;ifInNUcastPkts map:endcol=&quot;169&quot; map:line=&quot;6&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;168&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifInNUcastPkts&gt;
+            &lt;ifInDiscards map:endcol=&quot;182&quot; map:line=&quot;6&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;181&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifInDiscards&gt;
+            &lt;ifInErrors map:endcol=&quot;193&quot; map:line=&quot;6&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;192&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifInErrors&gt;
+            &lt;ifInUnknownProtos map:endcol=&quot;211&quot; map:line=&quot;6&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;210&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifInUnknownProtos&gt;
+            &lt;ifOutOctets map:endcol=&quot;223&quot; map:line=&quot;6&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;222&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifOutOctets&gt;
+            &lt;ifOutUcastPkts map:endcol=&quot;238&quot; map:line=&quot;6&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;237&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifOutUcastPkts&gt;
+            &lt;ifOutNUcastPkts map:endcol=&quot;254&quot; map:line=&quot;6&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;253&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifOutNUcastPkts&gt;
+            &lt;ifOutDiscards map:endcol=&quot;268&quot; map:line=&quot;6&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;267&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifOutDiscards&gt;
+            &lt;ifOutErrors map:endcol=&quot;280&quot; map:line=&quot;6&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;279&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifOutErrors&gt;
+            &lt;ifOutQLen map:endcol=&quot;290&quot; map:line=&quot;6&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;289&quot; oidtype=&quot;Gauge32&quot;&gt;0&lt;/ifOutQLen&gt;
+            &lt;ifSpecific map:endcol=&quot;301&quot; map:line=&quot;6&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;297&quot; oidtype=&quot;ObjectIdentifier&quot;&gt;.0.0&lt;/ifSpecific&gt;
+        &lt;/ifEntry&gt;
+        &lt;ifEntry key=&quot;5&quot; map:line=&quot;7&quot; map:linecount=&quot;1&quot; map:nodetype=&quot;row&quot;&gt;
+            &lt;ifIndex map:endcol=&quot;7&quot; map:line=&quot;7&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;6&quot; oidtype=&quot;Integer&quot;&gt;5&lt;/ifIndex&gt;
+            &lt;ifDescr map:endcol=&quot;26&quot; map:line=&quot;7&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;11&quot; oidtype=&quot;OctetString&quot;&gt;FastEthernet3/0&lt;/ifDescr&gt;
+            &lt;ifType map:endcol=&quot;41&quot; map:line=&quot;7&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;27&quot; oidtype=&quot;Integer&quot;&gt;ethernetCsmacd&lt;/ifType&gt;
+            &lt;ifMtu map:endcol=&quot;47&quot; map:line=&quot;7&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;43&quot; oidtype=&quot;Integer&quot;&gt;1500&lt;/ifMtu&gt;
+            &lt;ifSpeed map:endcol=&quot;58&quot; map:line=&quot;7&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;49&quot; oidtype=&quot;Gauge32&quot;&gt;100000000&lt;/ifSpeed&gt;
+            &lt;ifPhysAddress map:endcol=&quot;88&quot; map:line=&quot;7&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;59&quot; oidtype=&quot;OctetString&quot;&gt;0xCA 0x00 0x33 0xE0 0x00 0x54&lt;/ifPhysAddress&gt;
+            &lt;ifAdminStatus map:endcol=&quot;102&quot; map:line=&quot;7&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;98&quot; oidtype=&quot;Integer&quot;&gt;down&lt;/ifAdminStatus&gt;
+            &lt;ifOperStatus map:endcol=&quot;115&quot; map:line=&quot;7&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;111&quot; oidtype=&quot;Integer&quot;&gt;down&lt;/ifOperStatus&gt;
+            &lt;ifLastChange map:endcol=&quot;129&quot; map:line=&quot;7&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;120&quot; oidtype=&quot;TimeTicks&quot;&gt;5 seconds&lt;/ifLastChange&gt;
+            &lt;ifInOctets map:endcol=&quot;140&quot; map:line=&quot;7&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;139&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifInOctets&gt;
+            &lt;ifInUcastPkts map:endcol=&quot;154&quot; map:line=&quot;7&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;153&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifInUcastPkts&gt;
+            &lt;ifInNUcastPkts map:endcol=&quot;169&quot; map:line=&quot;7&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;168&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifInNUcastPkts&gt;
+            &lt;ifInDiscards map:endcol=&quot;182&quot; map:line=&quot;7&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;181&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifInDiscards&gt;
+            &lt;ifInErrors map:endcol=&quot;193&quot; map:line=&quot;7&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;192&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifInErrors&gt;
+            &lt;ifInUnknownProtos map:endcol=&quot;211&quot; map:line=&quot;7&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;210&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifInUnknownProtos&gt;
+            &lt;ifOutOctets map:endcol=&quot;223&quot; map:line=&quot;7&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;222&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifOutOctets&gt;
+            &lt;ifOutUcastPkts map:endcol=&quot;238&quot; map:line=&quot;7&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;237&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifOutUcastPkts&gt;
+            &lt;ifOutNUcastPkts map:endcol=&quot;254&quot; map:line=&quot;7&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;253&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifOutNUcastPkts&gt;
+            &lt;ifOutDiscards map:endcol=&quot;268&quot; map:line=&quot;7&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;267&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifOutDiscards&gt;
+            &lt;ifOutErrors map:endcol=&quot;280&quot; map:line=&quot;7&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;279&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifOutErrors&gt;
+            &lt;ifOutQLen map:endcol=&quot;290&quot; map:line=&quot;7&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;289&quot; oidtype=&quot;Gauge32&quot;&gt;0&lt;/ifOutQLen&gt;
+            &lt;ifSpecific map:endcol=&quot;301&quot; map:line=&quot;7&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;297&quot; oidtype=&quot;ObjectIdentifier&quot;&gt;.0.0&lt;/ifSpecific&gt;
+        &lt;/ifEntry&gt;
+        &lt;ifEntry key=&quot;6&quot; map:line=&quot;8&quot; map:linecount=&quot;1&quot; map:nodetype=&quot;row&quot;&gt;
+            &lt;ifIndex map:endcol=&quot;7&quot; map:line=&quot;8&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;6&quot; oidtype=&quot;Integer&quot;&gt;6&lt;/ifIndex&gt;
+            &lt;ifDescr map:endcol=&quot;26&quot; map:line=&quot;8&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;11&quot; oidtype=&quot;OctetString&quot;&gt;FastEthernet4/0&lt;/ifDescr&gt;
+            &lt;ifType map:endcol=&quot;41&quot; map:line=&quot;8&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;27&quot; oidtype=&quot;Integer&quot;&gt;ethernetCsmacd&lt;/ifType&gt;
+            &lt;ifMtu map:endcol=&quot;47&quot; map:line=&quot;8&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;43&quot; oidtype=&quot;Integer&quot;&gt;1500&lt;/ifMtu&gt;
+            &lt;ifSpeed map:endcol=&quot;58&quot; map:line=&quot;8&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;49&quot; oidtype=&quot;Gauge32&quot;&gt;100000000&lt;/ifSpeed&gt;
+            &lt;ifPhysAddress map:endcol=&quot;88&quot; map:line=&quot;8&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;59&quot; oidtype=&quot;OctetString&quot;&gt;0xCA 0x00 0x33 0xE0 0x00 0x70&lt;/ifPhysAddress&gt;
+            &lt;ifAdminStatus map:endcol=&quot;102&quot; map:line=&quot;8&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;98&quot; oidtype=&quot;Integer&quot;&gt;down&lt;/ifAdminStatus&gt;
+            &lt;ifOperStatus map:endcol=&quot;115&quot; map:line=&quot;8&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;111&quot; oidtype=&quot;Integer&quot;&gt;down&lt;/ifOperStatus&gt;
+            &lt;ifLastChange map:endcol=&quot;129&quot; map:line=&quot;8&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;120&quot; oidtype=&quot;TimeTicks&quot;&gt;5 seconds&lt;/ifLastChange&gt;
+            &lt;ifInOctets map:endcol=&quot;140&quot; map:line=&quot;8&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;139&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifInOctets&gt;
+            &lt;ifInUcastPkts map:endcol=&quot;154&quot; map:line=&quot;8&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;153&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifInUcastPkts&gt;
+            &lt;ifInNUcastPkts map:endcol=&quot;169&quot; map:line=&quot;8&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;168&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifInNUcastPkts&gt;
+            &lt;ifInDiscards map:endcol=&quot;182&quot; map:line=&quot;8&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;181&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifInDiscards&gt;
+            &lt;ifInErrors map:endcol=&quot;193&quot; map:line=&quot;8&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;192&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifInErrors&gt;
+            &lt;ifInUnknownProtos map:endcol=&quot;211&quot; map:line=&quot;8&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;210&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifInUnknownProtos&gt;
+            &lt;ifOutOctets map:endcol=&quot;223&quot; map:line=&quot;8&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;222&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifOutOctets&gt;
+            &lt;ifOutUcastPkts map:endcol=&quot;238&quot; map:line=&quot;8&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;237&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifOutUcastPkts&gt;
+            &lt;ifOutNUcastPkts map:endcol=&quot;254&quot; map:line=&quot;8&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;253&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifOutNUcastPkts&gt;
+            &lt;ifOutDiscards map:endcol=&quot;268&quot; map:line=&quot;8&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;267&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifOutDiscards&gt;
+            &lt;ifOutErrors map:endcol=&quot;280&quot; map:line=&quot;8&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;279&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifOutErrors&gt;
+            &lt;ifOutQLen map:endcol=&quot;290&quot; map:line=&quot;8&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;289&quot; oidtype=&quot;Gauge32&quot;&gt;0&lt;/ifOutQLen&gt;
+            &lt;ifSpecific map:endcol=&quot;301&quot; map:line=&quot;8&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;297&quot; oidtype=&quot;ObjectIdentifier&quot;&gt;.0.0&lt;/ifSpecific&gt;
+        &lt;/ifEntry&gt;
+        &lt;ifEntry key=&quot;7&quot; map:line=&quot;9&quot; map:linecount=&quot;1&quot; map:nodetype=&quot;row&quot;&gt;
+            &lt;ifIndex map:endcol=&quot;7&quot; map:line=&quot;9&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;6&quot; oidtype=&quot;Integer&quot;&gt;7&lt;/ifIndex&gt;
+            &lt;ifDescr map:endcol=&quot;26&quot; map:line=&quot;9&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;8&quot; oidtype=&quot;OctetString&quot;&gt;GigabitEthernet5/0&lt;/ifDescr&gt;
+            &lt;ifType map:endcol=&quot;41&quot; map:line=&quot;9&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;27&quot; oidtype=&quot;Integer&quot;&gt;ethernetCsmacd&lt;/ifType&gt;
+            &lt;ifMtu map:endcol=&quot;47&quot; map:line=&quot;9&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;43&quot; oidtype=&quot;Integer&quot;&gt;1500&lt;/ifMtu&gt;
+            &lt;ifSpeed map:endcol=&quot;58&quot; map:line=&quot;9&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;48&quot; oidtype=&quot;Gauge32&quot;&gt;1000000000&lt;/ifSpeed&gt;
+            &lt;ifPhysAddress map:endcol=&quot;88&quot; map:line=&quot;9&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;59&quot; oidtype=&quot;OctetString&quot;&gt;0xCA 0x00 0x33 0xE0 0x00 0x8C&lt;/ifPhysAddress&gt;
+            &lt;ifAdminStatus map:endcol=&quot;102&quot; map:line=&quot;9&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;98&quot; oidtype=&quot;Integer&quot;&gt;down&lt;/ifAdminStatus&gt;
+            &lt;ifOperStatus map:endcol=&quot;115&quot; map:line=&quot;9&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;111&quot; oidtype=&quot;Integer&quot;&gt;down&lt;/ifOperStatus&gt;
+            &lt;ifLastChange map:endcol=&quot;129&quot; map:line=&quot;9&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;120&quot; oidtype=&quot;TimeTicks&quot;&gt;5 seconds&lt;/ifLastChange&gt;
+            &lt;ifInOctets map:endcol=&quot;140&quot; map:line=&quot;9&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;139&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifInOctets&gt;
+            &lt;ifInUcastPkts map:endcol=&quot;154&quot; map:line=&quot;9&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;153&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifInUcastPkts&gt;
+            &lt;ifInNUcastPkts map:endcol=&quot;169&quot; map:line=&quot;9&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;168&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifInNUcastPkts&gt;
+            &lt;ifInDiscards map:endcol=&quot;182&quot; map:line=&quot;9&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;181&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifInDiscards&gt;
+            &lt;ifInErrors map:endcol=&quot;193&quot; map:line=&quot;9&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;192&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifInErrors&gt;
+            &lt;ifInUnknownProtos map:endcol=&quot;211&quot; map:line=&quot;9&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;210&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifInUnknownProtos&gt;
+            &lt;ifOutOctets map:endcol=&quot;223&quot; map:line=&quot;9&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;222&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifOutOctets&gt;
+            &lt;ifOutUcastPkts map:endcol=&quot;238&quot; map:line=&quot;9&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;237&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifOutUcastPkts&gt;
+            &lt;ifOutNUcastPkts map:endcol=&quot;254&quot; map:line=&quot;9&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;253&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifOutNUcastPkts&gt;
+            &lt;ifOutDiscards map:endcol=&quot;268&quot; map:line=&quot;9&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;267&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifOutDiscards&gt;
+            &lt;ifOutErrors map:endcol=&quot;280&quot; map:line=&quot;9&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;279&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifOutErrors&gt;
+            &lt;ifOutQLen map:endcol=&quot;290&quot; map:line=&quot;9&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;289&quot; oidtype=&quot;Gauge32&quot;&gt;0&lt;/ifOutQLen&gt;
+            &lt;ifSpecific map:endcol=&quot;301&quot; map:line=&quot;9&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;297&quot; oidtype=&quot;ObjectIdentifier&quot;&gt;.0.0&lt;/ifSpecific&gt;
+        &lt;/ifEntry&gt;
+        &lt;ifEntry key=&quot;8&quot; map:line=&quot;10&quot; map:linecount=&quot;1&quot; map:nodetype=&quot;row&quot;&gt;
+            &lt;ifIndex map:endcol=&quot;7&quot; map:line=&quot;10&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;6&quot; oidtype=&quot;Integer&quot;&gt;8&lt;/ifIndex&gt;
+            &lt;ifDescr map:endcol=&quot;26&quot; map:line=&quot;10&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;8&quot; oidtype=&quot;OctetString&quot;&gt;GigabitEthernet6/0&lt;/ifDescr&gt;
+            &lt;ifType map:endcol=&quot;41&quot; map:line=&quot;10&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;27&quot; oidtype=&quot;Integer&quot;&gt;ethernetCsmacd&lt;/ifType&gt;
+            &lt;ifMtu map:endcol=&quot;47&quot; map:line=&quot;10&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;43&quot; oidtype=&quot;Integer&quot;&gt;1500&lt;/ifMtu&gt;
+            &lt;ifSpeed map:endcol=&quot;58&quot; map:line=&quot;10&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;48&quot; oidtype=&quot;Gauge32&quot;&gt;1000000000&lt;/ifSpeed&gt;
+            &lt;ifPhysAddress map:endcol=&quot;88&quot; map:line=&quot;10&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;59&quot; oidtype=&quot;OctetString&quot;&gt;0xCA 0x00 0x33 0xE0 0x00 0xA8&lt;/ifPhysAddress&gt;
+            &lt;ifAdminStatus map:endcol=&quot;102&quot; map:line=&quot;10&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;100&quot; oidtype=&quot;Integer&quot;&gt;up&lt;/ifAdminStatus&gt;
+            &lt;ifOperStatus map:endcol=&quot;115&quot; map:line=&quot;10&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;113&quot; oidtype=&quot;Integer&quot;&gt;up&lt;/ifOperStatus&gt;
+            &lt;ifLastChange map:endcol=&quot;129&quot; map:line=&quot;10&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;120&quot; oidtype=&quot;TimeTicks&quot;&gt;5 seconds&lt;/ifLastChange&gt;
+            &lt;ifInOctets map:endcol=&quot;140&quot; map:line=&quot;10&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;135&quot; oidtype=&quot;Counter32&quot;&gt;83031&lt;/ifInOctets&gt;
+            &lt;ifInUcastPkts map:endcol=&quot;154&quot; map:line=&quot;10&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;151&quot; oidtype=&quot;Counter32&quot;&gt;691&lt;/ifInUcastPkts&gt;
+            &lt;ifInNUcastPkts map:endcol=&quot;169&quot; map:line=&quot;10&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;166&quot; oidtype=&quot;Counter32&quot;&gt;121&lt;/ifInNUcastPkts&gt;
+            &lt;ifInDiscards map:endcol=&quot;182&quot; map:line=&quot;10&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;181&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifInDiscards&gt;
+            &lt;ifInErrors map:endcol=&quot;193&quot; map:line=&quot;10&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;192&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifInErrors&gt;
+            &lt;ifInUnknownProtos map:endcol=&quot;211&quot; map:line=&quot;10&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;210&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifInUnknownProtos&gt;
+            &lt;ifOutOctets map:endcol=&quot;223&quot; map:line=&quot;10&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;218&quot; oidtype=&quot;Counter32&quot;&gt;83031&lt;/ifOutOctets&gt;
+            &lt;ifOutUcastPkts map:endcol=&quot;238&quot; map:line=&quot;10&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;235&quot; oidtype=&quot;Counter32&quot;&gt;691&lt;/ifOutUcastPkts&gt;
+            &lt;ifOutNUcastPkts map:endcol=&quot;254&quot; map:line=&quot;10&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;251&quot; oidtype=&quot;Counter32&quot;&gt;121&lt;/ifOutNUcastPkts&gt;
+            &lt;ifOutDiscards map:endcol=&quot;268&quot; map:line=&quot;10&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;267&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifOutDiscards&gt;
+            &lt;ifOutErrors map:endcol=&quot;280&quot; map:line=&quot;10&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;279&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifOutErrors&gt;
+            &lt;ifOutQLen map:endcol=&quot;290&quot; map:line=&quot;10&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;289&quot; oidtype=&quot;Gauge32&quot;&gt;0&lt;/ifOutQLen&gt;
+            &lt;ifSpecific map:endcol=&quot;301&quot; map:line=&quot;10&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;297&quot; oidtype=&quot;ObjectIdentifier&quot;&gt;.0.0&lt;/ifSpecific&gt;
+        &lt;/ifEntry&gt;
+        &lt;ifEntry key=&quot;10&quot; map:line=&quot;11&quot; map:linecount=&quot;1&quot; map:nodetype=&quot;row&quot;&gt;
+            &lt;ifIndex map:endcol=&quot;7&quot; map:line=&quot;11&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;5&quot; oidtype=&quot;Integer&quot;&gt;10&lt;/ifIndex&gt;
+            &lt;ifDescr map:endcol=&quot;26&quot; map:line=&quot;11&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;21&quot; oidtype=&quot;OctetString&quot;&gt;Null0&lt;/ifDescr&gt;
+            &lt;ifType map:endcol=&quot;41&quot; map:line=&quot;11&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;36&quot; oidtype=&quot;Integer&quot;&gt;other&lt;/ifType&gt;
+            &lt;ifMtu map:endcol=&quot;47&quot; map:line=&quot;11&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;43&quot; oidtype=&quot;Integer&quot;&gt;1500&lt;/ifMtu&gt;
+            &lt;ifSpeed map:endcol=&quot;58&quot; map:line=&quot;11&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;48&quot; oidtype=&quot;Gauge32&quot;&gt;4294967295&lt;/ifSpeed&gt;
+            &lt;ifPhysAddress map:endcol=&quot;88&quot; map:line=&quot;11&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;88&quot; oidtype=&quot;OctetString&quot;/&gt;
+            &lt;ifAdminStatus map:endcol=&quot;102&quot; map:line=&quot;11&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;100&quot; oidtype=&quot;Integer&quot;&gt;up&lt;/ifAdminStatus&gt;
+            &lt;ifOperStatus map:endcol=&quot;115&quot; map:line=&quot;11&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;113&quot; oidtype=&quot;Integer&quot;&gt;up&lt;/ifOperStatus&gt;
+            &lt;ifLastChange map:endcol=&quot;129&quot; map:line=&quot;11&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;116&quot; oidtype=&quot;TimeTicks&quot;&gt;0 millisecond&lt;/ifLastChange&gt;
+            &lt;ifInOctets map:endcol=&quot;140&quot; map:line=&quot;11&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;139&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifInOctets&gt;
+            &lt;ifInUcastPkts map:endcol=&quot;154&quot; map:line=&quot;11&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;153&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifInUcastPkts&gt;
+            &lt;ifInNUcastPkts map:endcol=&quot;169&quot; map:line=&quot;11&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;168&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifInNUcastPkts&gt;
+            &lt;ifInDiscards map:endcol=&quot;182&quot; map:line=&quot;11&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;181&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifInDiscards&gt;
+            &lt;ifInErrors map:endcol=&quot;193&quot; map:line=&quot;11&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;192&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifInErrors&gt;
+            &lt;ifInUnknownProtos map:endcol=&quot;211&quot; map:line=&quot;11&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;210&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifInUnknownProtos&gt;
+            &lt;ifOutOctets map:endcol=&quot;223&quot; map:line=&quot;11&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;222&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifOutOctets&gt;
+            &lt;ifOutUcastPkts map:endcol=&quot;238&quot; map:line=&quot;11&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;237&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifOutUcastPkts&gt;
+            &lt;ifOutNUcastPkts map:endcol=&quot;254&quot; map:line=&quot;11&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;253&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifOutNUcastPkts&gt;
+            &lt;ifOutDiscards map:endcol=&quot;268&quot; map:line=&quot;11&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;267&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifOutDiscards&gt;
+            &lt;ifOutErrors map:endcol=&quot;280&quot; map:line=&quot;11&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;279&quot; oidtype=&quot;Counter32&quot;&gt;0&lt;/ifOutErrors&gt;
+            &lt;ifOutQLen map:endcol=&quot;290&quot; map:line=&quot;11&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;289&quot; oidtype=&quot;Gauge32&quot;&gt;0&lt;/ifOutQLen&gt;
+            &lt;ifSpecific map:endcol=&quot;301&quot; map:line=&quot;11&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;297&quot; oidtype=&quot;ObjectIdentifier&quot;&gt;.0.0&lt;/ifSpecific&gt;
+        &lt;/ifEntry&gt;
+    &lt;/ifTable&gt;
+    &lt;status&gt;complete&lt;/status&gt;
+&lt;/structure&gt;
+</structuredData>
+                            <aliases>
+                                <item name="keys">
+                                    <queryFormatString>ifTable/ifEntry/@key</queryFormatString>
+                                </item>
+                                <item name="entryCount">
+                                    <queryFormatString>fn:count(ifTable/ifEntry/@key)</queryFormatString>
+                                </item>
+                                <item name="ifIndex">
+                                    <queryFormatString>ifTable/ifEntry[@key = &apos;{0}&apos;]/ifIndex</queryFormatString>
+                                    <arguments>
+                                        <item name="key">
+                                            <valuesQuery>ifTable/ifEntry/@key</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="ifDescr">
+                                    <queryFormatString>ifTable/ifEntry[@key = &apos;{0}&apos;]/ifDescr</queryFormatString>
+                                    <arguments>
+                                        <item name="key">
+                                            <valuesQuery>ifTable/ifEntry/@key</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="ifType">
+                                    <queryFormatString>ifTable/ifEntry[@key = &apos;{0}&apos;]/ifType</queryFormatString>
+                                    <arguments>
+                                        <item name="key">
+                                            <valuesQuery>ifTable/ifEntry/@key</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="ifMtu">
+                                    <queryFormatString>ifTable/ifEntry[@key = &apos;{0}&apos;]/ifMtu</queryFormatString>
+                                    <arguments>
+                                        <item name="key">
+                                            <valuesQuery>ifTable/ifEntry/@key</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="ifSpeed">
+                                    <queryFormatString>ifTable/ifEntry[@key = &apos;{0}&apos;]/ifSpeed</queryFormatString>
+                                    <arguments>
+                                        <item name="key">
+                                            <valuesQuery>ifTable/ifEntry/@key</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="ifPhysAddress">
+                                    <queryFormatString>ifTable/ifEntry[@key = &apos;{0}&apos;]/ifPhysAddress</queryFormatString>
+                                    <arguments>
+                                        <item name="key">
+                                            <valuesQuery>ifTable/ifEntry/@key</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="ifAdminStatus">
+                                    <queryFormatString>ifTable/ifEntry[@key = &apos;{0}&apos;]/ifAdminStatus</queryFormatString>
+                                    <arguments>
+                                        <item name="key">
+                                            <valuesQuery>ifTable/ifEntry/@key</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="ifOperStatus">
+                                    <queryFormatString>ifTable/ifEntry[@key = &apos;{0}&apos;]/ifOperStatus</queryFormatString>
+                                    <arguments>
+                                        <item name="key">
+                                            <valuesQuery>ifTable/ifEntry/@key</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="ifLastChange">
+                                    <queryFormatString>ifTable/ifEntry[@key = &apos;{0}&apos;]/ifLastChange</queryFormatString>
+                                    <arguments>
+                                        <item name="key">
+                                            <valuesQuery>ifTable/ifEntry/@key</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="ifInOctets">
+                                    <queryFormatString>ifTable/ifEntry[@key = &apos;{0}&apos;]/ifInOctets</queryFormatString>
+                                    <arguments>
+                                        <item name="key">
+                                            <valuesQuery>ifTable/ifEntry/@key</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="ifInUcastPkts">
+                                    <queryFormatString>ifTable/ifEntry[@key = &apos;{0}&apos;]/ifInUcastPkts</queryFormatString>
+                                    <arguments>
+                                        <item name="key">
+                                            <valuesQuery>ifTable/ifEntry/@key</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="ifInNUcastPkts">
+                                    <queryFormatString>ifTable/ifEntry[@key = &apos;{0}&apos;]/ifInNUcastPkts</queryFormatString>
+                                    <arguments>
+                                        <item name="key">
+                                            <valuesQuery>ifTable/ifEntry/@key</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="ifInDiscards">
+                                    <queryFormatString>ifTable/ifEntry[@key = &apos;{0}&apos;]/ifInDiscards</queryFormatString>
+                                    <arguments>
+                                        <item name="key">
+                                            <valuesQuery>ifTable/ifEntry/@key</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="ifInErrors">
+                                    <queryFormatString>ifTable/ifEntry[@key = &apos;{0}&apos;]/ifInErrors</queryFormatString>
+                                    <arguments>
+                                        <item name="key">
+                                            <valuesQuery>ifTable/ifEntry/@key</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="ifInUnknownProtos">
+                                    <queryFormatString>ifTable/ifEntry[@key = &apos;{0}&apos;]/ifInUnknownProtos</queryFormatString>
+                                    <arguments>
+                                        <item name="key">
+                                            <valuesQuery>ifTable/ifEntry/@key</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="ifOutOctets">
+                                    <queryFormatString>ifTable/ifEntry[@key = &apos;{0}&apos;]/ifOutOctets</queryFormatString>
+                                    <arguments>
+                                        <item name="key">
+                                            <valuesQuery>ifTable/ifEntry/@key</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="ifOutUcastPkts">
+                                    <queryFormatString>ifTable/ifEntry[@key = &apos;{0}&apos;]/ifOutUcastPkts</queryFormatString>
+                                    <arguments>
+                                        <item name="key">
+                                            <valuesQuery>ifTable/ifEntry/@key</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="ifOutNUcastPkts">
+                                    <queryFormatString>ifTable/ifEntry[@key = &apos;{0}&apos;]/ifOutNUcastPkts</queryFormatString>
+                                    <arguments>
+                                        <item name="key">
+                                            <valuesQuery>ifTable/ifEntry/@key</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="ifOutDiscards">
+                                    <queryFormatString>ifTable/ifEntry[@key = &apos;{0}&apos;]/ifOutDiscards</queryFormatString>
+                                    <arguments>
+                                        <item name="key">
+                                            <valuesQuery>ifTable/ifEntry/@key</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="ifOutErrors">
+                                    <queryFormatString>ifTable/ifEntry[@key = &apos;{0}&apos;]/ifOutErrors</queryFormatString>
+                                    <arguments>
+                                        <item name="key">
+                                            <valuesQuery>ifTable/ifEntry/@key</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="ifOutQLen">
+                                    <queryFormatString>ifTable/ifEntry[@key = &apos;{0}&apos;]/ifOutQLen</queryFormatString>
+                                    <arguments>
+                                        <item name="key">
+                                            <valuesQuery>ifTable/ifEntry/@key</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="ifSpecific">
+                                    <queryFormatString>ifTable/ifEntry[@key = &apos;{0}&apos;]/ifSpecific</queryFormatString>
+                                    <arguments>
+                                        <item name="key">
+                                            <valuesQuery>ifTable/ifEntry/@key</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                            </aliases>
+                            <duration>0.6</duration>
+                        </behavior>
+                    </emulation>
+                </item>
+                <item guid="18aee092-9b8a-4210-aa53-3f5b3066ed42" action="foreach">
+                    <command>
+                        <body>key $keys</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="946bfd96-a28b-483f-9125-def672d97ba5" action="comment">
+                            <command>
+                                <body>build return values</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="9265d69e-962f-4d00-b167-3c625b76972a" action="write">
+                            <command>
+                                <body>Interface: [query ifcValues ifDescr($key)], Admin Status: [query ifcValues ifAdminStatus($key)], Oper Status: [query ifcValues ifOperStatus($key)]\\n</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <multilineDescription>This will the interface states on the system for a quick status check</multilineDescription>
+        </item>
+    </procedures>
+</testCase>
