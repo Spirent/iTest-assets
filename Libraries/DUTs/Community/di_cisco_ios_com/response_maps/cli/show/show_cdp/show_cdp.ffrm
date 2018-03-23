@@ -1,0 +1,136 @@
+<?xml version="1.0"?>
+<ResponseMap version="6.0.0.18638fa">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="command">
+                <command>
+                    <body>show cdp</body>
+                </command>
+            </action>
+            <responseBody>Global CDP information:
+\tSending CDP packets every 60 seconds
+\tSending a holdtime value of 180 seconds
+\tSending CDPv2 advertisements is  enabled
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;prompt&gt;R1#&lt;/prompt&gt;
+    &lt;echo&gt;show cdp&lt;/echo&gt;
+    &lt;promptName&gt;privilaged&lt;/promptName&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.2</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="cdpPkts">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>\\s+Sending CDP packets every\\s+</regex>
+                            <start>0</start>
+                            <end>27</end>
+                        </item>
+                        <item name="cdpPktRateSec">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>27</start>
+                            <end>29</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+seconds</regex>
+                            <start>29</start>
+                            <end>37</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>\tSending CDP packets every 60 seconds</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+                <item name="cdpHoldtime">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>\\s+Sending a holdtime value of\\s+</regex>
+                            <start>0</start>
+                            <end>29</end>
+                        </item>
+                        <item name="holdtime">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>29</start>
+                            <end>32</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+seconds</regex>
+                            <start>32</start>
+                            <end>40</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>\tSending a holdtime value of 180 seconds</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+                <item name="cdpAdvertisements">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>\\s+Sending CDPv\\d+\\s+advertisements is\\s+</regex>
+                            <start>0</start>
+                            <end>34</end>
+                        </item>
+                        <item name="cdpv2AdverState">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>34</start>
+                            <end>41</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>\tSending CDPv2 advertisements is  enabled</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="*sh* cdp">
+        <application>
+            <item>com.fnfr.svt.applications.ssh</item>
+            <item>com.fnfr.svt.applications.telnet</item>
+        </application>
+    </applicabilityProperties>
+</ResponseMap>
