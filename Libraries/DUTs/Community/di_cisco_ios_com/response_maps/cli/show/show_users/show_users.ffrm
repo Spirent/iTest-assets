@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+<ResponseMap version="6.0.0.18638fa">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="command">
+                <command>
+                    <body>show users</body>
+                </command>
+            </action>
+            <responseBody>    Line       User       Host(s)              Idle       Location
+*  2 vty 0     itest      idle                 00:00:00 192.168.3.1
+
+  Interface    User               Mode         Idle     Peer Address
+
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;prompt&gt;R1#&lt;/prompt&gt;
+    &lt;echo&gt;show users&lt;/echo&gt;
+    &lt;promptName&gt;privilaged&lt;/promptName&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.2</duration>
+        </item>
+        <item name="sample2">
+            <responseBody>    Line       User       Host(s)              Idle       Location
+   0 con 0                idle                    never
+*  2 vty 0     itest      idle                 00:00:00 192.168.3.1
+   3 vty 1     itest      idle                 00:00:30 192.168.3.1
+
+  Interface    User               Mode         Idle     Peer Address
+
+</responseBody>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.table.TabularMapperProperties">
+            <tabularMaps>
+                <item name="table1">
+                    <banner>    Line       User       Host(s)              Idle       Location</banner>
+                    <bannerStructure>Wildcard</bannerStructure>
+                    <columnBoundaries>Positional</columnBoundaries>
+                    <columns>
+                        <item name="interfaceUsed">
+                            <lastFullCell></lastFullCell>
+                        </item>
+                        <item name="line">
+                            <isKey>true</isKey>
+                            <width>14</width>
+                            <lastFullCell></lastFullCell>
+                        </item>
+                        <item name="user">
+                            <width>11</width>
+                            <lastFullCell></lastFullCell>
+                        </item>
+                        <item name="host">
+                            <width>20</width>
+                            <lastFullCell></lastFullCell>
+                        </item>
+                        <item name="idle">
+                            <width>9</width>
+                            <lastFullCell></lastFullCell>
+                        </item>
+                        <item name="location">
+                            <width>0</width>
+                            <lastFullCell></lastFullCell>
+                        </item>
+                    </columns>
+                </item>
+            </tabularMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="*sh* use*">
+        <application>
+            <item>com.fnfr.svt.applications.ssh</item>
+            <item>com.fnfr.svt.applications.telnet</item>
+        </application>
+    </applicabilityProperties>
+    <aliases>
+        <item name="activeLine">
+            <description>This will return the line that is currently in use</description>
+            <queryFormatString>.//row[interfaceUsed = &apos;*&apos;]/line</queryFormatString>
+        </item>
+    </aliases>
+</ResponseMap>

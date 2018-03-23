@@ -1,0 +1,164 @@
+============General==================
+documentation="Cisco 7200 QC library"
+isProcedureLibrary="true"
+sessionClass(includeTestCase="true")(sessionType="cisco_telnet.ffsp")
+============Steps====================
+Procedure main
+	1 #main
+		useFieldsInCommand="false"
+Procedure login
+	1 #set passwords the same unless different
+		useFieldsInCommand="false"
+		1.1 if $enablePassword == ""
+			useFieldsInCommand="false"
+			1.1.1 then 
+				useFieldsInCommand="false"
+				1.1.1.1 eval set enablePassword $password
+					useFieldsInCommand="false"
+	2 command $session $password
+		normalOffset="2.109"
+		estimatedStepExecutionTime="0.017"
+	3 command $session en
+		normalOffset="1.718"
+		estimatedStepExecutionTime="0.021"
+		expectedIdleTime="0.21"
+		expectedIdleTime.inherit="false"
+		useFieldsInCommand="false"
+	4 command $session $enablePassword
+		normalOffset="1.771"
+		estimatedStepExecutionTime="0.005"
+	5 write Password Status: [string trim [response password]]\\n
+	6 write Enable Password Status: [string trim [response enablePassword]]
+Procedure checkCounters
+	1 #Clear counters if true
+		useFieldsInCommand="false"
+	2 if $clearCounters
+		useFieldsInCommand="false"
+		2.1 then 
+			useFieldsInCommand="false"
+			2.1.1 command $session clear counters $ifc
+				normalOffset="31.627"
+				estimatedStepExecutionTime="0.137"
+				expectedIdleTime="2.45"
+				expectedIdleTime.inherit="false"
+			2.1.2 command $session 
+				normalOffset="31.627"
+				estimatedStepExecutionTime="0.137"
+				expectedIdleTime="2.45"
+				expectedIdleTime.inherit="false"
+	3 command $session show int $ifc
+		analyze
+			query inputRateBitsSec()
+			store inputRateBitsSecinputRateBitsSec
+		analyze
+			query inputRatePktsSec()
+			store inputRatePktsSecinputRatePktsSec
+		analyze
+			query outputRateBitsSec()
+			store outputRateBitsSecoutputRateBitsSec
+		analyze
+			query outputRatePktsSec()
+			store outputRatePktsSecoutputRatePktsSec
+		analyze
+			query pktsInput()
+			store pktsInputpktsInput
+		analyze
+			query packets_output()
+			store pktsOutputpktsOutput
+		normalOffset="8.267"
+		estimatedStepExecutionTime="0.143"
+		expectedIdleTime="0.934"
+		expectedIdleTime.inherit="false"
+Procedure getVersion
+	1 command $session show version
+		analyze
+			query version()
+			store versionversion
+		normalOffset="8.747"
+		estimatedStepExecutionTime="0.486"
+		expectedIdleTime="0.956"
+		expectedIdleTime.inherit="false"
+Procedure queryIfcStates
+	1 #Get a list of interfaces and loop through them
+		useFieldsInCommand="false"
+	2 command $session show run  | include interface
+		normalOffset="9.664"
+		estimatedStepExecutionTime="0.596"
+		expectedIdleTime="0.917"
+		expectedIdleTime.inherit="false"
+	3 foreach ifc [response ifc ^.*$]
+		useFieldsInCommand="false"
+		3.1 command $session show $ifc
+			analyze
+				query interface()
+				store ifcName
+			analyze
+				query adminState()
+				store ifcState
+			analyze
+				query protocolState()
+				store ifcProtoStatus
+			normalOffset="8.473"
+			estimatedStepExecutionTime="0.333"
+			expectedIdleTime="1.003"
+			expectedIdleTime.inherit="false"
+		3.2 write $ifcName, Admin State: $ifcState, Line Status: $ifcProtoStatus\\n
+Procedure saveRunningConfigTftp
+	1 command $session copy running-config tftp:$filename
+		normalOffset="20.654"
+		estimatedStepExecutionTime="0.134"
+	2 command $session $tftpServerIp
+		normalOffset="16.027"
+		estimatedStepExecutionTime="0.762"
+		expectedIdleTime="1.682"
+		expectedIdleTime.inherit="false"
+	3 write [response retVal]
+Procedure restoreRunningConfigTftp
+	1 command $session copy tftp:$filename running-config
+		normalOffset="40.556"
+		estimatedStepExecutionTime="0.135"
+	2 command $session $tftpServerIp
+		normalOffset="9.138"
+		estimatedStepExecutionTime="1.398"
+		expectedIdleTime="1.89"
+		expectedIdleTime.inherit="false"
+	3 write [response retVal]
+Procedure graphProcesses
+	1 #capture clock info as a reference point
+		useFieldsInCommand="false"
+		1.1 command $session show clock
+			expectedIdleTime="1.441"
+			expectedIdleTime.inherit="false"
+	2 #Graph CPU and Memory
+		useFieldsInCommand="false"
+		2.1 while true
+			useFieldsInCommand="false"
+			2.1.1 command $session show processes cpu
+				analyze
+					query cpuUtilActualFiveSecs()
+					chart_as_xy cpuUtilization:time:%cpu:4000:fiveSec:CPU Benchmark
+				analyze
+					query cpuUtilOneMin()
+					chart_as_xy cpuUtilization:time:%cpu:4000:oneMin:CPU Benchmark
+				analyze
+					query cpuUtilFiveMin()
+					chart_as_xy cpuUtilization:time:%cpu:4000:fiveMin:CPU Benchmark
+				normalOffset="8.157"
+				estimatedStepExecutionTime="4.406"
+				expectedIdleTime="1.441"
+				expectedIdleTime.inherit="false"
+			2.1.2 command $session show processes memory 
+				analyze
+					query TotalBytes()
+					chart_as_xy memoryUtilization:time:Bytes:4000:totalBytes:Memory Benchmark
+				analyze
+					query UsedBytes()
+					chart_as_xy memoryUtilization:time:Bytes:4000:usedBytes:Memory Benchmark
+				analyze
+					query FreeBytes()
+					chart_as_xy memoryUtilization:time:Bytes:4000:freeBytes:Memory Benchmark
+				normalOffset="6.569"
+				estimatedStepExecutionTime="4.577"
+				expectedIdleTime="0.931"
+				expectedIdleTime.inherit="false"
+			2.1.3 sleep $delaySec

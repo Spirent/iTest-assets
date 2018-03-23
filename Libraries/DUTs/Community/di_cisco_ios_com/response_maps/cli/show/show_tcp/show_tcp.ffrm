@@ -1,0 +1,423 @@
+<?xml version="1.0"?>
+<ResponseMap version="6.0.0.18638fa">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="command">
+                <command>
+                    <body>show tcp</body>
+                </command>
+            </action>
+            <responseBody>
+tty2, virtual tty from host 192.168.3.1
+Connection state is ESTAB, I/O status: 1, unread input bytes: 1            
+Connection is ECN Disabled, Mininum incoming TTL 0, Outgoing TTL 255
+Local host: 192.168.3.33, Local port: 23
+Foreign host: 192.168.3.1, Foreign port: 51978
+
+Enqueued packets for retransmit: 9, input: 0  mis-ordered: 0 (0 bytes)
+
+Event Timers (current time is 0x9E48E0):
+Timer          Starts    Wakeups            Next
+Retrans           979         30        0x9E49E3
+TimeWait            0          0             0x0
+AckHold           327          1             0x0
+SendWnd             0          0             0x0
+KeepAlive           0          0             0x0
+GiveUp              0          0             0x0
+PmtuAger            0          0             0x0
+DeadWait            0          0             0x0
+
+iss: 1665630433  snduna: 1666280899  sndnxt: 1666281469     sndwnd:  17155
+irs: 3124399667  rcvnxt: 3124400551  rcvwnd:       3245  delrcvwnd:    883
+
+SRTT: 300 ms, RTTO: 303 ms, RTV: 3 ms, KRTT: 0 ms
+minRTT: 4 ms, maxRTT: 404 ms, ACK hold: 200 ms
+Flags: passive open, active open, retransmission timeout
+IP Precedence value : 0
+
+Datagrams (max data segment is 1460 bytes):
+Rcvd: 1269 (out of order: 0), with data: 330, total data bytes: 883
+Sent: 1867 (retransmit: 30, fastretransmit: 17, partialack: 0, Second Congestion: 0), with data: 1865, total data bytes:
+ 661115
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;prompt&gt;R1#&lt;/prompt&gt;
+    &lt;echo&gt;show tcp&lt;/echo&gt;
+    &lt;promptName&gt;privilaged&lt;/promptName&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.2</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.table.TabularMapperProperties">
+            <tabularMaps>
+                <item name="eventTimers">
+                    <banner>Timer          Starts    Wakeups            Next</banner>
+                    <bannerStructure>Wildcard</bannerStructure>
+                    <columns>
+                        <item name="Timer">
+                            <isKey>true</isKey>
+                            <lastFullCell></lastFullCell>
+                        </item>
+                        <item name="Starts">
+                            <lastFullCell></lastFullCell>
+                        </item>
+                        <item name="Wakeups">
+                            <lastFullCell></lastFullCell>
+                        </item>
+                        <item name="Next">
+                            <lastFullCell></lastFullCell>
+                        </item>
+                    </columns>
+                </item>
+            </tabularMaps>
+        </item>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="enquePkts">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Enqueued packets for retransmit:\\s+</regex>
+                            <start>0</start>
+                            <end>33</end>
+                        </item>
+                        <item name="enquePktsReTx">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>33</start>
+                            <end>34</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>, input:\\s+</regex>
+                            <start>34</start>
+                            <end>43</end>
+                        </item>
+                        <item name="enquePktsInput">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>43</start>
+                            <end>44</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>\\s+mis-ordered:\\s+</regex>
+                            <start>44</start>
+                            <end>59</end>
+                        </item>
+                        <item name="enquePktsMisOrdered">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>59</start>
+                            <end>60</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor3">
+                            <regex>\\s+\\(</regex>
+                            <start>60</start>
+                            <end>62</end>
+                        </item>
+                        <item name="enquePktsMisOrderedBytes">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>62</start>
+                            <end>63</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor4">
+                            <regex>\\s+bytes\\)</regex>
+                            <start>63</start>
+                            <end>70</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>Enqueued packets for retransmit: 9, input: 0  mis-ordered: 0 (0 bytes)</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+                <item name="datagrams">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Datagrams \\(max data segment is\\s+</regex>
+                            <start>0</start>
+                            <end>31</end>
+                        </item>
+                        <item name="datagramsMaxSegment">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>31</start>
+                            <end>35</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+bytes\\):\\s+Rcvd:\\s+</regex>
+                            <start>35</start>
+                            <end>50</end>
+                        </item>
+                        <item name="datagramsRcvd">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>50</start>
+                            <end>54</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>\\s+\\(out of order:\\s+</regex>
+                            <start>54</start>
+                            <end>70</end>
+                        </item>
+                        <item name="datagramsRcvdOutOfOrder">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>70</start>
+                            <end>71</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor3">
+                            <regex>\\), with data:\\s+</regex>
+                            <start>71</start>
+                            <end>85</end>
+                        </item>
+                        <item name="datagramsRcvdWithData">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>85</start>
+                            <end>88</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor4">
+                            <regex>, total data bytes:\\s+</regex>
+                            <start>88</start>
+                            <end>108</end>
+                        </item>
+                        <item name="datagramsRcvdTotalBytes">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>108</start>
+                            <end>111</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor5">
+                            <regex>\\s+Sent:\\s+</regex>
+                            <start>111</start>
+                            <end>118</end>
+                        </item>
+                        <item name="datagramsSent">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>118</start>
+                            <end>122</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor6">
+                            <regex>\\s+\\(retransmit:\\s+</regex>
+                            <start>122</start>
+                            <end>136</end>
+                        </item>
+                        <item name="datagramsSentRetransmit">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>136</start>
+                            <end>138</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor7">
+                            <regex>, fastretransmit:\\s+</regex>
+                            <start>138</start>
+                            <end>156</end>
+                        </item>
+                        <item name="datagramsSentFastretransmit">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>156</start>
+                            <end>158</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor8">
+                            <regex>, partialack:\\s+</regex>
+                            <start>158</start>
+                            <end>172</end>
+                        </item>
+                        <item name="datagramsSentPartialack">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>172</start>
+                            <end>173</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor9">
+                            <regex>, Second Congestion:\\s+</regex>
+                            <start>173</start>
+                            <end>194</end>
+                        </item>
+                        <item name="datagramsSentSecondCongestion">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>194</start>
+                            <end>195</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor10">
+                            <regex>\\), with data:\\s+</regex>
+                            <start>195</start>
+                            <end>209</end>
+                        </item>
+                        <item name="datagramsSentWithData">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>209</start>
+                            <end>213</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor11">
+                            <regex>, total data bytes:\\s+</regex>
+                            <start>213</start>
+                            <end>234</end>
+                        </item>
+                        <item name="datagramsSentTotalBytes">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>234</start>
+                            <end>240</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>Datagrams (max data segment is 1460 bytes):
+Rcvd: 1269 (out of order: 0), with data: 330, total data bytes: 883
+Sent: 1867 (retransmit: 30, fastretransmit: 17, partialack: 0, Second Congestion: 0), with data: 1865, total data bytes:
+ 661115</sampleMatch>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="*sh* tcp">
+        <application>
+            <item>com.fnfr.svt.applications.ssh</item>
+            <item>com.fnfr.svt.applications.telnet</item>
+        </application>
+    </applicabilityProperties>
+</ResponseMap>

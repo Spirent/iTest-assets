@@ -1,0 +1,708 @@
+<?xml version="1.0"?>
+<testCase version="7.0.0.bc91e6c">
+    <general>
+        <documentation>Cisco 7200 QC library</documentation>
+        <isProcedureLibrary>true</isProcedureLibrary>
+        <sessionClass includeTestCase="true" sessionType="project://di_cisco_ios_com/session_profiles/telnet/cisco_telnet.ffsp"/>
+    </general>
+    <procedures>
+        <item name="main">
+            <steps>
+                <item guid="abd07b89-8891-4f96-a438-85433c83062d" action="comment">
+                    <command>
+                        <body>main</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+        </item>
+        <item name="login" isPublic="true" defaultSessionProfile="application:com.fnfr.svt.applications.telnet">
+            <description>Login to Cisco</description>
+            <steps>
+                <item guid="81d08b45-d88d-434d-b524-f61ac3d7d37c" action="comment">
+                    <command>
+                        <body>set passwords the same unless different</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="a32fc88e-b854-4592-8d3c-7cb6fd523646" action="if">
+                            <command>
+                                <body>$enablePassword == &quot;&quot;</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="9e3dc528-a223-4293-b8cd-83521e728753" action="then">
+                                    <nestedSteps>
+                                        <item guid="872555f9-a2d4-476c-886f-fa4dd5e801cd" action="eval">
+                                            <command>
+                                                <body>set enablePassword $password</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="6f8a0988-5c89-42e0-a0a6-ca23f84a1faf" action="command" session="$session" normalOffset="2.109" estimatedStepExecutionTime="0.017">
+                    <command>
+                        <body>$password</body>
+                    </command>
+                    <postProcessing>
+                        <storeResponseAt>password</storeResponseAt>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="ae38fd57-2a8b-461e-999c-8e51c3bb75f8" action="command" session="$session" normalOffset="1.718" estimatedStepExecutionTime="0.021">
+                    <command>
+                        <body>en</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                        <completionProperties expectedIdleTime="0.21" expectedIdleTime.inherit="false"/>
+                    </applicationProperties>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="7e18b67a-8e13-43d5-8569-25c52aec73b1" action="command" session="$session" normalOffset="1.771" estimatedStepExecutionTime="0.005">
+                    <command>
+                        <body>$enablePassword</body>
+                    </command>
+                    <postProcessing>
+                        <storeResponseAt>enablePassword</storeResponseAt>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="da343464-ddb6-4251-bb6a-52e25df5a707" action="write">
+                    <command>
+                        <body>Password Status: [string trim [response password]]\\n</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="d2db36c8-988f-4662-8357-d2e9f12fcaa8" action="write">
+                    <command>
+                        <body>Enable Password Status: [string trim [response enablePassword]]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <author>Spirent</author>
+            <multilineDescription>Automatically login to cisco device - privileged mode
+
+Return value = prompt respose
+e.g.
+
+Bad login:
+Password Status: % Login invalid
+Enable Password Status: % Login invalid
+
+or
+
+Good login:
+Password Status:
+Enable Password Status:</multilineDescription>
+            <arguments>
+                <item name="username">
+                    <description>Valid username</description>
+                </item>
+                <item name="password">
+                    <description>valid password</description>
+                    <defaultValue>good-day</defaultValue>
+                </item>
+                <item name="enablePassword">
+                    <description>Leave blank if the same as password</description>
+                </item>
+            </arguments>
+        </item>
+        <item name="getVersion" isPublic="true" isVBlock="true">
+            <description>Return the current FW version</description>
+            <steps>
+                <item guid="2bfdc2b0-03e6-4c72-bdaf-ec5758cd71ed" action="command" session="$session" normalOffset="8.747" estimatedStepExecutionTime="0.486">
+                    <command>
+                        <body>show version</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>version()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>version</storageLocation>
+                                        <query>version</query>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                        <completionProperties expectedIdleTime="0.956" expectedIdleTime.inherit="false"/>
+                    </applicationProperties>
+                </item>
+            </steps>
+            <response>{&quot;version&quot;:&quot;value&quot;}</response>
+        </item>
+        <item name="checkCounters" isPublic="true" isVBlock="true">
+            <description>Clear counters on interface</description>
+            <responseMap>project://di_cisco_ios_com/response_maps/custom/jsonBlockToQueries.ffrm</responseMap>
+            <steps>
+                <item guid="97b84361-8a34-4cc8-af9c-db5034ad89ef" action="comment">
+                    <command>
+                        <body>Clear counters if true</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="e405b4c0-70bd-4ed2-a56e-4818f0054a03" action="if">
+                    <command>
+                        <body>$clearCounters</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="a7dc5f38-292c-4923-a499-f5f80768b78a" action="then">
+                            <nestedSteps>
+                                <item guid="419f9e53-333c-4ae0-b391-eb1da0114dfd" action="command" session="$session" normalOffset="31.627" estimatedStepExecutionTime="0.137">
+                                    <command>
+                                        <body>clear counters $ifc</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                                        <completionProperties expectedIdleTime="2.45" expectedIdleTime.inherit="false"/>
+                                    </applicationProperties>
+                                </item>
+                                <item guid="1afa8508-53ea-4fb6-8033-d139eb9092b7" action="command" session="$session" normalOffset="31.627" estimatedStepExecutionTime="0.137">
+                                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                                        <completionProperties expectedIdleTime="2.45" expectedIdleTime.inherit="false"/>
+                                    </applicationProperties>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="378add3d-7581-4729-8941-a3ca3608a379" action="command" session="$session" normalOffset="8.267" estimatedStepExecutionTime="0.143">
+                    <command>
+                        <body>show int $ifc</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>inputRateBitsSec()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>inputRateBitsSec</storageLocation>
+                                        <query>inputRateBitsSec</query>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>inputRatePktsSec()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>inputRatePktsSec</storageLocation>
+                                        <query>inputRatePktsSec</query>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>outputRateBitsSec()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>outputRateBitsSec</storageLocation>
+                                        <query>outputRateBitsSec</query>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>outputRatePktsSec()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>outputRatePktsSec</storageLocation>
+                                        <query>outputRatePktsSec</query>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>pktsInput()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>pktsInput</storageLocation>
+                                        <query>pktsInput</query>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>packets_output()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>pktsOutput</storageLocation>
+                                        <query>pktsOutput</query>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                        <completionProperties expectedIdleTime="0.934" expectedIdleTime.inherit="false"/>
+                    </applicationProperties>
+                </item>
+            </steps>
+            <multilineDescription>This procedure is used to clear counters for Ethernet interface.</multilineDescription>
+            <arguments>
+                <item name="ifc">
+                    <description>Enter a valid interface value.
+
+e.g. - fastEthernet 6/0</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="clearCounters">
+                    <description>Clear counter is if set to 1 (true). Default value is 0 (false).
+Acceptable values: 0|1</description>
+                    <defaultValue>0</defaultValue>
+                </item>
+            </arguments>
+            <response>{&quot;inputRateBitsSec&quot;:&quot;value&quot;,&quot;inputRatePktsSec&quot;:&quot;value&quot;,&quot;outputRateBitsSec&quot;:&quot;value&quot;,&quot;outputRatePktsSec&quot;:&quot;value&quot;,&quot;pktsInput&quot;:&quot;value&quot;,&quot;pktsOutput&quot;:&quot;value&quot;}</response>
+        </item>
+        <item name="saveRunningConfigTftp" isPublic="true">
+            <description>Save running config</description>
+            <steps>
+                <item guid="9b78d1be-cc27-464d-8de0-25ab6ae7d8ad" action="command" session="$session" normalOffset="20.654" estimatedStepExecutionTime="0.134">
+                    <command>
+                        <body>copy running-config tftp:$filename</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="ff2786c5-7bd8-413c-ad85-91e11fb3c04e" action="command" session="$session" normalOffset="16.027" estimatedStepExecutionTime="0.762">
+                    <command>
+                        <body>$tftpServerIp</body>
+                    </command>
+                    <postProcessing>
+                        <storeResponseAt>retVal</storeResponseAt>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                        <completionProperties expectedIdleTime="1.682" expectedIdleTime.inherit="false"/>
+                    </applicationProperties>
+                </item>
+                <item guid="244d0561-6c2e-43bb-98e7-636b1c6714db" action="write">
+                    <command>
+                        <body>[response retVal]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <author>mbarfield</author>
+            <multilineDescription>Save running config to TFTP server</multilineDescription>
+            <arguments>
+                <item name="tftpServerIp">
+                    <description>Valid IP address</description>
+                    <defaultValue>10.108.36.206</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="filename">
+                    <description>Valid config file name</description>
+                </item>
+            </arguments>
+        </item>
+        <item name="restoreRunningConfigTftp" isPublic="true">
+            <description>Restore running config</description>
+            <steps>
+                <item guid="182a543f-c1ad-41cb-8223-758189f0de47" action="command" session="$session" normalOffset="40.556" estimatedStepExecutionTime="0.135">
+                    <command>
+                        <body>copy tftp:$filename running-config</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="b054f06a-8d3d-4069-8268-28532add5570" action="command" session="$session" normalOffset="9.138" estimatedStepExecutionTime="1.398">
+                    <command>
+                        <body>$tftpServerIp</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="contains">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                        <searchString>OK - * bytes</searchString>
+                                        <matchType>Wildcard</matchType>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$value == 1</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="OK">
+                                                    <message>$session: Config loaded - $filename running-config</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="PassTestIfNotAlreadyFailed">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                        </actionsWhenTrue>
+                                        <actionsWhenFalse>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message>$session: Config loaded - $filename running-config</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="FailTest">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                        </actionsWhenFalse>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                        <storeResponseAt>retVal</storeResponseAt>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                        <completionProperties expectedIdleTime="1.89" expectedIdleTime.inherit="false"/>
+                    </applicationProperties>
+                </item>
+                <item guid="e9f972af-d486-426f-94ac-b8687dcb6f61" action="write">
+                    <command>
+                        <body>[response retVal]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <author>mbarfield</author>
+            <multilineDescription>Restore running config to TFTP server</multilineDescription>
+            <arguments>
+                <item name="tftpServerIp">
+                    <description>Valid IP address</description>
+                    <defaultValue>10.108.36.206</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="filename">
+                    <description>Valid config file name</description>
+                    <defaultValue>irl_cisco_7200_1-confg</defaultValue>
+                </item>
+            </arguments>
+        </item>
+        <item name="graphProcesses" isPublic="true">
+            <description>Create benchmark graphs of CPU and Memory</description>
+            <steps>
+                <item guid="ea4c7090-072d-4fe1-b5f1-1cae92ee71ac" action="comment">
+                    <command>
+                        <body>capture clock info as a reference point</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="4cef63fa-6224-4659-9406-59b33773e517" action="command" session="$session">
+                            <command>
+                                <body>show clock</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                                <completionProperties expectedIdleTime="1.441" expectedIdleTime.inherit="false"/>
+                            </applicationProperties>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="76362ee9-fbd2-47fe-ac28-caaafd030541" action="comment">
+                    <command>
+                        <body>Graph CPU and Memory</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="ed9efb50-0b9a-4ecd-862e-28423221c990" action="while">
+                            <command>
+                                <body>true</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="5308db14-93ff-4b08-9685-039353f1ec2a" action="command" session="$session" normalOffset="8.157" estimatedStepExecutionTime="4.406">
+                                    <command>
+                                        <body>show processes cpu</body>
+                                    </command>
+                                    <postProcessing>
+                                        <analysisRules>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                        <query>cpuUtilActualFiveSecs()</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="chart_as_xy">
+                                                    <ruleProperties type="com.fnfr.svt.execution.charting.processors.ChartUsingXYPropertyGroup" chartName="cpuUtilization" xAxisLabel="time" yAxisLabel="%cpu" maxItemCount="4000" series="fiveSec">
+                                                        <title>CPU Benchmark</title>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                        <query>cpuUtilOneMin()</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="chart_as_xy">
+                                                    <ruleProperties type="com.fnfr.svt.execution.charting.processors.ChartUsingXYPropertyGroup" chartName="cpuUtilization" xAxisLabel="time" yAxisLabel="%cpu" maxItemCount="4000" series="oneMin">
+                                                        <title>CPU Benchmark</title>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                        <query>cpuUtilFiveMin()</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="chart_as_xy">
+                                                    <ruleProperties type="com.fnfr.svt.execution.charting.processors.ChartUsingXYPropertyGroup" chartName="cpuUtilization" xAxisLabel="time" yAxisLabel="%cpu" maxItemCount="4000" series="fiveMin">
+                                                        <title>CPU Benchmark</title>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                        </analysisRules>
+                                    </postProcessing>
+                                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                                        <completionProperties expectedIdleTime="1.441" expectedIdleTime.inherit="false"/>
+                                    </applicationProperties>
+                                </item>
+                                <item guid="2fdd7932-e6c7-43cc-a47d-4fbc125ee890" action="command" session="$session" normalOffset="6.569" estimatedStepExecutionTime="4.577">
+                                    <command>
+                                        <body>show processes memory </body>
+                                    </command>
+                                    <postProcessing>
+                                        <analysisRules>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                        <query>TotalBytes()</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="chart_as_xy">
+                                                    <ruleProperties type="com.fnfr.svt.execution.charting.processors.ChartUsingXYPropertyGroup" chartName="memoryUtilization" xAxisLabel="time" yAxisLabel="Bytes" maxItemCount="4000" series="totalBytes">
+                                                        <title>Memory Benchmark</title>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                        <query>UsedBytes()</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="chart_as_xy">
+                                                    <ruleProperties type="com.fnfr.svt.execution.charting.processors.ChartUsingXYPropertyGroup" chartName="memoryUtilization" xAxisLabel="time" yAxisLabel="Bytes" maxItemCount="4000" series="usedBytes">
+                                                        <title>Memory Benchmark</title>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                        <query>FreeBytes()</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="chart_as_xy">
+                                                    <ruleProperties type="com.fnfr.svt.execution.charting.processors.ChartUsingXYPropertyGroup" chartName="memoryUtilization" xAxisLabel="time" yAxisLabel="Bytes" maxItemCount="4000" series="freeBytes">
+                                                        <title>Memory Benchmark</title>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                        </analysisRules>
+                                    </postProcessing>
+                                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                                        <completionProperties expectedIdleTime="0.931" expectedIdleTime.inherit="false"/>
+                                    </applicationProperties>
+                                </item>
+                                <item guid="dd32ed34-1af9-42fd-afb0-c9d945108074" action="sleep">
+                                    <command>
+                                        <body>$delaySec</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <multilineDescription>This is intended to run as a background process throughout the entire test. By default we capture stats every 30 seconds.</multilineDescription>
+            <arguments>
+                <item name="delaySec">
+                    <description>Number of seconds to wait before checking process info.</description>
+                    <defaultValue>30</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="queryIfcStates" isPublic="true">
+            <description>Query all the interface states and and return summary</description>
+            <steps>
+                <item guid="58ec0d03-42fb-4a0a-baf5-38ac90e81233" action="comment">
+                    <command>
+                        <body>Get a list of interfaces and loop through them</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="d2e5bfb3-bcc5-466f-82b3-07b2cd762d74" action="command" session="$session" normalOffset="9.664" estimatedStepExecutionTime="0.596">
+                    <command>
+                        <body>show run  | include interface</body>
+                    </command>
+                    <postProcessing>
+                        <storeResponseAt>ifc</storeResponseAt>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                        <completionProperties expectedIdleTime="0.917" expectedIdleTime.inherit="false"/>
+                    </applicationProperties>
+                </item>
+                <item guid="36cd0f0f-c8b3-4678-ab42-40940853bfd8" action="foreach">
+                    <command>
+                        <body>ifc [response ifc ^.*$]</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="b42074e8-f7c8-4c14-b440-58e8aea78f75" action="command" session="$session" normalOffset="8.473" estimatedStepExecutionTime="0.333">
+                            <command>
+                                <body>show $ifc</body>
+                            </command>
+                            <postProcessing>
+                                <analysisRules>
+                                    <item>
+                                        <extractorInfo extractorType="query">
+                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                <query>interface()</query>
+                                            </extractorProperties>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="store">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                <storageLocation>ifcName</storageLocation>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                    <item>
+                                        <extractorInfo extractorType="query">
+                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                <query>adminState()</query>
+                                            </extractorProperties>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="store">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                <storageLocation>ifcState</storageLocation>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                    <item>
+                                        <extractorInfo extractorType="query">
+                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                <query>protocolState()</query>
+                                            </extractorProperties>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="store">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                <storageLocation>ifcProtoStatus</storageLocation>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                </analysisRules>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                                <completionProperties expectedIdleTime="1.003" expectedIdleTime.inherit="false"/>
+                            </applicationProperties>
+                        </item>
+                        <item guid="1ed34632-d654-4d87-aa0d-a289d61d9c1a" action="write">
+                            <command>
+                                <body>$ifcName, Admin State: $ifcState, Line Status: $ifcProtoStatus\\n</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <multilineDescription>This procedure will query all the interface states and return a summary view of the system.</multilineDescription>
+        </item>
+        <item name="showVersion2" isPublic="true">
+            <description>Gets teh equipment info</description>
+            <steps>
+                <item guid="17f66e27-8b9d-476a-9658-d2378096820d" action="command" session="$session" normalOffset="28.079" estimatedStepExecutionTime="1.788">
+                    <command>
+                        <body>show version</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>version()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$value == $fwVersion</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="OK">
+                                                    <message>{auto_message_true}</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="PassTestIfNotAlreadyFailed">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                        </actionsWhenTrue>
+                                        <actionsWhenFalse>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message>{auto_message_false}</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="FailTest">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                        </actionsWhenFalse>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                        <completionProperties expectedIdleTime="0.932" expectedIdleTime.inherit="false"/>
+                    </applicationProperties>
+                </item>
+            </steps>
+            <arguments>
+                <item name="fwVersion">
+                    <description>Expected FW version</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+    </procedures>
+</testCase>
