@@ -42,7 +42,7 @@ Each project within this repository conforms to a standard naming convention. Pr
 |b|Bash|All content in project is Bash content|
 |s|Scripts|Project content is written in another language or a combination of iTest, Python, Bash|
 
-## Quick Start
+## Quick Start Links
  
 ![Copy https URL](images/copy.url.to.clipboard.png)
 
