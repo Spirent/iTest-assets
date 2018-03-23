@@ -1,51 +1,10 @@
 <?xml version="1.0"?>
 <testCase version="7.0.0.bc91e6c">
     <general>
-        <documentation>STC REST QC Library</documentation>
-        <notes>STC REST QC Library</notes>
-        <owner>mbarfield</owner>
         <sessionClass includeTestCase="true" sessionType="project://di_stc_com/session_profiles/Spirent_TestCenter_REST_ref_session_profile.ffsp"/>
     </general>
     <procedures>
         <item name="main"/>
-        <item name="subscribeResults" isPublic="true">
-            <description>List of results required to execute test case</description>
-            <steps>
-                <item guid="416c3dfb-1942-425b-a635-74bfe696666d" action="subscribeView" session="$session" normalOffset="41.863" estimatedStepExecutionTime="1.03">
-                    <command>
-                        <body>$subscribedResults</body>
-                    </command>
-                    <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.spirent.itest.applications.stcrest" transferableType="com.spirent.itest.applications.stcrest.properties.ResultViewProperties">
-                        <ResultViewtype inherit="false" transferableToolId="com.spirent.itest.applications.stcrest">
-                            <memberClasses>
-                                <item>com.spirent.itest.applications.stcrest.properties.ResultViewProperties$ResultEntry</item>
-                            </memberClasses>
-                            <item transferableToolId="com.spirent.itest.applications.stcrest" transferableType="com.spirent.itest.applications.stcrest.properties.ResultViewProperties$ResultEntry" resultView="DetailedStreamResults" resultView.inherit="false"/>
-                        </ResultViewtype>
-                    </applicationProperties>
-                    <emulation>
-                        <behavior>
-                            <structuredData>
-&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
-    &lt;success map:endcol=&quot;4&quot; map:line=&quot;0&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;0&quot;&gt;true&lt;/success&gt;
-&lt;/structure&gt;
-</structuredData>
-                            <aliases>
-                                <item name="success">
-                                    <queryFormatString>success</queryFormatString>
-                                </item>
-                            </aliases>
-                        </behavior>
-                    </emulation>
-                </item>
-            </steps>
-            <arguments>
-                <item name="subscribedResults">
-                    <description>List of results required to analyze traffic - e.g. DetailedStreamResults</description>
-                    <isMandatory>true</isMandatory>
-                </item>
-            </arguments>
-        </item>
         <item name="sanityCheckTraffic" isPublic="true">
             <description>This procedure will make sure that traffic is running and meets minimal conditions before moving forward</description>
             <steps>
@@ -72,10 +31,7 @@
                     <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
                     <useFieldsInCommand>false</useFieldsInCommand>
                 </item>
-                <item guid="a9588931-2eeb-413c-a811-0cdb172c3546" action="subscribeResults" session="$session">
-                    <command>
-                        <body>-subscribedResults DetailedStreamResults</body>
-                    </command>
+                <item guid="a9588931-2eeb-413c-a811-0cdb172c3546" action="setStandardTrafficResults" session="$session">
                     <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
                     <useFieldsInCommand>false</useFieldsInCommand>
                     <emulation>
@@ -522,7 +478,6 @@ StreamBlock 1/131072  Port //2/12   Port //2/9     12338              10811     
                     <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
                 </item>
             </steps>
-            <author>mbarfield</author>
             <multilineDescription>This will check if traffic is running, out-of-order packets, duplicates, and dropped packets</multilineDescription>
             <arguments>
                 <item name="sanityCheckDelaySec">
@@ -534,10 +489,7 @@ StreamBlock 1/131072  Port //2/12   Port //2/9     12338              10811     
         <item name="deadStreamCount" isPublic="true">
             <description>Return number of streams that are dead</description>
             <steps>
-                <item guid="46b38c4c-2b47-470d-a139-2e9ae8d25369" action="subscribeResults" session="$session">
-                    <command>
-                        <body>-subscribedResults DetailedStreamResults</body>
-                    </command>
+                <item guid="46b38c4c-2b47-470d-a139-2e9ae8d25369" action="setStandardTrafficResults" session="$session">
                     <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
                     <useFieldsInCommand>false</useFieldsInCommand>
                     <emulation>
@@ -1102,7 +1054,6 @@ StreamBlock 1/131072  Port //2/12   Port //2/9     12338              10811     
                     <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
                 </item>
             </steps>
-            <author>mbarfield</author>
             <arguments>
                 <item name="delaySec">
                     <description>Delay in seconds between checks</description>
@@ -1182,7 +1133,6 @@ StreamBlock 1/131072  Port //2/12   Port //2/9     12338              10811     
                     </emulation>
                 </item>
             </steps>
-            <author>mbarfield</author>
             <arguments>
                 <item name="port">
                     <description>Port you want to capture data.</description>
@@ -1200,6 +1150,734 @@ Example: file:/C:/stc.pcap</description>
                     <defaultValue>5</defaultValue>
                 </item>
             </arguments>
+        </item>
+        <item name="configureTrafficProfile" isPublic="true">
+            <description>Configure traffic load profile for TG stream</description>
+            <steps>
+                <item guid="e53c99a6-2aba-4efb-a3d2-236e09db2786" action="configureGenerator" session="$session" estimatedStepExecutionTime="0.638">
+                    <command>
+                        <body>$portIndex</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.spirent.itest.applications.stcrest" transferableType="com.spirent.itest.applications.stcrest.properties.ConfigureGeneratorProperties" fixedLoad="$loadPortBasedPercent" fixedLoad.inherit="false" name="Traffic Generator 1" name.inherit="false"/>
+                </item>
+                <item guid="ee5a9003-3c0b-4565-9b6e-0051d839bacb" action="showGenerators" session="$session">
+                    <command>
+                        <body>$portIndex</body>
+                    </command>
+                    <postProcessing>
+                        <storeResponseAt>retVal</storeResponseAt>
+                        <storeResponseText>true</storeResponseText>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="e874d80b-8fc3-4d32-a5e4-7169cac12f20" action="write">
+                    <command>
+                        <body>$retVal</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <author>mbarfield</author>
+            <multilineDescription>This is used to set the load for a traffic stream</multilineDescription>
+            <arguments>
+                <item name="portIndex">
+                    <description>Applies any changes that you made to configuration settings. This changes generator profile settings. Returns generator information.</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="loadPortBasedPercent">
+                    <description>This is the fixed load percentage based on negotiated line rate. For example, 30% load on 1GE line rate is 300Mb/s</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="startArpClearCounters" isPublic="true" isVBlock="true">
+            <description>Init traffic system by arp and clear counters</description>
+            <steps>
+                <item guid="213fddc3-d3c2-43a8-9981-f6d29cf8cc5e" action="if">
+                    <command>
+                        <body>$startArp</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="4e06cd77-41a5-4c57-9a6b-81a388e67201" action="then">
+                            <nestedSteps>
+                                <item guid="03c27bcc-0bf6-4fe4-bec6-013cdda14e8c" action="startArpNd" session="$session" normalOffset="23.257" estimatedStepExecutionTime="2.825">
+                                    <postProcessing>
+                                        <analysisRules>
+                                            <item>
+                                                <extractorInfo extractorType="regex">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.regex.extractors.RegexExtractorPropertyGroup" useLineMode="true">
+                                                        <regex>^.*$</regex>
+                                                        <extractionGroupIndex>0</extractionGroupIndex>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="store">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                        <storageLocation>arpResponse</storageLocation>
+                                                        <query>arpResponse</query>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                        </analysisRules>
+                                    </postProcessing>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="1accd08c-22ad-4bb0-8ee7-5075eb8d5e5e" action="if">
+                    <command>
+                        <body>$clearResults</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="cbba8b78-14d0-44a9-9e85-58784d700676" action="then">
+                            <nestedSteps>
+                                <item guid="5c2b5d8b-8522-4a6a-af48-194ed871fe01" action="clearResults" session="$session">
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <author>mbarfield</author>
+            <multilineDescription>This will allow users to intiate ARP request and clear counters before starting traffic</multilineDescription>
+            <arguments>
+                <item name="startArp">
+                    <description>Starts ARP/ND packets for the specified ports and returns the ARP/ND state.
+
+True or False (1|0)</description>
+                    <defaultValue>1</defaultValue>
+                </item>
+                <item name="clearResults">
+                    <description>Clear all counters
+
+True or False (1|0)</description>
+                    <defaultValue>1</defaultValue>
+                </item>
+            </arguments>
+            <response>{&quot;arpResponse&quot;:&quot;value&quot;}</response>
+        </item>
+        <item name="startTraffic" isPublic="true">
+            <description>Start traffic and run optional sanity check</description>
+            <steps>
+                <item guid="41dd65ca-8ae4-4933-ab3f-061e6331d923" action="startGenerator" session="$session" normalOffset="12.095" estimatedStepExecutionTime="1.354">
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="cd2d1ddb-9775-4f24-9bff-18e539810271" action="comment">
+                    <command>
+                        <body>Sanity check traffic if enabled</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="d29887a7-3763-40f1-835c-7f2d89356d2e" action="if">
+                    <command>
+                        <body>$sanityCheck</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="9912bbfa-a421-4112-bae3-dc85dd9e1258" action="then">
+                            <nestedSteps>
+                                <item guid="bf1aa990-2a41-4592-a99c-17531d8de965" action="sanityCheckTraffic" session="$session">
+                                    <postProcessing>
+                                        <storeResponseAt>retVal</storeResponseAt>
+                                    </postProcessing>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="4cd0b10b-2be5-42e5-b145-b4d739cc1286" action="else">
+                            <nestedSteps>
+                                <item guid="9cc45ba2-7c50-4338-a647-ed13b49388fb" action="comment">
+                                    <command>
+                                        <body>Set return val to N/A</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="6a79d19a-a015-4bd8-8da0-6c69feda10bc" action="eval">
+                                    <command>
+                                        <body>set retVal &quot;Sanity Check Status: N/A&quot;</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="ecab9e27-dd34-4657-9988-d10d685f31ef" action="sleep">
+                    <command>
+                        <body>$trafficDurationSec</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="a82b45a9-8370-4063-b295-b4a178f023d4" action="write">
+                    <command>
+                        <body>$retVal</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <author>mbarfield</author>
+            <multilineDescription>Start traffic generator and run optional sanity check to look for dead streams, out-of-order and duplicate packets. Also, set traffic exection time in seconds.</multilineDescription>
+            <arguments>
+                <item name="sanityCheck">
+                    <description>Sanity check the traffic streams for common errors
+
+true or false (1|0)</description>
+                    <defaultValue>1</defaultValue>
+                </item>
+                <item name="trafficDurationSec">
+                    <description>Set traffic duration in seconds.</description>
+                    <defaultValue>30</defaultValue>
+                </item>
+            </arguments>
+        </item>
+        <item name="stopTraffic" isPublic="true">
+            <description>Stop traffic</description>
+            <steps>
+                <item guid="112606eb-bfc5-46e5-ae42-b9eab438bf57" action="stopGenerator" session="$session" normalOffset="12.095" estimatedStepExecutionTime="1.354">
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <author>mbarfield</author>
+            <multilineDescription>Stop traffic - no return value</multilineDescription>
+        </item>
+        <item name="pcapCapture" isPublic="true">
+            <description>capturePcap</description>
+            <steps>
+                <item guid="d52d64ec-d8cf-45fe-a0d5-ebecfa04268f" action="startCapture" session="$session" normalOffset="26.929" estimatedStepExecutionTime="2.31">
+                    <command>
+                        <body>$portList</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="998023c3-759a-4b81-b677-a8f9082f565d" action="sleep">
+                    <command>
+                        <body>$captureDelaySec</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="a250eeef-151d-4b98-8f02-f8c49a17f888" action="stopCapture" session="$session" normalOffset="6.579" estimatedStepExecutionTime="1.966">
+                    <command>
+                        <body>$portList</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="92cbca28-3979-4232-b39e-bbced6c0cea9" action="saveCapture" session="$session" estimatedStepExecutionTime="3.065">
+                    <command>
+                        <body>$portList $filepath</body>
+                    </command>
+                    <postProcessing>
+                        <storeResponseAt>retVal</storeResponseAt>
+                        <storeResponseText>true</storeResponseText>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.spirent.itest.applications.stcrest" transferableType="com.spirent.itest.applications.stcrest.properties.SaveCaptureProperties"/>
+                </item>
+                <item guid="81d95ac5-c244-4abb-bea5-1ae2fbb37459" action="write">
+                    <command>
+                        <body>$retVal</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <author>mbarfield</author>
+            <multilineDescription>Capture PCAP and examine PCAP using other tools like wireshark</multilineDescription>
+            <arguments>
+                <item name="portList">
+                    <description>Enter a valid portList value -e.g. 1</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="captureDelaySec">
+                    <description>Enter time in seconds for how long to capture data</description>
+                    <defaultValue>2</defaultValue>
+                </item>
+                <item name="filepath">
+                    <description>Enter a valid file path to save the data.
+
+Example: file:/C:/Users/MBARFI~1/AppData/Local/Temp/stc.pcap</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="getPorts" isPublic="true">
+            <description>Return list of provisioned port values</description>
+            <steps>
+                <item guid="f6d17048-af7c-47c2-bdad-d5ddbe24d59b" action="showPorts" session="$session" normalOffset="36.603" estimatedStepExecutionTime="0.97">
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>ports/row/Name</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>ports</storageLocation>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <emulation>
+                        <behavior>
+                            <response>
+Name         CollisionControl  DataPathMode  MasterSlaveType  MTU   Duplex  MediaType  PortSpeed  AutoNegotiation  FlowControl  Id  Online  LinkStatus  Location             AlternateSpeeds  ForwardErrorCorrection  IgnoreLinkStatus  InternalPpmAdjust  PortSetupMode    TestMode          TransmitClockSource  AutoMdix
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Port //2/9   10                NORMAL        MASTER           1500  FULL    Copper     SPEED_1G   true             false        1   true    UP          //10.108.32.17/2/9   SPEED_UNKNOWN    true                    false             0                  PORTCONFIG_ONLY  NORMAL_OPERATION  INTERNAL             false   
+Port //2/10  10                NORMAL        MASTER           1500  FULL    Copper     SPEED_1G   true             false        2   true    UP          //10.108.32.17/2/10  SPEED_UNKNOWN    true                    false             0                  PORTCONFIG_ONLY  NORMAL_OPERATION  INTERNAL             false   
+
+</response>
+                            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;ports map:nodetype=&quot;table&quot;&gt;
+        &lt;row map:nodetype=&quot;row&quot;&gt;
+            &lt;Name map:endcol=&quot;10&quot; map:line=&quot;3&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;0&quot;&gt;Port //2/9&lt;/Name&gt;
+            &lt;CollisionControl map:endcol=&quot;15&quot; map:line=&quot;3&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;13&quot;&gt;10&lt;/CollisionControl&gt;
+            &lt;DataPathMode map:endcol=&quot;37&quot; map:line=&quot;3&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;31&quot;&gt;NORMAL&lt;/DataPathMode&gt;
+            &lt;MasterSlaveType map:endcol=&quot;51&quot; map:line=&quot;3&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;45&quot;&gt;MASTER&lt;/MasterSlaveType&gt;
+            &lt;MTU map:endcol=&quot;66&quot; map:line=&quot;3&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;62&quot;&gt;1500&lt;/MTU&gt;
+            &lt;Duplex map:endcol=&quot;72&quot; map:line=&quot;3&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;68&quot;&gt;FULL&lt;/Duplex&gt;
+            &lt;MediaType map:endcol=&quot;82&quot; map:line=&quot;3&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;76&quot;&gt;Copper&lt;/MediaType&gt;
+            &lt;PortSpeed map:endcol=&quot;95&quot; map:line=&quot;3&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;87&quot;&gt;SPEED_1G&lt;/PortSpeed&gt;
+            &lt;AutoNegotiation map:endcol=&quot;102&quot; map:line=&quot;3&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;98&quot;&gt;true&lt;/AutoNegotiation&gt;
+            &lt;FlowControl map:endcol=&quot;120&quot; map:line=&quot;3&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;115&quot;&gt;false&lt;/FlowControl&gt;
+            &lt;Id map:endcol=&quot;129&quot; map:line=&quot;3&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;128&quot;&gt;1&lt;/Id&gt;
+            &lt;Online map:endcol=&quot;136&quot; map:line=&quot;3&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;132&quot;&gt;true&lt;/Online&gt;
+            &lt;LinkStatus map:endcol=&quot;142&quot; map:line=&quot;3&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;140&quot;&gt;UP&lt;/LinkStatus&gt;
+            &lt;Location map:endcol=&quot;170&quot; map:line=&quot;3&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;152&quot;&gt;//10.108.32.17/2/9&lt;/Location&gt;
+            &lt;AlternateSpeeds map:endcol=&quot;186&quot; map:line=&quot;3&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;173&quot;&gt;SPEED_UNKNOWN&lt;/AlternateSpeeds&gt;
+            &lt;ForwardErrorCorrection map:endcol=&quot;194&quot; map:line=&quot;3&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;190&quot;&gt;true&lt;/ForwardErrorCorrection&gt;
+            &lt;IgnoreLinkStatus map:endcol=&quot;219&quot; map:line=&quot;3&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;214&quot;&gt;false&lt;/IgnoreLinkStatus&gt;
+            &lt;InternalPpmAdjust map:endcol=&quot;233&quot; map:line=&quot;3&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;232&quot;&gt;0&lt;/InternalPpmAdjust&gt;
+            &lt;PortSetupMode map:endcol=&quot;266&quot; map:line=&quot;3&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;251&quot;&gt;PORTCONFIG_ONLY&lt;/PortSetupMode&gt;
+            &lt;TestMode map:endcol=&quot;284&quot; map:line=&quot;3&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;268&quot;&gt;NORMAL_OPERATION&lt;/TestMode&gt;
+            &lt;TransmitClockSource map:endcol=&quot;294&quot; map:line=&quot;3&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;286&quot;&gt;INTERNAL&lt;/TransmitClockSource&gt;
+            &lt;AutoMdix map:endcol=&quot;312&quot; map:line=&quot;3&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;307&quot;&gt;false&lt;/AutoMdix&gt;
+        &lt;/row&gt;
+        &lt;row map:nodetype=&quot;row&quot;&gt;
+            &lt;Name map:endcol=&quot;11&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;0&quot;&gt;Port //2/10&lt;/Name&gt;
+            &lt;CollisionControl map:endcol=&quot;15&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;13&quot;&gt;10&lt;/CollisionControl&gt;
+            &lt;DataPathMode map:endcol=&quot;37&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;31&quot;&gt;NORMAL&lt;/DataPathMode&gt;
+            &lt;MasterSlaveType map:endcol=&quot;51&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;45&quot;&gt;MASTER&lt;/MasterSlaveType&gt;
+            &lt;MTU map:endcol=&quot;66&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;62&quot;&gt;1500&lt;/MTU&gt;
+            &lt;Duplex map:endcol=&quot;72&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;68&quot;&gt;FULL&lt;/Duplex&gt;
+            &lt;MediaType map:endcol=&quot;82&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;76&quot;&gt;Copper&lt;/MediaType&gt;
+            &lt;PortSpeed map:endcol=&quot;95&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;87&quot;&gt;SPEED_1G&lt;/PortSpeed&gt;
+            &lt;AutoNegotiation map:endcol=&quot;102&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;98&quot;&gt;true&lt;/AutoNegotiation&gt;
+            &lt;FlowControl map:endcol=&quot;120&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;115&quot;&gt;false&lt;/FlowControl&gt;
+            &lt;Id map:endcol=&quot;129&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;128&quot;&gt;2&lt;/Id&gt;
+            &lt;Online map:endcol=&quot;136&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;132&quot;&gt;true&lt;/Online&gt;
+            &lt;LinkStatus map:endcol=&quot;142&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;140&quot;&gt;UP&lt;/LinkStatus&gt;
+            &lt;Location map:endcol=&quot;171&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;152&quot;&gt;//10.108.32.17/2/10&lt;/Location&gt;
+            &lt;AlternateSpeeds map:endcol=&quot;186&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;173&quot;&gt;SPEED_UNKNOWN&lt;/AlternateSpeeds&gt;
+            &lt;ForwardErrorCorrection map:endcol=&quot;194&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;190&quot;&gt;true&lt;/ForwardErrorCorrection&gt;
+            &lt;IgnoreLinkStatus map:endcol=&quot;219&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;214&quot;&gt;false&lt;/IgnoreLinkStatus&gt;
+            &lt;InternalPpmAdjust map:endcol=&quot;233&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;232&quot;&gt;0&lt;/InternalPpmAdjust&gt;
+            &lt;PortSetupMode map:endcol=&quot;266&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;251&quot;&gt;PORTCONFIG_ONLY&lt;/PortSetupMode&gt;
+            &lt;TestMode map:endcol=&quot;284&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;268&quot;&gt;NORMAL_OPERATION&lt;/TestMode&gt;
+            &lt;TransmitClockSource map:endcol=&quot;294&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;286&quot;&gt;INTERNAL&lt;/TransmitClockSource&gt;
+            &lt;AutoMdix map:endcol=&quot;312&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;307&quot;&gt;false&lt;/AutoMdix&gt;
+        &lt;/row&gt;
+    &lt;/ports&gt;
+    &lt;success map:endcol=&quot;4&quot; map:line=&quot;6&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;0&quot;&gt;true&lt;/success&gt;
+&lt;/structure&gt;
+</structuredData>
+                            <aliases>
+                                <item name="isEmpty">
+                                    <queryFormatString>.//isEmpty</queryFormatString>
+                                </item>
+                                <item name="Name">
+                                    <queryFormatString>.//ports/row[Id = &apos;{0}&apos;]/Name</queryFormatString>
+                                    <arguments>
+                                        <item name="Id">
+                                            <valuesQuery>.//ports/row/Id</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="CollisionControl">
+                                    <queryFormatString>.//ports/row[Id = &apos;{0}&apos;]/CollisionControl</queryFormatString>
+                                    <arguments>
+                                        <item name="Id">
+                                            <valuesQuery>.//ports/row/Id</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="DataPathMode">
+                                    <queryFormatString>.//ports/row[Id = &apos;{0}&apos;]/DataPathMode</queryFormatString>
+                                    <arguments>
+                                        <item name="Id">
+                                            <valuesQuery>.//ports/row/Id</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="MasterSlaveType">
+                                    <queryFormatString>.//ports/row[Id = &apos;{0}&apos;]/MasterSlaveType</queryFormatString>
+                                    <arguments>
+                                        <item name="Id">
+                                            <valuesQuery>.//ports/row/Id</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="MTU">
+                                    <queryFormatString>.//ports/row[Id = &apos;{0}&apos;]/MTU</queryFormatString>
+                                    <arguments>
+                                        <item name="Id">
+                                            <valuesQuery>.//ports/row/Id</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="Duplex">
+                                    <queryFormatString>.//ports/row[Id = &apos;{0}&apos;]/Duplex</queryFormatString>
+                                    <arguments>
+                                        <item name="Id">
+                                            <valuesQuery>.//ports/row/Id</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="MediaType">
+                                    <queryFormatString>.//ports/row[Id = &apos;{0}&apos;]/MediaType</queryFormatString>
+                                    <arguments>
+                                        <item name="Id">
+                                            <valuesQuery>.//ports/row/Id</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="PortSpeed">
+                                    <queryFormatString>.//ports/row[Id = &apos;{0}&apos;]/PortSpeed</queryFormatString>
+                                    <arguments>
+                                        <item name="Id">
+                                            <valuesQuery>.//ports/row/Id</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="AutoNegotiation">
+                                    <queryFormatString>.//ports/row[Id = &apos;{0}&apos;]/AutoNegotiation</queryFormatString>
+                                    <arguments>
+                                        <item name="Id">
+                                            <valuesQuery>.//ports/row/Id</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="FlowControl">
+                                    <queryFormatString>.//ports/row[Id = &apos;{0}&apos;]/FlowControl</queryFormatString>
+                                    <arguments>
+                                        <item name="Id">
+                                            <valuesQuery>.//ports/row/Id</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="Online">
+                                    <queryFormatString>.//ports/row[Id = &apos;{0}&apos;]/Online</queryFormatString>
+                                    <arguments>
+                                        <item name="Id">
+                                            <valuesQuery>.//ports/row/Id</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="LinkStatus">
+                                    <queryFormatString>.//ports/row[Id = &apos;{0}&apos;]/LinkStatus</queryFormatString>
+                                    <arguments>
+                                        <item name="Id">
+                                            <valuesQuery>.//ports/row/Id</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="Location">
+                                    <queryFormatString>.//ports/row[Id = &apos;{0}&apos;]/Location</queryFormatString>
+                                    <arguments>
+                                        <item name="Id">
+                                            <valuesQuery>.//ports/row/Id</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="AlternateSpeeds">
+                                    <queryFormatString>.//ports/row[Id = &apos;{0}&apos;]/AlternateSpeeds</queryFormatString>
+                                    <arguments>
+                                        <item name="Id">
+                                            <valuesQuery>.//ports/row/Id</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="ForwardErrorCorrection">
+                                    <queryFormatString>.//ports/row[Id = &apos;{0}&apos;]/ForwardErrorCorrection</queryFormatString>
+                                    <arguments>
+                                        <item name="Id">
+                                            <valuesQuery>.//ports/row/Id</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="IgnoreLinkStatus">
+                                    <queryFormatString>.//ports/row[Id = &apos;{0}&apos;]/IgnoreLinkStatus</queryFormatString>
+                                    <arguments>
+                                        <item name="Id">
+                                            <valuesQuery>.//ports/row/Id</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="InternalPpmAdjust">
+                                    <queryFormatString>.//ports/row[Id = &apos;{0}&apos;]/InternalPpmAdjust</queryFormatString>
+                                    <arguments>
+                                        <item name="Id">
+                                            <valuesQuery>.//ports/row/Id</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="PortSetupMode">
+                                    <queryFormatString>.//ports/row[Id = &apos;{0}&apos;]/PortSetupMode</queryFormatString>
+                                    <arguments>
+                                        <item name="Id">
+                                            <valuesQuery>.//ports/row/Id</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="TestMode">
+                                    <queryFormatString>.//ports/row[Id = &apos;{0}&apos;]/TestMode</queryFormatString>
+                                    <arguments>
+                                        <item name="Id">
+                                            <valuesQuery>.//ports/row/Id</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="TransmitClockSource">
+                                    <queryFormatString>.//ports/row[Id = &apos;{0}&apos;]/TransmitClockSource</queryFormatString>
+                                    <arguments>
+                                        <item name="Id">
+                                            <valuesQuery>.//ports/row/Id</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="AutoMdix">
+                                    <queryFormatString>.//ports/row[Id = &apos;{0}&apos;]/AutoMdix</queryFormatString>
+                                    <arguments>
+                                        <item name="Id">
+                                            <valuesQuery>.//ports/row/Id</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="success">
+                                    <queryFormatString>success</queryFormatString>
+                                </item>
+                            </aliases>
+                        </behavior>
+                    </emulation>
+                </item>
+                <item guid="1d79e8fb-6e1c-4ea5-aace-d7c0d02f2d65" action="write">
+                    <command>
+                        <body>$ports</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <author>mbarfield</author>
+            <multilineDescription>Returns a list of provisioned ports</multilineDescription>
+        </item>
+        <item name="getBasicPortTxRxCounters" isPublic="true" isVBlock="true">
+            <description>Return basic Tx/Rx counters for the specified</description>
+            <steps>
+                <item guid="0d12e295-0a44-46ca-a4b1-200a40725879" action="showResults" session="$session">
+                    <command>
+                        <body>BasicTrafficResults</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query sub="true">(.//BasicTrafficResults/row\\[PortName = &apos;$port&apos;\\]/TotalTxCount_Frames_)\\[1\\]</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>totalTxCountFrames</storageLocation>
+                                        <query>totalTxCountFrames</query>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query sub="true">(.//BasicTrafficResults/row\\[PortName = &apos;$port&apos;\\]/TotalRxCount_Frames_)\\[1\\]</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>totalRxCountFrames</storageLocation>
+                                        <query>totalRxCountFrames</query>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query sub="true">TotalTxCount_bits_(\\&quot;$port\\&quot;)</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>totalTxCountBits</storageLocation>
+                                        <query>totalTxCountBits</query>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query sub="true">TotalTxRate_bps_(\\&quot;$port\\&quot;)</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>totalRxCountBits</storageLocation>
+                                        <query>totalRxCountBits</query>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <author>mbarfield</author>
+            <multilineDescription>Returns the Tx/Rx Frame/Bit counters for the specified port</multilineDescription>
+            <arguments>
+                <item name="port">
+                    <description>This is the STC port value that can be captured from getPorts QC.
+
+Example: Port //2/9</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+            <response>{&quot;totalTxCountFrames&quot;:&quot;value&quot;,&quot;totalRxCountFrames&quot;:&quot;value&quot;,&quot;totalTxCountBits&quot;:&quot;value&quot;,&quot;totalRxCountBits&quot;:&quot;value&quot;}</response>
+        </item>
+        <item name="setStandardTrafficResults" isPublic="true">
+            <description>Set the different traffic results you want to capture</description>
+            <steps>
+                <item guid="c9b3b153-bc5f-477a-ac39-0cef82537cab" action="subscribeView" session="$session">
+                    <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.spirent.itest.applications.stcrest" transferableType="com.spirent.itest.applications.stcrest.properties.ResultViewProperties">
+                        <ResultViewtype inherit="false" transferableToolId="com.spirent.itest.applications.stcrest">
+                            <memberClasses>
+                                <item>com.spirent.itest.applications.stcrest.properties.ResultViewProperties$ResultEntry</item>
+                            </memberClasses>
+                            <item transferableToolId="com.spirent.itest.applications.stcrest" transferableType="com.spirent.itest.applications.stcrest.properties.ResultViewProperties$ResultEntry" resultView="DetailedStreamResults" resultView.inherit="false"/>
+                            <item transferableToolId="com.spirent.itest.applications.stcrest" transferableType="com.spirent.itest.applications.stcrest.properties.ResultViewProperties$ResultEntry" resultView="BasicTrafficResults" resultView.inherit="false"/>
+                            <item transferableToolId="com.spirent.itest.applications.stcrest" transferableType="com.spirent.itest.applications.stcrest.properties.ResultViewProperties$ResultEntry" resultView="PortResults" resultView.inherit="false"/>
+                        </ResultViewtype>
+                    </applicationProperties>
+                </item>
+            </steps>
+            <author>mbarfield</author>
+            <multilineDescription>Set your common traffic results you want the traffic generator to capture. This should be standard for most of your tests.
+
+List includes:
+DetailedStreamResults, BasicTrafficResults, and PortResults</multilineDescription>
+        </item>
+        <item name="getBasicDeviceInfo" isPublic="true" isVBlock="true">
+            <description>Return basic device info used for packet analysis</description>
+            <steps>
+                <item guid="8223ff21-3561-4b61-a702-b929971f27d6" action="showDevices" session="$session" normalOffset="546.812" estimatedStepExecutionTime="0.458">
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query sub="true">SourceMacAddress(&apos;$port&apos;, &apos;$portId&apos;)</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>SourceMacAddress</storageLocation>
+                                        <query>SourceMacAddress</query>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query sub="true">IPv4Address(&apos;$port&apos;, &apos;$portId&apos;)</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>IPv4Address</storageLocation>
+                                        <query>IPv4Address</query>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query sub="true">IPv4DefaultGateway(&apos;$port&apos;, &apos;$portId&apos;)</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>IPv4DefaultGateway</storageLocation>
+                                        <query>IPv4DefaultGateway</query>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <author>mbarfield</author>
+            <multilineDescription>This will return basic port info used to for L2/L3 traffic
+
+Return: MAC, IP, and GW</multilineDescription>
+            <arguments>
+                <item name="port">
+                    <description>Valid port index
+Example: 1</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="portId">
+                    <description>Valid port id
+Example: 1</description>
+                    <defaultValue>1</defaultValue>
+                </item>
+            </arguments>
+            <response>{&quot;SourceMacAddress&quot;:&quot;value&quot;,&quot;IPv4Address&quot;:&quot;value&quot;,&quot;IPv4DefaultGateway&quot;:&quot;value&quot;}</response>
         </item>
     </procedures>
 </testCase>
