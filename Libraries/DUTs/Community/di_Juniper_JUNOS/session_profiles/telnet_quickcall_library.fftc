@@ -1,0 +1,1173 @@
+<?xml version="1.0"?>
+<testCase version="7.0.0.bc91e6c">
+    <general>
+        <documentation>Juniper QC library</documentation>
+        <notes>Juniper QC library</notes>
+        <owner>mbarfield</owner>
+        <isProcedureLibrary>true</isProcedureLibrary>
+        <sessionClass includeTestCase="true" sessionType="project://di_Juniper_JUNOS/session_profiles/telnet.ffsp"/>
+    </general>
+    <procedures>
+        <item name="main"/>
+        <item name="login" isPublic="true">
+            <description>Login to device</description>
+            <steps>
+                <item guid="ebda3792-cf17-49c5-9b54-68ffdd0a8084" action="command" session="$session" normalOffset="6.449" estimatedStepExecutionTime="0.492">
+                    <command>
+                        <body>$username</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                        <completionProperties expectedIdleTime="2.026" expectedIdleTime.inherit="false"/>
+                    </applicationProperties>
+                </item>
+                <item guid="e49ddaac-6441-4471-810a-0c4f545f4456" action="command" session="$session" normalOffset="3.387" estimatedStepExecutionTime="0.482">
+                    <command>
+                        <body>$password</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                        <completionProperties expectedIdleTime="0.333" expectedIdleTime.inherit="false"/>
+                    </applicationProperties>
+                </item>
+                <item guid="f94d8a9f-da07-46b4-b32a-458d9d73e3e3" action="call">
+                    <command>
+                        <body>setTermLengthZero -session $session</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="193d55c2-0b45-4bce-9391-74a3da856e6a" action="write">
+                    <command>
+                        <body>Login complete: $session</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <author>mbarfield</author>
+            <multilineDescription>Used to autoatically login to session</multilineDescription>
+            <arguments>
+                <item name="username">
+                    <description>Valid username</description>
+                    <defaultValue>spirent</defaultValue>
+                </item>
+                <item name="password">
+                    <description>valid password</description>
+                    <defaultValue>Spirent</defaultValue>
+                </item>
+                <item name="enablePassword">
+                    <description>Leave blank if the same as password</description>
+                </item>
+            </arguments>
+        </item>
+        <item name="getVersion" isPublic="true" isVBlock="true">
+            <description>Return the current FW version</description>
+            <steps>
+                <item guid="aabc608f-e5fe-44c8-a904-b98bd67a765f" action="command" session="$session" normalOffset="8.747" estimatedStepExecutionTime="0.486">
+                    <command>
+                        <body>show version</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>JUNOS_Software_Release()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>version</storageLocation>
+                                        <query>version</query>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>Hostname()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>hostname</storageLocation>
+                                        <query>hostname</query>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                        <completionProperties expectedIdleTime="0.956" expectedIdleTime.inherit="false"/>
+                    </applicationProperties>
+                </item>
+            </steps>
+            <author>mbarfield</author>
+            <multilineDescription>Get current SW version good for intital system checks</multilineDescription>
+            <response>{&quot;version&quot;:&quot;value&quot;,&quot;hostname&quot;:&quot;value&quot;}</response>
+        </item>
+        <item name="checkCounters" isPublic="true" isVBlock="true">
+            <description>Clear counters on interface</description>
+            <responseMap>project://di_Juniper_JUNOS/response_maps/custom/jsonBlockToQueries.ffrm</responseMap>
+            <steps>
+                <item guid="9be40711-c87f-4456-8001-f23ff3321f0f" action="comment">
+                    <command>
+                        <body>Clear counters if true</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="f98896cf-040c-4faa-a4bb-d181b26236da" action="if">
+                    <command>
+                        <body>$clearCounters</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="8f4882d6-7c69-47ab-aca2-f207502f2a60" action="then">
+                            <nestedSteps>
+                                <item guid="fc5b8f6a-a9d1-42cd-8e5b-11380500a6e2" action="command" session="$session" normalOffset="31.627" estimatedStepExecutionTime="0.137">
+                                    <command>
+                                        <body>clear interfaces statistics $ifc</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                                        <completionProperties expectedIdleTime="2.45" expectedIdleTime.inherit="false"/>
+                                    </applicationProperties>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="34b7432b-bb32-4ac8-8054-3e669f571940" action="command" session="$session" normalOffset="8.267" estimatedStepExecutionTime="0.143" useResponseMapLibraryApplicability="false">
+                    <command>
+                        <body>show interface $ifc</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>Input_rate_bps()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>inputRateBitsSec</storageLocation>
+                                        <query>inputRateBitsSec</query>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>Input_rate_pps()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>inputRatePktsSec</storageLocation>
+                                        <query>inputRatePktsSec</query>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>Output_rate_bps()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>outputRateBitsSec</storageLocation>
+                                        <query>outputRateBitsSec</query>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>Output_rate_pps()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>outputRatePktsSec</storageLocation>
+                                        <query>outputRatePktsSec</query>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>Input_packets()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>pktsInput</storageLocation>
+                                        <query>pktsInput</query>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>Output_packets()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>pktsOutput</storageLocation>
+                                        <query>pktsOutput</query>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                        <completionProperties expectedIdleTime="0.934" expectedIdleTime.inherit="false"/>
+                    </applicationProperties>
+                    <responseMap>project://di_Juniper_JUNOS/response_maps/show/interface/show_interface_ge_ver_b.ffrm</responseMap>
+                    <useResponseMapLibraryFromSession>false</useResponseMapLibraryFromSession>
+                </item>
+            </steps>
+            <author>mbarfield</author>
+            <multilineDescription>This procedure is used to clear counters for Ethernet interface.</multilineDescription>
+            <arguments>
+                <item name="ifc">
+                    <description>Enter a valid interface value.
+
+e.g. - fastEthernet 6/0</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="clearCounters">
+                    <description>Clear counter is if set to 1 (true). Default value is 0 (false).
+Acceptable values: 0|1</description>
+                    <defaultValue>0</defaultValue>
+                </item>
+            </arguments>
+            <response>{&quot;inputRateBitsSec&quot;:&quot;value&quot;,&quot;inputRatePktsSec&quot;:&quot;value&quot;,&quot;outputRateBitsSec&quot;:&quot;value&quot;,&quot;outputRatePktsSec&quot;:&quot;value&quot;,&quot;pktsInput&quot;:&quot;value&quot;,&quot;pktsOutput&quot;:&quot;value&quot;}</response>
+        </item>
+        <item name="saveRunningConfigTftp" isPublic="true">
+            <description>Save running config TFTP server</description>
+            <steps>
+                <item guid="138160e6-49a9-422d-8c87-8167f3746c4d" action="eval">
+                    <command>
+                        <body>set timeStamp  [clock format [clock seconds] -format &quot;%Y%m%d%H%M%S&quot;]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="d0349b42-9f66-4893-b2fd-ec85896348eb" action="getVersion" session="$session">
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>mapped/Json/hostname</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>hostname</storageLocation>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="d56e868c-c400-41da-aec1-923cda8ecf62" action="command" session="$session" normalOffset="331.523" estimatedStepExecutionTime="0.424">
+                    <command>
+                        <body>configure</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                        <completionProperties expectedIdleTime="0.61" expectedIdleTime.inherit="false"/>
+                    </applicationProperties>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="8126dac5-f57f-4640-9144-0e8363b12b88" action="command" session="$session" normalOffset="8.216" estimatedStepExecutionTime="0.494">
+                    <command>
+                        <body>save snapshotConfig</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                        <completionProperties expectedIdleTime="0.751" expectedIdleTime.inherit="false"/>
+                    </applicationProperties>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="fcfb017f-7746-47a8-a29b-169fef9acb37" action="command" session="$session">
+                    <command>
+                        <body>run start shell </body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                        <completionProperties expectedIdleTime="0.26" expectedIdleTime.inherit="false"/>
+                    </applicationProperties>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="aa2679a8-4179-425d-8b21-2ec5ff8f5f34" action="if">
+                    <command>
+                        <body>$filename == &quot;&quot;</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="71e4f3e2-2c62-4648-9e81-cb8199b7466d" action="then">
+                            <nestedSteps>
+                                <item guid="f4f0ccc5-044c-4fac-88c5-18d1d77274c5" action="eval">
+                                    <command>
+                                        <body>set filename &quot;snapshotConfig_${hostname}_${timeStamp}&quot;</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="9785d0ca-82cd-43fd-a19c-5160670c1f8b" action="command" session="$session" estimatedStepExecutionTime="0.397">
+                    <command>
+                        <body>tftp -JP snapshotConfig $tftpServerIp:$filename</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="contains">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                        <searchString>OK - * bytes</searchString>
+                                        <matchType>Wildcard</matchType>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$value == 1</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="OK">
+                                                    <message>$session: Config loaded - $filename running-config</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="PassTestIfNotAlreadyFailed">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                        </actionsWhenTrue>
+                                        <actionsWhenFalse>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message>$session: Config loaded - $filename running-config</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="FailTest">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                        </actionsWhenFalse>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                        <storeResponseAt>retVal</storeResponseAt>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                        <completionProperties expectedIdleTime="0.89" expectedIdleTime.inherit="false"/>
+                    </applicationProperties>
+                </item>
+                <item guid="b615730c-d97c-4862-a7a3-618720f97935" action="command" session="$session" estimatedStepExecutionTime="0.263">
+                    <command>
+                        <body>exit</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                        <completionProperties expectedIdleTime="0.25" expectedIdleTime.inherit="false"/>
+                    </applicationProperties>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="b3023fd2-68d4-4b29-99be-d869bb6d97f0" action="command" session="$session">
+                    <command>
+                        <body>exit</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                        <completionProperties expectedIdleTime="0.25" expectedIdleTime.inherit="false"/>
+                    </applicationProperties>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="d45490df-5fe4-406b-8892-b7a01635efd2" action="write">
+                    <command>
+                        <body>filename: $filename\\n</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="efadb73d-053e-4e13-9e27-fc4e7ac0d542" action="write">
+                    <command>
+                        <body>[response retVal]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <author>mbarfield</author>
+            <multilineDescription>Save the running config to a TFTP server</multilineDescription>
+            <arguments>
+                <item name="tftpServerIp">
+                    <description>Valid IP address</description>
+                    <defaultValue>10.108.36.206</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="filename">
+                    <description>Valid config file name</description>
+                </item>
+            </arguments>
+        </item>
+        <item name="restoreRunningConfigTftp" isPublic="true">
+            <description>Restore running config from TFTP server</description>
+            <steps>
+                <item guid="f6dc499f-642c-48a1-aa65-b2949e279444" action="getVersion" session="$session">
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>mapped/Json/hostname</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>hostname</storageLocation>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="030344ab-abbd-4b0c-9849-945fd0300a07" action="if">
+                    <command>
+                        <body>$filename == &quot;&quot;</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="68adacc2-275a-4c1d-8b48-b1df2d024715" action="then">
+                            <nestedSteps>
+                                <item guid="d5d0ea3f-213d-4c27-9797-d50fc6219dd5" action="comment">
+                                    <command>
+                                        <body>restore golden config</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="76421b21-68fd-4ee2-b562-a37cf749f55a" action="eval">
+                                    <command>
+                                        <body>set filename goldenConfig_$hostname</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="e47c09db-0137-4c4c-87c0-707004fe15d4" action="command" session="$session" normalOffset="5.692" estimatedStepExecutionTime="0.658">
+                    <command>
+                        <body>configure</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                        <completionProperties expectedIdleTime="0.416" expectedIdleTime.inherit="false"/>
+                    </applicationProperties>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="fdeca944-c6b3-4879-8d63-26c605994715" action="command" session="$session">
+                    <command>
+                        <body>run start shell </body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                        <completionProperties expectedIdleTime="0.26" expectedIdleTime.inherit="false"/>
+                    </applicationProperties>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="45f31a47-fc6a-4254-b07d-43f3d640458a" action="command" session="$session" estimatedStepExecutionTime="0.397">
+                    <command>
+                        <body>tftp -JG ${tftpServerIp}:${filename}</body>
+                    </command>
+                    <postProcessing>
+                        <storeResponseAt>retVal</storeResponseAt>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                        <completionProperties expectedIdleTime="0.89" expectedIdleTime.inherit="false"/>
+                    </applicationProperties>
+                </item>
+                <item guid="4044b621-c39b-4741-b49b-db87ce8e7012" action="command" session="$session" estimatedStepExecutionTime="0.263">
+                    <command>
+                        <body>exit</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                        <completionProperties expectedIdleTime="0.25" expectedIdleTime.inherit="false"/>
+                    </applicationProperties>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="358cd351-e749-410c-b1f9-13cc95a84936" action="command" session="$session" normalOffset="23" estimatedStepExecutionTime="0.416">
+                    <command>
+                        <body>load replace $filename</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="contains">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                        <searchString>load complete</searchString>
+                                        <matchType>Wildcard</matchType>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$value == 1</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="OK">
+                                                    <message>$session: Config loaded - $filename running-config</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="PassTestIfNotAlreadyFailed">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                        </actionsWhenTrue>
+                                        <actionsWhenFalse>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message>$session: Config loaded - $filename running-config</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="FailTest">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                        </actionsWhenFalse>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                        <completionProperties expectedIdleTime="1.231" expectedIdleTime.inherit="false"/>
+                    </applicationProperties>
+                </item>
+                <item guid="53d85499-7b26-4911-88b6-08deba80bf93" action="command" session="$session">
+                    <command>
+                        <body>exit</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="f32a3094-d2e5-465f-b20d-6abcddd03d50" action="comment">
+                    <command>
+                        <body>if config is messed up revert back to last state - assume we get a prompt before committing</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="579968f8-1af8-40e1-b6ad-731171b61eab" action="commitConfirmed" session="$session" normalOffset="45.453" estimatedStepExecutionTime="17.751">
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="e65c7bd4-1c46-4ee0-b233-9c80795b70b1" action="write">
+                    <command>
+                        <body>[response retVal]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <author>mbarfield</author>
+            <multilineDescription>Restorre the running config from a TFTP server</multilineDescription>
+            <arguments>
+                <item name="tftpServerIp">
+                    <description>Valid IP address</description>
+                    <defaultValue>10.108.36.206</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="filename">
+                    <description>Valid config file name</description>
+                </item>
+            </arguments>
+        </item>
+        <item name="graphProcesses" isPublic="true">
+            <description>Create benchmark graphs of CPU and Memory</description>
+            <steps>
+                <item guid="f19a5343-bdf6-4841-a894-53fd28ad1ba8" action="comment">
+                    <command>
+                        <body>capture clock info as a reference point</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="f9bb3280-8e6d-4e38-ac0b-3b4a9f70cc68" action="command" session="$session">
+                            <command>
+                                <body>show system uptime</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                                <completionProperties expectedIdleTime="0.211" expectedIdleTime.inherit="false"/>
+                            </applicationProperties>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="8de07622-4df3-4f85-8aef-6e5934c22e7f" action="comment">
+                    <command>
+                        <body>Graph CPU and Memory</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="783ec119-6c10-4255-9f17-7a8311c8c8a0" action="while">
+                            <command>
+                                <body>true</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="8cbec2c7-c7a6-46e2-91b0-3a6107df7e79" action="command" session="$session" normalOffset="52.287" estimatedStepExecutionTime="0.283">
+                                    <command>
+                                        <body>show system process extensive</body>
+                                    </command>
+                                    <postProcessing>
+                                        <analysisRules>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                        <query>memActiveMb()</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="chart_as_xy">
+                                                    <ruleProperties type="com.fnfr.svt.execution.charting.processors.ChartUsingXYPropertyGroup" chartName="memoryUtilization" xAxisLabel="time" yAxisLabel="Bytes" maxItemCount="4000" series="memActiveMb">
+                                                        <title>Memory Benchmark</title>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                        <query>memFreeMb()</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="chart_as_xy">
+                                                    <ruleProperties type="com.fnfr.svt.execution.charting.processors.ChartUsingXYPropertyGroup" chartName="memoryUtilization" xAxisLabel="time" yAxisLabel="Bytes" maxItemCount="4000" series="memFreeMb">
+                                                        <title>Memory Benchmark</title>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                        <query>loadAvgOneMin()</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="chart_as_xy">
+                                                    <ruleProperties type="com.fnfr.svt.execution.charting.processors.ChartUsingXYPropertyGroup" chartName="cpuUtilization" xAxisLabel="time" yAxisLabel="%cpu load" maxItemCount="4000" series="loadAvgOneMin">
+                                                        <title>CPU Benchmark</title>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                        <query>loadAvgFiveMin()</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="chart_as_xy">
+                                                    <ruleProperties type="com.fnfr.svt.execution.charting.processors.ChartUsingXYPropertyGroup" chartName="cpuUtilization" xAxisLabel="time" yAxisLabel="%cpu load" maxItemCount="4000" series="loadAvgFiveMin">
+                                                        <title>CPU Benchmark</title>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                        <query>loadAvgFifteenMin()</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="chart_as_xy">
+                                                    <ruleProperties type="com.fnfr.svt.execution.charting.processors.ChartUsingXYPropertyGroup" chartName="cpuUtilization" xAxisLabel="time" yAxisLabel="%cpu load" maxItemCount="4000" series="loadAvgFifteenMin">
+                                                        <title>CPU Benchmark</title>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                        </analysisRules>
+                                    </postProcessing>
+                                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                                        <completionProperties expectedIdleTime="0.211" expectedIdleTime.inherit="false"/>
+                                    </applicationProperties>
+                                </item>
+                                <item guid="7e4c5eb0-e321-4d16-9836-a46213859d08" action="sleep">
+                                    <command>
+                                        <body>$delaySec</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <author>mbarfield</author>
+            <multilineDescription>This is intended to run as a background process throughout the entire test. By default we capture stats every 30 seconds.</multilineDescription>
+            <arguments>
+                <item name="delaySec">
+                    <description>Number of seconds to wait before checking process info.</description>
+                    <defaultValue>30</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="interfaceCheckState" isPublic="true">
+            <description>Check that interfaces are up</description>
+            <steps>
+                <item guid="bd3bcb53-a883-4a71-b33a-649de9dc97d4" action="foreach">
+                    <command>
+                        <body>interface $interfaces</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="370d75c3-6090-4c42-9e73-1cd2da89a02f" action="eval">
+                            <command>
+                                <body>set interfaceState PASS</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="3aafd21b-65d3-4061-b17e-5fc72ee6a1f4" action="command" session="$session">
+                            <command>
+                                <body>show interfaces $interface</body>
+                            </command>
+                            <postProcessing>
+                                <analysisRules>
+                                    <item>
+                                        <extractorInfo extractorType="query">
+                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                <query>ifcAdminState()</query>
+                                            </extractorProperties>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="assert">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                <expression>$value == &quot;Enabled&quot;</expression>
+                                                <actionsWhenFalse>
+                                                    <item actionId="Eval">
+                                                        <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                            <statement>set interfaceState FAIL</statement>
+                                                        </actionProperties>
+                                                    </item>
+                                                </actionsWhenFalse>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                    <item>
+                                        <extractorInfo extractorType="query">
+                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                <query>phyLinkStatus()</query>
+                                            </extractorProperties>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="assert">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                <expression>$value == &quot;Up&quot;</expression>
+                                                <actionsWhenFalse>
+                                                    <item actionId="Eval">
+                                                        <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                            <statement>set interfaceState FAIL</statement>
+                                                        </actionProperties>
+                                                    </item>
+                                                </actionsWhenFalse>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                </analysisRules>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                        </item>
+                        <item guid="50b534bc-6b22-47c3-b771-26440537ebe3" action="if">
+                            <command>
+                                <body>$interfaceState == &quot;PASS&quot;</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="cb69be96-5cef-43af-a513-b0173e9a8784" action="then">
+                                    <nestedSteps>
+                                        <item guid="ba1bc8b2-1f4d-4309-897d-871b4e42f1ed" action="comment">
+                                            <command>
+                                                <body>write back info</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                        <item guid="0e96ffb1-9686-4a12-b7f2-c0c89443952f" action="write">
+                                            <command>
+                                                <body>$interface: $interfaceState\\n</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="79b57dbf-e604-47ea-b676-c6a31646d02c" action="else">
+                                    <nestedSteps>
+                                        <item guid="373fa4ea-13a2-43e0-ae73-affcfd55f61b" action="comment">
+                                            <command>
+                                                <body>write back info</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                        <item guid="6d8db0bd-5435-485c-bf7c-7d6a165aa527" action="write">
+                                            <command>
+                                                <body>$interface: $interfaceState\\n</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <author>mbarfield</author>
+            <multilineDescription>Use to validate if interfaces are up</multilineDescription>
+            <arguments>
+                <item name="interfaces">
+                    <description>Valid list of interfaces to check</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="interfaceGetState" isPublic="true" isVBlock="true">
+            <description>Get the interface state</description>
+            <steps>
+                <item guid="7d2e459c-45df-478d-974c-8bf69481a395" action="command" session="$session">
+                    <command>
+                        <body>show interfaces $interface</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>ifcAdminState()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>adminState</storageLocation>
+                                        <query>adminState</query>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>phyLinkStatus()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>linkStatus</storageLocation>
+                                        <query>linkStatus</query>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+            </steps>
+            <author>mbarfield</author>
+            <multilineDescription>Get the interface state from a vaild interface</multilineDescription>
+            <arguments>
+                <item name="interface">
+                    <description>Valid interface</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+            <response>{&quot;adminState&quot;:&quot;value&quot;,&quot;linkStatus&quot;:&quot;value&quot;}</response>
+        </item>
+        <item name="interfaceModifyState" isPublic="true">
+            <description>Enable/Disable an interface</description>
+            <steps>
+                <item guid="fa0580b0-1232-4883-b771-a21e36060cb5" action="command" session="$session" normalOffset="97.706" estimatedStepExecutionTime="0.467">
+                    <command>
+                        <body>configure</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                        <completionProperties expectedIdleTime="0.329" expectedIdleTime.inherit="false"/>
+                    </applicationProperties>
+                    <emulation>
+                        <behavior>
+                            <response>Entering configuration mode
+
+[edit]</response>
+                            <responseType>text</responseType>
+                            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;terminal RequiredForRendering=&quot;true&quot;&gt;
+        &lt;prompt&gt;spirent@ihop# &lt;/prompt&gt;
+        &lt;promptExtraction&gt;LAST_LINE&lt;/promptExtraction&gt;
+        &lt;echo&gt;configure&lt;/echo&gt;
+        &lt;idleTime&gt;0.329&lt;/idleTime&gt;
+        &lt;contentType&gt;text&lt;/contentType&gt;
+        &lt;terminator&gt;SLASH_R_SLASH_N&lt;/terminator&gt;
+    &lt;/terminal&gt;
+&lt;/structure&gt;
+</structuredData>
+                        </behavior>
+                    </emulation>
+                </item>
+                <item guid="5c5defaa-dbeb-4275-9d4d-2150fe484dbe" action="command" session="$session" normalOffset="48.29" estimatedStepExecutionTime="0.485">
+                    <command>
+                        <body>edit interfaces </body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                        <completionProperties expectedIdleTime="4.95" expectedIdleTime.inherit="false"/>
+                    </applicationProperties>
+                    <emulation>
+                        <behavior>
+                            <response>
+[edit interfaces]</response>
+                            <responseType>text</responseType>
+                            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;terminal RequiredForRendering=&quot;true&quot;&gt;
+        &lt;prompt&gt;spirent@ihop# &lt;/prompt&gt;
+        &lt;promptExtraction&gt;LAST_LINE&lt;/promptExtraction&gt;
+        &lt;echo&gt;edit interfaces&lt;/echo&gt;
+        &lt;idleTime&gt;4.95&lt;/idleTime&gt;
+        &lt;contentType&gt;text&lt;/contentType&gt;
+        &lt;terminator&gt;SLASH_R_SLASH_N&lt;/terminator&gt;
+    &lt;/terminal&gt;
+&lt;/structure&gt;
+</structuredData>
+                        </behavior>
+                    </emulation>
+                </item>
+                <item guid="993241d2-9863-4bc6-b256-807b8bc61e77" action="switch">
+                    <command>
+                        <body>$state</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="056516f1-2574-4f08-a6ac-8468dfe3f7b6" action="case">
+                            <command>
+                                <body>&quot;enable&quot;</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="81f347f2-dcfd-4ab1-aea9-a7c0cf0b9b16" action="command" session="$session" normalOffset="13.065" estimatedStepExecutionTime="0.504">
+                                    <command>
+                                        <body>delete $interface disable</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                                        <completionProperties expectedIdleTime="1.95" expectedIdleTime.inherit="false"/>
+                                    </applicationProperties>
+                                    <emulation>
+                                        <behavior>
+                                            <response>
+[edit interfaces]</response>
+                                            <responseType>text</responseType>
+                                            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;terminal RequiredForRendering=&quot;true&quot;&gt;
+        &lt;prompt&gt;spirent@ihop# &lt;/prompt&gt;
+        &lt;promptExtraction&gt;LAST_LINE&lt;/promptExtraction&gt;
+        &lt;echo&gt;set ge-0/0/2 disable&lt;/echo&gt;
+        &lt;idleTime&gt;1.95&lt;/idleTime&gt;
+        &lt;contentType&gt;text&lt;/contentType&gt;
+        &lt;terminator&gt;SLASH_R_SLASH_N&lt;/terminator&gt;
+    &lt;/terminal&gt;
+&lt;/structure&gt;
+</structuredData>
+                                        </behavior>
+                                    </emulation>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="0926ce22-6bdc-4371-9fe6-af858051d743" action="case">
+                            <command>
+                                <body>&quot;disable&quot;</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="6704f291-19b5-45e1-9ad1-abadd246d664" action="command" session="$session" normalOffset="13.065" estimatedStepExecutionTime="0.504">
+                                    <command>
+                                        <body>set $interface disable</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                                        <completionProperties expectedIdleTime="1.95" expectedIdleTime.inherit="false"/>
+                                    </applicationProperties>
+                                    <emulation>
+                                        <behavior>
+                                            <response>
+[edit interfaces]</response>
+                                            <responseType>text</responseType>
+                                            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;terminal RequiredForRendering=&quot;true&quot;&gt;
+        &lt;prompt&gt;spirent@ihop# &lt;/prompt&gt;
+        &lt;promptExtraction&gt;LAST_LINE&lt;/promptExtraction&gt;
+        &lt;echo&gt;set ge-0/0/2 disable&lt;/echo&gt;
+        &lt;idleTime&gt;1.95&lt;/idleTime&gt;
+        &lt;contentType&gt;text&lt;/contentType&gt;
+        &lt;terminator&gt;SLASH_R_SLASH_N&lt;/terminator&gt;
+    &lt;/terminal&gt;
+&lt;/structure&gt;
+</structuredData>
+                                        </behavior>
+                                    </emulation>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="243182a5-62bc-4c74-9420-91991f48fa65" action="default">
+                            <nestedSteps>
+                                <item guid="bd425919-0725-4631-b1a2-c4cda11dec1e" action="comment">
+                                    <command>
+                                        <body>Invalid option</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="e94bce77-2b3f-482b-a74e-6263a8489d8a" action="write">
+                                    <command>
+                                        <body>ERROR: Invalid option - $state</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="84e576dc-ed89-40f5-8b26-0c6e201f71ab" action="command" session="$session">
+                    <command>
+                        <body>exit configuration-mode</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                        <completionProperties expectedIdleTime="4.95" expectedIdleTime.inherit="false"/>
+                    </applicationProperties>
+                </item>
+            </steps>
+            <author>mbarfield</author>
+            <multilineDescription>Use QC to easitly enable/disable interfaces</multilineDescription>
+            <arguments>
+                <item name="interface">
+                    <description>Valid interface to modify</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="state">
+                    <description>Two options: enable|disable</description>
+                    <defaultValue>enable</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="commitConfirmed" isPublic="true">
+            <description>Commit confirmed to prevent locking user out of device</description>
+            <steps>
+                <item guid="cb5d8930-e017-40e2-a741-068fd2893db3" action="command" session="$session" normalOffset="97.706" estimatedStepExecutionTime="0.467">
+                    <command>
+                        <body>configure</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                        <completionProperties expectedIdleTime="0.329" expectedIdleTime.inherit="false"/>
+                    </applicationProperties>
+                    <emulation>
+                        <behavior>
+                            <response>Entering configuration mode
+
+[edit]</response>
+                            <responseType>text</responseType>
+                            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;terminal RequiredForRendering=&quot;true&quot;&gt;
+        &lt;prompt&gt;spirent@ihop# &lt;/prompt&gt;
+        &lt;promptExtraction&gt;LAST_LINE&lt;/promptExtraction&gt;
+        &lt;echo&gt;configure&lt;/echo&gt;
+        &lt;idleTime&gt;0.329&lt;/idleTime&gt;
+        &lt;contentType&gt;text&lt;/contentType&gt;
+        &lt;terminator&gt;SLASH_R_SLASH_N&lt;/terminator&gt;
+    &lt;/terminal&gt;
+&lt;/structure&gt;
+</structuredData>
+                        </behavior>
+                    </emulation>
+                </item>
+                <item guid="039e5df5-fc8b-4f8b-99a7-cd20e06199f2" action="command" session="$session">
+                    <command>
+                        <body>commit confirmed $timeout</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="0252ebf9-bee7-4d5f-be7b-5dfa424b442a" action="if">
+                    <command>
+                        <body>$commitImmediately == true</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="25084c07-23ce-4f82-9f95-f130a2589281" action="then">
+                            <nestedSteps>
+                                <item guid="f7258bb2-abaf-43a7-910c-2151bae53849" action="command" session="$session">
+                                    <command>
+                                        <body>commit</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="ea8abbc7-9fea-4a72-81bd-9a9677fba5a7" action="command" session="$session">
+                    <command>
+                        <body>exit configuration-mode</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                        <completionProperties expectedIdleTime="1.95" expectedIdleTime.inherit="false"/>
+                    </applicationProperties>
+                </item>
+            </steps>
+            <author>mbarfield</author>
+            <multilineDescription>Use commit confirmed so if the console gets knocked out then the commit won&apos;t happen. The system will rollback on its own.</multilineDescription>
+            <arguments>
+                <item name="timeout">
+                    <description>Number of minutes until automatic rollback (1..65535)</description>
+                    <defaultValue>10</defaultValue>
+                </item>
+                <item name="commitImmediately">
+                    <description>Will commit after &quot;commit confirmed&quot; true|false</description>
+                    <defaultValue>true</defaultValue>
+                </item>
+            </arguments>
+        </item>
+        <item name="setTermLengthZero" isPublic="true">
+            <description>Set terminal length to 0</description>
+            <steps>
+                <item guid="090a736c-6496-43a5-81ff-2524ac646ae3" action="command" session="$session">
+                    <command>
+                        <body>set cli screen-length 0</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+            </steps>
+            <author>mbarfield</author>
+            <multilineDescription>Set terminal length to 0</multilineDescription>
+            <arguments>
+                <item name="session">
+                    <description>Session name if not called from a QC</description>
+                </item>
+            </arguments>
+        </item>
+    </procedures>
+</testCase>
