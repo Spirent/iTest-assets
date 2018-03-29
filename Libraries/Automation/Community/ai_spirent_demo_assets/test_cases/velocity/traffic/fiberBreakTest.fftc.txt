@@ -1,0 +1,70 @@
+============General==================
+owner="mbarfield"
+============Steps====================
+Procedure main
+	1 open Cisco1 device:Router1#telnet
+	2 login Cisco1 
+		normalOffset="6.139"
+		estimatedStepExecutionTime="3.203"
+		useFieldsInCommand="false"
+	3 command Cisco1 clear counters fa 6/0
+		normalOffset="63.462"
+		estimatedStepExecutionTime="0.909"
+		expectedIdleTime="2.657"
+		expectedIdleTime.inherit="false"
+	4 command Cisco1 
+		normalOffset="2.345"
+		estimatedStepExecutionTime="1.061"
+	5 command Cisco1 show interfaces fastEthernet 6/0
+		normalOffset="17.199"
+		estimatedStepExecutionTime="1.469"
+		expectedIdleTime="1.516"
+		expectedIdleTime.inherit="false"
+	6 open STC1 device:STC1#Spirent_TestCenter
+		normalOffset="102.819"
+		transferableToolId="com.fnfr.svt.applications.spirent.testcenter.gui"
+		transferableType="com.fnfr.itest.applications.spirent.testcenter.properties.TestCenterGUISessionProperties"
+		configureCustom16bitFilter(transferableToolId="com.fnfr.svt.applications.spirent.testcenter.gui")(transferableType="com.fnfr.itest.applications.spirent.testcenter.properties.Analyzer16BitFilterProperties")(mask="ffff")(mask.inherit="false")(endOfRange="ffff")(endOfRange.inherit="false")
+	7 subscribeView STC1 DetailedStreamResults
+		normalOffset="16.549"
+		estimatedStepExecutionTime="5.325"
+	8 startGenerator STC1 
+		normalOffset="27.317"
+		estimatedStepExecutionTime="2.307"
+	9 sleep 10
+	10 showResults STC1 DetailedStreamResults "Advanced Sequencing" 1
+		normalOffset="14.927"
+		estimatedStepExecutionTime="0.029"
+	11 #Break the link
+	12 open PC device:PC#Velocity_REST_API
+		normalOffset="42.194"
+		transferableToolId="com.fnfr.itest.applications.webservices.restful"
+		transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulSessionProperties"
+	13 makeReleaseLink PC -topoName CiscoSystemTest -link "Link 4" -action break
+		normalOffset="31.971"
+		estimatedStepExecutionTime="67.144"
+		useFieldsInCommand="false"
+	14 #wait 10 seconds
+	15 sleep 10
+	16 #restore the link
+	17 makeReleaseLink PC -topoName CiscoSystemTest -link "Link 4" -action restore
+		normalOffset="116.606"
+		estimatedStepExecutionTime="72.286"
+		useFieldsInCommand="false"
+	18 sleep 10
+	19 showResults STC1 DetailedStreamResults "Advanced Sequencing" 1
+		normalOffset="26.686"
+		estimatedStepExecutionTime="0.03"
+	20 close Cisco1 
+		normalOffset="12.273"
+	21 #wait 10 and check drop count again
+	22 showResults STC1 DetailedStreamResults "Advanced Sequencing" 1
+		normalOffset="20.49"
+		estimatedStepExecutionTime="0.022"
+	23 stopCapture STC1 
+		normalOffset="14.932"
+		estimatedStepExecutionTime="1.706"
+	24 close STC1 
+		normalOffset="5.322"
+	25 close PC 
+		normalOffset="1.394"
