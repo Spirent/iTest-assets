@@ -1,0 +1,60 @@
+============General==================
+isProcedureLibrary="true"
+sessionClass(includeTestCase="true")(sessionType="cmd.ffsp")
+============Steps====================
+Procedure main
+	1 #Main
+		useFieldsInCommand="false"
+Procedure pingDevice
+	1 command $session ping $ip -n $count -l $buffer
+		analyze
+			contains Approximate round trip times in milli-seconds
+			assert $value == 1
+				When True
+					Eval set roundTripStats "true"
+				When False
+					Eval set roundTripStats "false"
+		normalOffset="6.305"
+		estimatedStepExecutionTime="0.082"
+		expectedIdleTime="1.122"
+		expectedIdleTime.inherit="false"
+	2 #build return values for basic stats
+		useFieldsInCommand="false"
+		2.1 write IP/Hostname: [query pingResponse pingIp()]\\n
+		2.2 write Packets Sent: [query pingResponse packetsTx()]\\n
+		2.3 write Packets Received: [query pingResponse packetsRx()]\\n
+		2.4 write Packets Lost: [query pingResponse packetsLost()]\\n
+		2.5 write Percent Loss (%): [query pingResponse percentLoss()]\\n
+	3 if $roundTripStats
+		useFieldsInCommand="false"
+		3.1 then 
+			useFieldsInCommand="false"
+			3.1.1 #build return values for optional stats
+				useFieldsInCommand="false"
+				3.1.1.1 write roundTripMin (ms): [query pingResponse minRoundTripMs()]\\n
+				3.1.1.2 write roundTripAvg (ms): [query pingResponse avgRoundTripMs()]\\n
+				3.1.1.3 write roundTripMax (ms): [query pingResponse maxRoundTripMs()]\\n
+		3.2 else 
+			useFieldsInCommand="false"
+			3.2.1 #build return values for optional stats - N/A
+				useFieldsInCommand="false"
+			3.2.2 write roundTripMin (ms): N/A\\n
+			3.2.3 write roundTripAvg (ms): N/A\\n
+			3.2.4 write roundTripMax (ms): N/A\\n
+Procedure pythonScript
+	1 command $session $path$testCase
+		analyze
+			contains FAIL
+			assert $value == 0
+				When True
+					DeclareExecutionIssue OK:{auto_message_true}
+					PassTestIfNotAlreadyFailed 
+				When False
+					DeclareExecutionIssue Error:{auto_message_false}
+					FailTest 
+		normalOffset="39.64"
+		estimatedStepExecutionTime="9.153"
+		expectedIdleTime="9.122"
+		expectedIdleTime.inherit="false"
+Procedure dir
+	1 command $session dir
