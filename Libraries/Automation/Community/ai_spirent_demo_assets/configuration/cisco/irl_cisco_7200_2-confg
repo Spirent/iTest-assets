@@ -1,0 +1,139 @@
+
+!
+version 12.3
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname IRL_Cisco_7200_2
+!
+boot-start-marker
+boot-end-marker
+!
+enable password good-day
+!
+no aaa new-model
+ip subnet-zero
+!
+!
+!
+!
+ip cef
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+file prompt quiet
+!
+!
+!
+!
+interface FastEthernet0/0
+ description *** Connected to MGMT - be careful !!! ***
+ ip address 10.108.32.92 255.255.240.0
+ ip access-group management out
+ duplex full
+!
+interface Ethernet1/0
+ no ip address
+ shutdown
+ duplex half
+!
+interface Ethernet1/1
+ no ip address
+ shutdown
+ duplex half
+!
+interface Ethernet1/2
+ no ip address
+ shutdown
+ duplex half
+!
+interface Ethernet1/3
+ no ip address
+ shutdown
+ duplex half
+!
+interface Ethernet2/0
+ no ip address
+ shutdown
+ duplex half
+!
+interface Ethernet2/1
+ no ip address
+ shutdown
+ duplex half
+!
+interface Ethernet2/2
+ no ip address
+ shutdown
+ duplex half
+!
+interface Ethernet2/3
+ no ip address
+ shutdown
+ duplex half
+!
+interface FastEthernet3/0
+ no ip address
+ shutdown
+ duplex half
+!
+interface FastEthernet4/0
+ no ip address
+ shutdown
+ duplex half
+!
+interface FastEthernet5/0
+ ip address 192.168.12.92 255.255.255.0
+ duplex full
+!
+interface FastEthernet6/0
+ ip address 192.168.6.92 255.255.255.0
+ duplex full
+!
+ip classless
+ip route 10.0.0.0 255.0.0.0 10.108.32.1
+ip route 192.168.11.0 255.255.255.0 192.168.6.91
+no ip http server
+!
+!
+!
+ip access-list extended management
+ permit udp any any eq snmp
+ permit udp any any eq snmptrap
+ permit tcp any any eq telnet
+snmp-server community public RO
+snmp-server enable traps tty
+!
+!
+!
+!
+control-plane
+!
+!
+!
+!
+!
+!
+gatekeeper
+ shutdown
+!
+!
+line con 0
+ stopbits 1
+line aux 0
+line vty 0 4
+ password good-day
+ login
+!
+!
+end

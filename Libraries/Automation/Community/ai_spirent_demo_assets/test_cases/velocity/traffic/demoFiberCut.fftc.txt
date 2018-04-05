@@ -1,0 +1,83 @@
+============General==================
+owner="mbarfield"
+============Steps====================
+Procedure main
+	1 #Check router
+	2 open Cisco1 device:Router1#telnet
+		normalOffset="48.065"
+	3 login Cisco1 
+		normalOffset="26.529"
+		estimatedStepExecutionTime="1.092"
+		useFieldsInCommand="false"
+	4 command Cisco1 clear counters fa 6/0
+		normalOffset="294.633"
+		estimatedStepExecutionTime="0.549"
+		expectedIdleTime="0.555"
+		expectedIdleTime.inherit="false"
+	5 command Cisco1 
+		normalOffset="11.772"
+		estimatedStepExecutionTime="0.165"
+	6 command Cisco1 show ip int br
+	7 command Cisco1 show int fastEthernet 6/0
+		analyze
+			query pktsInput()
+			assert $value == "0"
+				When True
+					DeclareExecutionIssue OK:{auto_message_true}
+					PassTestIfNotAlreadyFailed 
+				When False
+					DeclareExecutionIssue Error:{auto_message_false}
+					FailTest 
+		normalOffset="11.799"
+		estimatedStepExecutionTime="1.465"
+		expectedIdleTime="1.175"
+		expectedIdleTime.inherit="false"
+	8 open STC1 device:STC1#Spirent_TestCenter
+		normalOffset="68.612"
+		transferableToolId="com.fnfr.svt.applications.spirent.testcenter.gui"
+		transferableType="com.fnfr.itest.applications.spirent.testcenter.properties.TestCenterGUISessionProperties"
+		configureCustom16bitFilter(transferableToolId="com.fnfr.svt.applications.spirent.testcenter.gui")(transferableType="com.fnfr.itest.applications.spirent.testcenter.properties.Analyzer16BitFilterProperties")(mask="ffff")(mask.inherit="false")(endOfRange="ffff")(endOfRange.inherit="false")
+	9 #start traffic
+	10 startArpNd STC1 1
+		normalOffset="15.38"
+		estimatedStepExecutionTime="1.921"
+	11 subscribeView STC1 DetailedStreamResults
+		normalOffset="22.86"
+		estimatedStepExecutionTime="1.399"
+	12 startGenerator STC1 
+		normalOffset="27.357"
+		estimatedStepExecutionTime="1.102"
+	13 #add delay 10 sec
+	14 sleep 10
+	15 showResults STC1 DetailedStreamResults "Advanced Sequencing" 1
+		normalOffset="33.071"
+		estimatedStepExecutionTime="0.028"
+	16 open PC device:PC#Velocity_REST_API
+		normalOffset="114.899"
+		transferableToolId="com.fnfr.itest.applications.webservices.restful"
+		transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulSessionProperties"
+	17 makeReleaseLink PC -topoName CiscoSystemTest -link "Link 4" -action break
+		normalOffset="98.267"
+		estimatedStepExecutionTime="52.092"
+		useFieldsInCommand="false"
+	18 #add delay 10
+	19 sleep 10
+	20 makeReleaseLink PC -topoName CiscoSystemTest -link "Link 4" -action restore
+		normalOffset="102.616"
+		estimatedStepExecutionTime="56.444"
+		useFieldsInCommand="false"
+	21 sleep 10
+	22 showResults STC1 DetailedStreamResults "Advanced Sequencing" 1
+		normalOffset="98.695"
+		estimatedStepExecutionTime="0.054"
+	23 #add delay 10
+	24 sleep 10
+	25 showResults STC1 DetailedStreamResults "Advanced Sequencing" 1
+		normalOffset="31.108"
+		estimatedStepExecutionTime="0.04"
+	26 close STC1 
+		normalOffset="40.593"
+	27 close PC 
+		normalOffset="5.249"
+	28 close Cisco1 
+		normalOffset="23.248"
