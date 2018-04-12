@@ -1,6 +1,5 @@
-#Added addtional QCs used for customer demos to show test case abstraction
 # project://di_Juniper_JUNOS
-1 QuickCall Library in project://di_Juniper_JUNOS:
+3 QuickCall Libraries in project://di_Juniper_JUNOS:
 ## project://di_Juniper_JUNOS/session_profiles/juniper_JUNOS_ssh_quickcall_library.fftc (project://di_Juniper_JUNOS/session_profiles/juniper_JUNOS_ssh_quickcall_library.fftc)
 
 ### ConfigureLspBandwidth
@@ -678,3 +677,79 @@ For this session return the re# (0 or 1). Also return the 'other re #'
 Use 'show version invoke-on other-routing-engine' which contains "re0" or "re1" at the top of the output.
 If 0, this re must be 1
 If 1, this re must be 0
+## Juniper QC library (project://di_Juniper_JUNOS/session_profiles/telnet_quickcall_library.fftc)
+Juniper QC library
+### login
+Used to autoatically login to session
+
+Argument | Description
+------------ | -------------
+username | Valid username
+password | valid password
+enablePassword | Leave blank if the same as password
+### getVersion
+Get current SW version good for intital system checks
+### checkCounters
+This procedure is used to clear counters for Ethernet interface.
+
+Argument | Description
+------------ | -------------
+ifc | Enter a valid interface value.
+
+e.g. - fastEthernet 6/0
+clearCounters | Clear counter is if set to 1 (true). Default value is 0 (false).
+Acceptable values: 0|1
+### saveRunningConfigTftp
+Save the running config to a TFTP server
+
+Argument | Description
+------------ | -------------
+tftpServerIp | Valid IP address
+filename | Valid config file name
+### restoreRunningConfigTftp
+Restorre the running config from a TFTP server
+
+Argument | Description
+------------ | -------------
+tftpServerIp | Valid IP address
+filename | Valid config file name
+### graphProcesses
+This is intended to run as a background process throughout the entire test. By default we capture stats every 30 seconds.
+
+Argument | Description
+------------ | -------------
+delaySec | Number of seconds to wait before checking process info.
+### interfaceCheckState
+Use to validate if interfaces are up
+
+Argument | Description
+------------ | -------------
+interfaces | Valid list of interfaces to check
+### interfaceGetState
+Get the interface state from a vaild interface
+
+Argument | Description
+------------ | -------------
+interface | Valid interface
+### interfaceModifyState
+Use QC to easitly enable/disable interfaces
+
+Argument | Description
+------------ | -------------
+interface | Valid interface to modify
+state | Two options: enable|disable
+### commitConfirmed
+Use commit confirmed so if the console gets knocked out then the commit won't happen. The system will rollback on its own.
+
+Argument | Description
+------------ | -------------
+timeout | Number of minutes until automatic rollback (1..65535)
+commitImmediately | Will commit after "commit confirmed" true|false
+### setTermLengthZero
+Set terminal length to 0
+
+Argument | Description
+------------ | -------------
+session | Session name if not called from a QC
+## junos web QC library (project://di_Juniper_JUNOS/session_profiles/web_quickcall_library.fftc)
+
