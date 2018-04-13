@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
-<testCase version="6.1.0.e2e4ec0">
+<testCase version="7.0.1.201802131446">
     <general>
         <sessionClass includeTestCase="true" sessionType="project://di_Cyberflood/session_profiles/Cyberflood_REST.ffsp"/>
     </general>
     <execution>
-        <parameters version="6.1.0.e2e4ec0">
+        <parameters version="7.0.1.201802131446">
             <parameters escape="true">
                 <parameters xmlns:pt="http://www.fnfr.com/schemas/parameterTree">
                     <virtual_router>
@@ -5820,6 +5820,1541 @@ Returns a JSON string:
                     <isMandatory>true</isMandatory>
                 </item>
             </arguments>
+        </item>
+        <item name="getToken" isPublic="true">
+            <steps>
+                <item guid="9e0bb506-5a95-4f7b-b636-f543608dac48" action="comment">
+                    <command>
+                        <body>Gets the token and puts it in a global variable named gtoken to be used in the HTTP header for future steps. The token is also used in a write step to the calling test case.</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="4bad5afb-fccc-4d08-991a-c7e17fdc5482" action="POST" session="$session">
+                    <command>
+                        <body>api/v2/token</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>mapped/Json/xtoken</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>token</storageLocation>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" action="api/v2/token" action.inherit="false">
+                        <authentication transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.AuthenticationProperties" authenticationType="Basic" authenticationType.inherit="false" user="ira.gibbs@spirent.com" user.inherit="false" password.masked="true" password="AiRWju4XCF4yE1MRmRsaTQ==" password.inherit="false"/>
+                    </applicationProperties>
+                </item>
+                <item guid="d30d76d1-eddf-4d63-aaf0-c837ac08a5b2" action="write">
+                    <command>
+                        <body>$token</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="516e8997-5df6-408d-a992-20d780d55c45" action="eval">
+                    <command>
+                        <body>gset gtoken $token</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+        </item>
+        <item name="userAdd" isPublic="true">
+            <steps>
+                <item guid="8c4f59e9-43d6-4550-90a5-b81f409a7755" action="comment">
+                    <command>
+                        <body>Add a user with arguments for email, role, first name, last name, password, department, location</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="9e512d5f-3030-4221-abc8-d1411e99a910" action="comment">
+                    <command>
+                        <body>Returns a 1 to the calling test case if the action was successful and a 0 if it was not successful</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="add307e6-2668-457d-84e8-3db5badda828" action="POST" session="$session">
+                    <command>
+                        <body>api/v2/users</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>Status()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$value eq &quot;201 Created&quot;</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="PassTestIfNotAlreadyFailed">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="OK">
+                                                    <message>User Created Successfully</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="Eval">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                    <statement>set status 1</statement>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenTrue>
+                                        <actionsWhenFalse>
+                                            <item actionId="FailTest">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message>User Was Not Successfully Created</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="Eval">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                    <statement>set status 0</statement>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenFalse>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" action="api/v2/users" action.inherit="false" rawresponse.inherit="false" includeHttpHeaders="true" includeHttpHeaders.inherit="false" includeHttpStatusLine="true" includeHttpStatusLine.inherit="false" includeNullValues.inherit="false">
+                        <message inherit="false">{
+  &quot;role&quot;: &quot;$role&quot;,
+  &quot;email&quot;: &quot;$email&quot;,
+  &quot;firstName&quot;: &quot;$firstName&quot;,
+  &quot;lastName&quot;: &quot;$lastName&quot;,
+  &quot;password&quot;: &quot;$password&quot;,
+  &quot;department&quot;: &quot;$department&quot;,
+  &quot;location&quot;: &quot;$location&quot;
+}</message>
+                        <authentication transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.AuthenticationProperties" authenticationType.inherit="false"/>
+                        <httpHeader inherit="false" transferableToolId="com.fnfr.itest.applications.webservices.restful">
+                            <memberClasses>
+                                <item>com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry</item>
+                            </memberClasses>
+                            <item transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry" header="Content-Type" header.inherit="false" value="application/json" value.inherit="false"/>
+                            <item transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry" header="Authorization" header.inherit="false" value="Bearer [gget gtoken]" value.inherit="false"/>
+                        </httpHeader>
+                    </applicationProperties>
+                </item>
+                <item guid="4570b64a-1426-4ec9-bb19-0eacd2ace21b" action="write">
+                    <command>
+                        <body>$status</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <arguments>
+                <item name="role">
+                    <description>user or admin</description>
+                    <defaultValue>user</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="email">
+                    <defaultValue>user@spirent.com</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="password">
+                    <defaultValue>password</defaultValue>
+                </item>
+                <item name="firstName">
+                    <defaultValue>first</defaultValue>
+                </item>
+                <item name="lastName">
+                    <defaultValue>last</defaultValue>
+                </item>
+                <item name="department">
+                    <defaultValue>lab</defaultValue>
+                </item>
+                <item name="location">
+                    <defaultValue>raleigh</defaultValue>
+                </item>
+            </arguments>
+        </item>
+        <item name="subnetIpv4Create" isPublic="true">
+            <steps>
+                <item guid="be062719-a9c0-41d2-9f0b-655462ace7e3" action="comment">
+                    <command>
+                        <body>Add a user with arguments for email, role, first name, last name, password, department, location</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="029f275f-e3de-4622-9255-280ffb2bd9e1" action="comment">
+                    <command>
+                        <body>Returns a 1 to the calling test case if the action was successful and a 0 if it was not successful</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="14e89bcf-256f-4e85-b3d4-35f025a7d0f5" action="POST" session="$session">
+                    <command>
+                        <body>/api/v2/profiles/subnets/ipv4</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>Status()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$value eq &quot;201 Created&quot;</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="PassTestIfNotAlreadyFailed">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="OK">
+                                                    <message>User Created Successfully</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="Eval">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                    <statement>set status 1</statement>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenTrue>
+                                        <actionsWhenFalse>
+                                            <item actionId="FailTest">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message>User Was Not Successfully Created</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="Eval">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                    <statement>set status 0</statement>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenFalse>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" action="/api/v2/profiles/subnets/ipv4" action.inherit="false" rawresponse.inherit="false" includeHttpHeaders="true" includeHttpHeaders.inherit="false" includeHttpStatusLine="true" includeHttpStatusLine.inherit="false" includeNullValues.inherit="false">
+                        <message inherit="false">{
+  &quot;name&quot;: &quot;subnet2&quot;,
+  &quot;description&quot;: &quot;IPv4 Subnet Description&quot;,
+  &quot;addressing&quot;: {
+    &quot;type&quot;: &quot;custom&quot;,
+    &quot;address&quot;: &quot;125.1.3.121&quot;,
+    &quot;netmask&quot;: 24,
+    &quot;count&quot;: 10,
+    &quot;forceIpAllocation&quot;: false
+  },
+  &quot;defaultGateway&quot;: {
+    &quot;enabled&quot;: false
+  },
+  &quot;randomize&quot;: false,
+  &quot;mac&quot;: {
+    &quot;enabled&quot;: false
+  }
+}</message>
+                        <authentication transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.AuthenticationProperties" authenticationType.inherit="false"/>
+                        <httpHeader inherit="false" transferableToolId="com.fnfr.itest.applications.webservices.restful">
+                            <memberClasses>
+                                <item>com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry</item>
+                            </memberClasses>
+                            <item transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry" header="Content-Type" header.inherit="false" value="application/json" value.inherit="false"/>
+                            <item transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry" header="Authorization" header.inherit="false" value="Bearer [gget gtoken]" value.inherit="false"/>
+                        </httpHeader>
+                    </applicationProperties>
+                </item>
+                <item guid="d4d1e163-3fa9-4f67-bb23-0decd4e92505" action="write">
+                    <command>
+                        <body>$status</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+        </item>
+        <item name="subnetGetIpv4All" isPublic="true">
+            <steps>
+                <item guid="31c248b9-17ea-402a-bc5c-4be02e958a03" action="GET" session="$session">
+                    <command>
+                        <body>/api/v2/profiles/subnets/ipv4</body>
+                    </command>
+                    <postProcessing>
+                        <storeResponseAt>subnetsIpv4All</storeResponseAt>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" message.inherit="false" action="/api/v2/profiles/subnets/ipv4" action.inherit="false" rawresponse.inherit="false" includeHttpHeaders.inherit="false" includeHttpStatusLine.inherit="false" includeNullValues.inherit="false">
+                        <authentication transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.AuthenticationProperties" authenticationType.inherit="false"/>
+                        <httpHeader inherit="false" transferableToolId="com.fnfr.itest.applications.webservices.restful">
+                            <memberClasses>
+                                <item>com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry</item>
+                            </memberClasses>
+                            <item transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry" header="Content-Type" header.inherit="false" value="application/json" value.inherit="false"/>
+                            <item transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry" header="Authorization" header.inherit="false" value="Bearer [gget gtoken]" value.inherit="false"/>
+                        </httpHeader>
+                    </applicationProperties>
+                </item>
+                <item guid="0ab34f55-c443-40b2-b28f-36638e98ee5a" action="return">
+                    <command>
+                        <body>[response subnetsIpv4All]</body>
+                    </command>
+                    <postProcessing>
+                        <storeResponseAt>subnetsIpv4All</storeResponseAt>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+        </item>
+        <item name="subnetGetIpv4" isPublic="true">
+            <steps>
+                <item guid="e849eb9b-7a33-4328-99dd-8e6c2bc6de3b" action="GET" session="$session">
+                    <command>
+                        <body>/api/v2/profiles/subnets/ipv4?filter\\[name\\]=$subnetName</body>
+                    </command>
+                    <postProcessing>
+                        <storeResponseAt>subnetIpv4</storeResponseAt>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" message.inherit="false" action="/api/v2/profiles/subnets/ipv4?filter\\[name\\]=$subnetName" action.inherit="false" rawresponse.inherit="false" includeHttpHeaders.inherit="false" includeHttpStatusLine.inherit="false" includeNullValues.inherit="false">
+                        <authentication transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.AuthenticationProperties" authenticationType.inherit="false"/>
+                        <httpHeader inherit="false" transferableToolId="com.fnfr.itest.applications.webservices.restful">
+                            <memberClasses>
+                                <item>com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry</item>
+                            </memberClasses>
+                            <item transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry" header="Content-Type" header.inherit="false" value="application/json" value.inherit="false"/>
+                            <item transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry" header="Authorization" header.inherit="false" value="Bearer [gget gtoken]" value.inherit="false"/>
+                        </httpHeader>
+                    </applicationProperties>
+                </item>
+                <item guid="8e364481-d841-43e0-b477-0e9766b80e24" action="return">
+                    <command>
+                        <body>[response subnetIpv4]</body>
+                    </command>
+                    <postProcessing>
+                        <storeResponseAt>subnetsIpv4All</storeResponseAt>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <arguments>
+                <item name="subnetName"/>
+            </arguments>
+        </item>
+        <item name="updateEmixTrafficMix" isPublic="true">
+            <steps>
+                <item guid="780acced-bfb4-4553-ab10-959e29fee4a8" action="comment">
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="28857a3c-bdfb-493b-bf33-99cbba1d8ba2" action="comment">
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="44d8fb02-b2f7-4150-95ad-946dcefad76f" action="PUT" session="$session">
+                    <command>
+                        <body>/api/v2/tests/emix/$testId</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>Status()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$value eq &quot;201 Created&quot;</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="PassTestIfNotAlreadyFailed">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="OK">
+                                                    <message>User Created Successfully</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="Eval">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                    <statement>set status 1</statement>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenTrue>
+                                        <actionsWhenFalse>
+                                            <item actionId="FailTest">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message>User Was Not Successfully Created</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="Eval">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                    <statement>set status 0</statement>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenFalse>
+                                    </ruleProperties>
+                                </processorInfo>
+                                <skip>true</skip>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" action="/api/v2/tests/emix/$testId" action.inherit="false" rawresponse.inherit="false" includeHttpHeaders="true" includeHttpHeaders.inherit="false" includeHttpStatusLine="true" includeHttpStatusLine.inherit="false" includeNullValues.inherit="false">
+                        <message inherit="false">{
+  &quot;config&quot;: {
+    &quot;trafficMix&quot;: {
+      &quot;id&quot;: &quot;$trafficMixId&quot;
+    },
+  }
+}</message>
+                        <authentication transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.AuthenticationProperties" authenticationType.inherit="false"/>
+                        <httpHeader inherit="false" transferableToolId="com.fnfr.itest.applications.webservices.restful">
+                            <memberClasses>
+                                <item>com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry</item>
+                            </memberClasses>
+                            <item transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry" header="Content-Type" header.inherit="false" value="application/json" value.inherit="false"/>
+                            <item transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry" header="Authorization" header.inherit="false" value="Bearer [gget gtoken]" value.inherit="false"/>
+                        </httpHeader>
+                    </applicationProperties>
+                </item>
+                <item guid="73f269a5-0876-4fc8-8a79-36124a3332eb" action="write" skip="true">
+                    <command>
+                        <body>$status</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <arguments>
+                <item name="trafficMixId">
+                    <description>user or admin</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="testId">
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="startTest" isPublic="true">
+            <steps>
+                <item guid="322f2dcd-742a-4538-a2f4-ed0fb4826efc" action="comment">
+                    <command>
+                        <body>Starts the test with the Test Name as an arugument.</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="cdc65dce-4336-450e-af35-ca0572523894" action="comment">
+                    <command>
+                        <body>GET statement used to get the testID to be used in the PUT statement that starts the test.</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="dc4226ff-8389-4682-ad01-9d69d2ba27e0" action="comment">
+                    <command>
+                        <body>Returns the Test ID and the Test Run ID to the calling test case.</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="d80e28f8-f0b7-4bdf-87e5-1610cb0a63a7" action="comment">
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="none">
+                                    <extractorProperties type="com.fnfr.svt.documents.EmptyExtractorPropertyGroup"/>
+                                </extractorInfo>
+                                <processorInfo ruleType="message">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.MessageProcessorPropertyGroup" severity="Information">
+                                        <message> Starting Test: $testName</message>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="dd15be1b-ca0a-4c07-bac5-0e5df03e2abb" action="GET" session="$session">
+                    <command>
+                        <body>api/v2/tests?filter\\[name\\]=$testName</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>mapped/Json/item/id</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>testId</storageLocation>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>mapped/Json/item/id</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="message">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.MessageProcessorPropertyGroup" severity="Information">
+                                        <message> Test ID: $testId</message>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" action="api/v2/tests?filter\\[name\\]=$testName" action.inherit="false">
+                        <authentication transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.AuthenticationProperties" authenticationType.inherit="false" password.masked="true" password="AiRWju4XCF68/xt4CGWUjg==" password.inherit="false"/>
+                        <httpHeader inherit="false" transferableToolId="com.fnfr.itest.applications.webservices.restful">
+                            <memberClasses>
+                                <item>com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry</item>
+                            </memberClasses>
+                            <item transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry" header="Authorization" header.inherit="false" value="Bearer [gget gtoken]" value.inherit="false"/>
+                        </httpHeader>
+                    </applicationProperties>
+                </item>
+                <item guid="65452c62-a6cd-4501-b48a-d7b5d0c670d0" action="eval">
+                    <command>
+                        <body>puts $testId</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="c0b96349-c448-4202-b33b-fccb693fa505" action="write">
+                    <command>
+                        <body>Test_ID: $testId\\n</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="698716d2-a26b-4bb9-bcbc-e26741a97d35" action="PUT" session="$session">
+                    <command>
+                        <body>api/v2/tests/$testId/start</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>mapped/Json/id</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>testRunId</storageLocation>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>mapped/Json/test/type</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>testType</storageLocation>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>mapped/Json/test/type</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="message">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.MessageProcessorPropertyGroup" severity="Information">
+                                        <message>Test Type: &quot;{value}&quot;</message>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>mapped/Json/queueId</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>queueId</storageLocation>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>mapped/Json/queueId</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="message">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.MessageProcessorPropertyGroup" severity="Information">
+                                        <message> Queue ID: &quot;{value}&quot;</message>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" action="api/v2/tests/$testId/start" action.inherit="false">
+                        <httpHeader inherit="false" transferableToolId="com.fnfr.itest.applications.webservices.restful">
+                            <memberClasses>
+                                <item>com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry</item>
+                            </memberClasses>
+                            <item transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry" header="Authorization" header.inherit="false" value="Bearer [gget gtoken]" value.inherit="false"/>
+                        </httpHeader>
+                    </applicationProperties>
+                </item>
+                <item guid="21d56bc4-ad32-4a6b-a938-3aff321229e3" action="write">
+                    <command>
+                        <body>Test_Run_ID: $testRunId\\n</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="83576865-1e05-4f98-9449-5441e0052bad" action="write">
+                    <command>
+                        <body>Test_Type: $testType\\n</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="61325f8a-7e0a-461a-b4e4-34877be96837" action="write">
+                    <command>
+                        <body>Queue_ID: $queueId\\n</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <arguments>
+                <item name="testName">
+                    <defaultValue>emix</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="getTestId" isPublic="true">
+            <steps>
+                <item guid="f583828e-83fb-466a-90f6-db5f40c87e98" action="GET" session="$session">
+                    <command>
+                        <body>api/v2/tests?filter\\[name\\]=[param testName]</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>mapped/Json/item/id</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>testId</storageLocation>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>mapped/Json/item/id</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="message">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.MessageProcessorPropertyGroup" severity="Information">
+                                        <message> Test ID: $testId</message>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" action="api/v2/tests?filter\\[name\\]=[param testName]" action.inherit="false">
+                        <authentication transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.AuthenticationProperties" authenticationType.inherit="false" password.masked="true" password="AiRWju4XCF68/xt4CGWUjg==" password.inherit="false"/>
+                        <httpHeader inherit="false" transferableToolId="com.fnfr.itest.applications.webservices.restful">
+                            <memberClasses>
+                                <item>com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry</item>
+                            </memberClasses>
+                            <item transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry" header="Authorization" header.inherit="false" value="Bearer [gget gtoken]" value.inherit="false"/>
+                        </httpHeader>
+                    </applicationProperties>
+                </item>
+                <item guid="43f9dd75-3bef-42ef-892c-ba3575fe3554" action="write">
+                    <command>
+                        <body>$testId</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <arguments>
+                <item name="testName">
+                    <defaultValue>emix</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="monitorTest" isPublic="true">
+            <steps>
+                <item guid="ed7b0e63-5d3e-4dc2-b2d5-3f4bf793db9e" action="comment">
+                    <command>
+                        <body>Continually monitors the test every 10 seconds until completion and returns the status to the test case. The loop stops when the status is &quot;finished&quot; or &quot;stopped&quot;.</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="21eabb92-a307-4c12-8947-cf5992a0a855" action="eval">
+                    <command>
+                        <body>set i 0</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="caf94c72-66ad-404f-807f-9e85330d3e25" action="while">
+                    <command>
+                        <body>$i == 0</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="a2cfdaf4-4095-4b83-8e34-e7d902acb447" action="GET" session="$session">
+                            <command>
+                                <body>/api/v2/test_runs/$testRunId</body>
+                            </command>
+                            <postProcessing>
+                                <analysisRules>
+                                    <item>
+                                        <extractorInfo extractorType="query">
+                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                <query>mapped/Json/status</query>
+                                            </extractorProperties>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="store">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                <storageLocation>status</storageLocation>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                    <item>
+                                        <extractorInfo extractorType="query">
+                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup" declareNoMatchIssue="false">
+                                                <query>mapped/Json/progress</query>
+                                            </extractorProperties>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="store">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                <storageLocation>progress</storageLocation>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                </analysisRules>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" action="/api/v2/test_runs/$testRunId" action.inherit="false">
+                                <authentication transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.AuthenticationProperties" authenticationType.inherit="false" password.masked="true" password="AiRWju4XCF68/xt4CGWUjg==" password.inherit="false"/>
+                                <httpHeader inherit="false" transferableToolId="com.fnfr.itest.applications.webservices.restful">
+                                    <memberClasses>
+                                        <item>com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry</item>
+                                    </memberClasses>
+                                    <item transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry" header="Authorization" header.inherit="false" value="Bearer [gget gtoken]" value.inherit="false"/>
+                                </httpHeader>
+                            </applicationProperties>
+                        </item>
+                        <item guid="2f59568b-7cbe-4ff9-83d0-e37a6e4d3876" action="comment">
+                            <postProcessing>
+                                <analysisRules>
+                                    <item>
+                                        <extractorInfo extractorType="none">
+                                            <extractorProperties type="com.fnfr.svt.documents.EmptyExtractorPropertyGroup"/>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="message">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.MessageProcessorPropertyGroup" severity="Information">
+                                                <message> Test Status: $status      Progress (%): $progress</message>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                </analysisRules>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="849024ab-9f06-432e-982b-299020d83a33" action="eval">
+                            <command>
+                                <body>puts $status</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="4fd9c5e4-2b48-4328-82bc-29e42e9f9b66" action="switch">
+                            <command>
+                                <body>$status</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="95e379c2-9b0b-4374-89e0-57de21e8e1f4" action="case">
+                                    <command>
+                                        <body>&quot;finished&quot;</body>
+                                    </command>
+                                    <nestedSteps>
+                                        <item guid="7d28049a-5588-46c2-8c31-50c20ee026c4" action="eval">
+                                            <command>
+                                                <body>set i 1</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="3628710b-3bef-404f-9071-de884811729c" action="case">
+                                    <command>
+                                        <body>&quot;stopped&quot;</body>
+                                    </command>
+                                    <nestedSteps>
+                                        <item guid="f34cfe9e-dd97-43b0-bac2-75d26a9ec59c" action="eval">
+                                            <command>
+                                                <body>set i 1</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="fd473dc7-b574-4418-92fb-cf86da795f0e" action="case">
+                                    <command>
+                                        <body>&quot;failed&quot;</body>
+                                    </command>
+                                    <nestedSteps>
+                                        <item guid="147228b9-c63f-44ae-beb6-be230adecfc8" action="eval">
+                                            <command>
+                                                <body>set i 1</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                        <item guid="1404919b-485d-48e4-b7bb-1d9ab84252e9" action="sleep">
+                                            <command>
+                                                <body>$monitorInterval</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="a60a4337-d31c-410a-911e-c2766596f554" action="case">
+                                    <command>
+                                        <body>&quot;waiting&quot;</body>
+                                    </command>
+                                    <nestedSteps>
+                                        <item guid="26999bde-ca62-42e7-a024-f98630ebc828" action="eval">
+                                            <command>
+                                                <body>set i 0</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                        <item guid="fc9dbcba-0227-4a25-94ed-bf44f5568730" action="sleep">
+                                            <command>
+                                                <body>$monitorInterval</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="eba4cd57-b183-4598-b098-90486ac876c6" action="default">
+                                    <nestedSteps>
+                                        <item guid="03809033-f514-4ac8-9698-8f930a92064b" action="eval">
+                                            <command>
+                                                <body>set i 0</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                        <item guid="278985de-6177-4b85-971b-8fb277b5c664" action="GET" session="$session" useResponseMapLibraryApplicability="false">
+                                            <command>
+                                                <body>api/v2/test_runs/$testRunId/statistics</body>
+                                            </command>
+                                            <postProcessing>
+                                                <analysisRules>
+                                                    <item>
+                                                        <extractorInfo extractorType="query">
+                                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup" declareNoMatchIssue="false">
+                                                                <query>value_by_timeElapsed_type()</query>
+                                                            </extractorProperties>
+                                                        </extractorInfo>
+                                                        <processorInfo ruleType="store">
+                                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                                <storageLocation>timeElapsed</storageLocation>
+                                                            </ruleProperties>
+                                                        </processorInfo>
+                                                    </item>
+                                                    <item>
+                                                        <extractorInfo extractorType="query">
+                                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup" declareNoMatchIssue="false">
+                                                                <query>value_by_timeRemaining_type()</query>
+                                                            </extractorProperties>
+                                                        </extractorInfo>
+                                                        <processorInfo ruleType="store">
+                                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                                <storageLocation>timeRemaining</storageLocation>
+                                                            </ruleProperties>
+                                                        </processorInfo>
+                                                    </item>
+                                                    <item>
+                                                        <extractorInfo extractorType="query">
+                                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup" declareNoMatchIssue="false">
+                                                                <query>value_by_txbw_subtype()</query>
+                                                            </extractorProperties>
+                                                        </extractorInfo>
+                                                        <processorInfo ruleType="store">
+                                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                                <storageLocation>clientTxBandwidth</storageLocation>
+                                                            </ruleProperties>
+                                                        </processorInfo>
+                                                    </item>
+                                                    <item>
+                                                        <extractorInfo extractorType="query">
+                                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup" declareNoMatchIssue="false">
+                                                                <query>value_by_rxbw_subtype()</query>
+                                                            </extractorProperties>
+                                                        </extractorInfo>
+                                                        <processorInfo ruleType="store">
+                                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                                <storageLocation>clientRxBandwidth</storageLocation>
+                                                            </ruleProperties>
+                                                        </processorInfo>
+                                                    </item>
+                                                    <item>
+                                                        <extractorInfo extractorType="query">
+                                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup" declareNoMatchIssue="false">
+                                                                <query>value_by_openConns_subtype_1()</query>
+                                                            </extractorProperties>
+                                                        </extractorInfo>
+                                                        <processorInfo ruleType="store">
+                                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                                <storageLocation>openConns</storageLocation>
+                                                            </ruleProperties>
+                                                        </processorInfo>
+                                                    </item>
+                                                </analysisRules>
+                                                <storeResponseAt>testRunStatistics</storeResponseAt>
+                                            </postProcessing>
+                                            <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" message.inherit="false" action="api/v2/test_runs/$testRunId/statistics" action.inherit="false" rawresponse.inherit="false" includeHttpHeaders.inherit="false" includeHttpStatusLine.inherit="false" includeNullValues.inherit="false">
+                                                <authentication transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.AuthenticationProperties" authenticationType.inherit="false"/>
+                                                <httpHeader inherit="false" transferableToolId="com.fnfr.itest.applications.webservices.restful">
+                                                    <memberClasses>
+                                                        <item>com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry</item>
+                                                    </memberClasses>
+                                                    <item transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry" header="Content-Type" header.inherit="false" value="application/json" value.inherit="false"/>
+                                                    <item transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry" header="Authorization" header.inherit="false" value="Bearer [gget gtoken]" value.inherit="false"/>
+                                                </httpHeader>
+                                            </applicationProperties>
+                                            <responseMap>project://di_Cyberflood/response_maps/api_v2_test_runs_statistics.ffrm</responseMap>
+                                            <useResponseMapLibraryFromSession>false</useResponseMapLibraryFromSession>
+                                        </item>
+                                        <item guid="495a6fce-69ce-4bcc-a9a2-a89e5de4d48f" action="comment">
+                                            <command>
+                                                <body>Convert bandwidth from kbps to mbps</body>
+                                            </command>
+                                            <nestedSteps>
+                                                <item guid="e696bcbf-2f5d-43bf-abfc-a762825bb38b" action="if">
+                                                    <command>
+                                                        <body>$clientTxBandwidth &gt; 1000</body>
+                                                    </command>
+                                                    <nestedSteps>
+                                                        <item guid="ffcaa747-f03b-4d56-841c-b0d3cd276f4c" action="then">
+                                                            <nestedSteps>
+                                                                <item guid="8934c24e-548e-4c43-89b8-199094dbad09" action="eval">
+                                                                    <command>
+                                                                        <body>set clientTxBandwidth [expr {$clientTxBandwidth / 1000}]</body>
+                                                                    </command>
+                                                                    <eventHandlers>
+                                                                        <item name="OnTclInterpreterError">
+                                                                            <item actionId="DeclareExecutionIssue">
+                                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                                                    <message>Error using Tcl interpreter: {0}</message>
+                                                                                </actionProperties>
+                                                                            </item>
+                                                                        </item>
+                                                                    </eventHandlers>
+                                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                                </item>
+                                                            </nestedSteps>
+                                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                                        </item>
+                                                    </nestedSteps>
+                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                </item>
+                                                <item guid="406b5293-0ee4-41d5-9f57-b0edfeab1c92" action="if">
+                                                    <command>
+                                                        <body>$clientRxBandwidth &gt; 1000</body>
+                                                    </command>
+                                                    <nestedSteps>
+                                                        <item guid="560a4644-17d9-4ee1-8a47-4bbc4fe556f9" action="then">
+                                                            <nestedSteps>
+                                                                <item guid="c819e0b1-a5d5-4ac8-a0b0-9fe0cc43cea1" action="eval">
+                                                                    <command>
+                                                                        <body>set clientRxBandwidth [expr {$clientRxBandwidth / 1000}]</body>
+                                                                    </command>
+                                                                    <eventHandlers>
+                                                                        <item name="OnTclInterpreterError">
+                                                                            <item actionId="DeclareExecutionIssue">
+                                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                                                    <message>Error using Tcl interpreter: {0}</message>
+                                                                                </actionProperties>
+                                                                            </item>
+                                                                        </item>
+                                                                    </eventHandlers>
+                                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                                </item>
+                                                            </nestedSteps>
+                                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                                        </item>
+                                                    </nestedSteps>
+                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                </item>
+                                            </nestedSteps>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                        <item guid="6eaab4dd-80ac-42be-a3de-fabf5eb27b9b" action="comment">
+                                            <command>
+                                                <body>Create messages to be displayed during test execution</body>
+                                            </command>
+                                            <postProcessing>
+                                                <analysisRules>
+                                                    <item>
+                                                        <extractorInfo extractorType="none">
+                                                            <extractorProperties type="com.fnfr.svt.documents.EmptyExtractorPropertyGroup"/>
+                                                        </extractorInfo>
+                                                        <processorInfo ruleType="message">
+                                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.MessageProcessorPropertyGroup" severity="Information">
+                                                                <message> Time Elapsed: $timeElapsed   Time Remaining: $timeRemaining</message>
+                                                            </ruleProperties>
+                                                        </processorInfo>
+                                                    </item>
+                                                    <item>
+                                                        <extractorInfo extractorType="none">
+                                                            <extractorProperties type="com.fnfr.svt.documents.EmptyExtractorPropertyGroup"/>
+                                                        </extractorInfo>
+                                                        <processorInfo ruleType="message">
+                                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.MessageProcessorPropertyGroup" severity="Information">
+                                                                <message> Client Stats: TX Bandwidth(Mbps): $clientTxBandwidth    RX Bandwidth(Mbps): $clientRxBandwidth    Open Conns: $openConns</message>
+                                                            </ruleProperties>
+                                                        </processorInfo>
+                                                    </item>
+                                                    <item>
+                                                        <extractorInfo extractorType="none">
+                                                            <extractorProperties type="com.fnfr.svt.documents.EmptyExtractorPropertyGroup"/>
+                                                        </extractorInfo>
+                                                        <processorInfo ruleType="message">
+                                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.MessageProcessorPropertyGroup" severity="Information">
+                                                                <message> </message>
+                                                            </ruleProperties>
+                                                        </processorInfo>
+                                                    </item>
+                                                </analysisRules>
+                                            </postProcessing>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                        <item guid="0658b42c-d9d3-498b-b198-802c80f1fc11" action="return" skip="true">
+                                            <command>
+                                                <body>[response testRunStatistics]</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                        </item>
+                                        <item guid="6797f691-8e39-45c9-be50-8495f6919ac6" action="sleep">
+                                            <command>
+                                                <body>$monitorInterval</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="5d906135-87a7-4e65-a735-b4e2aaf099c8" action="write">
+                    <command>
+                        <body>Status: $status</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <arguments>
+                <item name="testRunId">
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="monitorInterval">
+                    <description>Interval between successive polling of the test status and statistics.</description>
+                    <defaultValue>10</defaultValue>
+                </item>
+            </arguments>
+        </item>
+        <item name="getTestRunResults" isPublic="true">
+            <steps>
+                <item guid="161cd041-a742-486b-b8de-96646dba4fe6" action="comment">
+                    <command>
+                        <body>Get the test run results by using the Test Run ID as an argument and return the results to the calling test case for analysis</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="e58d5f43-f7b8-4dde-ad80-2ea9780d28d6" action="GET" session="$session">
+                    <command>
+                        <body>api/v2/test_runs/$testRunId/results</body>
+                    </command>
+                    <postProcessing>
+                        <storeResponseAt>testRunResults</storeResponseAt>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" message.inherit="false" action="api/v2/test_runs/$testRunId/results" action.inherit="false" rawresponse.inherit="false" includeHttpHeaders.inherit="false" includeHttpStatusLine.inherit="false" includeNullValues.inherit="false">
+                        <authentication transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.AuthenticationProperties" authenticationType.inherit="false"/>
+                        <httpHeader inherit="false" transferableToolId="com.fnfr.itest.applications.webservices.restful">
+                            <memberClasses>
+                                <item>com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry</item>
+                            </memberClasses>
+                            <item transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry" header="Content-Type" header.inherit="false" value="application/json" value.inherit="false"/>
+                            <item transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry" header="Authorization" header.inherit="false" value="Bearer [gget gtoken]" value.inherit="false"/>
+                        </httpHeader>
+                    </applicationProperties>
+                </item>
+                <item guid="8af4c783-c820-415f-b86b-3d9d10eb47f5" action="return">
+                    <command>
+                        <body>[response testRunResults]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <arguments>
+                <item name="testRunId">
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="getTestRunTimeline" isPublic="true">
+            <steps>
+                <item guid="f729ebb5-4267-45ea-a2db-8539c8e55884" action="comment">
+                    <command>
+                        <body>Get the test run timeline results and return it to the calling test case for analysis</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="ba7ee0de-1df6-4754-8939-8e2d68ab5b88" action="GET" session="$session">
+                    <command>
+                        <body>api/v2/test_runs/$testRunId/timeline</body>
+                    </command>
+                    <postProcessing>
+                        <storeResponseAt>testRunTimeLine</storeResponseAt>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" message.inherit="false" action="api/v2/test_runs/$testRunId/timeline" action.inherit="false" rawresponse.inherit="false" includeHttpHeaders.inherit="false" includeHttpStatusLine.inherit="false" includeNullValues.inherit="false">
+                        <authentication transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.AuthenticationProperties" authenticationType.inherit="false"/>
+                        <httpHeader inherit="false" transferableToolId="com.fnfr.itest.applications.webservices.restful">
+                            <memberClasses>
+                                <item>com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry</item>
+                            </memberClasses>
+                            <item transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry" header="Content-Type" header.inherit="false" value="application/json" value.inherit="false"/>
+                            <item transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry" header="Authorization" header.inherit="false" value="Bearer [gget gtoken]" value.inherit="false"/>
+                        </httpHeader>
+                    </applicationProperties>
+                </item>
+                <item guid="89f4144a-7a46-4118-8e7a-dda7343f328a" action="return">
+                    <command>
+                        <body>[response testRunTimeLine]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <arguments>
+                <item name="testRunId">
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="getTestRunStatistics" isPublic="true">
+            <steps>
+                <item guid="c841d969-4ae8-4e83-875b-13f56f7d13d4" action="GET" session="$session" useResponseMapLibraryApplicability="false">
+                    <command>
+                        <body>api/v2/test_runs/$testRunId/statistics</body>
+                    </command>
+                    <postProcessing>
+                        <storeResponseAt>testRunStatistics</storeResponseAt>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" message.inherit="false" action="api/v2/test_runs/$testRunId/statistics" action.inherit="false" rawresponse.inherit="false" includeHttpHeaders.inherit="false" includeHttpStatusLine.inherit="false" includeNullValues.inherit="false">
+                        <authentication transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.AuthenticationProperties" authenticationType.inherit="false"/>
+                        <httpHeader inherit="false" transferableToolId="com.fnfr.itest.applications.webservices.restful">
+                            <memberClasses>
+                                <item>com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry</item>
+                            </memberClasses>
+                            <item transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry" header="Content-Type" header.inherit="false" value="application/json" value.inherit="false"/>
+                            <item transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry" header="Authorization" header.inherit="false" value="Bearer [gget gtoken]" value.inherit="false"/>
+                        </httpHeader>
+                    </applicationProperties>
+                    <responseMap>project://di_Cyberflood/response_maps/api_v2_test_runs_statistics.ffrm</responseMap>
+                    <useResponseMapLibraryFromSession>false</useResponseMapLibraryFromSession>
+                </item>
+                <item guid="50900368-1851-4726-8109-4b30e3e22425" action="return">
+                    <command>
+                        <body>[response testRunStatistics]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <arguments>
+                <item name="testRunId">
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="getTrafficMixAll" isPublic="true">
+            <steps>
+                <item guid="d93c736c-9358-4b72-af14-5669a1e1ba66" action="comment">
+                    <command>
+                        <body>Get the test run timeline results and return it to the calling test case for analysis</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="76835b5a-d4ed-473f-83fc-c4b346e5fafa" action="GET" session="$session">
+                    <command>
+                        <body>/api/v2/profiles/traffic_mixes</body>
+                    </command>
+                    <postProcessing>
+                        <storeResponseAt>trafficMixes</storeResponseAt>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" message.inherit="false" action="/api/v2/profiles/traffic_mixes" action.inherit="false" rawresponse.inherit="false" includeHttpHeaders.inherit="false" includeHttpStatusLine.inherit="false" includeNullValues.inherit="false">
+                        <authentication transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.AuthenticationProperties" authenticationType.inherit="false"/>
+                        <httpHeader inherit="false" transferableToolId="com.fnfr.itest.applications.webservices.restful">
+                            <memberClasses>
+                                <item>com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry</item>
+                            </memberClasses>
+                            <item transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry" header="Authorization" header.inherit="false" value="Bearer [gget gtoken]" value.inherit="false"/>
+                        </httpHeader>
+                    </applicationProperties>
+                </item>
+                <item guid="21f34bae-69c7-43f6-bd59-b1bf61b07052" action="return">
+                    <command>
+                        <body>[response trafficMixes]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+        </item>
+        <item name="getTrafficMix" isPublic="true">
+            <steps>
+                <item guid="3e8e3b34-1f06-4d38-9151-c3204ae7096c" action="comment">
+                    <command>
+                        <body>Get Traffic Mix from Traffic Mix ID</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="c2e25ca6-d766-4d96-994b-99a4ba488fb3" action="GET" session="$session">
+                    <command>
+                        <body>/api/v2/profiles/traffic_mixes/$trafficMixId</body>
+                    </command>
+                    <postProcessing>
+                        <storeResponseAt>trafficMix</storeResponseAt>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" message.inherit="false" action="/api/v2/profiles/traffic_mixes/$trafficMixId" action.inherit="false" rawresponse.inherit="false" includeHttpHeaders.inherit="false" includeHttpStatusLine.inherit="false" includeNullValues.inherit="false">
+                        <authentication transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.AuthenticationProperties" authenticationType.inherit="false"/>
+                        <httpHeader inherit="false" transferableToolId="com.fnfr.itest.applications.webservices.restful">
+                            <memberClasses>
+                                <item>com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry</item>
+                            </memberClasses>
+                            <item transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry" header="Authorization" header.inherit="false" value="Bearer [gget gtoken]" value.inherit="false"/>
+                        </httpHeader>
+                    </applicationProperties>
+                </item>
+                <item guid="14e24eaa-16b6-4670-ac96-1819bbd5c8a9" action="return">
+                    <command>
+                        <body>[response trafficMix]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <arguments>
+                <item name="trafficMixId">
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="getTrafficMixID" isPublic="true">
+            <steps>
+                <item guid="9951ac34-ca54-4853-b976-a14481c4a492" action="comment">
+                    <command>
+                        <body>Get Traffic Mid ID by inputting Traffic Mix Name</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="3de82973-1a78-4370-bec5-083965264355" action="GET" session="$session">
+                    <command>
+                        <body>/api/v2/profiles/traffic_mixes?filter\\[name\\]=$trafficMixName</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>mapped/Json/item/id</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>id</storageLocation>
+                                        <query>id</query>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" message.inherit="false" action="/api/v2/profiles/traffic_mixes?filter\\[name\\]=$trafficMixName" action.inherit="false" rawresponse.inherit="false" includeHttpHeaders.inherit="false" includeHttpStatusLine.inherit="false" includeNullValues.inherit="false">
+                        <authentication transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.AuthenticationProperties" authenticationType.inherit="false"/>
+                        <httpHeader inherit="false" transferableToolId="com.fnfr.itest.applications.webservices.restful">
+                            <memberClasses>
+                                <item>com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry</item>
+                            </memberClasses>
+                            <item transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry" header="Authorization" header.inherit="false" value="Bearer [gget gtoken]" value.inherit="false"/>
+                        </httpHeader>
+                    </applicationProperties>
+                </item>
+                <item guid="56b3610e-d4e9-4c46-9d38-f43d72c44892" action="write">
+                    <command>
+                        <body>Traffic_Mix_ID: $id</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <arguments>
+                <item name="trafficMixName">
+                    <defaultValue>tm_mobile1</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="userDelete" isPublic="true">
+            <steps>
+                <item guid="db788715-f811-4bc1-84be-38c6af8e71c1" action="DELETE" session="$session">
+                    <command>
+                        <body>api/v2/users/$userId</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>Status()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$value eq &quot;204 No Content&quot;</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="PassTestIfNotAlreadyFailed">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="OK">
+                                                    <message>User Deleted Successfully</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="Eval">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                    <statement>set status 1</statement>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenTrue>
+                                        <actionsWhenFalse>
+                                            <item actionId="FailTest">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message>User Was Not Deleted</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="Eval">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                    <statement>set status 0</statement>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenFalse>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" message.inherit="false" action="api/v2/users/$userId" action.inherit="false" rawresponse.inherit="false" includeHttpHeaders="true" includeHttpHeaders.inherit="false" includeHttpStatusLine.inherit="false" includeNullValues.inherit="false">
+                        <authentication transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.AuthenticationProperties" authenticationType.inherit="false"/>
+                        <httpHeader inherit="false" transferableToolId="com.fnfr.itest.applications.webservices.restful">
+                            <memberClasses>
+                                <item>com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry</item>
+                            </memberClasses>
+                            <item transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry" header="Content-Type" header.inherit="false" value="application/json" value.inherit="false"/>
+                            <item transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry" header="Authorization" header.inherit="false" value="Bearer [gget gtoken]" value.inherit="false"/>
+                        </httpHeader>
+                    </applicationProperties>
+                </item>
+                <item guid="ca310cb1-c988-4f7c-851c-b4d2c7c22b33" action="write">
+                    <command>
+                        <body>$status</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <arguments>
+                <item name="userId"/>
+            </arguments>
+        </item>
+        <item name="userGetId" isPublic="true">
+            <steps>
+                <item guid="850be0ce-770a-4bc3-a85b-cb472094d402" action="GET" session="$session">
+                    <command>
+                        <body>api/v2/users?filter\\[email\\]=$email</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>Status()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$value eq &quot;201 Created&quot;</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="PassTestIfNotAlreadyFailed">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="OK">
+                                                    <message>User Created Successfully</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="Eval">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                    <statement>set status 1</statement>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenTrue>
+                                        <actionsWhenFalse>
+                                            <item actionId="FailTest">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message>User Was Not Successfully Created</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="Eval">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                    <statement>set status 0</statement>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenFalse>
+                                    </ruleProperties>
+                                </processorInfo>
+                                <skip>true</skip>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>mapped/Json/item/id</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>userId</storageLocation>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" message.inherit="false" action="api/v2/users?filter\\[email\\]=$email" action.inherit="false" rawresponse="true" rawresponse.inherit="false" includeHttpHeaders.inherit="false" includeHttpStatusLine.inherit="false" includeNullValues="true" includeNullValues.inherit="false">
+                        <authentication transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.AuthenticationProperties" authenticationType.inherit="false"/>
+                        <httpHeader inherit="false" transferableToolId="com.fnfr.itest.applications.webservices.restful">
+                            <memberClasses>
+                                <item>com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry</item>
+                            </memberClasses>
+                            <item transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry" header="Authorization" header.inherit="false" value="Bearer [gget gtoken]" value.inherit="false"/>
+                        </httpHeader>
+                    </applicationProperties>
+                </item>
+                <item guid="a55cc19b-31b9-4161-a97f-e8271feba4e8" action="write">
+                    <command>
+                        <body>$userId</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <arguments>
+                <item name="email">
+                    <defaultValue>itest.scripts@gmail.com</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="systemAbout" isPublic="true">
+            <steps>
+                <item guid="1be75763-745c-4836-b714-6575dfc24311" action="GET" session="$session">
+                    <command>
+                        <body>/api/system/about HTTP/1.1</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties"/>
+                </item>
+                <item guid="94c7411a-9ea7-49be-ae49-964a3f4db512" action="GET" session="$session">
+                    <command>
+                        <body>/api/av_queues HTTP/1.1</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" action="/api/av_queues HTTP/1.1" action.inherit="false"/>
+                </item>
+                <item guid="711b3be5-de33-4364-918a-ae3041e586f6" action="GET" session="$session">
+                    <command>
+                        <body>/api/av_queues HTTP/1.1</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" action="/api/av_queues HTTP/1.1" action.inherit="false"/>
+                </item>
+                <item guid="218608d0-a8c6-445b-85e4-201712fd76c5" action="GET" session="$session">
+                    <command>
+                        <body>api/av_queues/C1/chassis_online_status</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties"/>
+                </item>
+            </steps>
         </item>
     </procedures>
 </testCase>
