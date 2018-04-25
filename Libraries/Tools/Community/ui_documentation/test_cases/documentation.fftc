@@ -2,14 +2,18 @@
 <testCase version="7.0.1.201802131446">
     <general>
         <documentation>Documentation Generator</documentation>
-        <notes>This test case will generate documentation for QuickCall and Procedure libraries. The Headline and Description should be completed for General Information and all procedures. Procedure arguments should also have a description.</notes>
+        <notes>This test case will generate documentation for QuickCall and Procedure libraries. The Headline and Description should be completed for General Information and all procedures. Procedure arguments should also have a description.
+
+To reduce run time, you can specify a change date in the changeDate parameter; only projects which have changed since that date will have the documentation regenerated. Only .fftc and readme.txt files are checked for change.
+
+Also, if file C:\\tmp\\iTest_documentation_list.txt exists, only the projects listed there will be updated, regardless of the change state.</notes>
         <isProcedureLibrary>true</isProcedureLibrary>
     </general>
     <execution estimatedExecutionTime="-673">
         <parameters version="7.0.1.201802131446">
             <parameters escape="true">
                 <parameters xmlns:pt="http://www.fnfr.com/schemas/parameterTree">
-                    <changedDate>12/15/17</changedDate>
+                    <changedDate pt:description="mm/dd/yyyy">4/1/2018</changedDate>
                 </parameters>
             </parameters>
         </parameters>
@@ -31,58 +35,98 @@
                     <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
                     <useFieldsInCommand>false</useFieldsInCommand>
                 </item>
-                <item guid="e37c13a4-101b-4d92-8855-c87fbe17e6c2" action="comment" skip="true">
+                <item guid="a842cd01-74e3-494a-b731-646bcb369992" action="eval">
                     <command>
-                        <body>set changed date tolerance</body>
+                        <body>gset CHANGE_SECONDS -1</body>
                     </command>
-                    <postProcessing>
-                        <analysisRules>
-                            <item>
-                                <extractorInfo extractorType="none">
-                                    <extractorProperties type="com.fnfr.svt.documents.EmptyExtractorPropertyGroup"/>
-                                </extractorInfo>
-                                <processorInfo ruleType="message">
-                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.MessageProcessorPropertyGroup" severity="Information">
-                                        <message>Update documentation for anything changed after [param changedDate]</message>
-                                    </ruleProperties>
-                                </processorInfo>
-                            </item>
-                        </analysisRules>
-                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="cc0232cd-70a5-4e82-90ea-4580630fca38" action="eval">
+                    <command>
+                        <body>set uri file:/C:/tmp/iTest_documentation_list.txt</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="8be2e26a-1d54-4356-99f3-98dfef713334" action="if">
+                    <command>
+                        <body>![file exists $uri]</body>
+                    </command>
                     <nestedSteps>
-                        <item guid="9dce3566-1f24-4c41-8ea8-c4408daf6ff9" action="open" session="tcl1">
-                            <command>
-                                <body>application:com.fnfr.svt.applications.tclsh</body>
-                            </command>
-                            <applicationProperties type="com.fnfr.svt.documents.OpenStepPropertyGroup">
-                                <stepProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
-                                <sessionProperties type="com.fnfr.svt.applications.tclsh.TclshSessionProperties"/>
-                                <sessionClass type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
-                                <sessionVersion type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
-                            </applicationProperties>
-                            <useFieldsInCommand>false</useFieldsInCommand>
-                        </item>
-                        <item guid="5c750096-a3c8-478f-ae82-67c8678b075e" action="command" session="tcl1">
-                            <command>
-                                <body>clock scan [param changedDate]</body>
-                            </command>
-                            <postProcessing>
-                                <analysisRules>
-                                    <item>
-                                        <extractorInfo extractorType="regex">
-                                            <extractorProperties type="com.fnfr.svt.mapping.regex.extractors.RegexExtractorPropertyGroup" useLineMode="true">
-                                                <regex>^(\\d+)$</regex>
-                                            </extractorProperties>
-                                        </extractorInfo>
-                                        <processorInfo ruleType="store">
-                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
-                                                <storageLocation>changeSeconds</storageLocation>
-                                            </ruleProperties>
-                                        </processorInfo>
-                                    </item>
-                                </analysisRules>
-                            </postProcessing>
+                        <item guid="a8dadaab-66ad-4b8c-a653-23ef402d101f" action="then">
+                            <nestedSteps>
+                                <item guid="86d87ac0-d2c0-46de-8b26-4b937117983d" action="comment">
+                                    <command>
+                                        <body>set changed date tolerance</body>
+                                    </command>
+                                    <postProcessing>
+                                        <analysisRules>
+                                            <item>
+                                                <extractorInfo extractorType="none">
+                                                    <extractorProperties type="com.fnfr.svt.documents.EmptyExtractorPropertyGroup"/>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="message">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.MessageProcessorPropertyGroup" severity="Warning">
+                                                        <message>Only updating projects that have changed since [param changedDate] </message>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="none">
+                                                    <extractorProperties type="com.fnfr.svt.documents.EmptyExtractorPropertyGroup"/>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="message">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.MessageProcessorPropertyGroup" severity="Warning">
+                                                        <message>If you wish to change this date, edit changedDate parameter. </message>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                        </analysisRules>
+                                    </postProcessing>
+                                    <nestedSteps>
+                                        <item guid="5f241007-d95c-4a40-9f98-2885f0542e5b" action="open" session="tcl1">
+                                            <command>
+                                                <body>application:com.fnfr.svt.applications.tclsh</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.documents.OpenStepPropertyGroup">
+                                                <stepProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                <sessionProperties type="com.fnfr.svt.applications.tclsh.TclshSessionProperties"/>
+                                                <sessionClass type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                <sessionVersion type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </applicationProperties>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                        <item guid="fc0fce48-e229-4190-bd0c-68d154b95c91" action="command" session="tcl1">
+                                            <command>
+                                                <body>clock scan [param changedDate]</body>
+                                            </command>
+                                            <postProcessing>
+                                                <analysisRules>
+                                                    <item>
+                                                        <extractorInfo extractorType="regex">
+                                                            <extractorProperties type="com.fnfr.svt.mapping.regex.extractors.RegexExtractorPropertyGroup" useLineMode="true">
+                                                                <regex>^(\\d+)$</regex>
+                                                            </extractorProperties>
+                                                        </extractorInfo>
+                                                        <processorInfo ruleType="store">
+                                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                                <storageLocation>CHANGE_SECONDS</storageLocation>
+                                                                <isStorageLocationGlobal>true</isStorageLocationGlobal>
+                                                            </ruleProperties>
+                                                        </processorInfo>
+                                                    </item>
+                                                </analysisRules>
+                                            </postProcessing>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
                             <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
                         </item>
                     </nestedSteps>
                     <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
@@ -104,101 +148,95 @@
                         <body>uriProject $uriProjectList</body>
                     </command>
                     <nestedSteps>
+                        <item guid="5212dd78-4f2b-4f06-8a70-9569facb1669" action="eval">
+                            <command>
+                                <body>set updateRequired 0</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
                         <item guid="0784298b-994a-4cc9-a607-8d061cb6e53d" action="if">
                             <command>
-                                <body>$uriProject != &quot;project://my_project&quot; &amp;&amp; $uriProject != &quot;project://resources&quot; </body>
+                                <body>$uriProject == &quot;project://my_project&quot; || $uriProject == &quot;project://resources&quot; </body>
                             </command>
                             <nestedSteps>
                                 <item guid="21230c0c-0c22-4a92-abdf-98d72413646d" action="then">
                                     <nestedSteps>
-                                        <item guid="e560193b-6680-4fde-858f-2ec93d0f28c4" action="call">
-                                            <command>
-                                                <body>getTcList -uriPath $uriProject </body>
-                                            </command>
-                                            <postProcessing>
-                                                <storeResponseAt>uriTestCaseList</storeResponseAt>
-                                                <storeResponseText>true</storeResponseText>
-                                            </postProcessing>
+                                        <item guid="c80b3c3f-0d97-4778-8a14-fc36b67e9b74" action="continue">
                                             <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
                                             <useFieldsInCommand>false</useFieldsInCommand>
                                         </item>
-                                        <item guid="a0648595-5bc6-40df-99b1-51d1cb072d1a" action="call">
-                                            <command>
-                                                <body>getLibLists -uriTestCaseList $uriTestCaseList</body>
-                                            </command>
-                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
-                                            <useFieldsInCommand>false</useFieldsInCommand>
-                                        </item>
-                                        <item guid="77c1acd2-fdd9-45fc-96fb-322a36b6d011" action="call">
-                                            <command>
-                                                <body>createFiles -uriPath $uriProject</body>
-                                            </command>
-                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
-                                            <useFieldsInCommand>false</useFieldsInCommand>
-                                        </item>
-                                        <item guid="0b07ad0e-add9-47a6-aca8-c63df8423719" action="call">
-                                            <command>
-                                                <body>writeLibrariesFound -uriPath $uriProject</body>
-                                            </command>
-                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
-                                            <useFieldsInCommand>false</useFieldsInCommand>
-                                        </item>
-                                        <item guid="0e6ee5d8-3eef-4e8b-96a3-447685055ff6" action="call">
-                                            <command>
-                                                <body>writeInfo -uriPath $uriProject -uriLibraryList [gget QC_LIB_URI_LIST]</body>
-                                            </command>
-                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
-                                            <useFieldsInCommand>false</useFieldsInCommand>
-                                        </item>
-                                        <item guid="61cbdf5b-f041-4b84-8598-13214976c563" action="call">
-                                            <command>
-                                                <body>writeInfo -uriPath $uriProject -uriLibraryList [gget PROC_LIB_URI_LIST]</body>
-                                            </command>
-                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
-                                            <useFieldsInCommand>false</useFieldsInCommand>
-                                        </item>
-                                        <item guid="54d88ede-8e36-4325-aaa9-54b55e8a8c2a" action="if">
-                                            <command>
-                                                <body>[llength [gget QC_LIB_URI_LIST]] &gt; 0 || [llength [gget PROC_LIB_URI_LIST]] &gt; 0</body>
-                                            </command>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="72c0c08a-a40a-45dd-91dd-6a9e0d085084" action="comment">
+                            <command>
+                                <body>Generate the documentation</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="e560193b-6680-4fde-858f-2ec93d0f28c4" action="call">
+                                    <command>
+                                        <body>getTcList -uriPath $uriProject </body>
+                                    </command>
+                                    <postProcessing>
+                                        <storeResponseAt>uriTestCaseList</storeResponseAt>
+                                        <storeResponseText>true</storeResponseText>
+                                    </postProcessing>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="a0648595-5bc6-40df-99b1-51d1cb072d1a" action="call">
+                                    <command>
+                                        <body>getLibLists -uriTestCaseList $uriTestCaseList</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="7b4ad857-7414-4161-8c9e-500badbb5efa" action="eval">
+                                    <command>
+                                        <body>set uri $uriProject/documentation/readme.txt</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="1b85374b-a953-4ef7-ae2a-b330eea22b7b" action="if">
+                                    <command>
+                                        <body>[file exists $uri]</body>
+                                    </command>
+                                    <nestedSteps>
+                                        <item guid="42fe4e4d-6a39-4820-8458-25ec385e52d2" action="then">
                                             <nestedSteps>
-                                                <item guid="51577d1b-f3b5-4f9c-bae9-cce7e64d54ca" action="then">
+                                                <item guid="e69b2141-dd8e-40d7-9040-3b4c6c041e8c" action="call">
+                                                    <command>
+                                                        <body>fileChanged -uri $uri</body>
+                                                    </command>
+                                                    <postProcessing>
+                                                        <storeResponseAt>changed</storeResponseAt>
+                                                        <storeResponseText>true</storeResponseText>
+                                                    </postProcessing>
+                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                </item>
+                                                <item guid="157ad711-3cc1-4ef2-92ff-98cc916f2030" action="if">
+                                                    <command>
+                                                        <body>$changed</body>
+                                                    </command>
                                                     <nestedSteps>
-                                                        <item guid="1b067e76-661e-47e7-a363-89f24dbff9b6" action="comment">
-                                                            <postProcessing>
-                                                                <analysisRules>
-                                                                    <item>
-                                                                        <extractorInfo extractorType="none">
-                                                                            <extractorProperties type="com.fnfr.svt.documents.EmptyExtractorPropertyGroup"/>
-                                                                        </extractorInfo>
-                                                                        <processorInfo ruleType="message">
-                                                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.MessageProcessorPropertyGroup" severity="Information">
-                                                                                <message>Documentation files created:</message>
-                                                                            </ruleProperties>
-                                                                        </processorInfo>
-                                                                    </item>
-                                                                    <item>
-                                                                        <extractorInfo extractorType="none">
-                                                                            <extractorProperties type="com.fnfr.svt.documents.EmptyExtractorPropertyGroup"/>
-                                                                        </extractorInfo>
-                                                                        <processorInfo ruleType="message">
-                                                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.MessageProcessorPropertyGroup" severity="Information">
-                                                                                <message>  $uriProject/documentation/index.html</message>
-                                                                            </ruleProperties>
-                                                                        </processorInfo>
-                                                                    </item>
-                                                                    <item>
-                                                                        <extractorInfo extractorType="none">
-                                                                            <extractorProperties type="com.fnfr.svt.documents.EmptyExtractorPropertyGroup"/>
-                                                                        </extractorInfo>
-                                                                        <processorInfo ruleType="message">
-                                                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.MessageProcessorPropertyGroup" severity="Information">
-                                                                                <message>  $uriProject/README.md</message>
-                                                                            </ruleProperties>
-                                                                        </processorInfo>
-                                                                    </item>
-                                                                </analysisRules>
-                                                            </postProcessing>
+                                                        <item guid="b54f6c6f-e5a8-45e7-94ea-b1cd34311db8" action="then">
+                                                            <nestedSteps>
+                                                                <item guid="9f6c1908-422d-4a93-9446-20d83b3bdec4" action="eval">
+                                                                    <command>
+                                                                        <body>set updateRequired 1</body>
+                                                                    </command>
+                                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                                </item>
+                                                            </nestedSteps>
                                                             <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
                                                             <useFieldsInCommand>false</useFieldsInCommand>
                                                         </item>
@@ -206,30 +244,231 @@
                                                     <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
                                                     <useFieldsInCommand>false</useFieldsInCommand>
                                                 </item>
-                                                <item guid="dd97dd45-8895-43d1-8cef-7590ce1bd843" action="else">
+                                            </nestedSteps>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="0528c21b-7fca-4277-94d4-431dd39d4c2c" action="foreach">
+                                    <command>
+                                        <body>uri [gget QC_LIB_URI_LIST]</body>
+                                    </command>
+                                    <nestedSteps>
+                                        <item guid="0f634f5b-750c-424a-9ab6-e3a64e9d68f3" action="call">
+                                            <command>
+                                                <body>fileChanged -uri $uri</body>
+                                            </command>
+                                            <postProcessing>
+                                                <storeResponseAt>changed</storeResponseAt>
+                                                <storeResponseText>true</storeResponseText>
+                                            </postProcessing>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                        <item guid="1246bf94-7124-4db6-a29f-641bb7857b6c" action="if">
+                                            <command>
+                                                <body>$changed</body>
+                                            </command>
+                                            <nestedSteps>
+                                                <item guid="2e85c750-6970-47b9-8ce5-5621ee970c84" action="then">
                                                     <nestedSteps>
-                                                        <item guid="8e91bd77-8734-4587-bc65-834d64d8d939" action="comment">
+                                                        <item guid="d9d045de-6532-4e5a-941c-0e665fb4998e" action="eval">
                                                             <command>
-                                                                <body>Insert steps here for when the expression evaluates to false</body>
+                                                                <body>set updateRequired 1</body>
                                                             </command>
-                                                            <postProcessing>
-                                                                <analysisRules>
-                                                                    <item>
-                                                                        <extractorInfo extractorType="none">
-                                                                            <extractorProperties type="com.fnfr.svt.documents.EmptyExtractorPropertyGroup"/>
-                                                                        </extractorInfo>
-                                                                        <processorInfo ruleType="message">
-                                                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.MessageProcessorPropertyGroup" severity="Information">
-                                                                                <message>Nothing found to document: $uriProject </message>
-                                                                            </ruleProperties>
-                                                                        </processorInfo>
-                                                                    </item>
-                                                                </analysisRules>
-                                                            </postProcessing>
                                                             <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
                                                             <useFieldsInCommand>false</useFieldsInCommand>
                                                         </item>
                                                     </nestedSteps>
+                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                </item>
+                                            </nestedSteps>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="dba68b97-bbfb-48e5-8ff9-d681e1047c45" action="foreach">
+                                    <command>
+                                        <body>uri [gget PROC_LIB_URI_LIST]</body>
+                                    </command>
+                                    <nestedSteps>
+                                        <item guid="62159568-b122-4a2f-8e67-9ca1f7721a5b" action="call">
+                                            <command>
+                                                <body>fileChanged -uri $uri</body>
+                                            </command>
+                                            <postProcessing>
+                                                <storeResponseAt>changed</storeResponseAt>
+                                                <storeResponseText>true</storeResponseText>
+                                            </postProcessing>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                        <item guid="961162b0-34aa-4988-879f-df2de55dc25f" action="if">
+                                            <command>
+                                                <body>$changed</body>
+                                            </command>
+                                            <nestedSteps>
+                                                <item guid="fdb94743-2b9e-4b36-af5e-8fe3d8e57415" action="then">
+                                                    <nestedSteps>
+                                                        <item guid="24342f22-e4fd-4f7c-aa79-cc8b71c9672d" action="eval">
+                                                            <command>
+                                                                <body>set updateRequired 1</body>
+                                                            </command>
+                                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                                        </item>
+                                                    </nestedSteps>
+                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                </item>
+                                            </nestedSteps>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="2dcfe6aa-f002-41aa-805a-1c0ea4d67483" action="if">
+                                    <command>
+                                        <body>$updateRequired || [gget CHANGE_SECONDS] &lt; 0</body>
+                                    </command>
+                                    <nestedSteps>
+                                        <item guid="0e593198-8209-4b82-8b79-c290952d5a23" action="then">
+                                            <nestedSteps>
+                                                <item guid="77c1acd2-fdd9-45fc-96fb-322a36b6d011" action="call">
+                                                    <command>
+                                                        <body>createFiles -uriPath $uriProject</body>
+                                                    </command>
+                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                </item>
+                                                <item guid="0b07ad0e-add9-47a6-aca8-c63df8423719" action="call">
+                                                    <command>
+                                                        <body>writeLibrariesFound -uriPath $uriProject</body>
+                                                    </command>
+                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                </item>
+                                                <item guid="0e6ee5d8-3eef-4e8b-96a3-447685055ff6" action="call">
+                                                    <command>
+                                                        <body>writeInfo -uriPath $uriProject -uriLibraryList [gget QC_LIB_URI_LIST]</body>
+                                                    </command>
+                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                </item>
+                                                <item guid="61cbdf5b-f041-4b84-8598-13214976c563" action="call">
+                                                    <command>
+                                                        <body>writeInfo -uriPath $uriProject -uriLibraryList [gget PROC_LIB_URI_LIST]</body>
+                                                    </command>
+                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                </item>
+                                                <item guid="54d88ede-8e36-4325-aaa9-54b55e8a8c2a" action="if">
+                                                    <command>
+                                                        <body>[llength [gget QC_LIB_URI_LIST]] &gt; 0 || [llength [gget PROC_LIB_URI_LIST]] &gt; 0</body>
+                                                    </command>
+                                                    <nestedSteps>
+                                                        <item guid="51577d1b-f3b5-4f9c-bae9-cce7e64d54ca" action="then">
+                                                            <nestedSteps>
+                                                                <item guid="1b067e76-661e-47e7-a363-89f24dbff9b6" action="comment">
+                                                                    <postProcessing>
+                                                                        <analysisRules>
+                                                                            <item>
+                                                                                <extractorInfo extractorType="none">
+                                                                                    <extractorProperties type="com.fnfr.svt.documents.EmptyExtractorPropertyGroup"/>
+                                                                                </extractorInfo>
+                                                                                <processorInfo ruleType="message">
+                                                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.MessageProcessorPropertyGroup" severity="Information">
+                                                                                        <message>Documentation files created:</message>
+                                                                                    </ruleProperties>
+                                                                                </processorInfo>
+                                                                            </item>
+                                                                            <item>
+                                                                                <extractorInfo extractorType="none">
+                                                                                    <extractorProperties type="com.fnfr.svt.documents.EmptyExtractorPropertyGroup"/>
+                                                                                </extractorInfo>
+                                                                                <processorInfo ruleType="message">
+                                                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.MessageProcessorPropertyGroup" severity="Information">
+                                                                                        <message>  $uriProject/documentation/index.html</message>
+                                                                                    </ruleProperties>
+                                                                                </processorInfo>
+                                                                            </item>
+                                                                            <item>
+                                                                                <extractorInfo extractorType="none">
+                                                                                    <extractorProperties type="com.fnfr.svt.documents.EmptyExtractorPropertyGroup"/>
+                                                                                </extractorInfo>
+                                                                                <processorInfo ruleType="message">
+                                                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.MessageProcessorPropertyGroup" severity="Information">
+                                                                                        <message>  $uriProject/README.md</message>
+                                                                                    </ruleProperties>
+                                                                                </processorInfo>
+                                                                            </item>
+                                                                        </analysisRules>
+                                                                    </postProcessing>
+                                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                                </item>
+                                                            </nestedSteps>
+                                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                                        </item>
+                                                        <item guid="dd97dd45-8895-43d1-8cef-7590ce1bd843" action="else">
+                                                            <nestedSteps>
+                                                                <item guid="8e91bd77-8734-4587-bc65-834d64d8d939" action="comment">
+                                                                    <postProcessing>
+                                                                        <analysisRules>
+                                                                            <item>
+                                                                                <extractorInfo extractorType="none">
+                                                                                    <extractorProperties type="com.fnfr.svt.documents.EmptyExtractorPropertyGroup"/>
+                                                                                </extractorInfo>
+                                                                                <processorInfo ruleType="message">
+                                                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.MessageProcessorPropertyGroup" severity="Information">
+                                                                                        <message>Nothing found to document: $uriProject </message>
+                                                                                    </ruleProperties>
+                                                                                </processorInfo>
+                                                                            </item>
+                                                                        </analysisRules>
+                                                                    </postProcessing>
+                                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                                </item>
+                                                            </nestedSteps>
+                                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                                        </item>
+                                                    </nestedSteps>
+                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                </item>
+                                            </nestedSteps>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                        <item guid="01863b7c-741d-4e51-afad-2f8c63b5adae" action="else">
+                                            <nestedSteps>
+                                                <item guid="8238527b-ab2a-451b-a5fc-596e3276d1bd" action="comment">
+                                                    <postProcessing>
+                                                        <analysisRules>
+                                                            <item>
+                                                                <extractorInfo extractorType="none">
+                                                                    <extractorProperties type="com.fnfr.svt.documents.EmptyExtractorPropertyGroup"/>
+                                                                </extractorInfo>
+                                                                <processorInfo ruleType="message">
+                                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.MessageProcessorPropertyGroup" severity="Information">
+                                                                        <message>Documentation has not changed since [param changedDate]: $uriProject</message>
+                                                                    </ruleProperties>
+                                                                </processorInfo>
+                                                            </item>
+                                                        </analysisRules>
+                                                    </postProcessing>
                                                     <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
                                                     <useFieldsInCommand>false</useFieldsInCommand>
                                                 </item>
@@ -250,6 +489,30 @@
                     <useFieldsInCommand>false</useFieldsInCommand>
                 </item>
                 <item guid="b74dea24-9659-40cb-97bb-673adcd4ab6e" action="comment">
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="none">
+                                    <extractorProperties type="com.fnfr.svt.documents.EmptyExtractorPropertyGroup"/>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>1</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="OK">
+                                                    <message>Documentation generation complete</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="PassTestIfNotAlreadyFailed">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                        </actionsWhenTrue>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
                     <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
                     <useFieldsInCommand>false</useFieldsInCommand>
                 </item>
@@ -258,36 +521,158 @@
         <item name="getProjectList">
             <description>Get a list of all projects in workspace</description>
             <steps>
-                <item guid="0682ec6b-fb7a-47cc-85b1-0d66098ee9eb" action="eval">
+                <item guid="8b484468-5343-4ad7-a1d7-1433b973cd4e" action="eval">
                     <command>
-                        <body>set wsp [ info workspacePath ]</body>
+                        <body>set uri file:/C:/tmp/iTest_documentation_list.txt</body>
                     </command>
                     <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
                     <useFieldsInCommand>false</useFieldsInCommand>
                 </item>
-                <item guid="c44993ea-de42-453f-ba73-7849d3a637e5" action="eval">
+                <item guid="5292f84b-f599-4bce-8fb0-dcec9805ecae" action="if">
                     <command>
-                        <body>set wsp [ regsub -all {\\\\}  $wsp /  ]</body>
-                    </command>
-                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
-                    <useFieldsInCommand>false</useFieldsInCommand>
-                </item>
-                <item guid="8dc071bd-bfa6-4d16-a78d-4ce4121a2265" action="eval">
-                    <command>
-                        <body>set project_list [file list file://$wsp/.metadata/.plugins/org.eclipse.core.resources/.projects]</body>
-                    </command>
-                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
-                    <useFieldsInCommand>false</useFieldsInCommand>
-                </item>
-                <item guid="28ea7976-1290-4292-896a-34cea900660a" action="foreach">
-                    <command>
-                        <body>uriPath $project_list</body>
+                        <body>[file exists $uri]</body>
                     </command>
                     <nestedSteps>
-                        <item guid="ae07ac5e-f231-4d32-ae36-d9a80cbbe515" action="eval">
-                            <command>
-                                <body>lappend uri_list project://[lindex [split $uriPath /] end-1]</body>
-                            </command>
+                        <item guid="30ab3d9e-7ef4-4e84-a0e0-4de8308546cc" action="then">
+                            <nestedSteps>
+                                <item guid="79a6fbc5-65bf-4ae6-ac8f-af878810ed94" action="comment">
+                                    <command>
+                                        <body>Extract the list from text file</body>
+                                    </command>
+                                    <postProcessing>
+                                        <analysisRules>
+                                            <item>
+                                                <extractorInfo extractorType="none">
+                                                    <extractorProperties type="com.fnfr.svt.documents.EmptyExtractorPropertyGroup"/>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="message">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.MessageProcessorPropertyGroup" severity="Information">
+                                                        <message>Reading project list from: [file uriToPath $uri]</message>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                        </analysisRules>
+                                    </postProcessing>
+                                    <nestedSteps>
+                                        <item guid="2ba2b7b0-90ca-44b6-bdeb-be3d8a5ce245" action="readFile">
+                                            <command>
+                                                <body>$uri</body>
+                                            </command>
+                                            <postProcessing>
+                                                <storeResponseAt>lines</storeResponseAt>
+                                                <storeResponseText>true</storeResponseText>
+                                            </postProcessing>
+                                            <applicationProperties type="com.fnfr.svt.execution.builtin.exec.ReadFilePropertyGroup"/>
+                                        </item>
+                                        <item guid="645fc1d9-0557-4ab4-b477-4f39a415e7c5" action="foreach">
+                                            <command>
+                                                <body>uriPath [split $lines \\n]</body>
+                                            </command>
+                                            <nestedSteps>
+                                                <item guid="ac14be22-2849-4e45-a4e5-d893b2efab3e" action="eval">
+                                                    <command>
+                                                        <body>set uriPath [string trim $uriPath]</body>
+                                                    </command>
+                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                </item>
+                                                <item guid="7482e8d0-2c2c-4054-b4e7-dc32af594ffe" action="if">
+                                                    <command>
+                                                        <body>$uriPath != &quot;&quot;</body>
+                                                    </command>
+                                                    <nestedSteps>
+                                                        <item guid="6bf812f0-779c-4016-82f2-435c56bfaa4d" action="then">
+                                                            <nestedSteps>
+                                                                <item guid="48e08b65-6cbb-47f6-9368-ec9d20c21cf9" action="eval">
+                                                                    <command>
+                                                                        <body>lappend uri_list $uriPath</body>
+                                                                    </command>
+                                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                                </item>
+                                                            </nestedSteps>
+                                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                                        </item>
+                                                    </nestedSteps>
+                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                </item>
+                                            </nestedSteps>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="34df12f6-5ec5-49cc-8175-be7bd09f6ba6" action="else">
+                            <nestedSteps>
+                                <item guid="a9f06bd8-c784-46aa-8a50-33f8233048ce" action="comment">
+                                    <command>
+                                        <body>Extract the list from .projects file</body>
+                                    </command>
+                                    <postProcessing>
+                                        <analysisRules>
+                                            <item>
+                                                <extractorInfo extractorType="none">
+                                                    <extractorProperties type="com.fnfr.svt.documents.EmptyExtractorPropertyGroup"/>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="message">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.MessageProcessorPropertyGroup" severity="Information">
+                                                        <message>Reading project list from metadata</message>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                        </analysisRules>
+                                    </postProcessing>
+                                    <nestedSteps>
+                                        <item guid="0682ec6b-fb7a-47cc-85b1-0d66098ee9eb" action="eval">
+                                            <command>
+                                                <body>set wsp [ info workspacePath ]</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                        <item guid="c44993ea-de42-453f-ba73-7849d3a637e5" action="eval">
+                                            <command>
+                                                <body>set wsp [ regsub -all {\\\\}  $wsp /  ]</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                        <item guid="8dc071bd-bfa6-4d16-a78d-4ce4121a2265" action="eval">
+                                            <command>
+                                                <body>set project_list [file list file://$wsp/.metadata/.plugins/org.eclipse.core.resources/.projects]</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                        <item guid="28ea7976-1290-4292-896a-34cea900660a" action="foreach">
+                                            <command>
+                                                <body>uriPath $project_list</body>
+                                            </command>
+                                            <nestedSteps>
+                                                <item guid="ae07ac5e-f231-4d32-ae36-d9a80cbbe515" action="eval">
+                                                    <command>
+                                                        <body>lappend uri_list project://[lindex [split $uriPath /] end-1]</body>
+                                                    </command>
+                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                </item>
+                                            </nestedSteps>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
                             <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
                             <useFieldsInCommand>false</useFieldsInCommand>
                         </item>
@@ -340,7 +725,7 @@
                                             <nestedSteps>
                                                 <item guid="a086838a-ce25-4ff8-82e9-f363d4a2f02e" action="then">
                                                     <nestedSteps>
-                                                        <item guid="39e89982-987f-4998-b5c9-544b63a34045" action="eval">
+                                                        <item guid="86be5ca3-3fe6-4a17-8d75-a1a6492e3eea" action="eval">
                                                             <command>
                                                                 <body>lappend tc_uri_list $file_uri</body>
                                                             </command>
@@ -655,14 +1040,14 @@ H1,H2{padding-left:15px}
                     <nestedSteps>
                         <item guid="8628d1b6-7fc9-44db-90fc-8df9d90ae2b0" action="eval">
                             <command>
-                                <body>set readmeFile $uriPath/documentation/readme.txt</body>
+                                <body>set readmeUri $uriPath/documentation/readme.txt</body>
                             </command>
                             <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
                             <useFieldsInCommand>false</useFieldsInCommand>
                         </item>
                         <item guid="53940af5-3e60-47ed-b99e-3de10b6dbda4" action="if">
                             <command>
-                                <body>[file exists $readmeFile]</body>
+                                <body>[file exists $readmeUri]</body>
                             </command>
                             <nestedSteps>
                                 <item guid="08fb6fe7-616a-413d-bff0-5a2e4395526e" action="then">
@@ -679,17 +1064,7 @@ H1,H2{padding-left:15px}
                                                         </extractorInfo>
                                                         <processorInfo ruleType="message">
                                                             <ruleProperties type="com.fnfr.svt.execution.builtin.processors.MessageProcessorPropertyGroup" severity="Information">
-                                                                <message>Found readme file: $readmeFile</message>
-                                                            </ruleProperties>
-                                                        </processorInfo>
-                                                    </item>
-                                                    <item>
-                                                        <extractorInfo extractorType="none">
-                                                            <extractorProperties type="com.fnfr.svt.documents.EmptyExtractorPropertyGroup"/>
-                                                        </extractorInfo>
-                                                        <processorInfo ruleType="message">
-                                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.MessageProcessorPropertyGroup" severity="Information">
-                                                                <message>Adding text from there.</message>
+                                                                <message>Adding text from: $readmeUri</message>
                                                             </ruleProperties>
                                                         </processorInfo>
                                                     </item>
@@ -698,7 +1073,7 @@ H1,H2{padding-left:15px}
                                             <nestedSteps>
                                                 <item guid="d88799ef-d4b9-4e29-9399-9d295808250d" action="readFile">
                                                     <command>
-                                                        <body>$readmeFile</body>
+                                                        <body>$readmeUri</body>
                                                     </command>
                                                     <postProcessing>
                                                         <storeResponseAt>readme</storeResponseAt>
@@ -1079,6 +1454,7 @@ H1,H2{padding-left:15px}
                                                 </actionsWhenFalse>
                                             </ruleProperties>
                                         </processorInfo>
+                                        <skip>true</skip>
                                     </item>
                                     <item>
                                         <extractorInfo extractorType="query">
@@ -1126,7 +1502,7 @@ H1,H2{padding-left:15px}
                                     <item>
                                         <extractorInfo extractorType="query">
                                             <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup" declareNoMatchIssue="false">
-                                                <query>mapped/Xml/testCase/general/documentation</query>
+                                                <query>//testCase/general/documentation</query>
                                             </extractorProperties>
                                         </extractorInfo>
                                         <processorInfo ruleType="store">
@@ -1138,7 +1514,7 @@ H1,H2{padding-left:15px}
                                     <item>
                                         <extractorInfo extractorType="query">
                                             <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup" declareNoMatchIssue="false">
-                                                <query>mapped/Xml/testCase/general/notes</query>
+                                                <query>//testCase/general/notes</query>
                                             </extractorProperties>
                                         </extractorInfo>
                                         <processorInfo ruleType="store">
@@ -1175,7 +1551,7 @@ H1,H2{padding-left:15px}
                         </item>
                         <item guid="a3390729-5496-413b-8996-d07934bdfe1e" action="writeFile">
                             <command>
-                                <body>$uriPath/documentation/index.html &quot;&lt;DIV class=&apos;header2Text&apos;&gt;Headline: $libHeadline&lt;/DIV&gt;&quot;</body>
+                                <body>$uriPath/documentation/index.html &quot;&lt;DIV class=&apos;header3Text&apos;&gt;Headline: $libHeadline&lt;/DIV&gt;&quot;</body>
                             </command>
                             <applicationProperties type="com.fnfr.svt.execution.builtin.exec.WriteFilePropertyGroup"/>
                             <useFieldsInCommand>false</useFieldsInCommand>
@@ -1196,7 +1572,7 @@ H1,H2{padding-left:15px}
                         </item>
                         <item guid="c4a0feab-de46-408b-8b88-05425bf44344" action="writeFile">
                             <command>
-                                <body>$uriPath/documentation/index.html &quot;&lt;DIV class=&apos;header2Text&apos;&gt;Description: $libDescription&lt;/DIV&gt;&quot;</body>
+                                <body>$uriPath/documentation/index.html &quot;&lt;DIV class=&apos;header3Text&apos;&gt;Description: $libDescription&lt;/DIV&gt;&quot;</body>
                             </command>
                             <applicationProperties type="com.fnfr.svt.execution.builtin.exec.WriteFilePropertyGroup"/>
                             <useFieldsInCommand>false</useFieldsInCommand>
@@ -1412,6 +1788,103 @@ H1,H2{padding-left:15px}
                 </item>
                 <item name="uriLibraryList">
                     <description>List of library URI&apos;s </description>
+                </item>
+            </arguments>
+        </item>
+        <item name="fileChanged" isPublic="true">
+            <steps>
+                <item guid="b87bb5fd-3ba1-4719-925f-77a33acc1b7e" action="eval">
+                    <command>
+                        <body>set changeSeconds [gget CHANGE_SECONDS]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="751979f2-f164-4f86-8191-0e9f2a508c93" action="eval">
+                    <command>
+                        <body>set changed 0</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="ec176741-a18e-42fa-9b68-76d0dde132eb" action="if">
+                    <command>
+                        <body>$changeSeconds &gt; 0</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="143fa03b-fe73-4eab-92f6-722f35a092af" action="then">
+                            <nestedSteps>
+                                <item guid="a01d0e88-9401-4444-9fbf-be566839fac4" action="comment">
+                                    <command>
+                                        <body>Process files changed since date, if specified.</body>
+                                    </command>
+                                    <nestedSteps>
+                                        <item guid="311d29a1-8718-411c-9abc-b27b8a958be8" action="eval">
+                                            <command>
+                                                <body>set fullFileName [file uriToPath $uri]</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                        <item guid="c87d8242-96d1-47ae-8491-2b4db6ad1b65" action="command" session="tcl1">
+                                            <command>
+                                                <body>file mtime {$fullFileName}</body>
+                                            </command>
+                                            <postProcessing>
+                                                <analysisRules>
+                                                    <item>
+                                                        <extractorInfo extractorType="regex">
+                                                            <extractorProperties type="com.fnfr.svt.mapping.regex.extractors.RegexExtractorPropertyGroup" useLineMode="true">
+                                                                <regex>^(\\d+)$</regex>
+                                                            </extractorProperties>
+                                                        </extractorInfo>
+                                                        <processorInfo ruleType="assert">
+                                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                                <expression>$value &gt;= $changeSeconds</expression>
+                                                                <actionsWhenTrue>
+                                                                    <item actionId="Eval">
+                                                                        <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                                            <statement>set changed 1</statement>
+                                                                        </actionProperties>
+                                                                    </item>
+                                                                </actionsWhenTrue>
+                                                                <actionsWhenFalse>
+                                                                    <item actionId="Eval">
+                                                                        <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                                            <statement>set changed 0</statement>
+                                                                        </actionProperties>
+                                                                    </item>
+                                                                </actionsWhenFalse>
+                                                            </ruleProperties>
+                                                        </processorInfo>
+                                                    </item>
+                                                </analysisRules>
+                                            </postProcessing>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="221d123b-7cbe-429c-8b40-37609bf9619e" action="return">
+                    <command>
+                        <body>$changed</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <arguments>
+                <item name="uri">
+                    <description>URI of file to check</description>
+                    <isMandatory>true</isMandatory>
                 </item>
             </arguments>
         </item>

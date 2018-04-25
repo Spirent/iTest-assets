@@ -41,3 +41,8 @@ Argument | Description
 ------------ | -------------
 uriPath | URI to project
 uriLibraryList | List of library URI's 
+### fileChanged
+
+Argument | Description
+------------ | -------------
+uri | URI of file to check
