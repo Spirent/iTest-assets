@@ -8,6 +8,10 @@ Procedure properties.
 ## Library: project://ui_documentation/test_cases/documentation.fftc
 ## Headline: Documentation Generator
 Description: This test case will generate documentation for QuickCall and Procedure libraries. The Headline and Description should be completed for General Information and all procedures. Procedure arguments should also have a description.
+
+To reduce run time, you can specify a change date in the changeDate parameter; only projects which have changed since that date will have the documentation regenerated. Only .fftc and readme.txt files are checked for change.
+
+Also, if file C:\\tmp\\iTest_documentation_list.txt exists, only the projects listed there will be updated, regardless of the change state.
 ### getProjectList
 Return a list of project URI's within the current workspace
 ### getTcList
