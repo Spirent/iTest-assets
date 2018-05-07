@@ -14,7 +14,14 @@
             <steps>
                 <item guid="2ca91a34-5457-46d7-b91f-c115db2d1312" action="comment">
                     <command>
-                        <body>set changed date tolerance</body>
+                        <body>set uri [param uriDocumentationList &quot;&quot;]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="8be2e26a-1d54-4356-99f3-98dfef713334" action="if">
+                    <command>
+                        <body>![file exists $uri]</body>
                     </command>
                     <nestedSteps>
                         <item guid="d9a3b15b-772c-4913-9715-b68233042d25" action="open" session="tcl1">
@@ -50,6 +57,7 @@
                                 </analysisRules>
                             </postProcessing>
                             <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
                         </item>
                     </nestedSteps>
                     <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
@@ -231,7 +239,7 @@
                                                                             <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
                                                                             <useFieldsInCommand>false</useFieldsInCommand>
                                                                         </item>
-                                                                    </nestedSteps>
+                                                                      </nestedSteps>
                                                                     <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
                                                                     <useFieldsInCommand>false</useFieldsInCommand>
                                                                 </item>
@@ -982,6 +990,95 @@ H1,H2{padding-left:15px}
                     <useFieldsInCommand>false</useFieldsInCommand>
                 </item>
             </steps>
+        </item>
+        <item name="fileChanged">
+            <description>Determine if file has been changed since a specified date</description>
+            <steps>
+                <item guid="d0796aeb-ecd8-4837-8e04-65bb2f417532" action="scriptEval">
+                    <command>
+                        <body>clock scan [param changedDate]</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="regex">
+                                    <extractorProperties type="com.fnfr.svt.mapping.regex.extractors.RegexExtractorPropertyGroup" useLineMode="true">
+                                        <regex>^(\\d+)$</regex>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>changeSeconds</storageLocation>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="751979f2-f164-4f86-8191-0e9f2a508c93" action="eval">
+                    <command>
+                        <body>set changed 0</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="311d29a1-8718-411c-9abc-b27b8a958be8" action="eval">
+                    <command>
+                        <body>set fullFileName [string map {\\\\ /} [file uriToPath $uri]]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="202127c5-2ffc-4a22-b42e-34aa74b6ec9c" action="scriptEval">
+                    <command>
+                        <body>file mtime $fullFileName</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="regex">
+                                    <extractorProperties type="com.fnfr.svt.mapping.regex.extractors.RegexExtractorPropertyGroup" useLineMode="true">
+                                        <regex>^(\\d+)$</regex>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$value &gt;= $changeSeconds</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="Eval">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                    <statement>set changed 1</statement>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenTrue>
+                                        <actionsWhenFalse>
+                                            <item actionId="Eval">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                    <statement>set changed 0</statement>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenFalse>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="221d123b-7cbe-429c-8b40-37609bf9619e" action="return">
+                    <command>
+                        <body>$changed</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <arguments>
+                <item name="uri">
+                    <description>URI of file to check</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
         </item>
     </procedures>
 </testCase>
