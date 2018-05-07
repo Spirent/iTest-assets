@@ -1,0 +1,217 @@
+<?xml version="1.0"?>
+<testCase version="7.0.1.201802131446">
+    <general>
+        <documentation>Generic wireshark library</documentation>
+        <notes>Basic procedures to analyze traffic payloads</notes>
+        <owner>mbarfield</owner>
+        <isProcedureLibrary>true</isProcedureLibrary>
+        <sessionClass includeTestCase="true" sessionType="project://di_wireshark_com/referenceSessionProfile/wireshark.ffsp"/>
+    </general>
+    <procedures>
+        <item name="main">
+            <steps>
+                <item guid="00b9729f-2822-4c63-8675-ff0f7a87d771" action="comment">
+                    <command>
+                        <body>main</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+        </item>
+        <item name="loadCaptureFile" isPublic="true" isVBlock="true">
+            <description>Load a pcap file</description>
+            <steps>
+                <item guid="1d3f53e5-df1c-4023-bf05-26f3bf292325" action="command" session="$session" normalOffset="46.258" estimatedStepExecutionTime="1.415">
+                    <command>
+                        <body>capture load $filePath</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>packets()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>totalPacketsLoaded</storageLocation>
+                                        <query>totalPacketsLoaded</query>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <emulation>
+                        <behavior>
+                            <response>Loading ... done
+Total of 0 packets loaded
+
+</response>
+                            <responseType>text</responseType>
+                            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;stats&gt;
+        &lt;packets map:endcol=&quot;10&quot; map:line=&quot;1&quot; map:linecount=&quot;1&quot; map:startcol=&quot;9&quot;&gt;0&lt;/packets&gt;
+    &lt;/stats&gt;
+    &lt;success&gt;true&lt;/success&gt;
+&lt;/structure&gt;
+</structuredData>
+                            <aliases>
+                                <item name="packets">
+                                    <queryFormatString>stats/packets</queryFormatString>
+                                </item>
+                                <item name="success">
+                                    <queryFormatString>.//success</queryFormatString>
+                                </item>
+                            </aliases>
+                        </behavior>
+                    </emulation>
+                </item>
+            </steps>
+            <author>mabrfield</author>
+            <multilineDescription>Load a pcap file on the system. Requires valid URI. </multilineDescription>
+            <arguments>
+                <item name="filePath">
+                    <description>Where do you want to save the data.
+
+Example: file:/C:/stc.pcap</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+            <response>{&quot;totalPacketsLoaded&quot;:&quot;value&quot;}</response>
+        </item>
+        <item name="getPacketIds" isPublic="true">
+            <description>This will return packet IDs for a specified range</description>
+            <steps>
+                <item guid="588e4c41-77ec-4884-a64a-cf539c22e3f2" action="command" session="$session" normalOffset="11.464" estimatedStepExecutionTime="0.05">
+                    <command>
+                        <body>show packets -s $startIndex -c $count</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>.//id</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>ids</storageLocation>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="f7612831-54a8-4c2f-b7c3-239b37fb6bb3" action="write">
+                    <command>
+                        <body>$ids</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <author>mbarfield</author>
+            <multilineDescription>This will return the packet IDs for a specified range so user can lop through packet details
+
+Return: list of packet IDs</multilineDescription>
+            <arguments>
+                <item name="startIndex">
+                    <description>Wireshark index where you want to start.
+
+Example: 1</description>
+                    <defaultValue>1</defaultValue>
+                </item>
+                <item name="count">
+                    <description>Total number of index values you want returned.
+
+Example: 100</description>
+                    <defaultValue>10</defaultValue>
+                </item>
+            </arguments>
+            <response>{&quot;ids&quot;:&quot;value&quot;}</response>
+        </item>
+        <item name="getBasicDataFields" isPublic="true" isVBlock="true">
+            <description>Get basic data fields to verify L2/L3 source/destination info</description>
+            <steps>
+                <item guid="42bb32e0-f42b-46f3-abe8-794130abd254" action="command" session="$session" normalOffset="15.292" estimatedStepExecutionTime="0.137">
+                    <command>
+                        <body>show details $index</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>value_by_field(&quot;eth.dst&quot;)</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>eth_dst</storageLocation>
+                                        <query>eth_dst</query>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>value_by_field(&quot;eth.src&quot;)</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>eth_src</storageLocation>
+                                        <query>eth_src</query>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>value_by_field(&quot;ip.src&quot;)</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>ip_src</storageLocation>
+                                        <query>ip_src</query>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>value_by_field(&quot;ip.dst&quot;)</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>ip_dst</storageLocation>
+                                        <query>ip_dst</query>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <author>mbarfield</author>
+            <multilineDescription>This returns the basic fields used to validate L2/L3 information in the headers
+
+Return: MAC, IPv4 (source and destination)</multilineDescription>
+            <arguments>
+                <item name="index">
+                    <description>Valid index found in the PCAP output</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+            <response>{&quot;eth_dst&quot;:&quot;value&quot;,&quot;eth_src&quot;:&quot;value&quot;,&quot;ip_src&quot;:&quot;value&quot;,&quot;ip_dst&quot;:&quot;value&quot;}</response>
+        </item>
+    </procedures>
+</testCase>

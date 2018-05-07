@@ -1,0 +1,139 @@
+============General==================
+owner="mbarfield"
+============Steps====================
+Procedure main
+	1 teststep Init test variables
+		1.1 eval set ifc1 [param interface1]
+			useFieldsInCommand="false"
+		1.2 eval set ifc2 [param interface2]
+			useFieldsInCommand="false"
+	2 teststep Start STC Traffic in another thread
+		async="true"
+		threadName="stc"
+		2.1 open STC1 device:STC1#Spirent_TestCenter
+			normalOffset="42.314"
+			transferableToolId="com.fnfr.svt.applications.spirent.testcenter.gui"
+			transferableType="com.fnfr.itest.applications.spirent.testcenter.properties.TestCenterGUISessionProperties"
+			configureCustom16bitFilter(transferableToolId="com.fnfr.svt.applications.spirent.testcenter.gui")(transferableType="com.fnfr.itest.applications.spirent.testcenter.properties.Analyzer16BitFilterProperties")(mask="ffff")(mask.inherit="false")(endOfRange="ffff")(endOfRange.inherit="false")
+	3 teststep clear counters cisco 1
+		async="true"
+		threadName="counters"
+		3.1 open Router1 device:Router1#telnet
+			completionProperties(expectedIdleTime="30.602")(expectedIdleTime.inherit="false")
+		3.2 login Router1 
+			useFieldsInCommand="false"
+		3.3 checkCounters Router1  -ifc $ifc1 -clearCounters 1
+			useFieldsInCommand="false"
+		3.4 sleep 1
+	4 teststep clear counters cisco 2
+		async="true"
+		threadName="counters"
+		4.1 open Router2 device:Router2#telnet
+			normalOffset="51.977"
+		4.2 login Router2 
+			useFieldsInCommand="false"
+		4.3 checkCounters Router2  -ifc $ifc2 -clearCounters 1
+			useFieldsInCommand="false"
+	5 waitthread counters stc
+	6 teststep run traffic
+		6.1 startArpNd STC1 1
+			normalOffset="23.257"
+			estimatedStepExecutionTime="2.825"
+		6.2 startGenerator STC1 
+			normalOffset="12.095"
+			estimatedStepExecutionTime="1.354"
+		6.3 sanityCheckTraffic STC1 
+			useFieldsInCommand="false"
+		6.4 sleep [param trafficDurationSec]
+		6.5 subscribeView STC1 DetailedStreamResults BasicTrafficResults
+			normalOffset="16.506"
+			estimatedStepExecutionTime="1.282"
+		6.6 startCapture STC1 1
+			normalOffset="26.929"
+			estimatedStepExecutionTime="2.31"
+		6.7 sleep 2
+		6.8 stopCapture STC1 1
+			normalOffset="6.579"
+			estimatedStepExecutionTime="1.966"
+		6.9 saveCapture STC1 1 file:/C:/stc.pcap
+			normalOffset="23.36"
+			estimatedStepExecutionTime="3.545"
+		6.10 stopGenerator STC1 
+			normalOffset="16.302"
+			estimatedStepExecutionTime="0.413"
+		6.11 showResults STC1 BasicTrafficResults
+		6.12 showResults STC1 DetailedStreamResults
+			analyze
+				query .//DroppedCount_Frames_
+				assert $value eq "0"
+					When True
+						PassTestIfNotAlreadyFailed 
+						DeclareExecutionIssue OK:Checked that dropped packet is 0, actual count $value
+					When False
+						FailTest 
+						DeclareExecutionIssue Error:Checked that dropped packet is 0, actual count $value
+	7 teststep check counters
+		7.1 checkCounters Router1  -ifc $ifc1 -clearCounters 0
+			analyze
+				query json("pktsInput")
+				assert $value >= "100"
+					When True
+						DeclareExecutionIssue OK:Check that packet count is greater than expected value: [param expectedPktCountMin], actual count $value
+						PassTestIfNotAlreadyFailed 
+					When False
+						DeclareExecutionIssue Error:Check that packet count is greater than expected value: [param expectedPktCountMin], actual count $value
+						FailTest 
+			useFieldsInCommand="false"
+		7.2 checkCounters Router2  -ifc $ifc2 -clearCounters 0
+			analyze
+				query json("pktsInput")
+				assert $value >= "100"
+					When True
+						DeclareExecutionIssue OK:Check that packet count is greater than expected value: [param expectedPktCountMin], actual count $value
+						PassTestIfNotAlreadyFailed 
+					When False
+						DeclareExecutionIssue Error:Check that packet count is greater than expected value: [param expectedPktCountMin], actual count $value
+						FailTest 
+			useFieldsInCommand="false"
+	8 teststep check packets
+		8.1 open PC device:PC_Shared/PC#wireshark
+			normalOffset="57.396"
+		8.2 command PC capture load file:/C:/stc.pcap
+			normalOffset="44.231"
+			estimatedStepExecutionTime="2.23"
+		8.3 command PC show packets 
+			normalOffset="11.464"
+			estimatedStepExecutionTime="0.05"
+		8.4 command PC 
+			normalOffset="11.073"
+		8.5 command PC show details 1
+			analyze
+				query value_by_field("data.len")
+				assert $value == "1480"
+					When True
+						DeclareExecutionIssue OK:Check that data length is 1480, actual length $value
+						PassTestIfNotAlreadyFailed 
+					When False
+						DeclareExecutionIssue Error:Check that data length is 1480, actual length $value
+						FailTest 
+			normalOffset="15.292"
+			estimatedStepExecutionTime="0.137"
+		8.6 command PC show packets -s 1 -c 1000
+			normalOffset="3.034"
+			estimatedStepExecutionTime="0.248"
+	9 teststep close sessions
+		9.1 close PC 
+			normalOffset="10824.569"
+		9.2 close Router2 
+			normalOffset="82.167"
+		9.3 close Router1 
+			normalOffset="94.932"
+		9.4 close STC1 
+			normalOffset="2.502"
+============Parameters===============
+parameters(escape="true")
+	parameters
+		trafficDurationSec(pt:datatype="INTEGER")(pt:description="Traffic duration in seconds")="15"
+		expectedPktCountMin(pt:datatype="INTEGER")(pt:description="The minimum number of packets expected")="100"
+		interface1(pt:description="Interface on router 1")="fastEthernet 6/0"
+		interface2(pt:description="Interface on router 2")="fastEthernet 6/0"

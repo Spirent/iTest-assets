@@ -1,0 +1,221 @@
+<?xml version="1.0"?>
+<ResponseMap version="6.0.0.18638fa">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="command">
+                <command>
+                    <body>show interfaces ge-0/0/1</body>
+                </command>
+            </action>
+            <responseBody>Physical interface: ge-0/0/1, Enabled, Physical link is Up
+  Interface index: 134, SNMP ifIndex: 509
+  Link-level type: Ethernet, MTU: 1514, Link-mode: Full-duplex, Speed: 1000mbps, BPDU Error: None, MAC-REWRITE Error: None, Loopback: Disabled, Source filtering: Disabled,
+  Flow control: Enabled, Auto-negotiation: Enabled, Remote fault: Online
+  Device flags   : Present Running
+  Interface flags: SNMP-Traps Internal: 0x4000
+  Link flags     : None
+  CoS queues     : 8 supported, 8 maximum usable queues
+  Current address: 3c:94:d5:eb:b0:81, Hardware address: 3c:94:d5:eb:b0:81
+  Last flapped   : 2015-09-02 06:50:08 UTC (01:44:57 ago)
+  Input rate     : 0 bps (0 pps)
+  Output rate    : 0 bps (0 pps)
+  Active alarms  : None
+  Active defects : None
+
+  Logical interface ge-0/0/1.0 (Index 70) (SNMP ifIndex 529) 
+    Flags: SNMP-Traps Encapsulation: ENET2
+    Input packets : 76580048 
+    Output packets: 55842562
+    Security: Zone: traffic
+    Allowed host-inbound traffic : bootp bfd bgp dns dvmrp igmp ldp msdp nhrp ospf pgm pim rip router-discovery rsvp sap vrrp dhcp finger ftp tftp ident-reset http https ike netconf ping
+    reverse-telnet reverse-ssh rlogin rpm rsh snmp snmp-trap ssh telnet traceroute xnm-clear-text xnm-ssl lsping ntp sip
+    Protocol inet, MTU: 1500
+      Flags: Sendbcast-pkt-to-re
+      Addresses, Flags: Is-Preferred Is-Primary
+        Destination: 192.168.11/24, Local: 192.168.11.91, Broadcast: 192.168.11.255
+
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;prompt&gt;spirent@ihop&amp;gt; &lt;/prompt&gt;
+    &lt;echo&gt;show interfaces ge-0/0/1 &lt;/echo&gt;
+    &lt;promptName&gt;show&lt;/promptName&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.5</duration>
+        </item>
+        <item name="sample2">
+            <responseBody>Physical interface: ge-0/0/2, Administratively down, Physical link is Up
+  Interface index: 135, SNMP ifIndex: 510
+  Link-level type: Ethernet, MTU: 1514, Link-mode: Full-duplex, Speed: 1000mbps, BPDU Error: None, MAC-REWRITE Error: None, Loopback: Disabled, Source filtering: Disabled, Flow control: Enabled, Auto-negotiation: Enabled, Remote fault: Online
+  Device flags   : Present Running
+  Interface flags: Down SNMP-Traps Internal: 0x4000
+  Link flags     : None
+  CoS queues     : 8 supported, 8 maximum usable queues
+  Current address: 3c:94:d5:eb:b0:82, Hardware address: 3c:94:d5:eb:b0:82
+  Last flapped   : 2016-09-19 07:46:15 UTC (00:16:24 ago)
+  Input rate     : 0 bps (0 pps)
+  Output rate    : 0 bps (0 pps)
+  Active alarms  : None
+  Active defects : None
+
+  Logical interface ge-0/0/2.0 (Index 70) (SNMP ifIndex 530) 
+    Description: tacobell_link
+    Flags: Device-Down SNMP-Traps Encapsulation: ENET2
+    Input packets : 3836170 
+    Output packets: 3860242
+    Security: Zone: traffic
+    Allowed host-inbound traffic : bootp bfd bgp dns dvmrp igmp ldp msdp nhrp ospf pgm pim rip router-discovery rsvp sap vrrp dhcp finger ftp tftp ident-reset http https ike netconf ping reverse-telnet reverse-ssh rlogin rpm rsh snmp snmp-trap ssh telnet traceroute xnm-clear-text xnm-ssl lsping ntp sip
+    Protocol inet, MTU: 1500
+      Flags: Sendbcast-pkt-to-re
+      Addresses, Flags: Dest-route-down Is-Preferred Is-Primary
+        Destination: 192.168.6/24, Local: 192.168.6.91, Broadcast: 192.168.6.255
+
+</responseBody>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="ifcState">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Physical interface:\\s+</regex>
+                            <start>0</start>
+                            <end>20</end>
+                        </item>
+                        <item name="ifc">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>20</start>
+                            <end>28</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name=".{8}">exactly 8 of any character</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>,\\s+</regex>
+                            <start>28</start>
+                            <end>30</end>
+                        </item>
+                        <item name="ifcAdminState">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>30</start>
+                            <end>37</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>, Physical link is\\s+</regex>
+                            <start>37</start>
+                            <end>56</end>
+                        </item>
+                        <item name="phyLinkStatus">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>56</start>
+                            <end>58</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>Physical interface: ge-0/0/1, Enabled, Physical link is Up</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+                <item name="ifcState_1">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Physical interface:\\s+</regex>
+                            <start>0</start>
+                            <end>20</end>
+                        </item>
+                        <item name="ifc">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>20</start>
+                            <end>28</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name=".{8}">exactly 8 of any character</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>, Administratively\\s+</regex>
+                            <start>28</start>
+                            <end>47</end>
+                        </item>
+                        <item name="ifcAdminState">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>47</start>
+                            <end>51</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>, Physical link is\\s+</regex>
+                            <start>51</start>
+                            <end>70</end>
+                        </item>
+                        <item name="phyLinkStatus">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>70</start>
+                            <end>72</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>Physical interface: ge-0/0/2, Administratively down, Physical link is Up</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="show interface*" priority="51">
+        <application>
+            <item>com.fnfr.svt.applications.ssh</item>
+            <item>com.fnfr.svt.applications.telnet</item>
+        </application>
+    </applicabilityProperties>
+</ResponseMap>

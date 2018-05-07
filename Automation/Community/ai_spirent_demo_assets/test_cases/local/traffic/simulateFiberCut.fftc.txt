@@ -1,0 +1,218 @@
+============General==================
+owner="mbarfield"
+============Steps====================
+Procedure main
+	1 #Open REST API session - Velocity
+		async="true"
+		threadName="stc"
+		useFieldsInCommand="false"
+		1.1 open Velocity device:PC#Velocity_REST_API
+			transferableToolId="com.fnfr.itest.applications.webservices.restful"
+			transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulSessionProperties"
+	2 #Start STC
+		async="true"
+		threadName="stc"
+		useFieldsInCommand="false"
+		2.1 open STC1 device:STC1#Spirent_TestCenter
+			normalOffset="42.314"
+			transferableToolId="com.fnfr.svt.applications.spirent.testcenter.gui"
+			transferableType="com.fnfr.itest.applications.spirent.testcenter.properties.TestCenterGUISessionProperties"
+			configureCustom16bitFilter(transferableToolId="com.fnfr.svt.applications.spirent.testcenter.gui")(transferableType="com.fnfr.itest.applications.spirent.testcenter.properties.Analyzer16BitFilterProperties")(mask="ffff")(mask.inherit="false")(endOfRange="ffff")(endOfRange.inherit="false")
+	3 #clear counters cisco 1
+		async="true"
+		threadName="counters"
+		useFieldsInCommand="false"
+		3.1 open Cisco1 device:Router1#telnet
+			completionProperties(expectedIdleTime="30.602")(expectedIdleTime.inherit="false")
+		3.2 command Cisco1 aUw2SAu8CFIJor6ZZIWzzg==
+			normalOffset="12.317"
+			estimatedStepExecutionTime="0.152"
+		3.3 command Cisco1 en
+			normalOffset="2.863"
+			estimatedStepExecutionTime="0.128"
+			expectedIdleTime="0.2"
+			expectedIdleTime.inherit="false"
+		3.4 command Cisco1 aUw2SAu8CFIJor6ZZIWzzg==
+			normalOffset="3.311"
+			estimatedStepExecutionTime="0.129"
+		3.5 command Cisco1 clear counters fa 6/0
+			normalOffset="31.627"
+			estimatedStepExecutionTime="0.137"
+			expectedIdleTime="2.45"
+			expectedIdleTime.inherit="false"
+		3.6 command Cisco1 
+			expectedIdleTime="2.45"
+			expectedIdleTime.inherit="false"
+		3.7 command Cisco1 show int fastEthernet 6/0
+			analyze
+				query pktsInput()
+				assert $value == "0"
+					When True
+						DeclareExecutionIssue OK:Check that packet count is 0, actual count $value
+						PassTestIfNotAlreadyFailed 
+					When False
+						DeclareExecutionIssue Error:Check that packet count is 0, actual count $value
+						FailTest 
+			normalOffset="8.267"
+			estimatedStepExecutionTime="0.143"
+			expectedIdleTime="0.934"
+			expectedIdleTime.inherit="false"
+	4 #clear counters cisco 2
+		async="true"
+		threadName="counters"
+		useFieldsInCommand="false"
+		4.1 open Cisco2 device:Router2#telnet
+			normalOffset="51.977"
+		4.2 command Cisco2 aUw2SAu8CFIJor6ZZIWzzg==
+			normalOffset="3.353"
+			estimatedStepExecutionTime="0.136"
+		4.3 command Cisco2 en
+			normalOffset="1.817"
+			estimatedStepExecutionTime="0.134"
+			expectedIdleTime="0.201"
+			expectedIdleTime.inherit="false"
+		4.4 command Cisco2 aUw2SAu8CFIJor6ZZIWzzg==
+			normalOffset="3.353"
+			estimatedStepExecutionTime="0.136"
+		4.5 command Cisco2 clear counters fa 6/0
+			normalOffset="27.797"
+			estimatedStepExecutionTime="0.134"
+			expectedIdleTime="0.208"
+			expectedIdleTime.inherit="false"
+		4.6 command Cisco2 
+			normalOffset="0.179"
+			estimatedStepExecutionTime="0.131"
+		4.7 command Cisco2 show int fastEthernet 6/0
+			analyze
+				query pktsInput()
+				assert $value == "0"
+					When True
+						DeclareExecutionIssue OK:Check that packet count is 0, actual count $value
+						PassTestIfNotAlreadyFailed 
+					When False
+						DeclareExecutionIssue Error:Check that packet count is 0, actual count $value
+						FailTest 
+			normalOffset="33.586"
+			estimatedStepExecutionTime="0.146"
+			expectedIdleTime="0.921"
+			expectedIdleTime.inherit="false"
+	5 waitthread counters stc
+	6 #run traffic
+		useFieldsInCommand="false"
+		6.1 startArpNd STC1 1
+			normalOffset="23.257"
+			estimatedStepExecutionTime="2.825"
+		6.2 startGenerator STC1 
+			normalOffset="12.095"
+			estimatedStepExecutionTime="1.354"
+		6.3 sleep 30
+		6.4 subscribeView STC1 DetailedStreamResults BasicTrafficResults
+			normalOffset="16.506"
+			estimatedStepExecutionTime="1.282"
+		6.5 showResults STC1 BasicTrafficResults
+		6.6 showResults STC1 DetailedStreamResults
+			analyze
+				query .//DroppedCount_Frames_
+				assert $value eq "0"
+					When True
+						PassTestIfNotAlreadyFailed 
+						DeclareExecutionIssue OK:Checked that dropped packet is 0, actual count $value
+					When False
+						FailTest 
+						DeclareExecutionIssue Error:Checked that dropped packet is 0, actual count $value
+	7 #break link
+		normalOffset="16.302"
+		estimatedStepExecutionTime="0.413"
+		useFieldsInCommand="false"
+		7.1 makeReleaseLink Velocity -topoName CiscoSystemTest -link "Link 4" -action break
+			analyze
+				query mapped/Json/status
+				assert $value == "SUCCESS"
+					When True
+						DeclareExecutionIssue OK:Broke link status check: $value
+						PassTestIfNotAlreadyFailed 
+					When False
+						DeclareExecutionIssue Error:Broke link status check: $value
+						FailTest 
+			useFieldsInCommand="false"
+	8 sleep 10
+	9 #restore link
+		normalOffset="16.302"
+		estimatedStepExecutionTime="0.413"
+		useFieldsInCommand="false"
+		9.1 makeReleaseLink Velocity -topoName CiscoSystemTest -link "Link 4" -action restore
+			analyze
+				query mapped/Json/status
+				assert $value == "SUCCESS"
+					When True
+						DeclareExecutionIssue OK:Restore link status check: $value
+						PassTestIfNotAlreadyFailed 
+					When False
+						DeclareExecutionIssue Error:Restore link status check: $value
+						FailTest 
+			useFieldsInCommand="false"
+	10 sleep 10
+	11 #check traffic A
+		useFieldsInCommand="false"
+		11.1 showResults STC1 DetailedStreamResults
+			analyze
+				query .//DroppedCount_Frames_
+				assert $value > 0
+					When True
+						PassTestIfNotAlreadyFailed 
+						DeclareExecutionIssue OK:{auto_message_true}
+					When False
+						FailTest 
+						DeclareExecutionIssue Error:{auto_message_false}
+			analyze
+				query .//DroppedCount_Frames_
+				store dropCountA
+	12 sleep 10
+	13 #check traffic B
+		useFieldsInCommand="false"
+		13.1 showResults STC1 DetailedStreamResults
+			analyze
+				query .//DroppedCount_Frames_
+				store dropCountB
+		13.2 eval puts $dropCountA
+			analyze
+				contains $dropCountB
+				assert $value == 1
+					When True
+						DeclareExecutionIssue OK:Check that drop count is the same - expected: $dropCountA, actual: $dropCountB
+						PassTestIfNotAlreadyFailed 
+					When False
+						DeclareExecutionIssue Error:Check that drop count is the same - expected: $dropCountA, actual: $dropCountB
+						FailTest 
+			useFieldsInCommand="false"
+	14 stopGenerator STC1 
+	15 #check counters
+		useFieldsInCommand="false"
+		15.1 command Cisco1 show int fastEthernet 6/0
+			analyze
+				query pktsInput()
+				assert $value >= "100"
+					When True
+						DeclareExecutionIssue OK:Check that packet count is greater than 100, actual count $value
+						PassTestIfNotAlreadyFailed 
+					When False
+						DeclareExecutionIssue Error:Check that packet count is greater than 100, actual count $value
+						FailTest 
+		15.2 command Cisco2 show int fastEthernet 6/0
+			analyze
+				query pktsInput()
+				assert $value >= "100"
+					When True
+						DeclareExecutionIssue OK:Check that packet count is greater than 100, actual count $value
+						PassTestIfNotAlreadyFailed 
+					When False
+						DeclareExecutionIssue Error:Check that packet count is greater than 100, actual count $value
+						FailTest 
+	16 #close sessions
+		useFieldsInCommand="false"
+		16.1 close Cisco2 
+			normalOffset="82.167"
+		16.2 close Cisco1 
+			normalOffset="94.932"
+		16.3 close STC1 
+			normalOffset="2.502"

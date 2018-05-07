@@ -1,0 +1,670 @@
+<?xml version="1.0"?>
+<testCase version="7.0.1.201802131446">
+    <general>
+        <owner>mbarfield</owner>
+    </general>
+    <execution>
+        <parameters version="7.0.1.201802131446">
+            <parameters escape="true">
+                <parameters xmlns:pt="http://www.fnfr.com/schemas/parameterTree">
+                    <trafficDurationSec pt:datatype="INTEGER" pt:description="Traffic duration in seconds">15</trafficDurationSec>
+                    <expectedPktCountMin pt:datatype="INTEGER" pt:description="The minimum number of packets expected">100</expectedPktCountMin>
+                    <interface1 pt:description="Interface on router 1">fastEthernet 6/0</interface1>
+                    <interface2 pt:description="Interface on router 2">fastEthernet 6/0</interface2>
+                    <loadPortBasedPercent pt:datatype="INTEGER" pt:description="This is the percentage of the load based on the port rate">10</loadPortBasedPercent>
+                </parameters>
+            </parameters>
+        </parameters>
+    </execution>
+    <requirements>
+        <requirement key="os.type">linux</requirement>
+    </requirements>
+    <testbed>project://ai_spirent_demo_assets/topologies/local/CiscoSystemTest.tbml</testbed>
+    <procedures>
+        <item name="main">
+            <steps>
+                <item guid="1d0967ba-70b6-4f71-b5d8-23acaea5ae9f" action="teststep">
+                    <command>
+                        <body>Init test variables</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="74a76de8-226d-4671-a736-b6fc6165dafa" action="eval">
+                            <command>
+                                <body>set ifc1 [param interface1]</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="7825c7f2-e685-4827-bd98-a3d44f00733b" action="eval">
+                            <command>
+                                <body>set ifc2 [param interface2]</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="0be75ca1-2756-4964-b348-2063b8d37311" action="eval">
+                            <command>
+                                <body>set pcapFileName stc.pcap</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="dcec5d2d-6400-43f3-8e73-506c9cab929c" action="eval">
+                            <command>
+                                <body>set pcapFilePath &quot;[info tempDir uri]$pcapFileName&quot;</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="372a2f87-cd05-4e88-802a-be3a3177a627" action="teststep" async="true">
+                    <threadName>stc</threadName>
+                    <command>
+                        <body>Start STC Traffic in another thread</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="4daca6ff-058e-4208-be00-dbba7557d180" action="open" session="STC1" normalOffset="42.314">
+                            <command>
+                                <body>device:STC1#Spirent_TestCenter</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.OpenStepPropertyGroup">
+                                <stepProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                <sessionProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.spirent.itest.applications.stcrest" transferableType="com.spirent.itest.applications.stcrest.properties.TestCenterRestSessionProperties" sessionName="basic_traffic_[info testReportID]" sessionName.inherit="false">
+                                    <configureCustom16bitFilter transferableToolId="com.spirent.itest.applications.stcrest" transferableType="com.spirent.itest.applications.stcrest.properties.Analyzer16BitFilterProperties" mask="ffff" mask.inherit="false" endOfRange="ffff" endOfRange.inherit="false"/>
+                                </sessionProperties>
+                                <sessionClass type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                <sessionVersion type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            </applicationProperties>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="063f345f-846d-4c33-b364-96939849bbad" action="teststep" async="true">
+                    <threadName>counters</threadName>
+                    <command>
+                        <body>clear counters cisco 1</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="2cb4d243-8272-4614-87a9-4b4d319a2b92" action="open" session="Router1">
+                            <command>
+                                <body>device:Router1#telnet</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.OpenStepPropertyGroup">
+                                <stepProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                                    <completionProperties expectedIdleTime="30.602" expectedIdleTime.inherit="false"/>
+                                </stepProperties>
+                                <sessionProperties type="com.fnfr.svt.applications.telnet.documents.TelnetSessionProperties"/>
+                                <sessionClass type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                <sessionVersion type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            </applicationProperties>
+                        </item>
+                        <item guid="a95e1a88-9e6b-44f6-b812-9a32bc209170" action="login" session="Router1">
+                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="2ca5af96-1a1a-4c0f-b9db-e84108393a24" action="checkCounters" session="Router1">
+                            <command>
+                                <body> -ifc $ifc1 -clearCounters 1</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="29b1c7d0-89b4-4ee8-99bf-338bdb13a68b" action="sleep">
+                            <command>
+                                <body>1</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="11ef53de-6fd7-4481-91c5-1c8da3872748" action="teststep" async="true">
+                    <threadName>counters</threadName>
+                    <command>
+                        <body>clear counters cisco 2</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="ea317094-e712-4f61-916c-68a19841bc9d" action="open" session="Router2" normalOffset="51.977">
+                            <command>
+                                <body>device:Router2#telnet</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.OpenStepPropertyGroup">
+                                <stepProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                                <sessionProperties type="com.fnfr.svt.applications.telnet.documents.TelnetSessionProperties"/>
+                                <sessionClass type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                <sessionVersion type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            </applicationProperties>
+                        </item>
+                        <item guid="9c4cfe36-4c38-4a9e-9a02-948ac84bb15c" action="login" session="Router2">
+                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="170eac17-9445-49c4-983f-fde911092aee" action="checkCounters" session="Router2">
+                            <command>
+                                <body> -ifc $ifc2 -clearCounters 1</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="88b00412-02ed-4a89-abcf-c092a24b7fda" action="teststep">
+                    <command>
+                        <body>Wait thread</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="8c0a6998-5b8b-4359-bda2-25c7ab2a7bdb" action="waitthread">
+                            <command>
+                                <body>counters stc</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.execution.kernel.WaitThreadPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="9909ba00-e5ef-4d15-bff2-f2284d0ba6c6" action="teststep">
+                    <command>
+                        <body>run traffic</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="8cf463ce-9542-411e-a840-81f2c978b042" action="teststep">
+                            <command>
+                                <body>setup traffic parameters</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="00efd90f-3f5b-4744-a72c-45e8a5f7df5c" action="configureTrafficProfile" session="STC1">
+                            <command>
+                                <body> -portIndex 1 -loadPortBasedPercent [param loadPortBasedPercent]</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="bc954223-903d-40c3-9345-e5ae9d13365a" action="configureTrafficProfile" session="STC1">
+                            <command>
+                                <body> -portIndex 2 -loadPortBasedPercent [param loadPortBasedPercent]</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="5e4a4706-0b22-4976-bfc1-d91e6a54d039" action="startArpClearCounters" session="STC1">
+                            <command>
+                                <body> -startArp 1 -clearResults 1</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="497b5b21-d7ca-4678-9560-d9882056bad6" action="getPorts" session="STC1">
+                            <postProcessing>
+                                <storeResponseAt>portList</storeResponseAt>
+                                <storeResponseText>true</storeResponseText>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="3a1a317f-6474-41e0-8a91-91a0ca2938e8" action="getBasicDeviceInfo" session="STC1">
+                            <command>
+                                <body> -port 1 -portId 1</body>
+                            </command>
+                            <postProcessing>
+                                <analysisRules>
+                                    <item>
+                                        <extractorInfo extractorType="query">
+                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                <query>mapped/Json/IPv4Address</query>
+                                            </extractorProperties>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="store">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                <storageLocation>ip_dst</storageLocation>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                    <item>
+                                        <extractorInfo extractorType="query">
+                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                <query>mapped/Json/SourceMacAddress</query>
+                                            </extractorProperties>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="store">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                <storageLocation>eth_dst</storageLocation>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                </analysisRules>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="5219db99-b061-4325-ba2e-0284640af6ce" action="getBasicDeviceInfo" session="STC1">
+                            <command>
+                                <body> -port 2 -portId 1</body>
+                            </command>
+                            <postProcessing>
+                                <analysisRules>
+                                    <item>
+                                        <extractorInfo extractorType="query">
+                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                <query>mapped/Json/IPv4Address</query>
+                                            </extractorProperties>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="store">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                <storageLocation>ip_src</storageLocation>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                </analysisRules>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="6f3dac15-ab71-4974-9d68-26b14de4c86b" action="teststep">
+                            <command>
+                                <body>set standard traffic counters</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="d8bac0cf-e47d-4217-bee0-a5021b1308c7" action="setStandardTrafficResults" session="STC1">
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="c9dfb678-3fa3-4ea0-928a-ce9927f6a443" action="teststep">
+                            <command>
+                                <body>Clear router counters after the arp</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="048fe9d3-5f85-4d92-9024-01f8f76d9ca0" action="checkCounters" session="Router1">
+                                    <command>
+                                        <body> -ifc $ifc1 -clearCounters 1</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="23abcbce-264e-4a8b-b8b6-cba600f35f5e" action="checkCounters" session="Router2">
+                                    <command>
+                                        <body> -ifc $ifc2 -clearCounters 1</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="bb786d30-c841-472b-92c6-d45a55576afa" action="teststep">
+                            <command>
+                                <body>start traffic and sanity check traffic</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="aed791ba-a7b5-48a6-8d2a-963a5455e629" action="startTraffic" session="STC1">
+                            <command>
+                                <body> -sanityCheck 1 -trafficDurationSec [param trafficDurationSec]</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="f0be4e13-0a9e-46ba-9755-934bbc8a31bd" action="teststep">
+                            <command>
+                                <body>Capture wireline data and save pcap file</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="a1d2de8e-5d23-4b6e-a3a0-df5f444c8fd2" action="pcapCapture" session="STC1">
+                            <command>
+                                <body> -portList 1 -captureDelaySec 2 -filepath $pcapFilePath</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="97bd3733-8c33-4e70-a08f-7027c7852838" action="stopTraffic" session="STC1">
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="795037ce-25f3-4a0f-977a-70df7b6c44bd" action="getBasicPortTxRxCounters" session="STC1">
+                            <command>
+                                <body> -port [lindex $portList 0]</body>
+                            </command>
+                            <postProcessing>
+                                <analysisRules>
+                                    <item>
+                                        <extractorInfo extractorType="query">
+                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                <query>mapped/Json/totalRxCountFrames</query>
+                                            </extractorProperties>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="store">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                <storageLocation>router2PktCount</storageLocation>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                </analysisRules>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="d99d502d-cd18-4829-a3d6-00452524267b" action="getBasicPortTxRxCounters" session="STC1">
+                            <command>
+                                <body> -port [lindex $portList 1]</body>
+                            </command>
+                            <postProcessing>
+                                <analysisRules>
+                                    <item>
+                                        <extractorInfo extractorType="query">
+                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                <query>mapped/Json/totalRxCountFrames</query>
+                                            </extractorProperties>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="store">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                <storageLocation>router1PktCount</storageLocation>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                </analysisRules>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="f73afe54-57f1-4a1c-a35a-7e12ef162f63" action="sanityCheckTraffic" session="STC1">
+                            <command>
+                                <body> -sanityCheckDelaySec 0</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="e76773e6-f8b8-43fb-87b1-dc773197dae3" action="teststep">
+                    <command>
+                        <body>check counters</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="d310720c-0c72-490a-9038-9f7356136f74" action="checkCounters" session="Router1">
+                            <command>
+                                <body> -ifc $ifc1 -clearCounters 0</body>
+                            </command>
+                            <postProcessing>
+                                <analysisRules>
+                                    <item>
+                                        <extractorInfo extractorType="query">
+                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                <query>json(&quot;pktsInput&quot;)</query>
+                                            </extractorProperties>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="assert">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                <expression>$value == $router1PktCount</expression>
+                                                <actionsWhenTrue>
+                                                    <item actionId="DeclareExecutionIssue">
+                                                        <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="OK">
+                                                            <message>Check that packet count is equal to expected value: $router1PktCount, actual count $value</message>
+                                                        </actionProperties>
+                                                    </item>
+                                                    <item actionId="PassTestIfNotAlreadyFailed">
+                                                        <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                    </item>
+                                                </actionsWhenTrue>
+                                                <actionsWhenFalse>
+                                                    <item actionId="DeclareExecutionIssue">
+                                                        <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                            <message>Check that packet count is equal to expected value: $router1PktCount, actual count $value</message>
+                                                        </actionProperties>
+                                                    </item>
+                                                    <item actionId="FailTest">
+                                                        <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                    </item>
+                                                </actionsWhenFalse>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                </analysisRules>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="fcf321e9-61f9-435d-89dd-71f32f03beb3" action="checkCounters" session="Router2">
+                            <command>
+                                <body> -ifc $ifc2 -clearCounters 0</body>
+                            </command>
+                            <postProcessing>
+                                <analysisRules>
+                                    <item>
+                                        <extractorInfo extractorType="query">
+                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                <query>json(&quot;pktsInput&quot;)</query>
+                                            </extractorProperties>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="assert">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                <expression>$value == $router2PktCount</expression>
+                                                <actionsWhenTrue>
+                                                    <item actionId="DeclareExecutionIssue">
+                                                        <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="OK">
+                                                            <message>Check that packet count is equal to expected value: $router2PktCount, actual count $value</message>
+                                                        </actionProperties>
+                                                    </item>
+                                                    <item actionId="PassTestIfNotAlreadyFailed">
+                                                        <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                    </item>
+                                                </actionsWhenTrue>
+                                                <actionsWhenFalse>
+                                                    <item actionId="DeclareExecutionIssue">
+                                                        <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                            <message>Check that packet count is equal to expected value: $router2PktCount, actual count $value</message>
+                                                        </actionProperties>
+                                                    </item>
+                                                    <item actionId="FailTest">
+                                                        <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                    </item>
+                                                </actionsWhenFalse>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                </analysisRules>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="f8942aa9-5dac-4265-b6e4-7fcaf02f4dd6" action="teststep">
+                    <command>
+                        <body>Open Wireshark session</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="ab730343-f90e-4532-8cf5-f42c40ccd261" action="open" session="PC" normalOffset="57.396">
+                            <command>
+                                <body>device:PC#Wireshark</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.OpenStepPropertyGroup">
+                                <stepProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                <sessionProperties type="com.fnfr.svt.applications.wireshark.WiresharkSessionProperties">
+                                    <sessionbuilderInitializeAction type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </sessionProperties>
+                                <sessionClass type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                <sessionVersion type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            </applicationProperties>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="65d36e00-b4e1-4e11-8eff-a7eae025ec21" action="teststep">
+                    <command>
+                        <body>check packets and create pcap repo</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="902fe697-b88a-4a87-ba2d-0c8bad5d27a6" action="loadCaptureFile" session="PC">
+                            <command>
+                                <body> -filePath $pcapFilePath</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="bb63cf19-8996-46d5-bcf9-d5e77c5975d7" action="getPacketIds" session="PC">
+                            <command>
+                                <body> -startIndex 1 -count 10</body>
+                            </command>
+                            <postProcessing>
+                                <storeResponseAt>packetIdList</storeResponseAt>
+                                <storeResponseText>true</storeResponseText>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="3afb6681-108d-415a-adb5-48b82f816240" action="teststep">
+                            <command>
+                                <body>Compare the pcap payload and make sure L2/L3 info is correct</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="71b68897-4a21-4e53-a1a3-04f1f84a38fa" action="foreach">
+                            <command>
+                                <body>packetId $packetIdList</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="1776b299-dfc2-4ad3-88ad-ffb31beac678" action="getBasicDataFields" session="PC">
+                                    <command>
+                                        <body> -index $packetId</body>
+                                    </command>
+                                    <postProcessing>
+                                        <analysisRules>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                        <query>mapped/Json/eth_dst</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>$value == $eth_dst</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="DeclareExecutionIssue">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="OK">
+                                                                    <message>Verify eth.dst payload is correct; actual: $value, expected: $eth_dst</message>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="PassTestIfNotAlreadyFailed">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                        <actionsWhenFalse>
+                                                            <item actionId="DeclareExecutionIssue">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                                    <message>Verify eth.dst payload is correct; actual: $value, expected: $eth_dst</message>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="FailTest">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenFalse>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                        <query>mapped/Json/ip_src</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>$value == $ip_src</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="DeclareExecutionIssue">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="OK">
+                                                                    <message>Verify ip.src payload is correct; actual: $value, expected: $ip_src</message>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="PassTestIfNotAlreadyFailed">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                        <actionsWhenFalse>
+                                                            <item actionId="DeclareExecutionIssue">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                                    <message>Verify ip.src payload is correct; actual: $value, expected: $ip_src</message>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="FailTest">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenFalse>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                        <query>mapped/Json/ip_dst</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>$value == $ip_dst</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="DeclareExecutionIssue">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="OK">
+                                                                    <message>Verify ip.dst payload is correct; actual: $value, expected: $ip_dst</message>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="PassTestIfNotAlreadyFailed">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                        <actionsWhenFalse>
+                                                            <item actionId="DeclareExecutionIssue">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                                    <message>Verify ip.dst payload is correct; actual: $value, expected: $ip_dst</message>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="FailTest">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenFalse>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                        </analysisRules>
+                                    </postProcessing>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="c33e1ced-0335-4dd1-986e-6808834ef0b1" action="teststep">
+                    <command>
+                        <body>close sessions</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="53a798d7-b43e-4d12-a9d0-b6988548ee16" action="close" session="PC" normalOffset="10824.569">
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="c72b6eb8-d719-47bd-a45b-657f8dbb6bb8" action="close" session="Router2" normalOffset="82.167">
+                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                        </item>
+                        <item guid="57e31a88-0936-4b74-bea4-80db0b27a482" action="close" session="Router1" normalOffset="94.932">
+                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                        </item>
+                        <item guid="fa9e5a24-31b6-4f19-acfe-57255d68e821" action="close" session="STC1" normalOffset="2.502">
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+        </item>
+    </procedures>
+</testCase>
