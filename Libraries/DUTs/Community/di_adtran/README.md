@@ -26,7 +26,7 @@ password |
 abort_execution | If there is a failure in login this argument determines if execution is aborted or not.
 Default value is 1 (for yes). This corresponds with current behavior.
 ### send_login
-Quick call for Juniper devices through the Bridgeton NOC
+Quick call for Juniper devices through the Acme NOC
 
 Argument | Description
 ------------ | -------------
@@ -450,7 +450,7 @@ Use the show redundancy command to check the Current State.
 Possible values are Active or Standby
 
 ### login
-Login detects if the BRIDGETON NOC prompt is displayed. If so, login to the NOC proceeds, followed by telnet to the device and login.
+Login detects if the Acme NOC prompt is displayed. If so, login to the NOC proceeds, followed by telnet to the device and login.
 If not, login to the device.
 
 Argument | Description
@@ -475,7 +475,7 @@ Argument | Description
 userid | 
 password | 
 ### send_login
-Quick call for Juniper devices through the Bridgeton NOC
+Quick call for Juniper devices through the Acme NOC
 
 Argument | Description
 ------------ | -------------
