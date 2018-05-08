@@ -450,7 +450,7 @@ Argument | Description
 session | 
 cmd | The string to send
 ### send_login
-Quick call for Juniper devices through the Bridgeton NOC
+Quick call for Juniper devices through the Acme NOC
 
 Argument | Description
 ------------ | -------------

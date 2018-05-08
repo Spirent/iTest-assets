@@ -122,7 +122,7 @@ md |
 ma | 
 log_report | 
 ### ciena_login
-Quick call for Juniper devices through the Bridgeton NOC
+Quick call for Juniper devices through the Acme NOC
 
 Argument | Description
 ------------ | -------------
@@ -288,7 +288,7 @@ port |
 profile_name | 
 ### get_version
 ### login
-Check the prompt to determine if login is through a hop-off server (Bridgeton NOC).
+Check the prompt to determine if login is through a hop-off server (Acme NOC).
 Then call appropriate login procedure.
 References the global LOGIN_SUCCESSFUL created and set by send_login.
 
@@ -320,7 +320,7 @@ mep_id |
 up_down_status | 
 ccm_priority | 
 ### send_login
-Quick call for Juniper devices through the Bridgeton NOC
+Quick call for Juniper devices through the Acme NOC
 Creates and sets the global variable LOGIN_SUCCESSFUL. This is passed out of login() via write action
 
 Argument | Description
@@ -984,7 +984,7 @@ Argument | Description
 ------------ | -------------
 ciena_nte | 
 ### login
-Check the prompt to determine if login is through a hop-off server (Bridgeton NOC).
+Check the prompt to determine if login is through a hop-off server (Acme NOC).
 A block procedure which returns the promptname.
 Then call appropriate login procedure, send_login(),  noc_login()
 Checks the prompt for success, or other.
@@ -1098,7 +1098,7 @@ Argument | Description
 ciena_nte | 
 virtual_switch | 
 ### send_login
-Quick call for Juniper devices through the Bridgeton NOC
+Quick call for Juniper devices through the Acme NOC
 A block procdure which returns the promptname. This is checked by the caller to determine success/fail.
 
 Argument | Description
