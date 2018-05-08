@@ -1,0 +1,538 @@
+<?xml version="1.0"?>
+<ResponseMap version="5.4.1.be355a6">
+    <notes>It replaces &apos;ISISresults__ISIS__466&apos; rpm output which has a missing column.</notes>
+    <headline>show ISIS results STC command</headline>
+    <sampleDictionary>
+        <item name="sampleSTC">
+            <responseBody>
+ISIS
+Port Name    Name    Router State  Three-Way P2P Adjacency State  L1 Broadcast Adjacency State  L2 Broadcast Adjacency State  Neighbor System ID Learned  Neighbor Extended Circuit ID Learned  Adjacency Level  Tx PtP Hello Count  Rx PtP Hello Count  L1 Tx LAN Hello Count  L1 Rx Lan Hello Count  L1 Tx LSP Count  L1 Rx LSP Count  L1 Tx CSNP Count  L1 Rx CSNP Count  L1 Tx PSNP Count  L1 Rx PSNP Count  L2 Tx LAN Hello Count  L2 Rx Lan Hello Count  L2 Tx LSP Count  L2 Rx LSP Count  L2 Tx CSNP Count  L2 Rx CSNP Count  L2 Tx PSNP Count  L2 Rx PSNP Count
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+HundredGig1  HuGig1  UP            UP                             NA                            NA                            f0-25-72-a7-6f-da           0x000000f6                            Level 2          6                   7                   0                      0                      0                0                0                 0                 0                 0                 0                      0                      2                740              1                 25                14                1               
+HundredGig2  HuGig2  UP            UP                             NA                            NA                            f0-25-72-a7-6f-da           0x000000f7                            Level 2          5                   7                   0                      0                      0                0                0                 0                 0                 0                 0                      0                      2                680              1                 25                12                1               
+
+</responseBody>
+        </item>
+        <item name="stc_469_output">
+            <responseBody>
+ISIS
+Port Name    Name    Router State  Three-Way P2P Adjacency State  L1 Broadcast Adjacency State  L2 Broadcast Adjacency State  Neighbor System ID Learned  Neighbor Extended Circuit ID Learned  Adjacency Level  Tx PtP Hello Count  Rx PtP Hello Count  L1 Tx LAN Hello Count  L1 Rx Lan Hello Count  L1 Tx LSP Count  L1 Rx LSP Count  L1 Tx CSNP Count  L1 Rx CSNP Count  L1 Tx PSNP Count  L1 Rx PSNP Count  L2 Tx LAN Hello Count  L2 Rx Lan Hello Count  L2 Tx LSP Count  L2 Rx LSP Count  L2 Tx CSNP Count  L2 Rx CSNP Count  L2 Tx PSNP Count  L2 Rx PSNP Count
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+HundredGig1  HuGig1  UP            UP                             NA                            NA                            f0-25-72-a7-6f-da           0x000000f6                            Level 2          6                   6                   0                      0                      0                0                0                 0                 0                 0                 0                      0                      1                920              1                 25                17                1               
+HundredGig2  HuGig2  UP            UP                             NA                            NA                            f0-25-72-a7-6f-da           0x000000f7                            Level 2          6                   8                   0                      0                      0                0                0                 0                 0                 0                 0                      0                      1                990              1                 25                19                1               
+
+</responseBody>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="interface_counters">
+                    <groups>
+                        <item name="port_name">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <key>true</key>
+                            <start>0</start>
+                            <end>11</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor0">
+                            <regex>\\s+</regex>
+                            <start>11</start>
+                            <end>13</end>
+                        </item>
+                        <item name="Name">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>13</start>
+                            <end>19</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+</regex>
+                            <start>19</start>
+                            <end>21</end>
+                        </item>
+                        <item name="LSPUp">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>21</start>
+                            <end>23</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>\\s+</regex>
+                            <start>23</start>
+                            <end>35</end>
+                        </item>
+                        <item name="Three_WayP2PAdjacencyState">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>35</start>
+                            <end>37</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor3">
+                            <regex>\\s+</regex>
+                            <start>37</start>
+                            <end>66</end>
+                        </item>
+                        <item name="L1BroadcastAdjacencyState">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>66</start>
+                            <end>68</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor4">
+                            <regex>\\s+</regex>
+                            <start>68</start>
+                            <end>96</end>
+                        </item>
+                        <item name="L2BroadcastAdjacencyState">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>96</start>
+                            <end>98</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor5">
+                            <regex>\\s+</regex>
+                            <start>98</start>
+                            <end>126</end>
+                        </item>
+                        <item name="NeighborSystemIDLearned">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>126</start>
+                            <end>143</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor6">
+                            <regex>\\s+</regex>
+                            <start>143</start>
+                            <end>154</end>
+                        </item>
+                        <item name="NeighborExtendedCircuitIDLearned">
+                            <regex>([0][x][\\da-fA-F]+)</regex>
+                            <named>true</named>
+                            <start>154</start>
+                            <end>164</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([0][x][\da-fA-F]+)">one hexadecimal number</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor7">
+                            <regex>\\s+</regex>
+                            <start>164</start>
+                            <end>192</end>
+                        </item>
+                        <item name="AdjacencyLevel">
+                            <regex>.{7}</regex>
+                            <named>true</named>
+                            <start>192</start>
+                            <end>199</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor8">
+                            <regex>\\s+</regex>
+                            <start>199</start>
+                            <end>209</end>
+                        </item>
+                        <item name="TxPtPHelloCount">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>209</start>
+                            <end>210</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor9">
+                            <regex>\\s+</regex>
+                            <start>210</start>
+                            <end>229</end>
+                        </item>
+                        <item name="RxPtPHelloCount">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>229</start>
+                            <end>230</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor10">
+                            <regex>\\s+</regex>
+                            <start>230</start>
+                            <end>249</end>
+                        </item>
+                        <item name="L1TxLANHelloCount">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>249</start>
+                            <end>250</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor11">
+                            <regex>\\s+</regex>
+                            <start>250</start>
+                            <end>272</end>
+                        </item>
+                        <item name="L1RxLanHelloCount">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>272</start>
+                            <end>273</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor12">
+                            <regex>\\s+</regex>
+                            <start>273</start>
+                            <end>295</end>
+                        </item>
+                        <item name="L1TxLSPCount">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>295</start>
+                            <end>296</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor13">
+                            <regex>\\s+</regex>
+                            <start>296</start>
+                            <end>312</end>
+                        </item>
+                        <item name="L1RxLSPCount">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>312</start>
+                            <end>313</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor14">
+                            <regex>\\s+</regex>
+                            <start>313</start>
+                            <end>329</end>
+                        </item>
+                        <item name="L1TxCSNPCount">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>329</start>
+                            <end>330</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor15">
+                            <regex>\\s+</regex>
+                            <start>330</start>
+                            <end>347</end>
+                        </item>
+                        <item name="L1RxCSNPCount">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>347</start>
+                            <end>348</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor16">
+                            <regex>\\s+</regex>
+                            <start>348</start>
+                            <end>365</end>
+                        </item>
+                        <item name="L1TxPSNPCount">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>365</start>
+                            <end>366</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor17">
+                            <regex>\\s+</regex>
+                            <start>366</start>
+                            <end>383</end>
+                        </item>
+                        <item name="L1RxPSNPCount">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>383</start>
+                            <end>384</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor18">
+                            <regex>\\s+</regex>
+                            <start>384</start>
+                            <end>401</end>
+                        </item>
+                        <item name="L2TxLANHelloCount">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>401</start>
+                            <end>402</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor19">
+                            <regex>\\s+</regex>
+                            <start>402</start>
+                            <end>424</end>
+                        </item>
+                        <item name="L2RxLanHelloCount">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>424</start>
+                            <end>425</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor20">
+                            <regex>\\s+</regex>
+                            <start>425</start>
+                            <end>447</end>
+                        </item>
+                        <item name="L2TxLSPCount">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>447</start>
+                            <end>448</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor21">
+                            <regex>\\s+</regex>
+                            <start>448</start>
+                            <end>464</end>
+                        </item>
+                        <item name="L2RxLSPCount">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>464</start>
+                            <end>467</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor22">
+                            <regex>\\s+</regex>
+                            <start>467</start>
+                            <end>481</end>
+                        </item>
+                        <item name="L2TxCSNPCount">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>481</start>
+                            <end>482</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor23">
+                            <regex>\\s+</regex>
+                            <start>482</start>
+                            <end>499</end>
+                        </item>
+                        <item name="L2RxCSNPCount">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>499</start>
+                            <end>501</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor24">
+                            <regex>\\s+</regex>
+                            <start>501</start>
+                            <end>517</end>
+                        </item>
+                        <item name="L2TxPSNPCount">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>517</start>
+                            <end>519</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor25">
+                            <regex>\\s+</regex>
+                            <start>519</start>
+                            <end>535</end>
+                        </item>
+                        <item name="L2RxPSNPCount">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>535</start>
+                            <end>536</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor26">
+                            <regex>\\s+</regex>
+                            <start>536</start>
+                            <end>551</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>HundredGig1  HuGig1  UP            UP                             NA                            NA                            f0-25-72-a7-6f-da           0x000000f6                            Level 2          6                   7                   0                      0                      0                0                0                 0                 0                 0                 0                      0                      2                740              1                 25                14                1               </sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="showResults" command="IsisResults &quot;ISIS&quot; 1"/>
+</ResponseMap>
