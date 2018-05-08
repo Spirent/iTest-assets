@@ -1,6 +1,6 @@
 Project: Documentation Generator
 Description: Generate project documentation, for Git repository, from QuickCall and Procedure libraries. 
-Category: automation
+Category: library
 Class: Community
 
 1 Procedure Library in project://ui_documentation
