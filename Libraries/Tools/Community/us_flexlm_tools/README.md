@@ -1,4 +1,8 @@
-# These shell and Tcl scipts are used to manage the APT License Server (FlexLM).
+Project: Flex License Manager Tools
+Description: These shell and Tcl scipts are used to manage the APT License Server (FlexLM).
+Category: automation
+Class: Community
+
 Assumptions: license manager is installed at /usr/local/apt-flexlm
 *	flexlm_check - This script will check various things and let you know what action to take to correct any issues
 *	flexlm_check.tcl - This script is called from flexlm_check
