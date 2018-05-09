@@ -1933,9 +1933,16 @@ H1,H2{padding-left:15px}
                                 <body>Print each procedure</body>
                             </command>
                             <nestedSteps>
+                                <item guid="3a887d79-ebf2-4d50-9cef-5b8877f05ed2" action="eval">
+                                    <command>
+                                        <body>set procList [query xmlResponse mapped/Xml/testCase/procedures/item/@name]</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
                                 <item guid="c78c33c1-420b-4dd8-ae71-68ae86d73ae2" action="foreach">
                                     <command>
-                                        <body>procedure [query xmlResponse mapped/Xml/testCase/procedures/item/@name]</body>
+                                        <body>procedure $procList</body>
                                     </command>
                                     <nestedSteps>
                                         <item guid="2ef3a323-74a3-4c97-bf5e-092c295788ee" action="if">
@@ -1964,16 +1971,23 @@ H1,H2{padding-left:15px}
                                                                     <applicationProperties type="com.fnfr.svt.execution.builtin.exec.WriteFilePropertyGroup"/>
                                                                     <useFieldsInCommand>false</useFieldsInCommand>
                                                                 </item>
+                                                                <item guid="a4c95841-8128-4483-a290-1716d2092efc" action="eval">
+                                                                    <command>
+                                                                        <body>set description [query xmlResponse mapped/Xml/testCase/procedures/item\\[@name=&apos;$procedure&apos;\\]/multilineDescription]</body>
+                                                                    </command>
+                                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                                </item>
                                                                 <item guid="2cb764c4-2755-4084-a404-c59a9ad277d4" action="writeFile">
                                                                     <command>
-                                                                        <body>$uriPath/documentation/index.html &quot;&lt;DIV class=&apos;procText&apos;&gt;[query xmlResponse mapped/Xml/testCase/procedures/item\\[@name=&apos;$procedure&apos;\\]/multilineDescription]&lt;/DIV&gt;&lt;BR&gt;&quot;</body>
+                                                                        <body>$uriPath/documentation/index.html &quot;&lt;DIV class=&apos;procText&apos;&gt;$description&lt;/DIV&gt;&lt;BR&gt;&quot;</body>
                                                                     </command>
                                                                     <applicationProperties type="com.fnfr.svt.execution.builtin.exec.WriteFilePropertyGroup"/>
                                                                     <useFieldsInCommand>false</useFieldsInCommand>
                                                                 </item>
                                                                 <item guid="49180784-fd8c-49d5-b44a-f108957988e8" action="writeFile">
                                                                     <command>
-                                                                        <body>$uriPath/README.md &quot;[query xmlResponse mapped/Xml/testCase/procedures/item\\[@name=&apos;$procedure&apos;\\]/multilineDescription]&quot;</body>
+                                                                        <body>$uriPath/README.md &quot;$description&quot;</body>
                                                                     </command>
                                                                     <applicationProperties type="com.fnfr.svt.execution.builtin.exec.WriteFilePropertyGroup"/>
                                                                     <useFieldsInCommand>false</useFieldsInCommand>
@@ -2035,9 +2049,16 @@ H1,H2{padding-left:15px}
                                                                                         <body>Each argument is a new line in the table</body>
                                                                                     </command>
                                                                                     <nestedSteps>
+                                                                                        <item guid="990fd7db-e830-4abb-9f29-d95e0e30ae85" action="eval">
+                                                                                            <command>
+                                                                                                <body>set argList [query xmlResponse //procedures/item\\[@name=&apos;$procedure&apos;\\]/arguments/item/@name]</body>
+                                                                                            </command>
+                                                                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                                                                        </item>
                                                                                         <item guid="6b80d163-61f1-4297-a5ae-10a049143f26" action="foreach">
                                                                                             <command>
-                                                                                                <body>argument [query xmlResponse //procedures/item\\[@name=&apos;$procedure&apos;\\]/arguments/item/@name]</body>
+                                                                                                <body>argument $argList</body>
                                                                                             </command>
                                                                                             <nestedSteps>
                                                                                                 <item guid="91d3523e-ed46-46cf-ae64-be5120491bec" action="writeFile">
