@@ -1301,9 +1301,6 @@ H1,H2{padding-left:15px}
                                 <item guid="08fb6fe7-616a-413d-bff0-5a2e4395526e" action="then">
                                     <nestedSteps>
                                         <item guid="ce353c04-fc06-4472-840c-89afcaaa7eac" action="comment">
-                                            <command>
-                                                <body>new comment</body>
-                                            </command>
                                             <postProcessing>
                                                 <analysisRules>
                                                     <item>
@@ -1329,6 +1326,49 @@ H1,H2{padding-left:15px}
                                                     </postProcessing>
                                                     <applicationProperties type="com.fnfr.svt.execution.builtin.exec.ReadFilePropertyGroup"/>
                                                 </item>
+                                                <item guid="a3eb3ae1-285f-455c-945a-bf78ea9112f9" action="if">
+                                                    <command>
+                                                        <body>[string trim $readme] == &quot;&quot;</body>
+                                                    </command>
+                                                    <nestedSteps>
+                                                        <item guid="890357d3-8226-4b40-9b07-2d06e9a4faa2" action="then">
+                                                            <nestedSteps>
+                                                                <item guid="56f51f59-3908-4867-a2ec-d4ef049cb4e0" action="comment">
+                                                                    <postProcessing>
+                                                                        <analysisRules>
+                                                                            <item>
+                                                                                <extractorInfo extractorType="none">
+                                                                                    <extractorProperties type="com.fnfr.svt.documents.EmptyExtractorPropertyGroup"/>
+                                                                                </extractorInfo>
+                                                                                <processorInfo ruleType="assert">
+                                                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                                                        <expression>1</expression>
+                                                                                        <actionsWhenTrue>
+                                                                                            <item actionId="DeclareExecutionIssue">
+                                                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                                                                    <message>No content: $readmeUri</message>
+                                                                                                </actionProperties>
+                                                                                            </item>
+                                                                                            <item actionId="FailTest">
+                                                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                                                            </item>
+                                                                                        </actionsWhenTrue>
+                                                                                    </ruleProperties>
+                                                                                </processorInfo>
+                                                                            </item>
+                                                                        </analysisRules>
+                                                                    </postProcessing>
+                                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                                </item>
+                                                            </nestedSteps>
+                                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                                        </item>
+                                                    </nestedSteps>
+                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                </item>
                                             </nestedSteps>
                                             <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
                                             <useFieldsInCommand>false</useFieldsInCommand>
@@ -1339,10 +1379,31 @@ H1,H2{padding-left:15px}
                                 </item>
                                 <item guid="6641af6e-626d-4559-8196-4e6cb8d94f08" action="else">
                                     <nestedSteps>
-                                        <item guid="7f813c24-cfd7-4c14-8040-20c8bcbb6e9f" action="eval">
-                                            <command>
-                                                <body>set readme $uriPath</body>
-                                            </command>
+                                        <item guid="7f813c24-cfd7-4c14-8040-20c8bcbb6e9f" action="comment">
+                                            <postProcessing>
+                                                <analysisRules>
+                                                    <item>
+                                                        <extractorInfo extractorType="none">
+                                                            <extractorProperties type="com.fnfr.svt.documents.EmptyExtractorPropertyGroup"/>
+                                                        </extractorInfo>
+                                                        <processorInfo ruleType="assert">
+                                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                                <expression>1</expression>
+                                                                <actionsWhenTrue>
+                                                                    <item actionId="DeclareExecutionIssue">
+                                                                        <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                                            <message>File not found: $readmeUri</message>
+                                                                        </actionProperties>
+                                                                    </item>
+                                                                    <item actionId="FailTest">
+                                                                        <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                                    </item>
+                                                                </actionsWhenTrue>
+                                                            </ruleProperties>
+                                                        </processorInfo>
+                                                    </item>
+                                                </analysisRules>
+                                            </postProcessing>
                                             <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
                                             <useFieldsInCommand>false</useFieldsInCommand>
                                         </item>
@@ -1354,48 +1415,18 @@ H1,H2{padding-left:15px}
                             <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
                             <useFieldsInCommand>false</useFieldsInCommand>
                         </item>
-                        <item guid="9777d824-1084-4d68-bf49-e503ed97ed35" action="comment">
+                        <item guid="52b22888-b9e4-4ce7-90ab-1462019b5807" action="comment">
                             <command>
-                                <body>Use the first line of the readme as the title</body>
+                                <body>Write the readme metadata to doc files.</body>
                             </command>
                             <nestedSteps>
-                                <item guid="5fcb01e3-b595-4923-a36e-209d32baee1b" action="eval">
+                                <item guid="531a7549-b59f-47eb-b02b-39323ed59217" action="eval">
                                     <command>
                                         <body>set readmeLines [split $readme \\n]</body>
                                     </command>
                                     <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
                                     <useFieldsInCommand>false</useFieldsInCommand>
                                 </item>
-                                <item guid="90417967-5668-4f41-9ddf-1e1d09a91cc4" action="writeFile" skip="true">
-                                    <command>
-                                        <body>$uriPath/documentation/index.html &quot;&lt;BR&gt;&lt;DIV class=&apos;headerText&apos;&gt;[lindex $readmeLines 0]&lt;/DIV&gt;&quot;</body>
-                                    </command>
-                                    <applicationProperties type="com.fnfr.svt.execution.builtin.exec.WriteFilePropertyGroup"/>
-                                    <useFieldsInCommand>false</useFieldsInCommand>
-                                </item>
-                                <item guid="71ccbfa0-a435-4ee9-8662-fc4ce27639fb" action="writeFile" skip="true">
-                                    <command>
-                                        <body>$uriPath/README.md &quot;# [lindex $readmeLines 0]&quot;</body>
-                                    </command>
-                                    <applicationProperties type="com.fnfr.svt.execution.builtin.exec.WriteFilePropertyGroup"/>
-                                    <useFieldsInCommand>false</useFieldsInCommand>
-                                </item>
-                                <item guid="b5acda83-214f-499d-9bb4-85c14e5c6142" action="eval" skip="true">
-                                    <command>
-                                        <body>set readmeLines [lreplace $readmeLines 0 0]</body>
-                                    </command>
-                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
-                                    <useFieldsInCommand>false</useFieldsInCommand>
-                                </item>
-                            </nestedSteps>
-                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
-                            <useFieldsInCommand>false</useFieldsInCommand>
-                        </item>
-                        <item guid="52b22888-b9e4-4ce7-90ab-1462019b5807" action="comment">
-                            <command>
-                                <body>Print the remaining lines as body text</body>
-                            </command>
-                            <nestedSteps>
                                 <item guid="780ca95f-20ab-48fb-a3b4-aababadec47e" action="foreach">
                                     <command>
                                         <body>line $readmeLines</body>
@@ -1415,13 +1446,6 @@ H1,H2{padding-left:15px}
                                                             <applicationProperties type="com.fnfr.svt.execution.builtin.exec.WriteFilePropertyGroup"/>
                                                             <useFieldsInCommand>false</useFieldsInCommand>
                                                         </item>
-                                                        <item guid="9b8c5a6e-7e56-42db-95f5-1ae48ef2cac6" action="writeFile" skip="true">
-                                                            <command>
-                                                                <body>$uriPath/documentation/index.html &quot;&lt;DIV style=&apos;margin-left:30px; &apos; class=&apos;normalText&apos;&gt;$line&lt;/DIV&gt;&quot;</body>
-                                                            </command>
-                                                            <applicationProperties type="com.fnfr.svt.execution.builtin.exec.WriteFilePropertyGroup"/>
-                                                            <useFieldsInCommand>false</useFieldsInCommand>
-                                                        </item>
                                                         <item guid="4bd2073d-9363-442b-98cf-bd208d36c517" action="writeFile">
                                                             <command>
                                                                 <body>$uriPath/README.md &quot;$line\\n&quot;</body>
@@ -1435,9 +1459,9 @@ H1,H2{padding-left:15px}
                                                 </item>
                                                 <item guid="7aa327ba-81c5-4ec5-b3b4-ec193e7791bc" action="else">
                                                     <nestedSteps>
-                                                        <item guid="1944cbc5-ee25-445c-8948-4924be49c9a3" action="writeFile">
+                                                        <item guid="4e4813e9-6a6c-4af1-972b-97658461d6bd" action="writeFile">
                                                             <command>
-                                                                <body>$uriPath/documentation/index.html &quot;&lt;DIV style=&apos;margin-left:30px; &apos; class=&apos;normalText&apos;&gt;&lt;BR&gt;&lt;/DIV&gt;&quot;</body>
+                                                                <body>$uriPath/documentation/index.html &quot;&lt;DIV class=&apos;normalText&apos;&gt;&lt;BR&gt;&lt;/DIV&gt;&quot;</body>
                                                             </command>
                                                             <applicationProperties type="com.fnfr.svt.execution.builtin.exec.WriteFilePropertyGroup"/>
                                                             <useFieldsInCommand>false</useFieldsInCommand>
