@@ -1,7 +1,10 @@
-# project://di_MME
-1 QuickCall Library in project://di_MME:
-## project://di_MME/session_profiles/MME_ssh_quickcall_library.fftc (project://di_MME/session_profiles/MME_ssh_quickcall_library.fftc)
+Project: Cisco Mobility Management Entity (MME)
+Description: SSH QuickCalls and response maps
+Category: library
+Class: Community
 
+1 QuickCall Library in project://di_MME
+## Library: project://di_MME/session_profiles/MME_ssh_quickcall_library.fftc
 ### getSubscriberIMSI
 For the specified IMEI, return the IMSI of this subscriber if registered.
 

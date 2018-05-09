@@ -1,7 +1,10 @@
-# project://di_SPGW
-1 QuickCall Library in project://di_SPGW:
-## project://di_SPGW/session_profiles/PGW_ssh_quickcall_library.fftc (project://di_SPGW/session_profiles/PGW_ssh_quickcall_library.fftc)
+Project: Cisco Serving Gateway/PDN Gateway (SPGW)
+Description: SSH QuickCalls and response maps
+Category: library
+Class: Community
 
+1 QuickCall Library in project://di_SPGW
+## Library: project://di_SPGW/session_profiles/PGW_ssh_quickcall_library.fftc
 ### configCCBehaviorBit
 ### getSwitchoverStatus
 Validate that the PGWs are switchover ready

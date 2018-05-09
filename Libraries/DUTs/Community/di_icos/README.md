@@ -1,7 +1,10 @@
-# project://di_icos
-2 QuickCall Libraries in project://di_icos:
-## project://di_icos/session_profiles/icos_console_quickcall.fftc (project://di_icos/session_profiles/icos_console_quickcall.fftc)
+Project: OICS Router
+Description: SSH and Telnet QuickCalls and response maps for the OICS Router
+Category: library
+Class: Community
 
+2 QuickCall Libraries in project://di_icos
+## Library: project://di_icos/session_profiles/icos_console_quickcall.fftc
 ### config_cleanup
 ### login
 ### config_save
@@ -9,8 +12,7 @@
 ### reboot_device
 ### configure_mode
 ### config_basic
-## project://di_icos/session_profiles/icos_ssh_quickcall.fftc (project://di_icos/session_profiles/icos_ssh_quickcall.fftc)
-
+## Library: project://di_icos/session_profiles/icos_ssh_quickcall.fftc
 ### interface_config
 
 Argument | Description

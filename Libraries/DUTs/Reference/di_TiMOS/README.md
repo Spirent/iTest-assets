@@ -1,7 +1,10 @@
-# project://di_TiMOS
-1 QuickCall Library in project://di_TiMOS:
-## project://di_TiMOS/session_profiles/SSH_ref_ALU_quickcall_library.fftc (project://di_TiMOS/session_profiles/SSH_ref_ALU_quickcall_library.fftc)
+Project: Alcatel-Lucent (TiMOS) Service Router
+Description: QuickCalls and response map examples
+Category: library
+Class: Reference
 
+1 QuickCall Library in project://di_TiMOS
+## Library: project://di_TiMOS/session_profiles/SSH_ref_ALU_quickcall_library.fftc
 ### GetFirmwareVersion
 Returns a JSON string: 
 \tversion

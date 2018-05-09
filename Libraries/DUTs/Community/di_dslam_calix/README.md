@@ -1,7 +1,10 @@
-# project://di_dslam_calix
-1 QuickCall Library in project://di_dslam_calix:
-## project://di_dslam_calix/session_profiles/calix_vdsl_base.fftc (project://di_dslam_calix/session_profiles/calix_vdsl_base.fftc)
+Project: Calix DSLAM
+Description: QuickCalls and response maps useful for building system tests automating the Calix DSLAM
+Category: library
+Class: Community
 
+1 QuickCall Library in project://di_dslam_calix
+## Library: project://di_dslam_calix/session_profiles/calix_vdsl_base.fftc
 ### login
 ### getFootprint
 

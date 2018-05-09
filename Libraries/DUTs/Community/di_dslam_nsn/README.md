@@ -1,7 +1,10 @@
-# project://di_dslam_nsn
-1 QuickCall Library in project://di_dslam_nsn:
-## project://di_dslam_nsn/session_profiles/nsn_5635.fftc (project://di_dslam_nsn/session_profiles/nsn_5635.fftc)
+Project: NSN DSLAM
+Description: QuickCalls and response maps useful for building system tests automating the NSN DSLAM
+Category: library
+Class: Community
 
+1 QuickCall Library in project://di_dslam_nsn
+## Library: project://di_dslam_nsn/session_profiles/nsn_5635.fftc
 ### convertPort
 
 Argument | Description

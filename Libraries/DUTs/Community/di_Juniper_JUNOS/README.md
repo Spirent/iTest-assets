@@ -1,7 +1,10 @@
-# project://di_Juniper_JUNOS
-3 QuickCall Libraries in project://di_Juniper_JUNOS:
-## project://di_Juniper_JUNOS/session_profiles/juniper_JUNOS_ssh_quickcall_library.fftc (project://di_Juniper_JUNOS/session_profiles/juniper_JUNOS_ssh_quickcall_library.fftc)
+Project: Juniper Router
+Description: SSH and Telnet QuickCalls and response maps for the Juniper Router
+Category: library
+Class: Community
 
+3 QuickCall Libraries in project://di_Juniper_JUNOS
+## Library: project://di_Juniper_JUNOS/session_profiles/juniper_JUNOS_ssh_quickcall_library.fftc
 ### ConfigureLspBandwidth
 
 Argument | Description
@@ -677,8 +680,9 @@ For this session return the re# (0 or 1). Also return the 'other re #'
 Use 'show version invoke-on other-routing-engine' which contains "re0" or "re1" at the top of the output.
 If 0, this re must be 1
 If 1, this re must be 0
-## Juniper QC library (project://di_Juniper_JUNOS/session_profiles/telnet_quickcall_library.fftc)
-Juniper QC library
+## Library: project://di_Juniper_JUNOS/session_profiles/telnet_quickcall_library.fftc
+## Headline: Juniper QC library
+Description: Juniper QC library
 ### login
 Used to autoatically login to session
 
@@ -751,5 +755,5 @@ Set terminal length to 0
 Argument | Description
 ------------ | -------------
 session | Session name if not called from a QC
-## junos web QC library (project://di_Juniper_JUNOS/session_profiles/web_quickcall_library.fftc)
-
+## Library: project://di_Juniper_JUNOS/session_profiles/web_quickcall_library.fftc
+## Headline: junos web QC library

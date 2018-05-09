@@ -1,7 +1,10 @@
-# project://ui_wifi_host
-1 QuickCall Library in project://ui_wifi_host:
-## project://ui_wifi_host/session_profiles/wifi_host_remote_base_qc.fftc (project://ui_wifi_host/session_profiles/wifi_host_remote_base_qc.fftc)
+Project: WiFi Tools - Remote Windows Host
+Description: SSH QuickCalls and response map examples using netsh
+Category: library
+Class: Community
 
+1 QuickCall Library in project://ui_wifi_host
+## Library: project://ui_wifi_host/session_profiles/wifi_host_remote_base_qc.fftc
 ### getWifiInterfaceName
 ### getWifiInterfaceState
 ### enableWifiInterface
