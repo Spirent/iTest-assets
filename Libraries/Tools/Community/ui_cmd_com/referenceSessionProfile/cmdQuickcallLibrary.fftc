@@ -2,22 +2,410 @@
 <testCase version="7.0.1.201802131446">
     <general>
         <documentation>Generic QC library for cmd sessions</documentation>
-        <notes>These are generic cmd line QC libraries</notes>
-        <owner>mbarfield</owner>
+        <notes>Command session QuickCall examples. 
+
+Note: The main proc is used as a Unit Test.</notes>
         <isProcedureLibrary>true</isProcedureLibrary>
         <sessionClass includeTestCase="true" sessionType="project://ui_cmd_com/referenceSessionProfile/cmd.ffsp"/>
     </general>
     <procedures>
         <item name="main">
             <steps>
-                <item guid="29f52293-f084-4609-8528-8023dd0558e6" action="comment">
+                <item guid="301217a0-9619-4dc1-a9b9-a3ce36335a6f" action="comment">
                     <command>
-                        <body>Main</body>
+                        <body>Unit Test</body>
                     </command>
+                    <nestedSteps>
+                        <item guid="169c72d3-21ee-4bdd-8608-287c0e4ba9cd" action="open" session="cmd">
+                            <command>
+                                <body>project://ui_cmd_com/referenceSessionProfile/cmd.ffsp</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.OpenStepPropertyGroup">
+                                <stepProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                                <sessionProperties type="com.fnfr.svt.applications.cmd.CmdSessionProperties"/>
+                                <sessionClass type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                <sessionVersion type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            </applicationProperties>
+                        </item>
+                        <item guid="fb1ec1d8-e07b-4ee4-9a56-c5f9f7a771f7" action="eval">
+                            <command>
+                                <body>set address 127.0.0.1</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="2bee5259-b457-4388-81ae-116a1f8f9699" action="comment">
+                            <command>
+                                <body>Ping and get a 0|1 response for 0% loss</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="163f7da2-91b6-4459-9cf9-efd9235eb1be" action="ping" session="cmd">
+                                    <command>
+                                        <body> -address $address -count 1</body>
+                                    </command>
+                                    <postProcessing>
+                                        <analysisRules>
+                                            <item>
+                                                <extractorInfo extractorType="contains">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                                        <searchString>1</searchString>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>$value == 1</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="PassTestIfNotAlreadyFailed">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                            <item actionId="DeclareExecutionIssue">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="OK">
+                                                                    <message>Ping $address</message>
+                                                                </actionProperties>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                        <actionsWhenFalse>
+                                                            <item actionId="FailTest">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                            <item actionId="DeclareExecutionIssue">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                                    <message>Ping $address</message>
+                                                                </actionProperties>
+                                                            </item>
+                                                        </actionsWhenFalse>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                        </analysisRules>
+                                    </postProcessing>
+                                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="8581041b-7bda-48fd-982a-eb78641f525b" action="comment">
+                            <command>
+                                <body>Ping and get a CSV response</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="8a8dd07e-8924-4dd9-ad8d-c318651b7f1f" action="ping1" session="cmd">
+                                    <command>
+                                        <body> -address $address</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="e7baefc3-1f1d-452e-bbc9-0ea41b2a22db" action="comment">
+                            <command>
+                                <body>Ping and get a JSON response</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="d944f5e0-3859-4ad1-8131-44b1ec769d1f" action="eval">
+                                    <command>
+                                        <body>set address google.com</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="1f99bd13-9f54-493b-8d56-1f88bd296384" action="ping2" session="cmd">
+                                    <command>
+                                        <body> -address $address</body>
+                                    </command>
+                                    <postProcessing>
+                                        <analysisRules>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                        <query>mapped/Json/loss</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>$value eq &quot;0&quot;</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="PassTestIfNotAlreadyFailed">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                            <item actionId="DeclareExecutionIssue">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="OK">
+                                                                    <message>Ping $address</message>
+                                                                </actionProperties>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                        <actionsWhenFalse>
+                                                            <item actionId="FailTest">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                            <item actionId="DeclareExecutionIssue">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                                    <message>Ping $address</message>
+                                                                </actionProperties>
+                                                            </item>
+                                                        </actionsWhenFalse>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                        </analysisRules>
+                                    </postProcessing>
+                                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="1ad19060-1425-48a3-9241-dbbe2acbee95" action="close" session="cmd">
+                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                        </item>
+                    </nestedSteps>
                     <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
                     <useFieldsInCommand>false</useFieldsInCommand>
                 </item>
             </steps>
+        </item>
+        <item name="ping" isPublic="true">
+            <description>Ping</description>
+            <steps>
+                <item guid="5da3cd5b-c0e0-4ba7-84f4-fcd42fb887d4" action="if">
+                    <command>
+                        <body>$msgOK == &quot;&quot;</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="6ca99047-12ce-4b0e-873b-e8996f3335d0" action="then">
+                            <nestedSteps>
+                                <item guid="9852f0b9-fa01-4487-ae3d-cc1506f48406" action="eval">
+                                    <command>
+                                        <body>set msgOK &quot;Ping $address&quot;</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="a89ac140-22ed-4865-b486-8fe93fef9fbe" action="if">
+                    <command>
+                        <body>$msgError == &quot;&quot;</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="133ec3c5-328a-41a2-9f11-0501b1511549" action="then">
+                            <nestedSteps>
+                                <item guid="7849154c-79ee-42b4-9d58-ca5c7c43a68f" action="eval">
+                                    <command>
+                                        <body>set msgError &quot;Ping $address&quot;</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="4b215108-b6bd-4b65-a74c-991912888a7d" action="command" session="$session">
+                    <command>
+                        <body>ping $address -n $count</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="contains">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                        <searchString>(0% loss)</searchString>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$value == 1</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="OK">
+                                                    <message>$msgOK</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="Eval">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                    <statement>set result 1</statement>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenTrue>
+                                        <actionsWhenFalse>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message>$msgError</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="Eval">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                    <statement>set result 0</statement>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenFalse>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="72912e5f-0398-43da-8ff8-2d45ad2433c4" action="return">
+                    <command>
+                        <body>$result</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <multilineDescription>Ping the specified host address and return:
+
+1 = no packet loss
+0 = packet loss</multilineDescription>
+            <arguments>
+                <item name="address">
+                    <defaultValue>127.0.0.1</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="count">
+                    <description>Number of echo requests to send</description>
+                    <defaultValue>1</defaultValue>
+                </item>
+                <item name="msgOK">
+                    <description>Pass message</description>
+                </item>
+                <item name="msgError">
+                    <description>Fail message</description>
+                </item>
+            </arguments>
+        </item>
+        <item name="ping1" isPublic="true">
+            <description>Ping example - CSV</description>
+            <steps>
+                <item guid="5abbcbbc-bc2e-4dc0-b883-d02c2e976b7d" action="command" session="$session">
+                    <command>
+                        <body>ping $address</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>packetsTx()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>sent</storageLocation>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>packetsRx()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>recieved</storageLocation>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="55298b11-b2fa-4cb1-9a71-6b5811f277ae" action="return">
+                    <command>
+                        <body>$sent,$recieved</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <multilineDescription>Ping the address and use response map to query the data. Return as a CSV response.</multilineDescription>
+            <arguments>
+                <item name="address">
+                    <defaultValue>127.0.0.1</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="ping2" isPublic="true" isVBlock="true">
+            <description>Ping example - JSON</description>
+            <steps>
+                <item guid="42ce6717-85c9-4ddb-b5d7-7539d9b26f55" action="command" session="$session">
+                    <command>
+                        <body>ping $address</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>packetsTx()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>sent</storageLocation>
+                                        <storeInAList>true</storeInAList>
+                                        <query>[return sent]</query>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>packetsRx()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>recieved</storageLocation>
+                                        <query>[return recieved]</query>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>percentLoss()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>loss</storageLocation>
+                                        <query>[return loss]</query>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+            </steps>
+            <multilineDescription>Ping the address and use response map to query the data. Return as a JSON response.</multilineDescription>
+            <arguments>
+                <item name="address">
+                    <description>Address or host name to ping</description>
+                    <defaultValue>127.0.0.1</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+            <response>{&quot;sent&quot;:&quot;value&quot;,&quot;recieved&quot;:&quot;value&quot;,&quot;loss&quot;:&quot;value&quot;}</response>
         </item>
     </procedures>
 </testCase>

@@ -1,7 +1,10 @@
-# project://di_Nokia_7750
-1 QuickCall Library in project://di_Nokia_7750:
-## project://di_Nokia_7750/session_profiles/nokia_7750_ssh_base_quickcall_library.fftc (project://di_Nokia_7750/session_profiles/nokia_7750_ssh_base_quickcall_library.fftc)
+Project: Nokia 7750
+Description: QuickCalls and response maps for basic configuration.
+Category: library
+Class: Reference
 
+1 QuickCall Library in project://di_Nokia_7750
+## Library: project://di_Nokia_7750/session_profiles/nokia_7750_ssh_base_quickcall_library.fftc
 ### Ping
 Ping specified IP.
 Returns JSON string: 

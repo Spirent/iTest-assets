@@ -1,7 +1,13 @@
-# project://di_Ixia_IxNetwork
-1 QuickCall Library in project://di_Ixia_IxNetwork:
-## Ixia IxNetwork Quickcalls (project://di_Ixia_IxNetwork/session_profiles/ixia_ixnetwork_quickcall_library.fftc)
+Project: Ixia IxNetwork Basics
+Description: Provides basic traffic quickcalls for the Ixia IxNetwork session type.
+Category: library
+Class: Tested by Spirent
 
+<b>Tags:</b> Test Equipment, Traffic Generator
+
+1 QuickCall Library in project://di_Ixia_IxNetwork
+## Library: project://di_Ixia_IxNetwork/session_profiles/ixia_ixnetwork_quickcall_library.fftc
+## Headline: Ixia IxNetwork Quickcalls
 ### GetTrafficStats
 Get stats from IXNetwork's Traffic Item Statistics view
 Returns JSON block:

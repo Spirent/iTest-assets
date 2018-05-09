@@ -1,7 +1,11 @@
-# project://di_iperf_windows
-1 QuickCall Library in project://di_iperf_windows:
-## project://di_iperf_windows/session_profiles/iperf_server_base_qc.fftc (project://di_iperf_windows/session_profiles/iperf_server_base_qc.fftc)
-v 0.1
+Project: Iperf Server - Windows
+Description: QuickCalls and response map examples
+Category: library
+Class: Tested by Spirent
+
+1 QuickCall Library in project://di_iperf_windows
+## Library: project://di_iperf_windows/session_profiles/iperf_server_base_qc.fftc
+Description: v 0.1
 ### RunTraffic
 Run traffic on Iperf for the specified duration. Returns bytes transferred and bit rate for upstream and downstream in a JSON block. 
 

@@ -1,14 +1,14 @@
-Project: Spirent Test Center Device
-Description: Provides basic traffic quickcalls for the STC Tcl API session type and response maps for result and statistics views. Tested with STC FW version 4.75. 
+Project: Spirent TestCenter Basics
+Description: Provides basic traffic quickcalls for the Spirent TestCenter session type and response maps for result and statistics views. Tested with STC FW version 4.75. 
 Category: library
 Class: Tested by Spirent
 
 <b>Tags:</b> Test Equipment, Traffic Generator
 
 1 QuickCall Library in project://di_STC
-## Library: project://di_STC/session_profiles/STC_TclAPI_QCLib.fftc
-## Headline: STC Tcl API Quick Call Library
-Description: STC Tcl API Quickcalls
+## Library: project://di_STC/session_profiles/Spirent_TestCenter_QCLib.fftc
+## Headline: Spirent TestCenter QuickCall Library
+Description: Spirent TestCenter basic Quickcalls
 ### StartArp
 Starts ARP/ND on all devices in config. Returns status in a JSON block.
 Returns block 

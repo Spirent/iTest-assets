@@ -1,7 +1,10 @@
-# project://di_iperf_linux
-1 QuickCall Library in project://di_iperf_linux:
-## project://di_iperf_linux/session_profiles/iperf_server_base_qc.fftc (project://di_iperf_linux/session_profiles/iperf_server_base_qc.fftc)
+Project: Iperf Server - Linux
+Description: QuickCalls and response map examples
+Category: library
+Class: Tested by Spirent
 
+1 QuickCall Library in project://di_iperf_linux
+## Library: project://di_iperf_linux/session_profiles/iperf_server_base_qc.fftc
 ### RunTraffic
 Run traffic on Iperf for the specified duration. Returns bytes transferred and bit rate for upstream and downstream in a JSON block. 
 
