@@ -1,7 +1,10 @@
-# project://di_dslam_lucent-stinger
-1 QuickCall Library in project://di_dslam_lucent-stinger:
-## project://di_dslam_lucent-stinger/session_profiles/stinger.fftc (project://di_dslam_lucent-stinger/session_profiles/stinger.fftc)
+Project: Lucent Stinger DSLAM
+Description: QuickCalls and response maps useful for building system tests automating the Lucent Stinger DSLAM
+Category: library
+Class: Community
 
+1 QuickCall Library in project://di_dslam_lucent-stinger
+## Library: project://di_dslam_lucent-stinger/session_profiles/stinger.fftc
 ### login
 ### getFootprint
 

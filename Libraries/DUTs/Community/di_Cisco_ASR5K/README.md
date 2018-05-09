@@ -1,7 +1,10 @@
-# project://di_Cisco_ASR5K
-2 QuickCall Libraries in project://di_Cisco_ASR5K:
-## project://di_Cisco_ASR5K/session_profiles/Cisco_ASR5K_ssh_quickcall_library.fftc (project://di_Cisco_ASR5K/session_profiles/Cisco_ASR5K_ssh_quickcall_library.fftc)
+Project: Cisco ASR 5000
+Description: Collection of response maps and QuickCalls applicable to Cisco ASR device testing
+Category: library
+Class: Community
 
+2 QuickCall Libraries in project://di_Cisco_ASR5K
+## Library: project://di_Cisco_ASR5K/session_profiles/Cisco_ASR5K_ssh_quickcall_library.fftc
 ### clearSubscriberInfo
 Clear the subcriber info for the specified IMSI
 
@@ -112,8 +115,9 @@ Config PTMSI reallocation frequency.
 Argument | Description
 ------------ | -------------
 freq | 
-## Get clock value and convert to timestamp (project://di_Cisco_ASR5K/session_profiles/Cisco_ASR5K_telnet_quickcall_library.fftc)
-Get timestamp from ASR5K and convert to format usable for "show logs".
+## Library: project://di_Cisco_ASR5K/session_profiles/Cisco_ASR5K_telnet_quickcall_library.fftc
+## Headline: Get clock value and convert to timestamp
+Description: Get timestamp from ASR5K and convert to format usable for "show logs".
 ### clearSubscriberInfo
 Clear the subcriber info for the specified IMSI
 

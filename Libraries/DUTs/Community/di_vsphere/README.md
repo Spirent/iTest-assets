@@ -1,7 +1,10 @@
-# project://di_vsphere
-1 QuickCall Library in project://di_vsphere:
-## project://di_vsphere/session_profiles/VsphereBaseQuickCallLibrary.fftc (project://di_vsphere/session_profiles/VsphereBaseQuickCallLibrary.fftc)
+Project: VMware vSphere
+Description: Client QuickCalls and response maps
+Category: library
+Class: Community
 
+1 QuickCall Library in project://di_vsphere
+## Library: project://di_vsphere/session_profiles/VsphereBaseQuickCallLibrary.fftc
 ### getSnapShotList
 query a specified virtual machine for a list of all snapshots related to that VM.  This functionality does not exist in the VMWare module for iTest as of 4.4, so we use the pysphere module.
 
