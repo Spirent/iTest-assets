@@ -1,0 +1,94 @@
+<?xml version="1.0"?>
+<ResponseMap version="7.0.1.201802131446">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="getTopoLinkAction">
+                <command>
+                    <body> -reservationId $reservationId -token $token -linkId $linkId</body>
+                </command>
+            </action>
+            <responseBody>Link Status: ACTIVE
+
+actionName,actionType,actionUrl
+Break,HTTP_POST,https://10.108.36.207/velocity/api/reservation/v2/reservation/5da69c93-af49-412d-a3ba-b933b1e49dbf/link/ib5eada78-09f1-454d-a851-363dbea41d34/break
+Restore,HTTP_POST,https://10.108.36.207/velocity/api/reservation/v2/reservation/5da69c93-af49-412d-a3ba-b933b1e49dbf/link/ib5eada78-09f1-454d-a851-363dbea41d34/restore
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;isEmpty&gt;false&lt;/isEmpty&gt;
+    &lt;definedIn&gt;project://di_velocity/session_profiles/REST_ref_session_profile_quickcall_library.fftc&lt;/definedIn&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="isEmpty">
+                    <queryFormatString>.//isEmpty</queryFormatString>
+                </item>
+                <item name="definedIn">
+                    <queryFormatString>.//definedIn</queryFormatString>
+                    <source>Kernel</source>
+                </item>
+            </aliases>
+            <duration>2.8</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.table.TabularMapperProperties">
+            <tabularMaps>
+                <item name="table1">
+                    <banner>actionName,actionType,actionUrl</banner>
+                    <bannerStructure>Wildcard</bannerStructure>
+                    <delimiter>Comma</delimiter>
+                    <columns>
+                        <item name="actionName">
+                            <isKey>true</isKey>
+                            <lastFullCell></lastFullCell>
+                            <uid>c553e4e2-ec3b-4a9a-ae20-767d2c9c1d1d</uid>
+                        </item>
+                        <item name="actionType">
+                            <lastFullCell></lastFullCell>
+                            <uid>2185d6d4-f46b-4e20-8051-01183484ea4d</uid>
+                        </item>
+                        <item name="actionUrl">
+                            <lastFullCell></lastFullCell>
+                            <uid>df295b69-229c-4a23-808f-712a56ebd0a4</uid>
+                        </item>
+                    </columns>
+                </item>
+            </tabularMaps>
+        </item>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="pattern1">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Link Status:\\s+</regex>
+                            <start>0</start>
+                            <end>13</end>
+                        </item>
+                        <item name="Link_Status">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>13</start>
+                            <end>19</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>Link Status: ACTIVE</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="getTopoLinkAction" command="-reservationId * -linkId *">
+        <application>
+            <item>com.fnfr.itest.applications.webservices.restful</item>
+        </application>
+    </applicabilityProperties>
+</ResponseMap>
