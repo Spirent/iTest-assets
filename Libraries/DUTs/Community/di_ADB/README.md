@@ -3,7 +3,7 @@
 ## project://di_ADB/session_profiles/adb_ssh_quickcall_library.fftc (project://di_ADB/session_profiles/adb_ssh_quickcall_library.fftc)
 
 ### clearLog
-Clear the logcat logs
+Clear the logcat logs 
 
 Return: Block
 
