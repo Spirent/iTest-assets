@@ -1,0 +1,250 @@
+<?xml version="1.0"?>
+<testCase version="7.1.0.201805311107">
+    <general>
+        <documentation>LS REST QuickCalls</documentation>
+        <notes>Landslide REST QuickCalls bound to Landslide reference session profile</notes>
+        <sessionClass includeTestCase="true" sessionType="landslide_rest_1.ffsp"/>
+    </general>
+    <procedures>
+        <item name="main">
+            <steps>
+                <item guid="6b5675a0-eac5-4dca-8e6b-bdc26700b7ef" action="comment">
+                    <command>
+                        <body>QC Lib</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+        </item>
+        <item name="startCapture" isPublic="true">
+            <steps>
+                <item guid="13ef6155-0632-4c7c-bfca-6b5f0d61cad1" action="ShowTestServers" session="$session">
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query sub="true">//Result/testServers/testServers0\\[name=&quot;$testServerName&quot;\\]/id</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>tsId</storageLocation>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.itest.platform2.shared.documents.ntaf.NtafTransferableDocumentObject" action="ShowTestServers" subharness="http://spirent.com/NTAF/harness/iTest/LandslideRest/Main" harness="http://spirent.com/NTAF/harness/iTest/LandslideRest/Main" harnessName="http://spirent.com/NTAF/harness/iTest/LandslideRest/Main"/>
+                </item>
+                <item guid="3570a317-47dd-4523-82e4-7e84122adedc" action="ShowTestServerInfo" session="$session">
+                    <command>
+                        <body>-id $tsId</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>state()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$value eq &quot;RUNNING \\[1r\\] 1/1&quot;</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="OK">
+                                                    <message>Test server $testServerName is running</message>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenTrue>
+                                        <actionsWhenFalse>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="Warning">
+                                                    <message>Waiting for test server $testServerName to start running...</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="RepeatStep">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.RepeatStepPropertyGroup" delayBetweenRepeats="3.0"/>
+                                            </item>
+                                        </actionsWhenFalse>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.itest.platform2.shared.documents.ntaf.NtafTransferableDocumentObject" action="ShowTestServerInfo" subharness="http://spirent.com/NTAF/harness/iTest/LandslideRest/Main" harness="http://spirent.com/NTAF/harness/iTest/LandslideRest/Main" harnessName="http://spirent.com/NTAF/harness/iTest/LandslideRest/Main" id="$tsId" id.inherit="false"/>
+                </item>
+                <item guid="7c9372f2-f75c-45b4-a34f-913a1e3a3b25" action="Custom" session="$session">
+                    <command>
+                        <body>-requestMethod POST -dataType json -url /runningTests/$runId?action=startCapture&amp;ts=$testServerIndex&amp;port=$portName</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="contains">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                        <searchString>StartCapture Command Successful</searchString>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$value == 1</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="OK">
+                                                    <message>Started capture on $testServerName port $portName</message>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenTrue>
+                                        <actionsWhenFalse>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message>Failed to start capture on $testServerName port $portName</message>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenFalse>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.itest.platform2.shared.documents.ntaf.NtafTransferableDocumentObject" action="Custom" subharness="http://spirent.com/NTAF/harness/iTest/LandslideRest/Main" harness="http://spirent.com/NTAF/harness/iTest/LandslideRest/Main" harnessName="http://spirent.com/NTAF/harness/iTest/LandslideRest/Main" requestMethod="POST" requestMethod.inherit="false" dataType.inherit="false" requestBody.inherit="false" url="/runningTests/$runId?action=startCapture&amp;ts=$testServerIndex&amp;port=$portName" url.inherit="false"/>
+                </item>
+            </steps>
+            <arguments>
+                <item name="runId">
+                    <description>running test id on which to control capture functions, retured as id() from the Run action</description>
+                </item>
+                <item name="testServerName">
+                    <description>name of the test server on which to control capture functions</description>
+                </item>
+                <item name="testServerIndex">
+                    <description>the index number of the test server in a test</description>
+                    <defaultValue>0</defaultValue>
+                </item>
+                <item name="portName">
+                    <description>name of the port on the test server to control capture functions</description>
+                </item>
+            </arguments>
+        </item>
+        <item name="stopCapture" isPublic="true">
+            <steps>
+                <item guid="57a717a4-ece7-46be-b98d-62ebb9e15e9a" action="Custom" session="$session">
+                    <command>
+                        <body>-requestMethod POST -dataType json -url /runningTests/$runId?action=stopCapture&amp;ts=$testServerIndex&amp;port=$portName</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="contains">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                        <searchString>StopCapture Command Successful</searchString>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$value == 1</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="OK">
+                                                    <message>Stopped capture on $testServerName port $portName</message>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenTrue>
+                                        <actionsWhenFalse>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message>Failed to stop capture on $testServerName port $portName</message>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenFalse>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.itest.platform2.shared.documents.ntaf.NtafTransferableDocumentObject" action="Custom" subharness="http://spirent.com/NTAF/harness/iTest/LandslideRest/Main" harness="http://spirent.com/NTAF/harness/iTest/LandslideRest/Main" harnessName="http://spirent.com/NTAF/harness/iTest/LandslideRest/Main" requestMethod="POST" requestMethod.inherit="false" dataType.inherit="false" requestBody.inherit="false" url="/runningTests/$runId?action=stopCapture&amp;ts=$testServerIndex&amp;port=$portName" url.inherit="false"/>
+                </item>
+            </steps>
+            <arguments>
+                <item name="runId">
+                    <description>running test id on which to control capture functions, retured as id() from the Run action</description>
+                </item>
+                <item name="testServerName">
+                    <description>name of the test server on which to control capture functions</description>
+                </item>
+                <item name="testServerIndex">
+                    <description>the index number of the test server in a test</description>
+                    <defaultValue>0</defaultValue>
+                </item>
+                <item name="portName">
+                    <description>name of the port on the test server to control capture functions</description>
+                </item>
+            </arguments>
+        </item>
+        <item name="getCaptureURL" isPublic="true" isVBlock="true">
+            <steps>
+                <item guid="046c798b-c90c-4fc1-aeca-66b0827969c6" action="Custom" session="$session">
+                    <command>
+                        <body>-requestMethod GET -dataType json -url /runningTests/$runId/captureFiles/$testServerIndex/$portName</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>captureFileUrl()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <query>captureFileUrl</query>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>fn:count(//reason)</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$value == 0</expression>
+                                        <actionsWhenFalse>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message>No capture file for test id $runId test server index $testServerIndex port $portName</message>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenFalse>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.itest.platform2.shared.documents.ntaf.NtafTransferableDocumentObject" action="Custom" subharness="http://spirent.com/NTAF/harness/iTest/LandslideRest/Main" harness="http://spirent.com/NTAF/harness/iTest/LandslideRest/Main" harnessName="http://spirent.com/NTAF/harness/iTest/LandslideRest/Main" requestMethod.inherit="false" dataType.inherit="false" requestBody.inherit="false" url="/runningTests/$runId/captureFiles/$testServerIndex/$portName" url.inherit="false"/>
+                </item>
+            </steps>
+            <arguments>
+                <item name="runId">
+                    <description>running test id on which to control capture functions, retured as id() from the Run action</description>
+                </item>
+                <item name="testServerName">
+                    <description>name of the test server on which to control capture functions</description>
+                </item>
+                <item name="testServerIndex">
+                    <description>the index number of the test server in a test</description>
+                    <defaultValue>0</defaultValue>
+                </item>
+                <item name="portName">
+                    <description>name of the port on the test server to control capture functions</description>
+                </item>
+            </arguments>
+            <response>{&quot;captureFileUrl&quot;:&quot;none&quot;}</response>
+        </item>
+    </procedures>
+</testCase>
