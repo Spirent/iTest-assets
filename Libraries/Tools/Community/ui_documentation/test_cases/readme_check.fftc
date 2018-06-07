@@ -6,7 +6,12 @@
 
 Fail if no documentation/readme.txt found.
 Fail if documentation/readme.txt is empty.
-</notes>
+Fail if information is missing. Must be as follows:
+
+Project: &lt;name&gt;
+Description: &lt;Some wording about what the project does or is used for&gt;
+Category: &lt;&quot;library&quot;, &quot;automation&quot;, or &quot;framework&quot;&gt;
+Class: &lt;&quot;Community&quot;, &quot;Tested by Spirent&quot;, &quot;Reference&quot;&gt;</notes>
         <owner>Malcom Terry</owner>
         <isProcedureLibrary>true</isProcedureLibrary>
     </general>
@@ -254,15 +259,95 @@ Fail if documentation/readme.txt is empty.
                                 </item>
                                 <item guid="e836bb22-3a01-4a18-b8e7-b95202b91e6a" action="else">
                                     <nestedSteps>
-                                        <item guid="96954300-7040-4f39-8b43-5146c57d7ae6" action="readFile">
+                                        <item guid="1628989f-e492-4135-8ce2-77454ad44135" action="eval">
+                                            <command>
+                                                <body>set project &quot;&quot;</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                        <item guid="3f153a2f-ce2b-4cb7-ada2-9840a426d311" action="eval">
+                                            <command>
+                                                <body>set description &quot;&quot;</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                        <item guid="16764306-cc36-4d3b-a643-8608a608c185" action="eval">
+                                            <command>
+                                                <body>set category &quot;&quot;</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                        <item guid="16c71cca-cc3b-40fb-a861-d36663da3495" action="eval">
+                                            <command>
+                                                <body>set class &quot;&quot;</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                        <item guid="96954300-7040-4f39-8b43-5146c57d7ae6" action="readFile" useResponseMapLibraryApplicability="false">
                                             <command>
                                                 <body>$uri</body>
                                             </command>
                                             <postProcessing>
+                                                <analysisRules>
+                                                    <item>
+                                                        <extractorInfo extractorType="query">
+                                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup" declareNoMatchIssue="false">
+                                                                <query>Project()</query>
+                                                            </extractorProperties>
+                                                        </extractorInfo>
+                                                        <processorInfo ruleType="store">
+                                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                                <storageLocation>project</storageLocation>
+                                                            </ruleProperties>
+                                                        </processorInfo>
+                                                    </item>
+                                                    <item>
+                                                        <extractorInfo extractorType="query">
+                                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup" declareNoMatchIssue="false">
+                                                                <query>Description()</query>
+                                                            </extractorProperties>
+                                                        </extractorInfo>
+                                                        <processorInfo ruleType="store">
+                                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                                <storageLocation>description</storageLocation>
+                                                            </ruleProperties>
+                                                        </processorInfo>
+                                                    </item>
+                                                    <item>
+                                                        <extractorInfo extractorType="query">
+                                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup" declareNoMatchIssue="false">
+                                                                <query>Category()</query>
+                                                            </extractorProperties>
+                                                        </extractorInfo>
+                                                        <processorInfo ruleType="store">
+                                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                                <storageLocation>category</storageLocation>
+                                                            </ruleProperties>
+                                                        </processorInfo>
+                                                    </item>
+                                                    <item>
+                                                        <extractorInfo extractorType="query">
+                                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup" declareNoMatchIssue="false">
+                                                                <query>Class()</query>
+                                                            </extractorProperties>
+                                                        </extractorInfo>
+                                                        <processorInfo ruleType="store">
+                                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                                <storageLocation>class</storageLocation>
+                                                            </ruleProperties>
+                                                        </processorInfo>
+                                                    </item>
+                                                </analysisRules>
                                                 <storeResponseAt>readme</storeResponseAt>
                                                 <storeResponseText>true</storeResponseText>
                                             </postProcessing>
                                             <applicationProperties type="com.fnfr.svt.execution.builtin.exec.ReadFilePropertyGroup"/>
+                                            <responseMap>project://ui_documentation/response_maps/readme.ffrm</responseMap>
+                                            <useResponseMapLibraryFromSession>false</useResponseMapLibraryFromSession>
                                         </item>
                                         <item guid="b607ad3d-9bb9-4b2a-9359-50139739ee2f" action="if">
                                             <command>
@@ -323,6 +408,52 @@ Fail if documentation/readme.txt is empty.
                                                                                         <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="Information">
                                                                                             <message>File found: $uri</message>
                                                                                         </actionProperties>
+                                                                                    </item>
+                                                                                </actionsWhenTrue>
+                                                                            </ruleProperties>
+                                                                        </processorInfo>
+                                                                    </item>
+                                                                </analysisRules>
+                                                            </postProcessing>
+                                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                                        </item>
+                                                    </nestedSteps>
+                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                </item>
+                                            </nestedSteps>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                        <item guid="3b50ab5d-1060-43ec-8618-745504c5056f" action="if">
+                                            <command>
+                                                <body>$project == &quot;&quot; || $description == &quot;&quot; || $category == &quot;&quot; || $class == &quot;&quot;</body>
+                                            </command>
+                                            <nestedSteps>
+                                                <item guid="78b1d9e9-1c84-4ea2-a151-2487ed344900" action="then">
+                                                    <nestedSteps>
+                                                        <item guid="174b9ca1-b000-4448-8226-b5fd167bea31" action="comment">
+                                                            <postProcessing>
+                                                                <analysisRules>
+                                                                    <item>
+                                                                        <extractorInfo extractorType="none">
+                                                                            <extractorProperties type="com.fnfr.svt.documents.EmptyExtractorPropertyGroup"/>
+                                                                        </extractorInfo>
+                                                                        <processorInfo ruleType="assert">
+                                                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                                                <expression>1</expression>
+                                                                                <actionsWhenTrue>
+                                                                                    <item actionId="DeclareExecutionIssue">
+                                                                                        <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                                                            <message>Missing information: $uri</message>
+                                                                                        </actionProperties>
+                                                                                    </item>
+                                                                                    <item actionId="FailTest">
+                                                                                        <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                                                    </item>
+                                                                                    <item actionId="Continue">
+                                                                                        <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
                                                                                     </item>
                                                                                 </actionsWhenTrue>
                                                                             </ruleProperties>
