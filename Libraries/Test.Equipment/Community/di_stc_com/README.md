@@ -7,7 +7,10 @@ Class: Community
 
 3 QuickCall Libraries in project://di_stc_com
 ## Library: project://di_stc_com/session_profiles/Spirent_TestCenter_REST_ref_session_profile_quickcall_library.fftc
-Description: Spirent TestCenter QuickCalls for traffic management, capture controls, and 802.11 wifi operations
+Description:  
+Spirent TestCenter QuickCalls for traffic management, capture controls, and 802.11 wifi operations  
+Video at: https://youtu.be/Jt9g0owf0Qg  
+  
 ### associateIeee80211clientprofile
 Associate an 802.11 client profile with an emulated device
 
@@ -191,12 +194,16 @@ trafficDurationSec | Set traffic duration in seconds.
 Stop traffic - no return value
 ## Library: project://di_stc_com/session_profiles/sqlite_quickcall_library.fftc
 ## Headline: QC library for SQLite
-Description: QC library for SQLite
+Description:  
+QC library for SQLite  
+  
 ### sanityCheckL2
 This is a quick sanity check to ensure that you don't get psuedo pass results after transmitting traffic.
 ## Library: project://di_stc_com/session_profiles/stc_quickcall_library.fftc
 ## Headline: STC TCL QC library
-Description: STC TCL QC library
+Description:  
+STC TCL QC library  
+  
 ### apiSaveResultCommand
 Use this procedure to save STC results into a SQLite DB file. This file can be queried for analysis purposes. SQL queries are more efficient at data mining versus other techniques.
 
