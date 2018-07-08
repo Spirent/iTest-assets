@@ -1,5 +1,5 @@
 Project: Spirent TestCenter REST and Database
-Description: QuickCall examples showing the REST API ans SQLite database queries. Video at: https://youtu.be/Jt9g0owf0Qg
+Description: QuickCall examples for traffic, capture, 802.11 wifi, and SQLite on STC 
 Category: library
 Class: Community
 
@@ -7,6 +7,7 @@ Class: Community
 
 3 QuickCall Libraries in project://di_stc_com
 ## Library: project://di_stc_com/session_profiles/Spirent_TestCenter_REST_ref_session_profile_quickcall_library.fftc
+Description: Spirent TestCenter QuickCalls for traffic management, capture controls, and 802.11 wifi operations
 ### associateIeee80211clientprofile
 Associate an 802.11 client profile with an emulated device
 

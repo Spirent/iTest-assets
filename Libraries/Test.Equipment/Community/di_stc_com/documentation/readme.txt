@@ -1,5 +1,5 @@
 Project: Spirent TestCenter REST and Database
-Description: QuickCall examples showing the REST API ans SQLite database queries. Video at: https://youtu.be/Jt9g0owf0Qg
+Description: QuickCall examples for traffic, capture, 802.11 wifi, and SQLite on STC 
 Category: library
 Class: Community
 
