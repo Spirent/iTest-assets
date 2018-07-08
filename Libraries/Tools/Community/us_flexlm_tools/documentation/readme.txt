@@ -1,6 +1,6 @@
 Project: Flex License Manager Tools
 Description: These shell and Tcl scipts are used to manage the APT License Server (FlexLM).
-Category: automation
+Category: library
 Class: Community
 
 Assumptions: license manager is installed at /usr/local/apt-flexlm

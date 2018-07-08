@@ -3,15 +3,16 @@ Description: Generate project documentation, for Git repository, from QuickCall 
 Category: library
 Class: Community
 
-1 Procedure Library in project://ui_documentation
+2 Procedure Libraries in project://ui_documentation
 ## Library: project://ui_documentation/test_cases/documentation.fftc
 ## Headline: Documentation Generator
-Description: This test case will generate documentation for QuickCall and Procedure libraries. The Headline and Description should be completed for General Information and all procedures. Procedure arguments should also have a description.
+Description: This test case will generate documentation for QuickCall and Procedure libraries and optionally Response Maps. The Headline and Description should be completed for General Information and all procedures. Procedure arguments should also have a description.
 
 Parameters:
 changeDate - Only projects which have changed since that date will have the documentation regenerated. Only .fftc, .ffrm and readme.txt files are checked for change.
 
-uriDocumentationList - If specified and file exists, only the projects listed in the file will be updated, regardless of the change state.
+uriDocumentationList - If specified and file exists, only the projects listed in the file will be updated, regardless of the change date. Each line, in the file, should be in this format:
+  project://<project name>
 
 includeResponseMaps - If true, inlude a list of response maps along with heading and description.
 
@@ -60,3 +61,13 @@ uriList | List of response map URI's
 Argument | Description
 ------------ | -------------
 uri | URI of file to check
+dateString | Change date in the form of mm/dd/yy or mmdd/yyyy.
+Relative time strings can also be used.
+See Tcl clock scan documentation for more info.
+## Library: project://ui_documentation/test_cases/readme_check.fftc
+## Headline: Check for missing documentation/readme.txt
+Description: Scan the workspace to detect any projects that don't have readmet.txt
+
+Fail if no documentation/readme.txt found.
+Fail if documentation/readme.txt is empty.
+
