@@ -7,17 +7,13 @@ Class: Community
 
 3 QuickCall Libraries in project://di_stc_com
 ## Library: project://di_stc_com/session_profiles/Spirent_TestCenter_REST_ref_session_profile_quickcall_library.fftc
-### sanityCheckTraffic
-This will check if traffic is running, out-of-order packets, duplicates, and dropped packets
+### associateIeee80211clientprofile
+Associate an 802.11 client profile with an emulated device
 
 Argument | Description
 ------------ | -------------
-sanityCheckDelaySec | This is a short delay bfeore checking traffic to give system enough time to intialize
-### deadStreamCount
-
-Argument | Description
------------- | -------------
-delaySec | Delay in seconds between checks
+emulatedDeviceName | Name of the emulated device to associate 802.11 client profile
+ieee80211clientprofileName | Name of the 802.11 client profile to associate
 ### capturePortPcap
 
 Argument | Description
@@ -34,6 +30,142 @@ Argument | Description
 ------------ | -------------
 portIndex | Applies any changes that you made to configuration settings. This changes generator profile settings. Returns generator information.
 loadPortBasedPercent | This is the fixed load percentage based on negotiated line rate. For example, 30% load on 1GE line rate is 300Mb/s
+### configureIeee80211clientprofile
+Configure any property of an 802.11 client profile
+
+Argument | Description
+------------ | -------------
+Name | Name of the IEEE 802.11 profile to configure
+AMPDUOption | 
+AMSDUOption | 
+Active | 
+ActiveKey | 
+AkaAuthenticationKey | 
+AkaMobileSubscriberIdentity | 
+AkaOperatorVariantCode | 
+AkaRealmName | 
+AkaSequenceNumber | 
+BSSID | 
+ChannelWidth | 
+ClientCertificateFilePath | 
+ClientCertificationAuthorityFilePath | 
+ClientPrivateKeyFilePath | 
+ClientProfileName | 
+EapAuthenticationType | 
+EncryptionType | 
+FastAnonymousIdentity | 
+FastPassword | 
+FastPeerIdentity | 
+FastProvisioning | 
+FastTransitionBSSID | 
+FastTransitionOverDS | 
+FastTransitionRoaming | 
+GuardInterval | 
+HT40MhzSupport | 
+IsFastReauthentication | 
+Key1 | 
+Key1Type | 
+Key2 | 
+Key2Type | 
+Key3 | 
+Key3Type | 
+Key4 | 
+Key4Type | 
+KeyFormat | 
+LDPCSupport | 
+LeapPassword | 
+LeapPeerIdentity | 
+MaxAMPDUSize | 
+MaxAMSDU | 
+MaxVhtAMPDUSize | 
+MinAMSDUDensity | 
+ModulationCodingSchemeType | 
+PassPhrase | 
+PeapAnonymousIdentity | 
+PeapClientCertificationAuthorityFilePath | 
+PeapForceNewLabel | 
+PeapPassword | 
+PeapPeerIdentity | 
+PeapPhaseTwoAuthentication | 
+PeapVersion | 
+PeerIdentity | 
+ProtocolRate | 
+SSID | 
+TlsPassword | 
+TtlsAnonymousIdentity | 
+TtlsClientCertificationAuthorityFilePath | 
+TtlsPassword | 
+TtlsPeerIdentity | 
+TtlsPhaseTwoAuthentication | 
+### configureIeee80211phyMimoMode
+Configure 802.11 MIMO mode of a physical wifi port
+
+Argument | Description
+------------ | -------------
+portName | Name of the wifi port to configure
+mimoMode | Possible Values:
+Value | Description
+SU_MIMO | Single-User MIMO
+MU_MIMO | Multi-User MIMO
+### createIeee80211clientprofile
+Create a 802.11 client profile with default values
+
+Argument | Description
+------------ | -------------
+Name | Name of the IEEE 802.11 profile to create (recommended to use a unique name)
+### deadStreamCount
+
+Argument | Description
+------------ | -------------
+delaySec | Delay in seconds between checks
+### getBasicDeviceInfo
+This will return basic port info used to for L2/L3 traffic
+
+Return: MAC, IP, and GW
+
+Argument | Description
+------------ | -------------
+port | Valid port index
+Example: 1
+portId | Valid port id
+Example: 1
+### getBasicPortTxRxCounters
+Returns the Tx/Rx Frame/Bit counters for the specified port
+
+Argument | Description
+------------ | -------------
+port | This is the STC port value that can be captured from getPorts QC.
+
+Example: Port //2/9
+### getIeee80211clientprofile
+Show all the properties of a given 802.11 client profile
+
+Argument | Description
+------------ | -------------
+Name | Name of the IEEE 802.11 profile to display
+### getPorts
+Returns a list of provisioned ports
+### pcapCapture
+Capture PCAP and examine PCAP using other tools like wireshark
+
+Argument | Description
+------------ | -------------
+portList | Enter a valid portList value -e.g. 1
+captureDelaySec | Enter time in seconds for how long to capture data
+filepath | Enter a valid file path to save the data.
+
+Example: file:/C:/Users/MBARFI~1/AppData/Local/Temp/stc.pcap
+### sanityCheckTraffic
+This will check if traffic is running, out-of-order packets, duplicates, and dropped packets
+
+Argument | Description
+------------ | -------------
+sanityCheckDelaySec | This is a short delay bfeore checking traffic to give system enough time to intialize
+### setStandardTrafficResults
+Set your common traffic results you want the traffic generator to capture. This should be standard for most of your tests.
+
+List includes:
+DetailedStreamResults, BasicTrafficResults, and PortResults
 ### startArpClearCounters
 This will allow users to intiate ARP request and clear counters before starting traffic
 
@@ -56,42 +188,6 @@ true or false (1|0)
 trafficDurationSec | Set traffic duration in seconds.
 ### stopTraffic
 Stop traffic - no return value
-### pcapCapture
-Capture PCAP and examine PCAP using other tools like wireshark
-
-Argument | Description
------------- | -------------
-portList | Enter a valid portList value -e.g. 1
-captureDelaySec | Enter time in seconds for how long to capture data
-filepath | Enter a valid file path to save the data.
-
-Example: file:/C:/Users/MBARFI~1/AppData/Local/Temp/stc.pcap
-### getPorts
-Returns a list of provisioned ports
-### getBasicPortTxRxCounters
-Returns the Tx/Rx Frame/Bit counters for the specified port
-
-Argument | Description
------------- | -------------
-port | This is the STC port value that can be captured from getPorts QC.
-
-Example: Port //2/9
-### setStandardTrafficResults
-Set your common traffic results you want the traffic generator to capture. This should be standard for most of your tests.
-
-List includes:
-DetailedStreamResults, BasicTrafficResults, and PortResults
-### getBasicDeviceInfo
-This will return basic port info used to for L2/L3 traffic
-
-Return: MAC, IP, and GW
-
-Argument | Description
------------- | -------------
-port | Valid port index
-Example: 1
-portId | Valid port id
-Example: 1
 ## Library: project://di_stc_com/session_profiles/sqlite_quickcall_library.fftc
 ## Headline: QC library for SQLite
 Description: QC library for SQLite
