@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<testCase version="7.0.1.201802131446">
+<testCase version="7.1.0.201804110601">
     <general>
         <documentation>Documentation Generator</documentation>
         <notes>This test case will generate documentation for QuickCall and Procedure libraries and optionally Response Maps. The Headline and Description should be completed for General Information and all procedures. Procedure arguments should also have a description.
@@ -15,7 +15,7 @@ includeResponseMaps - If true, inlude a list of response maps along with heading
         <isProcedureLibrary>true</isProcedureLibrary>
     </general>
     <execution estimatedExecutionTime="-673">
-        <parameters version="7.0.1.201802131446">
+        <parameters version="7.1.0.201804110601">
             <parameters escape="true">
                 <parameters xmlns:pt="http://www.fnfr.com/schemas/parameterTree">
                     <changedDate pt:description="Only document projectas which have changed since &lt;mm/dd/yyyy&gt;, &lt;yesterday&gt;, etc.">6/6/2018</changedDate>
@@ -1992,6 +1992,19 @@ H1,H2{padding-left:15px}
                                             </ruleProperties>
                                         </processorInfo>
                                     </item>
+                                    <item>
+                                        <extractorInfo extractorType="query">
+                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                <query>mapped/Xml/testCase/procedures/item[2]/arguments/item[2]/description</query>
+                                            </extractorProperties>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="store">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                <storageLocation>arg_description</storageLocation>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                        <skip>true</skip>
+                                    </item>
                                 </analysisRules>
                                 <storeResponseAt>xmlResponse</storeResponseAt>
                             </postProcessing>
@@ -2003,6 +2016,41 @@ H1,H2{padding-left:15px}
                                 </item>
                             </eventHandlers>
                             <applicationProperties type="com.fnfr.svt.execution.builtin.exec.ReadFilePropertyGroup"/>
+                        </item>
+                        <item guid="ae87661c-dd37-4a89-8440-04f429b99ff4" action="if" skip="true">
+                            <command>
+                                <body>$uri == &quot;project://ui_documentation/test_cases/unit_test.fftc&quot;</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="b95d98a7-f6b9-4f11-8260-258ecce14514" action="then">
+                                    <nestedSteps>
+                                        <item guid="305b669c-a2c1-47b6-840c-d49a0a098784" action="comment">
+                                            <command>
+                                                <body>Insert steps here for when expression is true</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="75975393-e8c9-4c94-af1c-edaaca62b678" action="else">
+                                    <nestedSteps>
+                                        <item guid="8dffa785-5146-4c15-bbe6-74d5a67dbe80" action="comment">
+                                            <command>
+                                                <body>Insert steps here for when expression is false</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
                         </item>
                         <item guid="e7345942-5a59-4c80-b50c-a76ca53796af" action="writeFile">
                             <command>
@@ -2232,9 +2280,86 @@ H1,H2{padding-left:15px}
                                                                                                     <applicationProperties type="com.fnfr.svt.execution.builtin.exec.WriteFilePropertyGroup"/>
                                                                                                     <useFieldsInCommand>false</useFieldsInCommand>
                                                                                                 </item>
-                                                                                                <item guid="846f9525-68fe-40f4-b562-25be0336009d" action="writeFile">
+                                                                                                <item guid="e8357d0a-fc2e-4751-aeb7-98b3c6a53839" action="eval">
                                                                                                     <command>
-                                                                                                        <body>$uriPath/README.md &quot;$argument | [query xmlResponse //procedures/item\\[@name=&apos;$procedure&apos;\\]/arguments/item\\[@name=&apos;$argument&apos;\\]/description]&quot;</body>
+                                                                                                        <body>set query &quot;//procedures/item\\[@name=&apos;$procedure&apos;\\]/arguments/item\\[@name=&apos;$argument&apos;\\]/description&quot;</body>
+                                                                                                    </command>
+                                                                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                                                                </item>
+                                                                                                <item guid="b277ea51-1ff6-4a7d-a7d8-429ab0399cf3" action="eval">
+                                                                                                    <command>
+                                                                                                        <body>set qResponse [query xmlResponse $query]</body>
+                                                                                                    </command>
+                                                                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                                                                </item>
+                                                                                                <item guid="2dbb8c9c-f77b-47de-afa3-3548b9a78745" action="eval">
+                                                                                                    <command>
+                                                                                                        <body>set qResponse [string map {\\n &lt;br&gt;} $qResponse]</body>
+                                                                                                    </command>
+                                                                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                                                                </item>
+                                                                                                <item guid="1e31728b-2bb0-42a9-ac97-69d237316f01" action="if" skip="true">
+                                                                                                    <command>
+                                                                                                        <body>$uri == &quot;project://ui_documentation/test_cases/unit_test.fftc&quot;</body>
+                                                                                                    </command>
+                                                                                                    <nestedSteps>
+                                                                                                        <item guid="30db3d24-417d-4e28-bc66-4882ee3540d0" action="then">
+                                                                                                            <nestedSteps>
+                                                                                                                <item guid="33797d06-2487-4a0a-82e2-21877f2f8b3b" action="comment">
+                                                                                                                    <command>
+                                                                                                                        <body>DEBUG: skip when done</body>
+                                                                                                                    </command>
+                                                                                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                                                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                                                                                </item>
+                                                                                                                <item guid="00131b9b-40ce-4db0-b8db-4ebf24d1b6a6" action="eval">
+                                                                                                                    <command>
+                                                                                                                        <body>query xmlResponse {mapped/Xml/testCase/procedures/item[2]/arguments/item[2]/description}</body>
+                                                                                                                    </command>
+                                                                                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                                                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                                                                                </item>
+                                                                                                                <item guid="e219f5d4-8a33-498c-85d3-5948809c31e0" action="eval">
+                                                                                                                    <command>
+                                                                                                                        <body>query xmlResponse {//procedures/item[2]/arguments/item[2]/description}</body>
+                                                                                                                    </command>
+                                                                                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                                                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                                                                                </item>
+                                                                                                                <item guid="32cacd87-0a17-41f2-8232-52909b1ffac9" action="eval">
+                                                                                                                    <command>
+                                                                                                                        <body>query xmlResponse {//procedures/item[@name=&apos;procWithMultilineArgDescription&apos;]/arguments/item[@name=&apos;procWithMultilineArgDescription&apos;]/description}</body>
+                                                                                                                    </command>
+                                                                                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                                                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                                                                                </item>
+                                                                                                            </nestedSteps>
+                                                                                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                                                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                                                                                        </item>
+                                                                                                        <item guid="c30d9300-9891-4e2e-a401-6bfd9405e4a3" action="else">
+                                                                                                            <nestedSteps>
+                                                                                                                <item guid="ab49a1ac-803c-4f12-a05d-109b565751b0" action="comment">
+                                                                                                                    <command>
+                                                                                                                        <body>Insert steps here for when expression is false</body>
+                                                                                                                    </command>
+                                                                                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                                                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                                                                                </item>
+                                                                                                            </nestedSteps>
+                                                                                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                                                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                                                                                        </item>
+                                                                                                    </nestedSteps>
+                                                                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                                                                </item>
+                                                                                                <item guid="92fb320b-6a11-4c95-8200-a3aa13daf2d5" action="writeFile">
+                                                                                                    <command>
+                                                                                                        <body>$uriPath/README.md &quot;$argument | $qResponse&quot;</body>
                                                                                                     </command>
                                                                                                     <applicationProperties type="com.fnfr.svt.execution.builtin.exec.WriteFilePropertyGroup"/>
                                                                                                     <useFieldsInCommand>false</useFieldsInCommand>
