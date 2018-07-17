@@ -1,0 +1,686 @@
+<?xml version="1.0"?>
+<testCase version="6.1.0.e2e4ec0">
+    <procedures>
+        <item name="main">
+            <steps>
+                <item guid="b9652ba1-02b1-4369-95e3-a488771f7060" action="open" session="t1">
+                    <command>
+                        <body>project://di_attero/session_profiles/attero_python_base.ffsp</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.OpenStepPropertyGroup">
+                        <stepProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionProperties type="com.fnfr.svt.applications.python.PythonSessionProperties"/>
+                        <sessionClass type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionVersion type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    </applicationProperties>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="ce922bcf-02fb-4b58-8c8c-f178cd14d53c" action="eval">
+                    <command>
+                        <body>set rtd 1</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="d41380ed-d97c-4356-9c23-44cf0aa53885" action="while">
+                    <command>
+                        <body>$rtd &lt;= 300</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="783b6aeb-9213-4ae7-a0cc-f191c3a10a1f" action="eval">
+                            <command>
+                                <body>set delay [expr $rtd * 1000 / 2]</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="9322ba96-9a85-444e-9486-4257061ea290" action="command" session="t1" normalOffset="0.002" estimatedStepExecutionTime="0.001">
+                            <command>
+                                <body>a.atteroset(&quot;Impair ImpairProfile #0 #7 FixedDelay&quot;,&quot;$delay&quot;)</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="e2edf892-05b9-4c13-b228-9fce85081b44" action="command" session="t1" normalOffset="0.002" estimatedStepExecutionTime="0.001">
+                            <command>
+                                <body>a.atteroset(&quot;Impair Jitter #7 ProfileCurrent Download&quot;,&quot;TRUE&quot;)</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="75762edc-7ab4-4933-8554-f80beb46320c" action="command" session="t1" normalOffset="0.002" estimatedStepExecutionTime="0.001">
+                            <command>
+                                <body>a.atteroset(&quot;Impair ImpairProfile #1 #7 FixedDelay&quot;,&quot;$delay&quot;)</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="2609d0f9-fc96-4e9a-a801-b60f1938258c" action="command" session="t1" normalOffset="0.003" estimatedStepExecutionTime="0.002">
+                            <command>
+                                <body>a.atteroset(&quot;Impair Jitter #15 ProfileCurrent Download&quot;,&quot;TRUE&quot;)</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="388ddaa6-bcad-43b8-8064-4bdfdeab66dc" action="command" session="t1" normalOffset="0.002" estimatedStepExecutionTime="0.001">
+                            <command>
+                                <body>a.atteroset(&quot;Measurement Count Reset&quot;,&quot;TRUE&quot;)</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="44b85c5c-e81a-4c10-aefe-2e16ed4ebb76" action="command" session="t1" normalOffset="0.002" estimatedStepExecutionTime="0.034">
+                            <command>
+                                <body>a.startimpairment()</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="eb890db4-1b82-4e27-933c-471598b09106" action="comment">
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="e7eb6880-6228-4697-a866-40f9e302d058" action="eval">
+                            <command>
+                                <body>puts $rtd</body>
+                            </command>
+                            <postProcessing>
+                                <analysisRules>
+                                    <item>
+                                        <extractorInfo extractorType="query">
+                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                <query>group1()</query>
+                                            </extractorProperties>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="message">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.MessageProcessorPropertyGroup" severity="Information">
+                                                <message>Current Round Trip Delay is &quot;{value}&quot;</message>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                </analysisRules>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="082a2002-86ab-4521-9311-c744ea362b0e" action="sleep">
+                            <command>
+                                <body>60</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="67f536bc-8c6c-41c7-8844-48b0c8fe7e3a" action="eval">
+                            <command>
+                                <body>incr rtd</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="4c3239e6-40aa-437c-b8a8-a38d891c9c1b" action="command" session="t1" normalOffset="0.002" estimatedStepExecutionTime="0.001">
+                    <command>
+                        <body>a.stopimpairment()</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="8d921e70-9220-41a1-a2b2-7a48afd603bc" action="command" session="t1">
+                    <command>
+                        <body>a.atteroset(&quot;Impair ClearAll&quot;)</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="4274b6eb-ea8f-4171-b31e-d95978eb9318" action="sleep">
+                    <command>
+                        <body>15</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="b83de605-9349-4948-9169-487c7ac87207" action="command" session="t1" normalOffset="0.002" estimatedStepExecutionTime="0.075">
+                    <command>
+                        <body>a.disconnect()</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="f6b6811e-5b58-406b-aa58-c4786af69fa0" action="close" session="t1" normalOffset="8651.416">
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="183b9f1b-58b0-40ed-9399-e94340735bca" action="open" session="s1">
+                    <command>
+                        <body>project://di_attero/session_profiles/attero_tcl_base.ffsp</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.OpenStepPropertyGroup">
+                        <stepProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionProperties type="com.fnfr.svt.applications.tclsh.TclshSessionProperties"/>
+                        <sessionClass type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionVersion type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    </applicationProperties>
+                </item>
+            </steps>
+        </item>
+        <item name="procedure1">
+            <steps>
+                <item guid="013ce5c5-972c-439f-bb73-d6cb8ec53917" action="open" session="t2">
+                    <command>
+                        <body>project://di_attero/session_profiles/attero_tcl_base.ffsp</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.OpenStepPropertyGroup">
+                        <stepProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionProperties type="com.fnfr.svt.applications.tclsh.TclshSessionProperties"/>
+                        <sessionClass type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionVersion type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    </applicationProperties>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="808d1756-8b0e-455d-b4dc-d28932b25c86" action="command" session="t2" normalOffset="18.721" estimatedStepExecutionTime="0.023">
+                    <command>
+                        <body>source &quot;C:/Calnex/Attero/RemoteControl/Tcl/attero.tcl&quot;</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="a53ebb4f-cd62-457e-be88-5abacc5306b0" action="command" session="t2" normalOffset="9.312" estimatedStepExecutionTime="0.072">
+                    <command>
+                        <body>connect 172.16.11.80 localhost 9990 9000</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="cb46cc55-e62a-4860-ba32-6111c8649289" action="command" session="t2" normalOffset="12.924" estimatedStepExecutionTime="1.384">
+                    <command>
+                        <body>atteroset Physical LineRate 1GBE</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="53af647c-f674-466c-9ef5-92a041003042" action="command" session="t2" normalOffset="0.003" estimatedStepExecutionTime="1.13">
+                    <command>
+                        <body>atteroset Physical LineInterface ELECTRICAL</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="cbd22da4-3b24-4c96-a870-3b1588135fcf" action="command" session="t2" normalOffset="28.956" estimatedStepExecutionTime="0.377">
+                    <command>
+                        <body>atteroset Impair Jitter #7 ProfileCurrent Download TRUE</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="c04b1352-ebf1-4690-b2a6-e8aa8df6af02" action="command" session="t2" normalOffset="0.002" estimatedStepExecutionTime="0.376">
+                    <command>
+                        <body>atteroset Impair ImpairProfile #1 #7 FixedDelay 1000.0</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="695149bc-4d26-410a-96cc-0bb0263e5305" action="command" session="t2" normalOffset="0.003" estimatedStepExecutionTime="0.324">
+                    <command>
+                        <body>atteroset Impair Jitter #15 ProfileCurrent Download TRUE</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="271aa8e8-82af-47cd-8ea6-e5ce9631095a" action="command" session="t2" normalOffset="80.797" estimatedStepExecutionTime="0.306">
+                    <command>
+                        <body>atteroset Impair ImpairProfile #0 #7 FixedDelay 1000.0</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="9b49664c-fc98-4af5-b7d4-faaf544e5ff0" action="command" session="t2" normalOffset="0.002" estimatedStepExecutionTime="0.324">
+                    <command>
+                        <body>atteroset Impair Jitter #7 ProfileCurrent Download TRUE</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="b2288e7b-31be-495a-82d5-633f51acf6cf" action="command" session="t2" normalOffset="0.004" estimatedStepExecutionTime="0.273">
+                    <command>
+                        <body>atteroset Impair ImpairProfile #1 #7 FixedDelay 1000.0</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="390b978f-d376-4840-b661-1da0be531199" action="command" session="t2" normalOffset="0.003" estimatedStepExecutionTime="0.283">
+                    <command>
+                        <body>atteroset Impair Jitter #15 ProfileCurrent Download TRUE</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="6fbc436f-acee-4f09-a2eb-f2ae81a89fff" action="command" session="t2" normalOffset="0.003" estimatedStepExecutionTime="0.343">
+                    <command>
+                        <body>atteroset Measurement Count Reset TRUE</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="50802387-84b9-4c73-a5ae-ca431f164671" action="command" session="t2" normalOffset="11.672" estimatedStepExecutionTime="1.423">
+                    <command>
+                        <body>startimpairment</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="b03aca98-03b3-498d-b61e-82d9401a2c15" action="command" session="t2" normalOffset="76.561" estimatedStepExecutionTime="3.131">
+                    <command>
+                        <body>atteroset Impair ClearAll TRUE</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="0491a39d-0771-4769-bf34-b651c9117290" action="command" session="t2" normalOffset="50.883" estimatedStepExecutionTime="0.393">
+                    <command>
+                        <body>atteroset Impair ImpairProfile #0 #7 FixedDelay 1000.0</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="38cf8af0-d576-407b-8fbb-5a5e23c20b03" action="command" session="t2" normalOffset="0.003" estimatedStepExecutionTime="0.447">
+                    <command>
+                        <body>atteroset Impair Jitter #7 ProfileCurrent Download TRUE</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="9892ceba-d0b1-41b2-9e52-14d4ccd2eb88" action="command" session="t2" normalOffset="0.004" estimatedStepExecutionTime="0.374">
+                    <command>
+                        <body>atteroset Impair ImpairProfile #1 #7 FixedDelay 1000.0</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="8d4331db-3e47-484f-b89e-4e9d604d7a73" action="command" session="t2" normalOffset="0.003" estimatedStepExecutionTime="0.376">
+                    <command>
+                        <body>atteroset Impair Jitter #15 ProfileCurrent Download TRUE</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="ddf7bcaa-f6ea-414e-85fd-bb283f3c77ea" action="command" session="t2" normalOffset="0.006" estimatedStepExecutionTime="0.386">
+                    <command>
+                        <body>atteroset Measurement Count Reset TRUE</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="fccc6305-7f10-494e-94fe-b035430ed7a1" action="command" session="t2" normalOffset="0.005" estimatedStepExecutionTime="1.495">
+                    <command>
+                        <body>startimpairment</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="a72ade7d-0ab2-41c5-a163-06917e1ef6e2" action="command" session="t2" normalOffset="53.471" estimatedStepExecutionTime="0.615">
+                    <command>
+                        <body>atteroset Impair ImpairProfile #0 #7 FixedDelay 2000</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="727f0d0c-931f-470a-b533-01e9b34aae70" action="command" session="t2" normalOffset="13.046" estimatedStepExecutionTime="0.747">
+                    <command>
+                        <body>atteroset Impair ImpairProfile #1 #7 FixedDelay 2000</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="9c07df9e-fcb7-498f-a63d-5e1d6a6001a9" action="command" session="t2" normalOffset="147.548" estimatedStepExecutionTime="0.296">
+                    <command>
+                        <body>atteroget Measurement Status Ethernet #0 Link</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="efcd642e-6f69-4f97-a1f2-f45485b721ad" action="command" session="t2" normalOffset="5.098" estimatedStepExecutionTime="0.725">
+                    <command>
+                        <body>atteroget Measurement Status Ethernet #1 Link</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="a69d2a3f-c66e-4ad3-96cc-a7a43eec7fe3" action="command" session="t2" normalOffset="34.002" estimatedStepExecutionTime="2.617">
+                    <command>
+                        <body>stopimpairment</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="71af3511-ec41-4b20-b8d8-c9350765f82f" action="command" session="t2" normalOffset="211.691" estimatedStepExecutionTime="0.082">
+                    <command>
+                        <body>connect 172.16.11.80 localhost 9990 9000</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="959f6abf-4000-442d-a49f-ad73a7d36614" action="command" session="t2" normalOffset="117.013" estimatedStepExecutionTime="0.271">
+                    <command>
+                        <body>atteroset Impair Corruption #7 ErrorType Errored TRUE</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="522c7cbc-ea88-4298-b52d-b3b219d08279" action="command" session="t2" normalOffset="0.003" estimatedStepExecutionTime="0.242">
+                    <command>
+                        <body>atteroset Impair Corruption #7 ErrorType Errored FALSE</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="9a24d6d2-2ca3-40f0-b721-8e207be8a277" action="command" session="t2" normalOffset="0.003" estimatedStepExecutionTime="0.633">
+                    <command>
+                        <body>atteroset Impair Corruption #7 ErrorType Lost TRUE</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="06dfbf82-9be1-4791-962d-3907558d9ab4" action="command" session="t2" normalOffset="0.003" estimatedStepExecutionTime="0.235">
+                    <command>
+                        <body>atteroset Impair Corruption #7 Lost Distribution Type PERCENT</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="6fd8d82f-53a3-4a51-b23a-da075019fad6" action="command" session="t2" normalOffset="0.003" estimatedStepExecutionTime="0.622">
+                    <command>
+                        <body>atteroset Impair Corruption #7 Lost Distribution Percent 0.02000</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="334b5a6f-3ab7-4011-ac06-b542ee7a0a95" action="command" session="t2" normalOffset="0.003" estimatedStepExecutionTime="0.268">
+                    <command>
+                        <body>atteroset Impair Corruption #15 ErrorEnable TRUE</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="f62d3c12-5522-4fc2-a961-a3bcd9da718e" action="command" session="t2" normalOffset="0.003" estimatedStepExecutionTime="0.628">
+                    <command>
+                        <body>atteroset Impair Corruption #15 Errored Distribution Type SINGLE</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="1a573745-4ddb-4350-bb70-734086f608e9" action="command" session="t2" normalOffset="0.002" estimatedStepExecutionTime="0.26">
+                    <command>
+                        <body>atteroset Impair Corruption #15 Lost Distribution Type PERCENT</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="ee95ba68-e27d-46b3-acf2-8989de0b8f04" action="command" session="t2" normalOffset="0.004" estimatedStepExecutionTime="0.781">
+                    <command>
+                        <body>atteroset Impair Corruption #15 Misordered Distribution Type SINGLE</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="be0f222e-e53e-425a-ba22-475e2d69510f" action="command" session="t2" normalOffset="0.002" estimatedStepExecutionTime="0.323">
+                    <command>
+                        <body>atteroset Impair Corruption #15 Repeated Distribution Type SINGLE</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="4faa01ee-b191-416e-b92c-2fd5f4d1f023" action="command" session="t2" normalOffset="0.008" estimatedStepExecutionTime="0.738">
+                    <command>
+                        <body>atteroset Measurement Count Reset TRUE</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="bf15f455-40a4-41e2-98f1-1959628b986d" action="command" session="t2" normalOffset="1155.477" estimatedStepExecutionTime="0.072">
+                    <command>
+                        <body>connect 172.16.11.80 localhost 9990 9000</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="0e7fcd3f-30f5-4e17-ab5e-75586d993b63" action="command" session="t2" normalOffset="13.866" estimatedStepExecutionTime="3.619">
+                    <command>
+                        <body>atteroset Impair ClearAll TRUE</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="b7828fe7-d42f-4247-9369-c01f9154318c" action="command" session="t2" normalOffset="77.004" estimatedStepExecutionTime="0.467">
+                    <command>
+                        <body>atteroset Impair BandwidthControl #7 Basic LinkBitRate INTERNET_(768_KBIT/S)</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="075b410a-34a8-4f5c-b6ca-f070bf29bdc0" action="command" session="t2" normalOffset="7.336" estimatedStepExecutionTime="0.438">
+                    <command>
+                        <body>atteroset Impair BandwidthControl #15 Basic LinkBitRate INTERNET_(768_KBIT/S)</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="a6158dea-204c-4715-a848-838769956c61" action="command" session="t2" normalOffset="29.406" estimatedStepExecutionTime="1.041">
+                    <command>
+                        <body>startimpairment</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="607c8943-7133-4620-bf46-27539029ce6a" action="command" session="t2" normalOffset="15.201" estimatedStepExecutionTime="1.035">
+                    <command>
+                        <body>startimpairment</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="ff736133-e6e8-4567-8ffc-f19f691e3bf7" action="command" session="t2" normalOffset="79.186" estimatedStepExecutionTime="0.068">
+                    <command>
+                        <body>connect 172.16.11.80 localhost 9990 9000</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="d55f126a-a917-4fce-ad95-938cd188f933" action="command" session="t2" normalOffset="9.084" estimatedStepExecutionTime="0.948">
+                    <command>
+                        <body>atteroset Impair BandwidthControl #15 Basic Enable TRUE</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="2ad1c34d-856a-4d48-89a9-6bfbe057429c" action="command" session="t2" normalOffset="5.997" estimatedStepExecutionTime="0.865">
+                    <command>
+                        <body>atteroset Impair BandwidthControl #7 Basic Enable TRUE</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="e26da5d2-b857-4060-ad9a-c5ea33d648db" action="command" session="t2" normalOffset="42.225" estimatedStepExecutionTime="2.677">
+                    <command>
+                        <body>startimpairment</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="7877a507-ea18-4882-88e1-879ebe485bd0" action="command" session="t2" normalOffset="549.016" estimatedStepExecutionTime="0.099">
+                    <command>
+                        <body> connect 172.16.11.80 localhost 9990 9000</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="5e824102-cfe6-4d58-a0da-4310826be9e3" action="command" session="t2" normalOffset="11.676" estimatedStepExecutionTime="3.954">
+                    <command>
+                        <body>atteroset Impair ClearAll TRUE</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="1b512d71-4a04-4a7d-8e02-f00e795376ac" action="command" session="t2" normalOffset="237.207" estimatedStepExecutionTime="0.086">
+                    <command>
+                        <body>connect 172.16.11.80 localhost 9990 9000</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="b4700587-d788-4ba3-9def-4b86a774978f" action="command" session="t2" normalOffset="0.011" estimatedStepExecutionTime="0.001">
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="8b65dc25-592c-471c-98e1-4827bfbce400" action="command" session="t2" normalOffset="0.004" estimatedStepExecutionTime="0.749">
+                    <command>
+                        <body>atteroset Impair BandwidthControl #7 Shaper Enable TRUE</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="d953ea29-74d3-47d7-95eb-66cb4c2813a5" action="command" session="t2" normalOffset="0.006" estimatedStepExecutionTime="0.895">
+                    <command>
+                        <body>atteroset Impair BandwidthControl #7 Shaper CommittedBurstTol 64</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="061ab9ca-99cd-4492-9d0f-cf00bae52fc0" action="command" session="t2" normalOffset="0.002" estimatedStepExecutionTime="0.882">
+                    <command>
+                        <body>atteroset Impair BandwidthControl #7 Shaper ExcessBurstTol 0</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="c4b44e53-6635-48de-9668-ab2a04dc1e6e" action="command" session="t2" normalOffset="0.008" estimatedStepExecutionTime="0.859">
+                    <command>
+                        <body>atteroset Impair BandwidthControl #7 Shaper CommittedRate 300000</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="fd82e5de-5b3f-4e02-9e3e-bc7bd5285d11" action="command" session="t2" normalOffset="0.004" estimatedStepExecutionTime="0.879">
+                    <command>
+                        <body>atteroset Impair BandwidthControl #7 Policer CommittedBurstTol 64</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="d4dc124d-1248-4d18-88b3-6d09adb1d73d" action="command" session="t2" normalOffset="0.009" estimatedStepExecutionTime="0.981">
+                    <command>
+                        <body>atteroset Impair BandwidthControl #7 Policer ExcessBurstTol 0</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="bcdb1f78-9349-4bf4-bb7c-0ff164ed9b80" action="command" session="t2" normalOffset="0.017" estimatedStepExecutionTime="0.827">
+                    <command>
+                        <body>atteroset Impair BandwidthControl #7 Policer CommittedRate 0</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="a0d63c3c-ff41-457f-a3ad-2ed53c032a9d" action="command" session="t2" normalOffset="0.004" estimatedStepExecutionTime="0.889">
+                    <command>
+                        <body>atteroset Impair BandwidthControl #7 Policer ExcessRate 0</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="8bc616f1-ba13-4cec-b284-d800531e7f57" action="command" session="t2" normalOffset="0.004" estimatedStepExecutionTime="0.878">
+                    <command>
+                        <body>atteroset Impair BandwidthControl #15 Shaper CommittedBurstTol 64</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="de6460d1-d2ae-4645-8677-96ed2743292a" action="command" session="t2" normalOffset="0.004" estimatedStepExecutionTime="0.913">
+                    <command>
+                        <body>atteroset Impair BandwidthControl #15 Shaper ExcessBurstTol 0</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="20b42662-88d9-4aad-a29a-66899d21b4eb" action="command" session="t2" normalOffset="0.003" estimatedStepExecutionTime="0.822">
+                    <command>
+                        <body>atteroset Impair BandwidthControl #15 Shaper CommittedRate 300000</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="1a441abb-9251-422e-b391-ee204f6cdeee" action="command" session="t2" normalOffset="0.004" estimatedStepExecutionTime="0.87">
+                    <command>
+                        <body>atteroset Impair BandwidthControl #15 Policer CommittedBurstTol 64</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="ddb9c236-cba7-408a-ba27-af500e605e0d" action="command" session="t2" normalOffset="0.01" estimatedStepExecutionTime="0.878">
+                    <command>
+                        <body>atteroset Impair BandwidthControl #15 Policer ExcessBurstTol 0</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="3cea09cf-210c-41d3-8ae8-8bfaf3336365" action="command" session="t2" normalOffset="0.004" estimatedStepExecutionTime="0.841">
+                    <command>
+                        <body>atteroset Impair BandwidthControl #15 Policer CommittedRate 0</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="5de7a162-c4af-4ebb-8e8b-5671c8e6f42b" action="command" session="t2" normalOffset="0.004" estimatedStepExecutionTime="0.901">
+                    <command>
+                        <body>atteroset Impair BandwidthControl #15 Policer ExcessRate 0</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="da8b6226-126b-4308-af13-d333db740499" action="command" session="t2" normalOffset="0.003" estimatedStepExecutionTime="0.918">
+                    <command>
+                        <body>atteroset Measurement Count Reset TRUE</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="e7ad5e20-4070-443e-81a2-4b760792e78f" action="command" session="t2" normalOffset="0.003" estimatedStepExecutionTime="2.037">
+                    <command>
+                        <body>startimpairment</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="c159dcf8-8bf7-481d-88f6-f7d442884d54" action="command" session="t2" normalOffset="0.021" estimatedStepExecutionTime="1.798">
+                    <command>
+                        <body>atteroset Impair BandwidthControl #15 Shaper Enable TRUE</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="894d560e-c542-4130-9e43-ffbdd6c4455a" action="command" session="t2" normalOffset="0.004" estimatedStepExecutionTime="2.835">
+                    <command>
+                        <body>stopimpairment</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="52dc0fb1-924b-447a-a283-3f7a55e623fb" action="command" session="t2" normalOffset="14.019" estimatedStepExecutionTime="2.361">
+                    <command>
+                        <body>startimpairment</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="cd0741a2-af62-4889-9853-5d81ae1506ed" action="command" session="t2" normalOffset="65.068" estimatedStepExecutionTime="1.358">
+                    <command>
+                        <body>disconnect</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="789f5e20-9b4f-4908-91d9-8fc8e3e445c0" action="close" session="t2" normalOffset="165.668">
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+        </item>
+    </procedures>
+</testCase>
