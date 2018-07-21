@@ -1,15 +1,16 @@
-# project://di_adtran
-2 QuickCall Libraries in project://di_adtran:
-## Quickcall library for Adtran NV838 (project://di_adtran/session_profiles/adtran_nv838_qc.fftc)
-QuickCalls for ADTRAN NV838.
+2 QuickCall Libraries in project://di_adtran
+## Library: project://di_adtran/session_profiles/adtran_nv838_qc.fftc
+## Headline: Quickcall library for Adtran NV838
+Description:  
+QuickCalls for ADTRAN NV838.  
+  
 ### login
 
 Argument | Description
 ------------ | -------------
 userid | 
 password | 
-abort_execution | If there is a failure in login this argument determines if execution is aborted or not.
-Default value is 1 (for yes). This corresponds with current behavior.
+abort_execution | If there is a failure in login this argument determines if execution is aborted or not.<br>Default value is 1 (for yes). This corresponds with current behavior.
 ### noc_login
 
 Argument | Description
@@ -23,8 +24,7 @@ Argument | Description
 IP | device IP
 userid | 
 password | 
-abort_execution | If there is a failure in login this argument determines if execution is aborted or not.
-Default value is 1 (for yes). This corresponds with current behavior.
+abort_execution | If there is a failure in login this argument determines if execution is aborted or not.<br>Default value is 1 (for yes). This corresponds with current behavior.
 ### send_login
 Quick call for Juniper devices through the Acme NOC
 
@@ -33,8 +33,7 @@ Argument | Description
 session | 
 userid | 
 password | 
-abort_execution | If there is a failure in login this argument determines if execution is aborted or not.
-Default value is 1 (for yes). This corresponds with current behavior.
+abort_execution | If there is a failure in login this argument determines if execution is aborted or not.<br>Default value is 1 (for yes). This corresponds with current behavior.
 ### get_version
 
 Argument | Description
@@ -115,7 +114,7 @@ session |
 evc_name | 
 efm_group | 
 s_tag | 
-vlan | If the vlan is non-zero this is an ERS service and is used in the evc map. Otherwise this is EWS and it is not used.
+vlan | If the vlan is non-zero this is an ERS service and is used in the evc map. Otherwise this is EWS and it is not used.<br>
 map_name | 
 uni_port | 
 cos | 
@@ -142,11 +141,11 @@ ethernet_port |
 Argument | Description
 ------------ | -------------
 md | The name of the maintenence domain
-ma | The name of the maintenence association.  At AT&T will always be "serv."
-level | The level for the maintenence domain.
-ccm_interval | The interval to send CCM heartbeats in seconds.
+ma | The name of the maintenence association.  At AT&T will always be "serv."<br>
+level | The level for the maintenence domain.<br>
+ccm_interval | The interval to send CCM heartbeats in seconds.<br>
 component | The component setting.  Typically 2.
-vlan | The vlan to associate.  In EWS this will be set to "none."
+vlan | The vlan to associate.  In EWS this will be set to "none."<br>
 interface | The interface to be used.
 mep_id | The ID to assign to the MEP.
 ### remove_mep
@@ -183,15 +182,15 @@ Argument | Description
 ------------ | -------------
 interface | The interface to use.
 mep_id | The numerical id of the MEP.
-md | The maintenence domain.
-ma | The maintenence association.
+md | The maintenence domain.<br>
+ma | The maintenence association.<br>
 ### change_ccm_interval
 
 Argument | Description
 ------------ | -------------
-md | The maintenence domain.
+md | The maintenence domain.<br>
 level | The level of the MEP.
-ma | The maintenence association.
+ma | The maintenence association.<br>
 ccm_interval | The CCM interval in seconds.
 ### enable_ccm
 
@@ -199,22 +198,22 @@ Argument | Description
 ------------ | -------------
 interface | The interface to use.
 mep_id | The numerical id of the MEP.
-md | The maintenence domain.
-ma | The maintenence association.
+md | The maintenence domain.<br>
+ma | The maintenence association.<br>
 ### ethernet_ping
 This does an ethernet ping.
 
 Argument | Description
 ------------ | -------------
 md | The MD of the source, e.g vpls:280029-4.
-ma | The source MA of the MEP, e.g. serv.
-destination_mep_id | The destination MEP ID (e.g. 1011).
+ma | The source MA of the MEP, e.g. serv.<br>
+destination_mep_id | The destination MEP ID (e.g. 1011).<br>
 source_mep_id | The source MEP ID.
 count | Number of pings to send.
 priority | The priority.
 size | The size of the packets.
 timeout | The timeout (in ms).
-interval | The interval to send pings (in ms).
+interval | The interval to send pings (in ms).<br>
 data | Data to be carried in the loopback message (e.g. ABCDE).
 verbose | If you want verbose output (1) or not (0).  Default is no.
 ### cfm_delete_domain
@@ -229,12 +228,12 @@ ma |
 Argument | Description
 ------------ | -------------
 md | The name of the maintenence domain
-ma | The name of the maintenence association.  At AT&T will always be "serv."
+ma | The name of the maintenence association.  At AT&T will always be "serv."<br>
 port | 
-level | The level for the maintenence domain.
-ccm_interval | The interval to send CCM heartbeats in seconds.
+level | The level for the maintenence domain.<br>
+ccm_interval | The interval to send CCM heartbeats in seconds.<br>
 component | The component setting.  Typically 2.
-vlan | The vlan to associate.  In EWS this will be set to "none."
+vlan | The vlan to associate.  In EWS this will be set to "none."<br>
 mep_id | The ID to assign to the MEP.
 ### set_cfm_service_ma
 
@@ -288,8 +287,8 @@ source_mep_id |
 level | 
 ma | 
 vlan | 
-## Quickcall library for Adtran TA5000 (project://di_adtran/session_profiles/adtran_ta5K_qc.fftc)
-
+## Library: project://di_adtran/session_profiles/adtran_ta5K_qc.fftc
+## Headline: Quickcall library for Adtran TA5000
 ### cleanup
 Delete the efm bonding group.
 Remove the evc
@@ -322,9 +321,8 @@ gw | Inband network default gateway
 evc_name | 
 s_tag | 
 efm_group | EFM group name
-gig_port | GigE port
-skip | This is used to skip the create and delete of the bonding group. 
-Possible values are yes, no.
+gig_port | GigE port<br>
+skip | This is used to skip the create and delete of the bonding group. <br>Possible values are yes, no.
 ### config_evc
 This local procedure creates the evc, sets the s-tag, efm_group, and gigabit_ethernet port. There are required arguments.
 If the vlan argument is 0 this is EWS and the ce-vlan is not configured (match command).
@@ -386,8 +384,7 @@ gw |
 gig_port | 
 ipv6 | Optional IPv6 address
 prefix | IPv6 prefix - only required with an IPv6 address
-skip | This is used to skip the create and delete of the bonding group. 
-Possible values are yes, no.
+skip | This is used to skip the create and delete of the bonding group. <br>Possible values are yes, no.
 ### create_efm_bonding_group_wizard
 
 Argument | Description

@@ -1,8 +1,3 @@
-Project: Cisco Mobility Management Entity (MME)
-Description: SSH QuickCalls and response maps
-Category: library
-Class: Community
-
 1 QuickCall Library in project://di_MME
 ## Library: project://di_MME/session_profiles/MME_ssh_quickcall_library.fftc
 ### getSubscriberIMSI
@@ -10,11 +5,7 @@ For the specified IMEI, return the IMSI of this subscriber if registered.
 
 Argument | Description
 ------------ | -------------
-IMEI | For the specified IMEI, return the IMSI value
-
-Return Value: JSON Block
-
-IMSI: 0 - invalid; nonzero IMEI
+IMEI | For the specified IMEI, return the IMSI value<br><br>Return Value: JSON Block<br><br>IMSI: 0 - invalid; nonzero IMEI
 ### getSubscriberInfo
 Retrieve the information about a subscriber based upon the IMSI
 
@@ -59,9 +50,7 @@ MobileReachabilitTimeout: 0: invalid; >0s: valid
 
 Argument | Description
 ------------ | -------------
-name | MME service name.
-
-MME service name, eg. TLBMME37001-047
+name | MME service name.<br><br>MME service name, eg. TLBMME37001-047
 ### showMMEServiceEncriptionAlgorithm
 show mme service encription algorithm.
 - 128 EEA0 (NULL ENCRYPTION)
@@ -72,8 +61,7 @@ UP/DOWN
 
 Argument | Description
 ------------ | -------------
-full | full: show sgs-service vlr-status full information.
-other: show sgs-service vlr-status not full info.
+full | full: show sgs-service vlr-status full information.<br>other: show sgs-service vlr-status not full info.
 ### showEnodeBAssociation
 ### configTAUTimer
 Config MME TAU timeout timer.

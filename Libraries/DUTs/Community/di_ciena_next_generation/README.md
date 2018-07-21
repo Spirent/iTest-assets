@@ -1,7 +1,6 @@
-# project://di_ciena_next_generation
-1 QuickCall Library in project://di_ciena_next_generation:
-## Quickcall library for saos 8x ciena devices (project://di_ciena_next_generation/session_profiles/ciena_next_gen_qc.fftc)
-
+1 QuickCall Library in project://di_ciena_next_generation
+## Library: project://di_ciena_next_generation/session_profiles/ciena_next_gen_qc.fftc
+## Headline: Quickcall library for saos 8x ciena devices
 ### add_cfm_mep
 
 Argument | Description
@@ -185,10 +184,8 @@ Utilized by CFM Y1731 test instance
 Argument | Description
 ------------ | -------------
 ccm_interval | ccm service interval as defined in the cfm_config.csv
-ma | MA_name defind in cfm_config.csv
-Valid values: serv or diag
-md | Example: VPWS:299999-4
-constructed from: $service_name:$service_number-${level}"
+ma | MA_name defind in cfm_config.csv<br>Valid values: serv or diag
+md | Example: VPWS:299999-4<br>constructed from: $service_name:$service_number-${level}"
 sVlan | service vlan as defined in service_info.csv
 cvlan | 
 level | cfm service level

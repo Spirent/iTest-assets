@@ -1,7 +1,5 @@
-# project://di_Cyberflood
-1 QuickCall Library in project://di_Cyberflood:
-## project://di_Cyberflood/session_profiles/Cyberflood_REST.fftc (project://di_Cyberflood/session_profiles/Cyberflood_REST.fftc)
-
+1 QuickCall Library in project://di_Cyberflood
+## Library: project://di_Cyberflood/session_profiles/Cyberflood_REST.fftc
 ### Login
 Login.
 Returns a JSON string:
@@ -123,12 +121,7 @@ portId |
 
 Argument | Description
 ------------ | -------------
-template_type | Values:
-- enterprise_perimeter
-- financial
-- mobile_carrier
-- spirent_enterprise
-- education
+template_type | Values:<br>- enterprise_perimeter<br>- financial<br>- mobile_carrier<br>- spirent_enterprise<br>- education
 ### GetVirtualRouters
 ### GetVirtualRouter
 
@@ -185,3 +178,81 @@ expected_load | Port Speed in Mb
 Argument | Description
 ------------ | -------------
 id | 
+### getToken
+### userAdd
+
+Argument | Description
+------------ | -------------
+role | user or admin
+email | 
+password | 
+firstName | 
+lastName | 
+department | 
+location | 
+### subnetIpv4Create
+### subnetGetIpv4All
+### subnetGetIpv4
+
+Argument | Description
+------------ | -------------
+subnetName | 
+### updateEmixTrafficMix
+
+Argument | Description
+------------ | -------------
+trafficMixId | user or admin
+testId | 
+### startTest
+
+Argument | Description
+------------ | -------------
+testName | 
+### getTestId
+
+Argument | Description
+------------ | -------------
+testName | 
+### monitorTest
+
+Argument | Description
+------------ | -------------
+testRunId | 
+monitorInterval | Interval between successive polling of the test status and statistics.
+### getTestRunResults
+
+Argument | Description
+------------ | -------------
+testRunId | 
+### getTestRunTimeline
+
+Argument | Description
+------------ | -------------
+testRunId | 
+### getTestRunStatistics
+
+Argument | Description
+------------ | -------------
+testRunId | 
+### getTrafficMixAll
+### getTrafficMix
+
+Argument | Description
+------------ | -------------
+trafficMixId | 
+### getTrafficMixID
+
+Argument | Description
+------------ | -------------
+trafficMixName | 
+### userDelete
+
+Argument | Description
+------------ | -------------
+userId | 
+### userGetId
+
+Argument | Description
+------------ | -------------
+email | 
+### systemAbout

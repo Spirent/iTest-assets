@@ -18,8 +18,8 @@ includeResponseMaps - If true, inlude a list of response maps along with heading
         <parameters version="7.1.0.201804110601">
             <parameters escape="true">
                 <parameters xmlns:pt="http://www.fnfr.com/schemas/parameterTree">
-                    <changedDate pt:description="Only document projectas which have changed since &lt;mm/dd/yyyy&gt;, &lt;yesterday&gt;, etc.">6/6/2018</changedDate>
-                    <uriDocumentationList pt:description="URI to file containing a list of projects to document. Each line, in the file, should be in this format:  &quot;project://&lt;project name&gt;&quot;">project://my_project/iTest_documentation_list.txt</uriDocumentationList>
+                    <changedDate pt:description="Only document projectas which have changed since &lt;mm/dd/yyyy&gt;, &lt;yesterday&gt;, etc.">6/6/2011</changedDate>
+                    <REM_uriDocumentationList pt:description="URI to file containing a list of projects to document. Each line, in the file, should be in this format:  &quot;project://&lt;project name&gt;&quot;">project://my_project/iTest_documentation_list.txt</REM_uriDocumentationList>
                     <includeResponseMaps pt:datatype="BOOLEAN" pt:description="Inlude response maps heading and description">false</includeResponseMaps>
                 </parameters>
             </parameters>
@@ -1499,6 +1499,80 @@ H1,H2{padding-left:15px}
                                                                     <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
                                                                     <useFieldsInCommand>false</useFieldsInCommand>
                                                                 </item>
+                                                                <item guid="bdf20d68-737b-428d-9729-9d28ca04dac5" action="comment">
+                                                                    <command>
+                                                                        <body>Write the readme metadata to doc files.</body>
+                                                                    </command>
+                                                                    <nestedSteps>
+                                                                        <item guid="b532dcaf-ecb1-4d48-a24f-c90bc28ea941" action="eval">
+                                                                            <command>
+                                                                                <body>set readmeLines [split $readme \\n]</body>
+                                                                            </command>
+                                                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                                                        </item>
+                                                                        <item guid="7d10c7a9-fe56-4635-9c18-e0732a9cf355" action="foreach">
+                                                                            <command>
+                                                                                <body>line $readmeLines</body>
+                                                                            </command>
+                                                                            <nestedSteps>
+                                                                                <item guid="88c734d6-8389-43f2-bff4-3f6ddd0ba6c5" action="if">
+                                                                                    <command>
+                                                                                        <body>$line != &quot;&quot;</body>
+                                                                                    </command>
+                                                                                    <nestedSteps>
+                                                                                        <item guid="1d2dd227-b16f-4ebd-8708-9023fc45c395" action="then">
+                                                                                            <nestedSteps>
+                                                                                                <item guid="6a8cc495-8404-4b4d-a177-6ad01e554652" action="writeFile">
+                                                                                                    <command>
+                                                                                                        <body>$uriPath/documentation/index.html &quot;&lt;DIV class=&apos;normalText&apos;&gt;$line&lt;/DIV&gt;&quot;</body>
+                                                                                                    </command>
+                                                                                                    <applicationProperties type="com.fnfr.svt.execution.builtin.exec.WriteFilePropertyGroup"/>
+                                                                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                                                                </item>
+                                                                                                <item guid="c1584bc9-51c9-4337-bf49-0ff7e4c4849c" action="writeFile">
+                                                                                                    <command>
+                                                                                                        <body>$uriPath/README.md &quot;$line  \\n&quot;</body>
+                                                                                                    </command>
+                                                                                                    <applicationProperties type="com.fnfr.svt.execution.builtin.exec.WriteFilePropertyGroup"/>
+                                                                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                                                                </item>
+                                                                                            </nestedSteps>
+                                                                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                                                                        </item>
+                                                                                        <item guid="1f10f638-0482-4913-ae4b-1fbfd9e7ed83" action="else">
+                                                                                            <nestedSteps>
+                                                                                                <item guid="06700e19-29ed-45a6-9258-f9ce814ee142" action="writeFile">
+                                                                                                    <command>
+                                                                                                        <body>$uriPath/documentation/index.html &quot;&lt;DIV class=&apos;normalText&apos;&gt;&lt;BR&gt;&lt;/DIV&gt;&quot;</body>
+                                                                                                    </command>
+                                                                                                    <applicationProperties type="com.fnfr.svt.execution.builtin.exec.WriteFilePropertyGroup"/>
+                                                                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                                                                </item>
+                                                                                                <item guid="b3562cc5-c603-432d-a5ca-1a08173fdcb4" action="writeFile">
+                                                                                                    <command>
+                                                                                                        <body>$uriPath/README.md &quot;  \\n&quot;</body>
+                                                                                                    </command>
+                                                                                                    <applicationProperties type="com.fnfr.svt.execution.builtin.exec.WriteFilePropertyGroup"/>
+                                                                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                                                                </item>
+                                                                                            </nestedSteps>
+                                                                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                                                                        </item>
+                                                                                    </nestedSteps>
+                                                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                                                </item>
+                                                                            </nestedSteps>
+                                                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                                                        </item>
+                                                                    </nestedSteps>
+                                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                                </item>
                                                             </nestedSteps>
                                                             <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
                                                             <useFieldsInCommand>false</useFieldsInCommand>
@@ -1542,80 +1616,6 @@ H1,H2{padding-left:15px}
                                                     </item>
                                                 </analysisRules>
                                             </postProcessing>
-                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
-                                            <useFieldsInCommand>false</useFieldsInCommand>
-                                        </item>
-                                    </nestedSteps>
-                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
-                                    <useFieldsInCommand>false</useFieldsInCommand>
-                                </item>
-                            </nestedSteps>
-                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
-                            <useFieldsInCommand>false</useFieldsInCommand>
-                        </item>
-                        <item guid="52b22888-b9e4-4ce7-90ab-1462019b5807" action="comment">
-                            <command>
-                                <body>Write the readme metadata to doc files.</body>
-                            </command>
-                            <nestedSteps>
-                                <item guid="531a7549-b59f-47eb-b02b-39323ed59217" action="eval">
-                                    <command>
-                                        <body>set readmeLines [split $readme \\n]</body>
-                                    </command>
-                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
-                                    <useFieldsInCommand>false</useFieldsInCommand>
-                                </item>
-                                <item guid="780ca95f-20ab-48fb-a3b4-aababadec47e" action="foreach">
-                                    <command>
-                                        <body>line $readmeLines</body>
-                                    </command>
-                                    <nestedSteps>
-                                        <item guid="83ef95e3-0af3-4af9-93ab-c6fbef43b13a" action="if">
-                                            <command>
-                                                <body>$line != &quot;&quot;</body>
-                                            </command>
-                                            <nestedSteps>
-                                                <item guid="3648f75f-fd92-4417-9f50-aa4f89fee0b0" action="then">
-                                                    <nestedSteps>
-                                                        <item guid="2429f84b-ecf2-4bc3-96ec-ddbcde3e5f51" action="writeFile">
-                                                            <command>
-                                                                <body>$uriPath/documentation/index.html &quot;&lt;DIV class=&apos;normalText&apos;&gt;$line&lt;/DIV&gt;&quot;</body>
-                                                            </command>
-                                                            <applicationProperties type="com.fnfr.svt.execution.builtin.exec.WriteFilePropertyGroup"/>
-                                                            <useFieldsInCommand>false</useFieldsInCommand>
-                                                        </item>
-                                                        <item guid="4bd2073d-9363-442b-98cf-bd208d36c517" action="writeFile">
-                                                            <command>
-                                                                <body>$uriPath/README.md &quot;$line  \\n&quot;</body>
-                                                            </command>
-                                                            <applicationProperties type="com.fnfr.svt.execution.builtin.exec.WriteFilePropertyGroup"/>
-                                                            <useFieldsInCommand>false</useFieldsInCommand>
-                                                        </item>
-                                                    </nestedSteps>
-                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
-                                                    <useFieldsInCommand>false</useFieldsInCommand>
-                                                </item>
-                                                <item guid="7aa327ba-81c5-4ec5-b3b4-ec193e7791bc" action="else">
-                                                    <nestedSteps>
-                                                        <item guid="4e4813e9-6a6c-4af1-972b-97658461d6bd" action="writeFile">
-                                                            <command>
-                                                                <body>$uriPath/documentation/index.html &quot;&lt;DIV class=&apos;normalText&apos;&gt;&lt;BR&gt;&lt;/DIV&gt;&quot;</body>
-                                                            </command>
-                                                            <applicationProperties type="com.fnfr.svt.execution.builtin.exec.WriteFilePropertyGroup"/>
-                                                            <useFieldsInCommand>false</useFieldsInCommand>
-                                                        </item>
-                                                        <item guid="e1c010de-41fe-405e-b8e8-a60d3c59f53c" action="writeFile">
-                                                            <command>
-                                                                <body>$uriPath/README.md &quot;  \\n&quot;</body>
-                                                            </command>
-                                                            <applicationProperties type="com.fnfr.svt.execution.builtin.exec.WriteFilePropertyGroup"/>
-                                                            <useFieldsInCommand>false</useFieldsInCommand>
-                                                        </item>
-                                                    </nestedSteps>
-                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
-                                                    <useFieldsInCommand>false</useFieldsInCommand>
-                                                </item>
-                                            </nestedSteps>
                                             <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
                                             <useFieldsInCommand>false</useFieldsInCommand>
                                         </item>

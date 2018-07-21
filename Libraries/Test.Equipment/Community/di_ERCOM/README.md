@@ -1,8 +1,3 @@
-Project: ERCOM
-Description: QuickCalls and response maps 
-Category: library
-Class: Community
-
 1 QuickCall Library in project://di_ERCOM
 ## Library: project://di_ERCOM/session_profiles/ercom_qclib.fftc
 ### getBladeStatus

@@ -1,10 +1,7 @@
-# project://di_iLO_Rest
-2 QuickCall Libraries in project://di_iLO_Rest:
-## project://di_iLO_Rest/session_profiles/stal_Velocity_REST_quickcall_library.fftc (project://di_iLO_Rest/session_profiles/stal_Velocity_REST_quickcall_library.fftc)
-
+2 QuickCall Libraries in project://di_iLO_Rest
+## Library: project://di_iLO_Rest/session_profiles/stal_Velocity_REST_quickcall_library.fftc
 ### setup
-## project://di_iLO_Rest/session_profiles/velocity_RestAPI_quickcall_library.fftc (project://di_iLO_Rest/session_profiles/velocity_RestAPI_quickcall_library.fftc)
-
+## Library: project://di_iLO_Rest/session_profiles/velocity_RestAPI_quickcall_library.fftc
 ### activateReservation
 This quickcall is used to activate an ILO reservation.
 

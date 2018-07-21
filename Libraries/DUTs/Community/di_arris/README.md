@@ -1,7 +1,9 @@
-# project://di_arris
-1 QuickCall Library in project://di_arris:
-## SSH to Arris RG via Routed CO (project://di_arris/session_profiles/arris_ssh_rco.fftc)
-Use this session when you don't have physical access to the RG LAN port.
+1 QuickCall Library in project://di_arris
+## Library: project://di_arris/session_profiles/arris_ssh_rco.fftc
+## Headline: SSH to Arris RG via Routed CO
+Description:  
+Use this session when you don't have physical access to the RG LAN port.  
+  
 ### get_port_link_status_lan
 ### get_port_link_status_wan
 ### get_firmware_version
@@ -11,10 +13,7 @@ Use this session when you don't have physical access to the RG LAN port.
 
 Argument | Description
 ------------ | -------------
-param_name | TR-69 parameter name.
-
-Example:
-InternetGatewayDevice.X_0000C5_VirtualLink.UntaggedLanWanDropEnable
+param_name | TR-69 parameter name.<br><br>Example:<br>InternetGatewayDevice.X_0000C5_VirtualLink.UntaggedLanWanDropEnable
 ### login
 
 Argument | Description
@@ -28,10 +27,7 @@ password |
 
 Argument | Description
 ------------ | -------------
-param_name | TR-69 parameter name.
-
-Example:
-InternetGatewayDevice.X_0000C5_VirtualLink.UntaggedLanWanDropEnable
+param_name | TR-69 parameter name.<br><br>Example:<br>InternetGatewayDevice.X_0000C5_VirtualLink.UntaggedLanWanDropEnable
 param_value | TR-69 parameter value.
 abortOnFail | 
 ### set_ase_port_based

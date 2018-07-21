@@ -1,7 +1,5 @@
-# project://di_cmts_cisco
-1 QuickCall Library in project://di_cmts_cisco:
-## project://di_cmts_cisco/session_profiles/Cisco_CMTS_Telnet_Quickcalls.fftc (project://di_cmts_cisco/session_profiles/Cisco_CMTS_Telnet_Quickcalls.fftc)
-
+1 QuickCall Library in project://di_cmts_cisco
+## Library: project://di_cmts_cisco/session_profiles/Cisco_CMTS_Telnet_Quickcalls.fftc
 ### login
 Logs in to a Cisco CMTS telnet session.
 ### waitForOnline
@@ -18,7 +16,7 @@ Checks 'show cable modem' on the CMTS for a single modem until that modem goes o
 Argument | Description
 ------------ | -------------
 cmMac | MAC address of cable modem under test. 
-timeout | Length of time in seconds to wait for offline status. Default is 90.
+timeout | Length of time in seconds to wait for offline status. Default is 90.<br>
 interval | Time to wait between status checks in seconds. Default is 10.
 ### clearCableCounters
 Clears the service flow counters on the CMTS for a single modem. 
@@ -31,7 +29,7 @@ Runs a 'show cable modem' command on the CMTS for a single modem. Returns struct
 
 Argument | Description
 ------------ | -------------
-cmMac | MAC Address of CM in form xxxx.xxxx.xxxx
+cmMac | MAC Address of CM in form xxxx.xxxx.xxxx<br>
 ### showCableModemQos
 Get detailed information on a modem's several service flows including provisioned and real time data rates.
 Runs "show cable modem qos" on the CMTS for a single modem. Returns the raw output. 
@@ -78,11 +76,11 @@ Runs "clear cable modem <MAC> reset" on the CMTS for a single modem.
 
 Argument | Description
 ------------ | -------------
-cmMac | MAC address of modem to reset
+cmMac | MAC address of modem to reset<br>
 ### ping
 Run a ping from the CMTS to the specified address.
 Returns structured output displaying the target address, number of bytes sent, number of pings, packets sent and recieved, and success rate. 
 
 Argument | Description
 ------------ | -------------
-target | IP address to ping
+target | IP address to ping<br>

@@ -1,8 +1,3 @@
-Project: Juniper Router
-Description: SSH and Telnet QuickCalls and response maps for the Juniper Router
-Category: library
-Class: Community
-
 3 QuickCall Libraries in project://di_Juniper_JUNOS
 ## Library: project://di_Juniper_JUNOS/session_profiles/juniper_JUNOS_ssh_quickcall_library.fftc
 ### ConfigureLspBandwidth
@@ -17,13 +12,7 @@ Load config from local disk
 
 Argument | Description
 ------------ | -------------
-load_operation | Options:
-
-override (Completely replace current config with loaded config)
-merge (Merge loaded config with current config) 
-replace (Replace the section of current config with loaded config marked with replace tag)
-
-All operation are from base of config mode (relative option to be added later)
+load_operation | Options:<br><br>override (Completely replace current config with loaded config)<br>merge (Merge loaded config with current config) <br>replace (Replace the section of current config with loaded config marked with replace tag)<br><br>All operation are from base of config mode (relative option to be added later)
 filename | Name of filename to be loaded from local disk 
 ### SetLspPriority
 
@@ -31,7 +20,7 @@ Argument | Description
 ------------ | -------------
 lsp_name | Name of label switched path to modify
 priority | e.g. 5 5
-delConf | If changed from default, will remove LSP priority
+delConf | If changed from default, will remove LSP priority<br>
 path_type_name | Can be:  primary/secondary <path_name>
 ### CheckInterfaceUp
 Returns a block JSON string.
@@ -145,87 +134,24 @@ prefixPolicyName |
 Argument | Description
 ------------ | -------------
 policy_name | Name to identify a policy filter
-policy_arg | defaults             Policy default behaviour
-from                 Conditions to match the source of a route
-term                 Policy term
-then                 Actions to take if 'from' and 'to' conditions match
-to                   Conditions to match the destination of a route
- 
-term_name | The name of the term 
-term_atribute | 
-from
-then
-to
-unconfigure | Use this to unconfigure settings. Any value different of null
-
-
-Example : To delete route-filter atribute. 
-[edit policy-options policy-statement ALLOW-ADDPATH-PREFIXES term allow-addpath-ipv4]
-itest@google_D6# delete from route-filter 68.2.1.1/32 exact 
-
- policy_name = ALLOW-ADDPATH-PREFIXES
-term_name = allow_addpath-ipv4
-term_atribute = from
-term_parameter = route_filter
-route_filter_parameter =  "68 2.1.1/32 exact"
-term_parameter | Use this parameter in conjunction with term_atribute in order to modify a term_name
- community-count      Number of BGP communities
- external             External route
-multicast-scope      Multicast scope to match
- prefix-list          List of prefix-lists of routes to match
- prefix-list-filter   List of prefix-list-filters to match
- route-filter         List of routes to match
- rtf-prefix-list      List of rtf-prefix-lists of routes to match
- source-address-filter  List of source addresses to match
-route_filter_parameter | Use this when term_parameter is route_filter
-
-  address           IP address or hostname
- 
-  address-mask         Mask applied to prefix address
-  exact                Exactly match the prefix length
-  longer               Mask is greater than the prefix length
-  orlonger             Mask is greater than or equal to the prefix length
-  prefix-length-range  Mask falls between two prefix lengths
-  through              Route falls between two prefixes
-  upto                 Mask falls between two prefix lengths
+policy_arg | defaults             Policy default behaviour<br>from                 Conditions to match the source of a route<br>term                 Policy term<br>then                 Actions to take if 'from' and 'to' conditions match<br>to                   Conditions to match the destination of a route<br> 
+term_name | The name of the term <br>
+term_atribute | <br>from<br>then<br>to
+unconfigure | Use this to unconfigure settings. Any value different of null<br><br><br>Example : To delete route-filter atribute. <br>[edit policy-options policy-statement ALLOW-ADDPATH-PREFIXES term allow-addpath-ipv4]<br>itest@google_D6# delete from route-filter 68.2.1.1/32 exact <br><br> policy_name = ALLOW-ADDPATH-PREFIXES<br>term_name = allow_addpath-ipv4<br>term_atribute = from<br>term_parameter = route_filter<br>route_filter_parameter =  "68 2.1.1/32 exact"
+term_parameter | Use this parameter in conjunction with term_atribute in order to modify a term_name<br> community-count      Number of BGP communities<br> external             External route<br>multicast-scope      Multicast scope to match<br> prefix-list          List of prefix-lists of routes to match<br> prefix-list-filter   List of prefix-list-filters to match<br> route-filter         List of routes to match<br> rtf-prefix-list      List of rtf-prefix-lists of routes to match<br> source-address-filter  List of source addresses to match
+route_filter_parameter | Use this when term_parameter is route_filter<br><br>  address           IP address or hostname<br> <br>  address-mask         Mask applied to prefix address<br>  exact                Exactly match the prefix length<br>  longer               Mask is greater than the prefix length<br>  orlonger             Mask is greater than or equal to the prefix length<br>  prefix-length-range  Mask falls between two prefix lengths<br>  through              Route falls between two prefixes<br>  upto                 Mask falls between two prefix lengths
 ### set_delete_route-filter
 
 Argument | Description
 ------------ | -------------
 policy_name | Name to identify a policy filter
-policy_arg | defaults             Policy default behaviour
-from                 Conditions to match the source of a route
-term                 Policy term
-then                 Actions to take if 'from' and 'to' conditions match
-to                   Conditions to match the destination of a route
- 
-term_name | The name of the term 
-term_attribute | 
-from
-then
-to
-term_parameter | Use this parameter in conjunction with term_atribute in order to modify a term_name
- community-count      Number of BGP communities
- external             External route
-multicast-scope      Multicast scope to match
- prefix-list          List of prefix-lists of routes to match
- prefix-list-filter   List of prefix-list-filters to match
- route-filter         List of routes to match
- rtf-prefix-list      List of rtf-prefix-lists of routes to match
- source-address-filter  List of source addresses to match
+policy_arg | defaults             Policy default behaviour<br>from                 Conditions to match the source of a route<br>term                 Policy term<br>then                 Actions to take if 'from' and 'to' conditions match<br>to                   Conditions to match the destination of a route<br> 
+term_name | The name of the term <br>
+term_attribute | <br>from<br>then<br>to
+term_parameter | Use this parameter in conjunction with term_atribute in order to modify a term_name<br> community-count      Number of BGP communities<br> external             External route<br>multicast-scope      Multicast scope to match<br> prefix-list          List of prefix-lists of routes to match<br> prefix-list-filter   List of prefix-list-filters to match<br> route-filter         List of routes to match<br> rtf-prefix-list      List of rtf-prefix-lists of routes to match<br> source-address-filter  List of source addresses to match
 set | 
 delete | 
-route_filter_parameter | Use this when term_parameter is route_filter
-
-  address           IP address or hostname
- 
-  address-mask         Mask applied to prefix address
-  exact                Exactly match the prefix length
-  longer               Mask is greater than the prefix length
-  orlonger             Mask is greater than or equal to the prefix length
-  prefix-length-range  Mask falls between two prefix lengths
-  through              Route falls between two prefixes
-  upto                 Mask falls between two prefix lengths
+route_filter_parameter | Use this when term_parameter is route_filter<br><br>  address           IP address or hostname<br> <br>  address-mask         Mask applied to prefix address<br>  exact                Exactly match the prefix length<br>  longer               Mask is greater than the prefix length<br>  orlonger             Mask is greater than or equal to the prefix length<br>  prefix-length-range  Mask falls between two prefix lengths<br>  through              Route falls between two prefixes<br>  upto                 Mask falls between two prefix lengths
 ### activate_lsp
 bla
 
@@ -248,57 +174,44 @@ logical_systems |
 
 Argument | Description
 ------------ | -------------
-option |   egress               Display LSPs ending at this router
-  ingress              Display LSPs originating at this router
+option |   egress               Display LSPs ending at this router<br>  ingress              Display LSPs originating at this router
 ### show_mpls_te_tunnels
 Show info about LSP
 
 Argument | Description
 ------------ | -------------
 name | Tunnel name
-detail | Use "yes" to display detailed output
-extensive | Use "yes" to display extensive output
+detail | Use "yes" to display detailed output<br>
+extensive | Use "yes" to display extensive output<br>
 logical_systems | 
 ### clear_rsvp_arguments
 
 Argument | Description
 ------------ | -------------
-rsvp_argument | Possible completions:
-  session              Preempt RSVP session
-  statistics           Clear RSVP counters
+rsvp_argument | Possible completions:<br>  session              Preempt RSVP session<br>  statistics           Clear RSVP counters
 logical_systems | 
 ### set_isis_protocol
 
 Argument | Description
 ------------ | -------------
-interface | <interface_name>     Interface name
-  ae1.0               Interface name
-  ae2.0               Interface name
+interface | <interface_name>     Interface name<br>  ae1.0               Interface name<br>  ae2.0               Interface name<br>
 interface_level | 
 metric | 
-unconfigure | -use all to delete router isis
--use parameter to delete a specific parameter from isis
+unconfigure | -use all to delete router isis<br>-use parameter to delete a specific parameter from isis<br>
 logical_systems | 
 ### set_mpls_protocol
 
 Argument | Description
 ------------ | -------------
-unconfigure | -use all to delete mpls
--use parameter to delete a specific parameter from mpls
-interface | <interface_name>     Interface name
-  ae1.0               Interface name
-  ae2.0               Interface name
+unconfigure | -use all to delete mpls<br>-use parameter to delete a specific parameter from mpls<br>
+interface | <interface_name>     Interface name<br>  ae1.0               Interface name<br>  ae2.0               Interface name<br>
 admin_group | 
 logical_systems | 
 ### show_mpls_lsp_bypass
 
 Argument | Description
 ------------ | -------------
-name |   <name>               Regular expression for LSP names to match
-
-ex: Bypass->10.1.20.2->10.1.35.1
-
-
+name |   <name>               Regular expression for LSP names to match<br><br>ex: Bypass->10.1.20.2->10.1.35.1<br><br><br>
 extensive | use any value to enable
 logical_systems | 
 ### show_configuration_interfaces
@@ -322,44 +235,19 @@ Argument | Description
 group_name | Usage: -group_name "name"
 display_filter | 
 logical_systems | 
-protocols | if set to anything but 'null', selected routing protocol settings will be displayed:
-e.g show configuration groups <group-name> protocols <rip/mpls/vrrp/ etc>
+protocols | if set to anything but 'null', selected routing protocol settings will be displayed:<br>e.g show configuration groups <group-name> protocols <rip/mpls/vrrp/ etc>
 ### show_mpls_lsp_name
 
 Argument | Description
 ------------ | -------------
-name |   <name>               Regular expression for LSP names to match
-
-ex: Bypass->10.1.20.2->10.1.35.1
-
-
+name |   <name>               Regular expression for LSP names to match<br><br>ex: Bypass->10.1.20.2->10.1.35.1<br><br><br>
 extensive | use any value to enable
 logical_systems | 
 ### traceroute
 
 Argument | Description
 ------------ | -------------
-option | 
-Possible completions:
-  <host>               Hostname or address of remote host
-  as-number-lookup     Look up AS numbers for each hop
-  bypass-routing       Bypass routing table, use specified interface
-  clns                 Trace route to CLNS remote host
-  ethernet             Trace route to an ethernet host by unicast mac address
-  gateway              Address of router gateway to route through
-  inet                 Force traceroute to IPv4 destination
-  inet6                Force traceroute to IPv6 destination
-  interface            Name of interface to use for outgoing traffic
-  logical-system       Name of logical system
-  monitor              Monitor network connection to remote host
-  mpls                 Trace MPLS paths
-  no-resolve           Don't attempt to print addresses symbolically
-  propagate-ttl        Enable propagate-ttl for locally sourced RE traffic
-  routing-instance     Name of routing instance for traceroute attempt
-  source               Source address to use in outgoing traceroute packets
-  tos                  IP type-of-service field (IPv4) (0..255)
-  ttl                  IP maximum time-to-live value (or IPv6 maximum hop-limit value)
-  wait                 Number of seconds to wait for response (seconds)
+option | <br>Possible completions:<br>  <host>               Hostname or address of remote host<br>  as-number-lookup     Look up AS numbers for each hop<br>  bypass-routing       Bypass routing table, use specified interface<br>  clns                 Trace route to CLNS remote host<br>  ethernet             Trace route to an ethernet host by unicast mac address<br>  gateway              Address of router gateway to route through<br>  inet                 Force traceroute to IPv4 destination<br>  inet6                Force traceroute to IPv6 destination<br>  interface            Name of interface to use for outgoing traffic<br>  logical-system       Name of logical system<br>  monitor              Monitor network connection to remote host<br>  mpls                 Trace MPLS paths<br>  no-resolve           Don't attempt to print addresses symbolically<br>  propagate-ttl        Enable propagate-ttl for locally sourced RE traffic<br>  routing-instance     Name of routing instance for traceroute attempt<br>  source               Source address to use in outgoing traceroute packets<br>  tos                  IP type-of-service field (IPv4) (0..255)<br>  ttl                  IP maximum time-to-live value (or IPv6 maximum hop-limit value)<br>  wait                 Number of seconds to wait for response (seconds)
 parameter | additional parameter to option
 logical_systems | 
 ### show_rsvp_interface
@@ -373,20 +261,17 @@ logical_systems |
 Argument | Description
 ------------ | -------------
 group_name | add group_name
-protocols | if set to anything but 'null', selected routing protocol settings will be displayed:
-e.g show configuration groups <group-name> protocols <rip/mpls/vrrp/ etc>
+protocols | if set to anything but 'null', selected routing protocol settings will be displayed:<br>e.g show configuration groups <group-name> protocols <rip/mpls/vrrp/ etc>
 output_modifier | adds |
 stay_in_context | Use 1 to remain in the current configuration context.
-in_context | command needs to be entered in "configuration" mode. 
-Use 0 if you are not calling the procedure from the global configuration CLI context, 1 otherwise.
+in_context | command needs to be entered in "configuration" mode. <br>Use 0 if you are not calling the procedure from the global configuration CLI context, 1 otherwise.
 logical_systems | 
 ### set_groups
 set and delete groups
 
 Argument | Description
 ------------ | -------------
-in_context | command needs to be entered in "configuration" mode. 
-Use 0 if you are not calling the procedure from the global configuration CLI context, 1 otherwise.
+in_context | command needs to be entered in "configuration" mode. <br>Use 0 if you are not calling the procedure from the global configuration CLI context, 1 otherwise.
 unconfigure | used to delete groups. Set to anything except "null" in order to delete groups
 group_name | specify a group name
 protocols | set to anything except "null" in order to add "protocols" keyword and protocol name
@@ -403,16 +288,10 @@ logical_systems |
 
 Argument | Description
 ------------ | -------------
-state | Values:
-- activate: activate (enable) the protocol
-- deactivate: deactivate (disable) the protocol
-unconfigure | Values:
-- null: do not use
-- yes: delete protocol configuration
-protocol | Values:
-- protocol name; Examples: mpls, rsvp, vrrp, etc.
-label_switched_path | Values:
-- the labeled path to be configured or unconfigured; Ex: J1-to-J2-1
+state | Values:<br>- activate: activate (enable) the protocol<br>- deactivate: deactivate (disable) the protocol
+unconfigure | Values:<br>- null: do not use<br>- yes: delete protocol configuration
+protocol | Values:<br>- protocol name; Examples: mpls, rsvp, vrrp, etc.
+label_switched_path | Values:<br>- the labeled path to be configured or unconfigured; Ex: J1-to-J2-1
 ### remove_cfm_service_mep
 
 Argument | Description
@@ -451,7 +330,7 @@ level | md level
 Argument | Description
 ------------ | -------------
 session | 
-cmd | The string to send
+cmd | The string to send<br>
 ### send_login
 Quick call for Juniper devices through the Acme NOC
 
@@ -558,10 +437,9 @@ svlan |
 
 Argument | Description
 ------------ | -------------
-interface | the value from which card number would be extracted
+interface | the value from which card number would be extracted<br>
 iterations | This variable defines the number of times command will be fired to take an average
-waittime | This timer defines the number of seconds output will be taken after clearing of counters.
-This is significance only with iterations field
+waittime | This timer defines the number of seconds output will be taken after clearing of counters.<br>This is significance only with iterations field
 ### show_interfaces_interface_extensive
 
 Argument | Description
@@ -667,8 +545,7 @@ Argument | Description
 ------------ | -------------
 service_type | 
 service_id | 
-writeToFile | 1 = Yes
-0 = No
+writeToFile | 1 = Yes<br>0 = No
 ### show_vpls_mac_table_instance
 
 Argument | Description
@@ -682,7 +559,9 @@ If 0, this re must be 1
 If 1, this re must be 0
 ## Library: project://di_Juniper_JUNOS/session_profiles/telnet_quickcall_library.fftc
 ## Headline: Juniper QC library
-Description: Juniper QC library
+Description:  
+Juniper QC library  
+  
 ### login
 Used to autoatically login to session
 
@@ -698,11 +577,8 @@ This procedure is used to clear counters for Ethernet interface.
 
 Argument | Description
 ------------ | -------------
-ifc | Enter a valid interface value.
-
-e.g. - fastEthernet 6/0
-clearCounters | Clear counter is if set to 1 (true). Default value is 0 (false).
-Acceptable values: 0|1
+ifc | Enter a valid interface value.<br><br>e.g. - fastEthernet 6/0
+clearCounters | Clear counter is if set to 1 (true). Default value is 0 (false).<br>Acceptable values: 0|1
 ### saveRunningConfigTftp
 Save the running config to a TFTP server
 

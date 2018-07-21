@@ -1,9 +1,7 @@
-# project://di_ADB
-1 QuickCall Library in project://di_ADB:
-## project://di_ADB/session_profiles/adb_ssh_quickcall_library.fftc (project://di_ADB/session_profiles/adb_ssh_quickcall_library.fftc)
-
+1 QuickCall Library in project://di_ADB
+## Library: project://di_ADB/session_profiles/adb_ssh_quickcall_library.fftc
 ### clearLog
-Clear the logcat logs 
+Clear the logcat logs
 
 Return: Block
 
@@ -49,10 +47,7 @@ Argument | Description
 ------------ | -------------
 sendingNumber | if specified, the quickcall will filter only on SMS from this phone number
 text_body | if specified, filter only texts containing specific keywords
-latest_only | If set, only get the latest text message
-
-0 - get all messages
-1 - get only latest text message
+latest_only | If set, only get the latest text message<br><br>0 - get all messages<br>1 - get only latest text message
 device_id | The ADB id for this device
 ### getVersion
 Return the ADB version information
@@ -94,8 +89,7 @@ success: 0 - Unsuccessful; 1 - Successful
 Argument | Description
 ------------ | -------------
 device_id | The deviceId of the Android device - usually from getDevices
-rooted | true: The handset is rooted
-false: The handset is not rooted
+rooted | true: The handset is rooted<br>false: The handset is not rooted
 ### shellAnswerCall
 Send the answer call key event in the ADB shell
 ### shellBrowseWebPage
@@ -122,11 +116,8 @@ Success: 1-success; 0-failure;
 
 Argument | Description
 ------------ | -------------
-location | location: Complete path on the handset where downloaded file need to be stored.
- exmaple: /storage/self/primary/Download
-file_url | file_url: URL for the file 
-
- Exmaple: "http://www.spirent.com/-/media/Datasheets/Broadband/PAB/CLEAR/Spirent_iTest_datasheet.pdf"
+location | location: Complete path on the handset where downloaded file need to be stored.<br> exmaple: /storage/self/primary/Download
+file_url | file_url: URL for the file <br><br> Exmaple: "http://www.spirent.com/-/media/Datasheets/Broadband/PAB/CLEAR/Spirent_iTest_datasheet.pdf"
 ### shellEndCall
 End a call in progress 
 ### shellExit
@@ -137,8 +128,7 @@ Success: 1-success; 0-failure;
 
 Argument | Description
 ------------ | -------------
-rooted | true: UE is rooted
-false: UE is not rooted
+rooted | true: UE is rooted<br>false: UE is not rooted
 ### shellGetFileSize
 Return the size of a file from the specified location
 
@@ -147,8 +137,7 @@ fileSize: integer from 0 - ?
 
 Argument | Description
 ------------ | -------------
-location | location: Complete path on the handset where downloaded file need to be stored.
- exmaple: /storage/self/primary/Download
+location | location: Complete path on the handset where downloaded file need to be stored.<br> exmaple: /storage/self/primary/Download
 file_name | file_name: Name of the file whose size needs to be determined.
 ### shellGetSMS
 Get the specified SMS from the database
@@ -163,10 +152,7 @@ Argument | Description
 ------------ | -------------
 sendingNumber | if specified, the quickcall will filter only on SMS from this phone number
 text_body | if specified, filter only texts containing specific keywords
-latest_only | If set, only get the latest text message
-
-0 - get all messages
-1 - get only latest text message
+latest_only | If set, only get the latest text message<br><br>0 - get all messages<br>1 - get only latest text message
 ### shellHomeButton
 Press the KEYCODE_HOME button
 
@@ -264,8 +250,7 @@ Set the handset for VoLTE
 
 Argument | Description
 ------------ | -------------
-mode | 0 - Turn off VoLTE
-1 - Turn on VoLTE
+mode | 0 - Turn off VoLTE<br>1 - Turn on VoLTE
 ### shellSetVoLTEPressMenu
 
 Argument | Description
@@ -288,20 +273,12 @@ network_mode
 
 Argument | Description
 ------------ | -------------
-network_type | 0: GSM/WCDMA
-1: GSM
-2: WCDMA
-9: LTE, GSM/WCDMA
-11: LTE
-12: LTE/WCDMA
+network_type | 0: GSM/WCDMA<br>1: GSM<br>2: WCDMA<br>9: LTE, GSM/WCDMA<br>11: LTE<br>12: LTE/WCDMA
 ### shellSetNetworkPressMenu
 
 Argument | Description
 ------------ | -------------
-network_mode | 0 = LTE/WCDMA/GSM (auto connect)
-1 = WCDMA/GSM (auto connect)
-2 = WCDMA only
-3 = GSM only 
+network_mode | 0 = LTE/WCDMA/GSM (auto connect)<br>1 = WCDMA/GSM (auto connect)<br>2 = WCDMA only<br>3 = GSM only 
 ### shellGetNetwork
 Get the handset network mode
 
@@ -319,8 +296,7 @@ Argument | Description
 new_APN | The value of the new APN
 new_APN_protocol | If desired, pass in a new_APN_protocol: IPV4, IPV6, IPV4V6. Leave as NA to make no changes.
 device_id | The deviceId of the Android device - usually from getDevices
-rooted | true: this UE is rooted
-false: this UE is not rooted
+rooted | true: this UE is rooted<br>false: this UE is not rooted
 carrier_name | The carrier name to change in the telephony database
 ### shellChangeAPN
 Change the APN of the handset to the specified value - note that the APN carrier type must exist in the database

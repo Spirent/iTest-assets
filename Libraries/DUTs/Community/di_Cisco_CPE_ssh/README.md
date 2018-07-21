@@ -1,7 +1,5 @@
-# project://di_Cisco_CPE_ssh
-1 QuickCall Library in project://di_Cisco_CPE_ssh:
-## project://di_Cisco_CPE_ssh/session_profiles/Cisco_CPE_ssh_quickcall_library.fftc (project://di_Cisco_CPE_ssh/session_profiles/Cisco_CPE_ssh_quickcall_library.fftc)
-
+1 QuickCall Library in project://di_Cisco_CPE_ssh
+## Library: project://di_Cisco_CPE_ssh/session_profiles/Cisco_CPE_ssh_quickcall_library.fftc
 ### Login
 Objective:  Login to an Adtran CPE session (priveleged mode)
 ______________________________________________________
@@ -35,14 +33,14 @@ Change the digit terminator to  # on Cisco CPE
 
 Argument | Description
 ------------ | -------------
-interface | Name of interface to shutdown
+interface | Name of interface to shutdown<br>
 ### ShutdownInterface
 Shutdown an interface on a Cisco device
 
 
 Argument | Description
 ------------ | -------------
-interface | Name of interface to shutdown
+interface | Name of interface to shutdown<br>
 ### SetCodecPriority
 Set the codec priority on a Cisco device
 

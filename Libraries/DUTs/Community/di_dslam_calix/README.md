@@ -1,8 +1,3 @@
-Project: Calix DSLAM
-Description: QuickCalls and response maps useful for building system tests automating the Calix DSLAM
-Category: library
-Class: Community
-
 1 QuickCall Library in project://di_dslam_calix
 ## Library: project://di_dslam_calix/session_profiles/calix_vdsl_base.fftc
 ### login
@@ -748,31 +743,21 @@ mode | atm | ptm
 
 Argument | Description
 ------------ | -------------
-card_port_num | List of two "card/slot/port"
-
-Example:
-1/2/1 1/2/2
+card_port_num | List of two "card/slot/port"<br><br>Example:<br>1/2/1 1/2/2
 mode | atm | ptm
 alias | If not specified, default to "GROUP $shelf_$slot_$port".
 ### unbondPorts
 
 Argument | Description
 ------------ | -------------
-card_port_num | List of card/slot/port
-
-Example:
-1/2/1 1/2/2
+card_port_num | List of card/slot/port<br><br>Example:<br>1/2/1 1/2/2<br>
 mode | atm | ptm
 alias | If not specified, default to "GROUP $shelf_$slot_$port".
 ### setCrossConnect
 
 Argument | Description
 ------------ | -------------
-card_port_num | List of card/slot/port
-
-Examples:
-1/1/1
-1/2/1 1/2/2
+card_port_num | List of card/slot/port<br><br>Examples:<br>1/1/1<br>1/2/1 1/2/2<br>
 protocol | dhcp | pppoe | multicast
 mode | atm | ptm
 vlan_info | 
@@ -780,10 +765,6 @@ vlan_info |
 
 Argument | Description
 ------------ | -------------
-card_port_num | List of card/slot/port
-
-Examples:
-1/1/1
-1/2/1 1/2/2
+card_port_num | List of card/slot/port<br><br>Examples:<br>1/1/1<br>1/2/1 1/2/2<br>
 protocol | dhcp | pppoe | multicast
 mode | atm | ptm

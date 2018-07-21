@@ -1,13 +1,15 @@
-# project://di_dslam_adtran
-1 QuickCall Library in project://di_dslam_adtran:
-## Adtran QuickCall Library (project://di_dslam_adtran/session_profiles/adtran_vdsl_base.fftc)
-Support for:
-1148V
-1148VX
-1248V
-TA5000
-TA5004
-
+1 QuickCall Library in project://di_dslam_adtran
+## Library: project://di_dslam_adtran/session_profiles/adtran_vdsl_base.fftc
+## Headline: Adtran QuickCall Library
+Description:  
+Support for:  
+1148V  
+1148VX  
+1248V  
+TA5000  
+TA5004  
+  
+  
 ### login
 ### configureTerminal
 ### getFootprint
@@ -65,8 +67,7 @@ Argument | Description
 ------------ | -------------
 card_port_num | 
 args | 
-service_mode | options: vdsl2 | adsl2+ | adsl2+mm | vdsl2mm | g.dmt
-Note: adslmm and t1.413 not supported
+service_mode | options: vdsl2 | adsl2+ | adsl2+mm | vdsl2mm | g.dmt<br>Note: adslmm and t1.413 not supported<br>
 band_profile | options: 8a | 12a | 17a
 line_type | options: interleave | fast
 rate_mode_dn | options : startup | runtime
@@ -94,8 +95,7 @@ Argument | Description
 ------------ | -------------
 card_port_num | 
 args | 
-service_mode | options: vdsl2 | adsl2+ | adsl2+mm | vdsl2mm | g.dmt
-Note: adslmm and t1.413 not supported
+service_mode | options: vdsl2 | adsl2+ | adsl2+mm | vdsl2mm | g.dmt<br>Note: adslmm and t1.413 not supported<br>
 band_profile | options: 8a | 12a | 17a
 line_type | options: interleave | fast
 rate_mode_dn | options : startup | runtime
@@ -127,27 +127,17 @@ mode | atm | ptm
 
 Argument | Description
 ------------ | -------------
-card_port_num | List of two "card/slot/port"
-
-Example:
-1/2/1 1/2/2
+card_port_num | List of two "card/slot/port"<br><br>Example:<br>1/2/1 1/2/2
 ### unbondPorts
 
 Argument | Description
 ------------ | -------------
-card_port_num | List of card/slot/port
-
-Example:
-1/2/1 1/2/2
+card_port_num | List of card/slot/port<br><br>Example:<br>1/2/1 1/2/2<br>
 ### setCrossConnect
 
 Argument | Description
 ------------ | -------------
-card_port_num | List of card/slot/port
-
-Examples:
-1/1/1
-1/2/1 1/2/2
+card_port_num | List of card/slot/port<br><br>Examples:<br>1/1/1<br>1/2/1 1/2/2<br>
 protocol | dhcp | pppoe | multicast
 mode | atm | ptm
 vlan_info | 
@@ -155,8 +145,4 @@ vlan_info |
 
 Argument | Description
 ------------ | -------------
-card_port_num | List of card/slot/port
-
-Examples:
-1/1/1
-1/2/1 1/2/2
+card_port_num | List of card/slot/port<br><br>Examples:<br>1/1/1<br>1/2/1 1/2/2<br>

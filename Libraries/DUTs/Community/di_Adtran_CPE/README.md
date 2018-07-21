@@ -1,7 +1,5 @@
-# project://di_Adtran_CPE
-1 QuickCall Library in project://di_Adtran_CPE:
-## project://di_Adtran_CPE/session_profiles/Adtran_cpe_ssh_quickcall_library.fftc (project://di_Adtran_CPE/session_profiles/Adtran_cpe_ssh_quickcall_library.fftc)
-
+1 QuickCall Library in project://di_Adtran_CPE
+## Library: project://di_Adtran_CPE/session_profiles/Adtran_cpe_ssh_quickcall_library.fftc
 ### Login
 Objective:  Login to an Adtran CPE session (priveleged mode)
 ______________________________________________________
@@ -60,14 +58,14 @@ Shutdown an interface on an Adtran device
 
 Argument | Description
 ------------ | -------------
-interface | Name of interface to shutdown
+interface | Name of interface to shutdown<br>
 ### RestoreInterface
 Bring an interface back up on an Adtran device
 
 
 Argument | Description
 ------------ | -------------
-interface | Name of interface to restore
+interface | Name of interface to restore<br>
 ### Reboot
 ### SetCodecPriority
 Set the codec priority on an Adtran device

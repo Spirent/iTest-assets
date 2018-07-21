@@ -1,8 +1,3 @@
-Project: Alcatel-Lucent (TiMOS) Service Router
-Description: QuickCalls and response map examples
-Category: library
-Class: Reference
-
 1 QuickCall Library in project://di_TiMOS
 ## Library: project://di_TiMOS/session_profiles/SSH_ref_ALU_quickcall_library.fftc
 ### GetFirmwareVersion
@@ -48,33 +43,24 @@ Returns a block JSON string:
 
 Argument | Description
 ------------ | -------------
-service_id | Id number of service to get info on
-ex: 555
+service_id | Id number of service to get info on<br>ex: 555
 ### ConfigureCustomerEvpl
 
 Argument | Description
 ------------ | -------------
-interface | Number of port to modify
-ex. 1/1/2
-uplink_interface | Port number of uplink interface into service provider network
-ex: 1/1/1
+interface | Number of port to modify<br>ex. 1/1/2
+uplink_interface | Port number of uplink interface into service provider network<br>ex: 1/1/1
 mtu | MTU size to configure
-s_vlan_tag | Tag used to create customer, epipe, and vlan configs
-ex. 555
-c_vlan_tag | Customer vlan tag to configure
-ex.: 20
+s_vlan_tag | Tag used to create customer, epipe, and vlan configs<br>ex. 555
+c_vlan_tag | Customer vlan tag to configure<br>ex.: 20
 ### RemoveCustomerEvpl
 
 Argument | Description
 ------------ | -------------
-interface | Number of port to modify
-ex. 1/1/2
-uplink_interface | Port number of uplink interface into service provider network
-ex: 1/1/1
-s_vlan_tag | Tag used to create customer, epipe, and vlan configs
-ex. 555
-c_vlan_tag | Customer vlan tag to configure
-ex.: 20
+interface | Number of port to modify<br>ex. 1/1/2
+uplink_interface | Port number of uplink interface into service provider network<br>ex: 1/1/1
+s_vlan_tag | Tag used to create customer, epipe, and vlan configs<br>ex. 555
+c_vlan_tag | Customer vlan tag to configure<br>ex.: 20
 ### GetHostname
 Returns block JSON string: 
 \thostname

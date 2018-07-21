@@ -1,14 +1,11 @@
-Project: Command Session
-Description: QuickCalls and response map examples showing various response formats and analysis rules.
-Category: library
-Class: Community
-
 1 QuickCall Library in project://ui_cmd_com
 ## Library: project://ui_cmd_com/referenceSessionProfile/cmdQuickcallLibrary.fftc
 ## Headline: Generic QC library for cmd sessions
-Description: Command session QuickCall examples. 
-
-Note: The main proc is used as a Unit Test.
+Description:  
+Command session QuickCall examples.   
+  
+Note: The main proc is used as a Unit Test.  
+  
 ### ping
 Ping the specified host address and return:
 

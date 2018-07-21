@@ -1,7 +1,5 @@
-# project://di_Velocity
-1 QuickCall Library in project://di_Velocity:
-## project://di_Velocity/session_profiles/REST.fftc (project://di_Velocity/session_profiles/REST.fftc)
-
+1 QuickCall Library in project://di_Velocity
+## Library: project://di_Velocity/session_profiles/REST.fftc
 ### get_authentication_service_url_v2
 ### get_settings_service_url
 ### get_execution_service_url
@@ -26,8 +24,8 @@ password |
 Argument | Description
 ------------ | -------------
 authToken | 
-parametersList | Example: \\\\{ "name":"helloTarget","value":"universe" \\\\}
-requirements | Example: \\\\{ "name": "os.type", "value": "windows" \\\\}
+parametersList | Example: \\\\{ "name":"helloTarget","value":"universe" \\\\}<br>
+requirements | Example: \\\\{ "name": "os.type", "value": "windows" \\\\}<br>
 testPath | 
 ### get_executionId_from_execution_resposne
 

@@ -1,10 +1,3 @@
-Project: Ixia IxNetwork Basics
-Description: Provides basic traffic quickcalls for the Ixia IxNetwork session type.
-Category: library
-Class: Tested by Spirent
-
-<b>Tags:</b> Test Equipment, Traffic Generator
-
 1 QuickCall Library in project://di_Ixia_IxNetwork
 ## Library: project://di_Ixia_IxNetwork/session_profiles/ixia_ixnetwork_quickcall_library.fftc
 ## Headline: Ixia IxNetwork Quickcalls
@@ -33,8 +26,7 @@ Returns JSON block
 
 Argument | Description
 ------------ | -------------
-flow_name | User-readable flow name 
-ex: MEF-EndpointSet-1 - Flow Group 0001
+flow_name | User-readable flow name <br>ex: MEF-EndpointSet-1 - Flow Group 0001
 ### GetTrafficNameFromId
 Get user defined descriptive traffic item name from Ixia traffic item ID
 Returns JSON block
@@ -42,8 +34,7 @@ Returns JSON block
 
 Argument | Description
 ------------ | -------------
-traffic_id | ID of desired traffic item.
- ex: ::ixNet::OBJ-/traffic/trafficItem:1
+traffic_id | ID of desired traffic item.<br> ex: ::ixNet::OBJ-/traffic/trafficItem:1
 ### StartTraffic
 Start traffic on all enabled traffic items
 ### StopTraffic
@@ -56,15 +47,10 @@ Returns block JSON string:
 
 Argument | Description
 ------------ | -------------
-flow_name | Name of traffic flow to modify as it appears in the Ixia configuration.
-ex. Traffic Item 1, Inbound, etc.
+flow_name | Name of traffic flow to modify as it appears in the Ixia configuration.<br>ex. Traffic Item 1, Inbound, etc.
 commit | If left as default, will commit config changes at the end of the quick call. Otherwise, will not commit changes. 
-rate | New rate to change to. Can be in any of the supported types. Use only integers when supplying bitrates.
-ex: 1.0, 500.0, 1000000
-type | New rate type to change to. Possible rate types:
-percentLineRate
-framesPerSecond
-bitsPerSecond
+rate | New rate to change to. Can be in any of the supported types. Use only integers when supplying bitrates.<br>ex: 1.0, 500.0, 1000000
+type | New rate type to change to. Possible rate types:<br>percentLineRate<br>framesPerSecond<br>bitsPerSecond
 ### CommitConfigChanges
 Commits any new config changes (works for flow objects and possibly others, traffic objects need to be applied using apply traffic command)
 ### RunTraffic
@@ -72,4 +58,4 @@ Runs traffic by starting all enabled traffic items on Ixia.
 
 Argument | Description
 ------------ | -------------
-duration | Time in seconds to run traffic
+duration | Time in seconds to run traffic<br>

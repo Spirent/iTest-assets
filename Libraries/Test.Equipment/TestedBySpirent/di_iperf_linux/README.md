@@ -1,8 +1,3 @@
-Project: Iperf Server - Linux
-Description: QuickCalls and response map examples
-Category: library
-Class: Tested by Spirent
-
 1 QuickCall Library in project://di_iperf_linux
 ## Library: project://di_iperf_linux/session_profiles/iperf_server_base_qc.fftc
 ### RunTraffic
@@ -10,8 +5,7 @@ Run traffic on Iperf for the specified duration. Returns bytes transferred and b
 
 Argument | Description
 ------------ | -------------
-server_address | Address of the Iperf server to send traffic to. 
-ex. 192.168.1.1
+server_address | Address of the Iperf server to send traffic to. <br>ex. 192.168.1.1<br>
 run_time | Time in seconds to run traffic
 bandwidth | Target bandwidth in bits/sec. Will run unlimited if left as default. 
 ### StartServer

@@ -1,7 +1,6 @@
-# project://di_ciena
-2 QuickCall Libraries in project://di_ciena:
-## Quickcall library for leos ciena devices (project://di_ciena/session_profiles/ciena_leos_qc.fftc)
-
+2 QuickCall Libraries in project://di_ciena
+## Library: project://di_ciena/session_profiles/ciena_leos_qc.fftc
+## Headline: Quickcall library for leos ciena devices
 ### add_cfm_mep
 
 Argument | Description
@@ -171,9 +170,7 @@ uni_port |
 nni_port | 
 cir | 
 bundle_flag | 
-vpls_counter | Counter that controls whether all or limited ERS configuration needs to be done.
-For multiple VPLS configuration with bundle flag, only CVLAN needs to be incremented.
-Some configuration needs to be done only first time
+vpls_counter | Counter that controls whether all or limited ERS configuration needs to be done.<br>For multiple VPLS configuration with bundle flag, only CVLAN needs to be incremented.<br>Some configuration needs to be done only first time<br>
 service | 
 priority | 
 ### config_ews
@@ -355,8 +352,8 @@ md |
 interface | 
 ma | 
 ### verify_version
-## Quickcall library for saos ciena devices (project://di_ciena/session_profiles/ciena_saos_qc.fftc)
-
+## Library: project://di_ciena/session_profiles/ciena_saos_qc.fftc
+## Headline: Quickcall library for saos ciena devices
 ### add_cfm_mep
 
 Argument | Description
@@ -577,8 +574,7 @@ cvlan |
 uni_port | 
 nni_port | 
 service_type | EWS or ERS
-internal_vlan | This is for ENNI only and just used internally.
-It should be unique vs the C-VLAN and S-VLAN
+internal_vlan | This is for ENNI only and just used internally.<br>It should be unique vs the C-VLAN and S-VLAN
 ### configure_eoam_802_3ah
 
 Argument | Description
@@ -660,10 +656,8 @@ instance_cnt |
 Argument | Description
 ------------ | -------------
 ccm_interval | ccm service interval as defined in the cfm_config.csv
-ma | MA_name defind in cfm_config.csv
-Valid values: serv or diag
-md | Example: VPWS:299999-4
-constructed from: $service_name:$service_number-${level}"
+ma | MA_name defind in cfm_config.csv<br>Valid values: serv or diag
+md | Example: VPWS:299999-4<br>constructed from: $service_name:$service_number-${level}"
 sVlan | service vlan as defined in service_info.csv
 cvlan | 
 level | cfm service level
@@ -673,10 +667,8 @@ Argument | Description
 ------------ | -------------
 service_type | 
 port | 
-ma | MA_name defind in cfm_config.csv
-Valid values: serv or diag
-md | Example: VPWS:299999-4
-constructed from: $service_name:$service_number-${level}"
+ma | MA_name defind in cfm_config.csv<br>Valid values: serv or diag
+md | Example: VPWS:299999-4<br>constructed from: $service_name:$service_number-${level}"
 mep_id | 
 ccm_priority | 
 cVlan | customer vlan as defined in service_info.csv

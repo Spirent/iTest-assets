@@ -1,15 +1,12 @@
-# project://di_Cisco_IOS
-1 QuickCall Library in project://di_Cisco_IOS:
-## project://di_Cisco_IOS/session_profiles/SSH_IOS_profile_quickcall_library.fftc (project://di_Cisco_IOS/session_profiles/SSH_IOS_profile_quickcall_library.fftc)
-
+1 QuickCall Library in project://di_Cisco_IOS
+## Library: project://di_Cisco_IOS/session_profiles/SSH_IOS_profile_quickcall_library.fftc
 ### ConfigureVlanTrunk
 Add or remove VLAN trunk configuration to an interface
 
 Argument | Description
 ------------ | -------------
 interface | Name of interface to configure trunk on
-vlan_list | Tcl list of vlans to add (or remove, if $remove is set to true) to trunk port
-ex: {555 20 4000}
+vlan_list | Tcl list of vlans to add (or remove, if $remove is set to true) to trunk port<br>ex: {555 20 4000}
 remove | Set to "true" to remove VLANs from trunk 
 ### ConfigureVlanAccess
 Configure a port to VLAN access mode on a specified VLAN

@@ -1,8 +1,3 @@
-Project: OICS Router
-Description: SSH and Telnet QuickCalls and response maps for the OICS Router
-Category: library
-Class: Community
-
 2 QuickCall Libraries in project://di_icos
 ## Library: project://di_icos/session_profiles/icos_console_quickcall.fftc
 ### config_cleanup
@@ -70,37 +65,19 @@ neighbor |
 Argument | Description
 ------------ | -------------
 name | Syntax : route-map test permit 10
-permission | permit or Deny 
-
-Syntax : route-map test permit 10
-seq | Sequence number.
-
-Syntax : route-map test permit 10
-acl | Access-list name to match
-
-Syntax : match ip address access-list 10
+permission | permit or Deny <br><br>Syntax : route-map test permit 10
+seq | Sequence number.<br><br>Syntax : route-map test permit 10
+acl | Access-list name to match<br><br>Syntax : match ip address access-list 10
 community | 
 ### route_map_unconfig
 ### standard_acl_config
 
 Argument | Description
 ------------ | -------------
-name | Example:
-ip access-list standard 10
-permit 1.1.1.0 0.0.0.255
-permit 2.2.2.2 0.0.0.0
-permission | Example:
-ip access-list standard 10
-permit 1.1.1.0 0.0.0.255
-permit 2.2.2.2 0.0.0.0
-ipAddress | Example:
-ip access-list standard 10
-permit 1.1.1.0 0.0.0.255
-permit 2.2.2.2 0.0.0.0
-wildCard | Example:
-ip access-list standard 10
-permit 1.1.1.0 0.0.0.255
-permit 2.2.2.2 0.0.0.0
+name | Example:<br>ip access-list standard 10<br>permit 1.1.1.0 0.0.0.255<br>permit 2.2.2.2 0.0.0.0
+permission | Example:<br>ip access-list standard 10<br>permit 1.1.1.0 0.0.0.255<br>permit 2.2.2.2 0.0.0.0
+ipAddress | Example:<br>ip access-list standard 10<br>permit 1.1.1.0 0.0.0.255<br>permit 2.2.2.2 0.0.0.0
+wildCard | Example:<br>ip access-list standard 10<br>permit 1.1.1.0 0.0.0.255<br>permit 2.2.2.2 0.0.0.0
 seq | Used in ICOS mainly
 ### standard_acl_unconfig
 ### trunk_interface_config

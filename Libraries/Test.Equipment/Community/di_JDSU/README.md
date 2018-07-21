@@ -1,12 +1,9 @@
-Project: JDSU
-Description: QuickCalls and response maps 
-Category: library
-Class: Community
-
 1 QuickCall Library in project://di_JDSU
 ## Library: project://di_JDSU/session_profiles/jdsu_quickcall_lib.fftc
-Description: REST quick call library for JDSU session
-
+Description:  
+REST quick call library for JDSU session  
+  
+  
 ### versionQuery
 ### login
 

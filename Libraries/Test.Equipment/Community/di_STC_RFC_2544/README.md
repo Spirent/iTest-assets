@@ -1,10 +1,3 @@
-Project: Spirent TestCenter RFC 2544  
-Description: Provides RFC 2544 quickcalls for the Spirent TestCenter session type and response maps for result and statistics views.   
-Category: library  
-Class: Community  
-  
-<b>Tags:</b> Test Equipment, Traffic Generator  
-  
 1 QuickCall Library in project://di_STC_RFC_2544
 ## Library: project://di_STC_RFC_2544/session_profiles/STC_TclAPI_QCLib.fftc
 ### iTestVersion

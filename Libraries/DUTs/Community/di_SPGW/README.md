@@ -1,8 +1,3 @@
-Project: Cisco Serving Gateway/PDN Gateway (SPGW)
-Description: SSH QuickCalls and response maps
-Category: library
-Class: Community
-
 1 QuickCall Library in project://di_SPGW
 ## Library: project://di_SPGW/session_profiles/PGW_ssh_quickcall_library.fftc
 ### configCCBehaviorBit

@@ -1,7 +1,5 @@
-# project://di_dslam_alcatel-lucent
-7 QuickCall Libraries in project://di_dslam_alcatel-lucent:
-## project://di_dslam_alcatel-lucent/session_profiles/alu_7300.fftc (project://di_dslam_alcatel-lucent/session_profiles/alu_7300.fftc)
-
+7 QuickCall Libraries in project://di_dslam_alcatel-lucent
+## Library: project://di_dslam_alcatel-lucent/session_profiles/alu_7300.fftc
 ### convertPort
 
 Argument | Description
@@ -135,8 +133,7 @@ Argument | Description
 card_port_num | 
 card_name | 
 dslam_profile | 
-## project://di_dslam_alcatel-lucent/session_profiles/alu_7302fd.fftc (project://di_dslam_alcatel-lucent/session_profiles/alu_7302fd.fftc)
-
+## Library: project://di_dslam_alcatel-lucent/session_profiles/alu_7302fd.fftc
 ### convertPort
 
 Argument | Description
@@ -270,8 +267,7 @@ Argument | Description
 card_port_num | 
 card_name | 
 dslam_profile | 
-## project://di_dslam_alcatel-lucent/session_profiles/alu_7302xd.fftc (project://di_dslam_alcatel-lucent/session_profiles/alu_7302xd.fftc)
-
+## Library: project://di_dslam_alcatel-lucent/session_profiles/alu_7302xd.fftc
 ### convertPort
 
 Argument | Description
@@ -404,8 +400,7 @@ Argument | Description
 card_port_num | 
 card_name | 
 dslam_profile | 
-## project://di_dslam_alcatel-lucent/session_profiles/alu_7330.fftc (project://di_dslam_alcatel-lucent/session_profiles/alu_7330.fftc)
-
+## Library: project://di_dslam_alcatel-lucent/session_profiles/alu_7330.fftc
 ### login
 ### getFootprint
 
@@ -883,13 +878,15 @@ Argument | Description
 ------------ | -------------
 direction | far-end or near-end 
 interface | interface identification
-## project://di_dslam_alcatel-lucent/session_profiles/alu_7450.fftc (project://di_dslam_alcatel-lucent/session_profiles/alu_7450.fftc)
-
+## Library: project://di_dslam_alcatel-lucent/session_profiles/alu_7450.fftc
 ### clear_DHCP_Table
 ### login
-## Nokia 7302 ISAM QuickCall Library (project://di_dslam_alcatel-lucent/session_profiles/nokia_7302_isam.fftc)
-NOTES:
-1. All getFootprint commands are now using xml option. This allows for Xmap queries and eliminates the need for a response map.
+## Library: project://di_dslam_alcatel-lucent/session_profiles/nokia_7302_isam.fftc
+## Headline: Nokia 7302 ISAM QuickCall Library
+Description:  
+NOTES:  
+1. All getFootprint commands are now using xml option. This allows for Xmap queries and eliminates the need for a response map.  
+  
 ### getFootprint
 
 Argument | Description
@@ -908,8 +905,7 @@ Argument | Description
 card_port_num | 
 card_name | 
 dslam_profile | 
-## project://di_dslam_alcatel-lucent/session_profiles/nokia_7330.fftc (project://di_dslam_alcatel-lucent/session_profiles/nokia_7330.fftc)
-
+## Library: project://di_dslam_alcatel-lucent/session_profiles/nokia_7330.fftc
 ### login
 ### getFootprint
 

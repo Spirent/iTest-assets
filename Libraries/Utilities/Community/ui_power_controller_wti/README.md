@@ -1,8 +1,3 @@
-Project: WTI Power Controller
-Description: Telnet QuickCalls and response maps
-Category: library
-Class: Community
-
 1 QuickCall Library in project://ui_power_controller_wti
 ## Library: project://ui_power_controller_wti/session_profiles/power_controller_wti.fftc
 ### cpeOn

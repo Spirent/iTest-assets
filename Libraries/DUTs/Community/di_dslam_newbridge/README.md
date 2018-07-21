@@ -1,8 +1,3 @@
-Project: NewBridge DSLAM
-Description: QuickCalls and response maps useful for building system tests automating the NewBridge DSLAM
-Category: library
-Class: Community
-
 1 QuickCall Library in project://di_dslam_newbridge
 ## Library: project://di_dslam_newbridge/session_profiles/newbridge_350.fftc
 ### login

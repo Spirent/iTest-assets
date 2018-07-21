@@ -1,7 +1,5 @@
-# project://di_Abacus_tclsh
-1 QuickCall Library in project://di_Abacus_tclsh:
-## project://di_Abacus_tclsh/session_profiles/Abacus_tclsh_quickcall_library.fftc (project://di_Abacus_tclsh/session_profiles/Abacus_tclsh_quickcall_library.fftc)
-
+1 QuickCall Library in project://di_Abacus_tclsh
+## Library: project://di_Abacus_tclsh/session_profiles/Abacus_tclsh_quickcall_library.fftc
 ### Disconnect
 Gracefully disconnect from an Abacus Tcl session
 
@@ -21,10 +19,8 @@ Block Response:
 
 Argument | Description
 ------------ | -------------
-download_path | Path to download XML report to.
-i.e. C:\\abacus_reports
-filename | Name of file 
-i.e. iTest_Analog_CallWaiting_001.xml
+download_path | Path to download XML report to.<br>i.e. C:\\abacus_reports<br>
+filename | Name of file <br>i.e. iTest_Analog_CallWaiting_001.xml
 ### StartTest
 Start an Abacus test script without waiting for it to complete.
 Block Response:
@@ -52,7 +48,7 @@ Block Response:
 
 Argument | Description
 ------------ | -------------
-chassis_ip | IP Address of Abacus chassis to connect to
+chassis_ip | IP Address of Abacus chassis to connect to<br>
 automation_server | IP address where Abacus Automation Server is running
 env_file | Name of environment file to load. Must be in the default Abacus environment folder on the automation server.
 password | Password used to connect to Abacus chassis. Blank by default. 
@@ -76,8 +72,7 @@ Argument | Description
 ------------ | -------------
 start_line_no |  Index of the line to start counting from. Corresponds to the 'From' column. 
 end_line_no | Index of line to end on. Corresponds to the 'To' column
-otto_config | Change which lines originiate and which lines terminate. Optional. Will not change existing config if not present. 
-Options are: ALL_ORIGINATE, OTOT, ALL_TERMINATE
+otto_config | Change which lines originiate and which lines terminate. Optional. Will not change existing config if not present. <br>Options are: ALL_ORIGINATE, OTOT, ALL_TERMINATE
 phonebook | Use "Own" or "External" phonebook. Optional. Will only change existing config if argument is given
 ### ChangeCallerID
 Change the expected caller ID name and/or number in the active Abacus config.
@@ -120,7 +115,7 @@ Block response:
 
 Argument | Description
 ------------ | -------------
-num_list | List of phone numbers in order to be applied to phonebook.
+num_list | List of phone numbers in order to be applied to phonebook.<br>
 ### SetPhoneBookExternal
 Set the phonebook in Abacus session. Corresponds to the Phonebook tab of the Partition and Timing window.
 
@@ -129,7 +124,7 @@ Block response:
 
 Argument | Description
 ------------ | -------------
-num_list | List of phone numbers in order to be applied to phonebook.
+num_list | List of phone numbers in order to be applied to phonebook.<br>
 ### SetThreshold
 Change a threshold and reaction in the Abacus Thresholds and Errors config
 
@@ -138,10 +133,6 @@ Block response:
 
 Argument | Description
 ------------ | -------------
-error_condition | Name of the error condition to change as named in the XML config. 
-Example: ERR_NO_ANSWER
+error_condition | Name of the error condition to change as named in the XML config. <br>Example: ERR_NO_ANSWER
 new_threshold | New threshold to set in seconds
-new_error_reaction | New reaction to take when threshold is met. Examples:
-No Reaction
-Freeze
-Stop script and test
+new_error_reaction | New reaction to take when threshold is met. Examples:<br>No Reaction<br>Freeze<br>Stop script and test

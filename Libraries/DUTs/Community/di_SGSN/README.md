@@ -1,8 +1,3 @@
-Project: Cisco Serving GPRS Support Node (SGSN)
-Description: SSH QuickCalls and response maps
-Category: library
-Class: Community
-
 1 QuickCall Library in project://di_SGSN
 ## Library: project://di_SGSN/session_profiles/SGSN_ssh_quickcall_library.fftc
 ### clearSubscriberInfo

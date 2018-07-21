@@ -1,8 +1,3 @@
-Project: Cisco ASR 5000
-Description: Collection of response maps and QuickCalls applicable to Cisco ASR device testing
-Category: library
-Class: Community
-
 2 QuickCall Libraries in project://di_Cisco_ASR5K
 ## Library: project://di_Cisco_ASR5K/session_profiles/Cisco_ASR5K_ssh_quickcall_library.fftc
 ### clearSubscriberInfo
@@ -81,10 +76,7 @@ List of logs
 
 Argument | Description
 ------------ | -------------
-timestamp | Get logs since <timestamp>
-
-timestamp format:
-YYYY:MM:DD:hh:mm:ss
+timestamp | Get logs since <timestamp><br><br>timestamp format:<br>YYYY:MM:DD:hh:mm:ss
 ### showSubscriber
 Get subscriber information for the specified IMSI
 
@@ -117,7 +109,9 @@ Argument | Description
 freq | 
 ## Library: project://di_Cisco_ASR5K/session_profiles/Cisco_ASR5K_telnet_quickcall_library.fftc
 ## Headline: Get clock value and convert to timestamp
-Description: Get timestamp from ASR5K and convert to format usable for "show logs".
+Description:  
+Get timestamp from ASR5K and convert to format usable for "show logs".  
+  
 ### clearSubscriberInfo
 Clear the subcriber info for the specified IMSI
 
@@ -179,10 +173,7 @@ List of logs
 
 Argument | Description
 ------------ | -------------
-timestamp | Get logs since <timestamp>
-
-timestamp format:
-YYYY:MM:DD:hh:mm:ss
+timestamp | Get logs since <timestamp><br><br>timestamp format:<br>YYYY:MM:DD:hh:mm:ss
 ### showSubscriber
 Get subscriber information for the specified IMSI
 

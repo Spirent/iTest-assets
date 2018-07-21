@@ -1,7 +1,5 @@
-# project://di_Cisco_IOSXR_2
-1 QuickCall Library in project://di_Cisco_IOSXR_2:
-## project://di_Cisco_IOSXR_2/session_profiles/IOS_XR_SSH_quickcall_library.fftc (project://di_Cisco_IOSXR_2/session_profiles/IOS_XR_SSH_quickcall_library.fftc)
-
+1 QuickCall Library in project://di_Cisco_IOSXR_2
+## Library: project://di_Cisco_IOSXR_2/session_profiles/IOS_XR_SSH_quickcall_library.fftc
 ### ClearInterfaceArpCache
 
 Argument | Description
@@ -12,8 +10,7 @@ Clear interface counters for one interface or all
 
 Argument | Description
 ------------ | -------------
-interface | Name of interface to clear counters on. 
-NOTE: If not given, will clear counters on all interfaces.
+interface | Name of interface to clear counters on. <br>NOTE: If not given, will clear counters on all interfaces.
 ### ConfigureInterfaceAcl
 Add or remove an ACL from an interface
 
@@ -27,12 +24,10 @@ Configure or remove an IPv4 address on an interface.
 
 Argument | Description
 ------------ | -------------
-ipv4_address | If given, will configure IPv4 address on the interface. If left as defualt, will remove the IPv4 address from the interface. 
-netmask_v4 | Required if supplying IPv4 address. Integer.
-Length of v4 subnet mask to apply to the interface. 
-ipv6_address | If given, will configure IPv6 address on the interface. If left as defualt, will remove the IPv6 address from the interface. 
-netmask_v6 | Required if supplying IPv4 address. Integer.
-Length of v6 prefix to apply to the interface. 
+ipv4_address | If given, will configure IPv4 address on the interface. If left as defualt, will remove the IPv4 address from the interface. <br>
+netmask_v4 | Required if supplying IPv4 address. Integer.<br>Length of v4 subnet mask to apply to the interface. 
+ipv6_address | If given, will configure IPv6 address on the interface. If left as defualt, will remove the IPv6 address from the interface. <br>
+netmask_v6 | Required if supplying IPv4 address. Integer.<br>Length of v6 prefix to apply to the interface. 
 interface | Name of interface to alter
 ### ConfigureInterfaceMtu
 Configure MTU size on an interface
