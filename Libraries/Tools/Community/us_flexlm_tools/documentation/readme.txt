@@ -1,5 +1,5 @@
 Project: Flex License Manager Tools
-Description: These shell and Tcl scipts are used to manage the APT License Server (FlexLM).
+Description: These shell and Tcl scipts are used to manage the APT License Server (FlexLM)
 Category: library
 Class: Community
 
