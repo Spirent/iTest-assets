@@ -1,5 +1,13 @@
-1 QuickCall Library in project://di_ADB
-## Library: project://di_ADB/session_profiles/adb_ssh_quickcall_library.fftc
+### Project Information:
+Project: Android  
+Description: Library of QuickCalls and response maps for automating Android mobile phones via the Android Debug Bridge, ADB  
+Category: library  
+Class: Community  
+  
+___
+### 1 QuickCall Library in project://di_ADB
+### Library: project://di_ADB/session_profiles/adb_ssh_quickcall_library.fftc
+___
 ### clearLog
 Clear the logcat logs
 

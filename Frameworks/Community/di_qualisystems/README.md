@@ -1,5 +1,13 @@
-1 QuickCall Library in project://di_qualisystems
-## Library: project://di_qualisystems/session_profiles/quali_lib.fftc
+### Project Information:
+Project: CloudShell  
+Description: QuickCalls for automating Quali CloudShell  
+Category: framework  
+Class: Community  
+  
+___
+### 1 QuickCall Library in project://di_qualisystems
+### Library: project://di_qualisystems/session_profiles/quali_lib.fftc
+___
 ### activate_reservation
 Activates an existing reservation. The topology was created in the create_reservation command and a reservation id must have been returned. The function returns 1 for success and 0 for failure. The command will not end the reservation in case of failure.
 

@@ -1,13 +1,22 @@
+### Project Information:
+Project: Cisco IOS 2  
+Description: Collection of QuickCalls and response maps for Cisco IOS devices  
+Category: library  
+Class: Community  
+  
+___
 2 QuickCall Libraries in project://di_cisco_ios_com
-## Library: project://di_cisco_ios_com/session_profiles/snmp/cisco_snmp_quickcall_library.fftc
-## Headline: Cisco SNMP QC library
+### Library: project://di_cisco_ios_com/session_profiles/snmp/cisco_snmp_quickcall_library.fftc
+___
+Headline: Cisco SNMP QC library
 Description:  
 Use this for common SNMP procedures  
   
 ### getInterfaceStates
 This will the interface states on the system for a quick status check
-## Library: project://di_cisco_ios_com/session_profiles/telnet/cisco_telnet_quickcall_library.fftc
-## Headline: Cisco 7200 QC library
+### Library: project://di_cisco_ios_com/session_profiles/telnet/cisco_telnet_quickcall_library.fftc
+___
+Headline: Cisco 7200 QC library
 ### login
 Automatically login to cisco device - privileged mode
 

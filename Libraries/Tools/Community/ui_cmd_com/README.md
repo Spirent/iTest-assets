@@ -1,6 +1,14 @@
-1 QuickCall Library in project://ui_cmd_com
-## Library: project://ui_cmd_com/referenceSessionProfile/cmdQuickcallLibrary.fftc
-## Headline: Generic QC library for cmd sessions
+### Project Information:
+Project: Command Session  
+Description: QuickCalls and response map examples showing various response formats and analysis rules  
+Category: library  
+Class: Community  
+  
+___
+### 1 QuickCall Library in project://ui_cmd_com
+### Library: project://ui_cmd_com/referenceSessionProfile/cmdQuickcallLibrary.fftc
+___
+Headline: Generic QC library for cmd sessions
 Description:  
 Command session QuickCall examples.   
   

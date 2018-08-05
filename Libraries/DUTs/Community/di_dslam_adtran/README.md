@@ -1,6 +1,14 @@
-1 QuickCall Library in project://di_dslam_adtran
-## Library: project://di_dslam_adtran/session_profiles/adtran_vdsl_base.fftc
-## Headline: Adtran QuickCall Library
+### Project Information:
+Project: Adtran DSLAM  
+Description: Large variety of QuickCalls and response maps useful for building system tests automating the Adtran DSLAM  
+Category: library  
+Class: Community  
+  
+___
+### 1 QuickCall Library in project://di_dslam_adtran
+### Library: project://di_dslam_adtran/session_profiles/adtran_vdsl_base.fftc
+___
+Headline: Adtran QuickCall Library
 Description:  
 Support for:  
 1148V  

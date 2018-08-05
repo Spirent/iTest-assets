@@ -1,5 +1,13 @@
-1 QuickCall Library in project://di_Cisco_NX_OS
-## Library: project://di_Cisco_NX_OS/session_profiles/Cisco_NX_OS_Quickcall.fftc
+### Project Information:
+Project: Cisco NX OS  
+Description: Large library of QuickCalls and response maps for Cisco Nexus devices running NXOS  
+Category: library  
+Class: Community  
+  
+___
+### 1 QuickCall Library in project://di_Cisco_NX_OS
+### Library: project://di_Cisco_NX_OS/session_profiles/Cisco_NX_OS_Quickcall.fftc
+___
 ### CheckRSP
 ### LoadDeviceConfig
 

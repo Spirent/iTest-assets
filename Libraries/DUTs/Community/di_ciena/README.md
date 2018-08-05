@@ -1,6 +1,14 @@
+### Project Information:
+Project: Ciena LEOS  
+Description: Several QuickCalls and response maps useful for automating Ciena metro ethernet systems running LEOS  
+Category: library  
+Class: Community  
+  
+___
 2 QuickCall Libraries in project://di_ciena
-## Library: project://di_ciena/session_profiles/ciena_leos_qc.fftc
-## Headline: Quickcall library for leos ciena devices
+### Library: project://di_ciena/session_profiles/ciena_leos_qc.fftc
+___
+Headline: Quickcall library for leos ciena devices
 ### add_cfm_mep
 
 Argument | Description
@@ -352,8 +360,9 @@ md |
 interface | 
 ma | 
 ### verify_version
-## Library: project://di_ciena/session_profiles/ciena_saos_qc.fftc
-## Headline: Quickcall library for saos ciena devices
+### Library: project://di_ciena/session_profiles/ciena_saos_qc.fftc
+___
+Headline: Quickcall library for saos ciena devices
 ### add_cfm_mep
 
 Argument | Description
