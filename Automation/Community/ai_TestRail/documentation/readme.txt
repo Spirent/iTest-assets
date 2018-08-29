@@ -15,3 +15,9 @@ https://github.com/Spirent/iTest-assets/tree/master/Frameworks/Community/di_Velo
 
 Video demonstration available at:
 https://youtu.be/0VzVSUqnW5o
+
+Notes:
+Requires Velocity agent 7.1.3 or higher. To upgrade the agent type "./update -update" in the installation directory
+
+TODO:
+Execution messages that contain commas produce errors
