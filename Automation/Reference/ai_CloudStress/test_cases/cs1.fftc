@@ -1,0 +1,147 @@
+<?xml version="1.0"?>
+<testCase version="7.1.0.201804110601">
+    <procedures>
+        <item name="main">
+            <steps>
+                <item guid="20d9ac75-80ef-4256-90c5-5cd50fd9f66d" action="open" session="t1">
+                    <command>
+                        <body>project://ai_CloudStress/test_cases/cs1.ffsp</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.OpenStepPropertyGroup">
+                        <stepProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulSessionProperties"/>
+                        <sessionClass type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionVersion type="com.fnfr.documents.PropertyString">7.0.0</sessionVersion>
+                    </applicationProperties>
+                </item>
+                <item guid="2f075bf3-07f2-47e0-a615-bd068967855f" action="QueryBearerToken" session="t1" normalOffset="90.14" estimatedStepExecutionTime="3.17">
+                    <command>
+                        <body>-temeva_server https://spirent.temeva.com/api/iam/ -subdomain spirent -grant_type password -username clark.whitty@spirent.com -password ******</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.itest.platform2.shared.documents.ntaf.NtafTransferableDocumentObject" action="QueryBearerToken" subharness="http://spirent.com/CustomizedSessions/tools/CloudStress/harness/main" harness="http://spirent.com/CustomizedSessions/tools/CloudStress/harness/main" harnessName="http://spirent.com/CustomizedSessions/tools/CloudStress/harness/main" subdomain="spirent" subdomain.inherit="false" subdomain.sub="false" username="clark.whitty@spirent.com" username.inherit="false" username.sub="false" password.masked="true" password="GXnxR9L9p7E=" password.inherit="false" password.sub="false"/>
+                </item>
+                <item guid="eff6ef26-9c0f-4571-83d2-49f8ff2f816c" action="ListTests" session="t1" normalOffset="15.447" estimatedStepExecutionTime="0.421">
+                    <command>
+                        <body>-id -name &quot;CPU - Fixed Instance Count Basic1&quot; -cursor -metadata_only true -page_size 5</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>mapped/Json/items/item/id</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>testId</storageLocation>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.itest.platform2.shared.documents.ntaf.NtafTransferableDocumentObject" action="ListTests" subharness="http://spirent.com/CustomizedSessions/tools/CloudStress/harness/main" harness="http://spirent.com/CustomizedSessions/tools/CloudStress/harness/main" harnessName="http://spirent.com/CustomizedSessions/tools/CloudStress/harness/main" name="CPU - Fixed Instance Count Basic1" name.inherit="false" name.sub="false"/>
+                </item>
+                <item guid="bdef7aac-6980-4229-ab22-48a792167448" action="StartTest" session="t1" normalOffset="32.091" estimatedStepExecutionTime="2.871">
+                    <applicationProperties type="com.fnfr.itest.platform2.shared.documents.ntaf.NtafTransferableDocumentObject" action="StartTest" subharness="http://spirent.com/CustomizedSessions/tools/CloudStress/harness/main" harness="http://spirent.com/CustomizedSessions/tools/CloudStress/harness/main" harnessName="http://spirent.com/CustomizedSessions/tools/CloudStress/harness/main" test_id="$testId" test_id.inherit="false"/>
+                </item>
+                <item guid="9a8e7a31-fdf7-4b48-93ad-ffb7491391d8" action="GetTestStatus" session="t1" normalOffset="34.952" estimatedStepExecutionTime="0.219">
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="contains">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                        <searchString>Running</searchString>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$value == 1</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="OK">
+                                                    <message>{auto_message_true}</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="PassTestIfNotAlreadyFailed">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                        </actionsWhenTrue>
+                                        <actionsWhenFalse>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="Information">
+                                                    <message>Waiting for test to start</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="RepeatStep">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.RepeatStepPropertyGroup" maxRepeatCount="60" delayBetweenRepeats="10.0"/>
+                                            </item>
+                                        </actionsWhenFalse>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.itest.platform2.shared.documents.ntaf.NtafTransferableDocumentObject" action="GetTestStatus" subharness="http://spirent.com/CustomizedSessions/tools/CloudStress/harness/main" harness="http://spirent.com/CustomizedSessions/tools/CloudStress/harness/main" harnessName="http://spirent.com/CustomizedSessions/tools/CloudStress/harness/main" test_id="$testId" test_id.inherit="false"/>
+                </item>
+                <item guid="5ea45919-cb68-4c7a-8902-384b9799f1c9" action="GetTestStatus" session="t1" normalOffset="345.756" estimatedStepExecutionTime="0.203">
+                    <command>
+                        <body>-test_id $testId</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="contains">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                        <searchString>\\&quot;Test is not running\\&quot;</searchString>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$value == 1</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="OK">
+                                                    <message>{auto_message_true}</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="PassTestIfNotAlreadyFailed">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                        </actionsWhenTrue>
+                                        <actionsWhenFalse>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="Information">
+                                                    <message>Waiting for test to finish</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="RepeatStep">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.RepeatStepPropertyGroup" maxRepeatCount="60" delayBetweenRepeats="10.0"/>
+                                            </item>
+                                        </actionsWhenFalse>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.itest.platform2.shared.documents.ntaf.NtafTransferableDocumentObject" action="GetTestStatus" subharness="http://spirent.com/CustomizedSessions/tools/CloudStress/harness/main" harness="http://spirent.com/CustomizedSessions/tools/CloudStress/harness/main" harnessName="http://spirent.com/CustomizedSessions/tools/CloudStress/harness/main" test_id="$testId" test_id.inherit="false"/>
+                </item>
+                <item guid="b45a85f5-cdd9-45ad-b0fe-a025ff9badfd" action="GenerateReportDocumentByTestId" session="t1" normalOffset="125.182" estimatedStepExecutionTime="18.174">
+                    <command>
+                        <body>-test_id $testId -location project://ai_CloudStress/results -file_name cloudStress.$testId -document_type PDF</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.itest.platform2.shared.documents.ntaf.NtafTransferableDocumentObject" action="GenerateReportDocumentByTestId" subharness="http://spirent.com/CustomizedSessions/tools/CloudStress/harness/main" harness="http://spirent.com/CustomizedSessions/tools/CloudStress/harness/main" harnessName="http://spirent.com/CustomizedSessions/tools/CloudStress/harness/main" test_id="$testId" test_id.inherit="false" location="project://ai_CloudStress/results" location.inherit="false" location.sub="false" file_name="cloudStress.$testId" file_name.inherit="false"/>
+                </item>
+                <item guid="8411df0b-400d-467b-8524-1aa27bc0e2d9" action="GetReport" session="t1" normalOffset="57.688" estimatedStepExecutionTime="1.653">
+                    <command>
+                        <body>-test_id $testId -report_id</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.itest.platform2.shared.documents.ntaf.NtafTransferableDocumentObject" action="GetReport" subharness="http://spirent.com/CustomizedSessions/tools/CloudStress/harness/main" harness="http://spirent.com/CustomizedSessions/tools/CloudStress/harness/main" harnessName="http://spirent.com/CustomizedSessions/tools/CloudStress/harness/main" test_id="$testId" test_id.inherit="false"/>
+                </item>
+                <item guid="8367bca4-604e-43de-ae8b-1220f60d5238" action="close" session="t1" normalOffset="26.201">
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+        </item>
+    </procedures>
+</testCase>
