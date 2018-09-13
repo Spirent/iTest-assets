@@ -1,5 +1,7 @@
 ### Project Information:
-Project: Rate vs Range
-Description: Rate vs range automation for Wifi
-Category: automation
-Class: Community
+Project: Rate vs Range  
+Description: Rate vs range automation for Wifi  
+Category: automation  
+Class: Community  
+  
+___
