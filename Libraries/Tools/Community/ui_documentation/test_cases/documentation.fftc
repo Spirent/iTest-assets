@@ -28,23 +28,30 @@ includeResponseMaps - If true, inlude a list of response maps along with heading
     <procedures>
         <item name="main">
             <steps>
-                <item guid="d62d3647-8555-4656-9ccf-815ce9bb9de5" action="eval">
+                <item guid="d62d3647-8555-4656-9ccf-815ce9bb9de5" action="eval" skip="true">
                     <command>
                         <body>gset QC_LIB_URI_LIST {}</body>
                     </command>
                     <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
                     <useFieldsInCommand>false</useFieldsInCommand>
                 </item>
-                <item guid="69b3aebc-c9f3-46c3-a53c-03a9a69f74e5" action="eval">
+                <item guid="69b3aebc-c9f3-46c3-a53c-03a9a69f74e5" action="eval" skip="true">
                     <command>
                         <body>gset PROC_LIB_URI_LIST {}</body>
                     </command>
                     <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
                     <useFieldsInCommand>false</useFieldsInCommand>
                 </item>
-                <item guid="d6b7bd1b-70ae-46bc-aa76-fae1d16e863b" action="eval">
+                <item guid="d6b7bd1b-70ae-46bc-aa76-fae1d16e863b" action="eval" skip="true">
                     <command>
                         <body>gset RM_LIB_URI_LIST {}</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="d313ab04-1fe6-42e6-ab54-d6c8c61300f1" action="eval" skip="true">
+                    <command>
+                        <body>gset DRIVER_URI_LIST {}</body>
                     </command>
                     <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
                     <useFieldsInCommand>false</useFieldsInCommand>
@@ -303,6 +310,13 @@ includeResponseMaps - If true, inlude a list of response maps along with heading
                             <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
                             <useFieldsInCommand>false</useFieldsInCommand>
                         </item>
+                        <item guid="43920c09-f3a6-46ee-8606-8cfea5781224" action="eval" skip="true">
+                            <command>
+                                <body>set driver [file exists $uriProject/manifest.xml]</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
                         <item guid="cb6990e4-1df0-4078-94ac-cafc862beefe" action="comment">
                             <command>
                                 <body>Ignore my_project and resources</body>
@@ -343,9 +357,37 @@ includeResponseMaps - If true, inlude a list of response maps along with heading
                                     <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
                                     <useFieldsInCommand>false</useFieldsInCommand>
                                 </item>
+                                <item guid="716ca18c-252f-4fe9-939d-b008f30d7be3" action="eval">
+                                    <command>
+                                        <body>gset QC_LIB_URI_LIST {}</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="542e19e4-d43c-474f-af01-6ebe12b62932" action="eval">
+                                    <command>
+                                        <body>gset PROC_LIB_URI_LIST {}</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="61562c94-c13a-41cd-895d-c92ccd07456f" action="eval">
+                                    <command>
+                                        <body>gset RM_LIB_URI_LIST {}</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="ab459e03-c75c-4110-91d0-cdd869fb4b39" action="eval">
+                                    <command>
+                                        <body>gset DRIVER_URI_LIST {}</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
                                 <item guid="e560193b-6680-4fde-858f-2ec93d0f28c4" action="call">
                                     <command>
-                                        <body>getUriList -uriPath $uriProject </body>
+                                        <body>getUriList -uriProject $uriProject </body>
                                     </command>
                                     <postProcessing>
                                         <storeResponseAt>uri_list</storeResponseAt>
@@ -356,14 +398,14 @@ includeResponseMaps - If true, inlude a list of response maps along with heading
                                 </item>
                                 <item guid="a0648595-5bc6-40df-99b1-51d1cb072d1a" action="call">
                                     <command>
-                                        <body>getLibList -uriList $uri_list</body>
+                                        <body>getLibList -uriProject $uriProject -uriList $uri_list</body>
                                     </command>
                                     <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
                                     <useFieldsInCommand>false</useFieldsInCommand>
                                 </item>
                                 <item guid="8e059d84-d403-40d6-a799-7b8b21952f01" action="comment">
                                     <command>
-                                        <body>If using changeDate paramater, check file modified dates</body>
+                                        <body>If using changeDate parameter, check file modified dates</body>
                                     </command>
                                     <nestedSteps>
                                         <item guid="ef519862-4f29-4c17-86ad-63e9dfe758d0" action="if">
@@ -649,6 +691,48 @@ includeResponseMaps - If true, inlude a list of response maps along with heading
                                                             <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
                                                             <useFieldsInCommand>false</useFieldsInCommand>
                                                         </item>
+                                                        <item guid="9b8f8f01-2980-4505-bd0b-eec1d992a29a" action="foreach">
+                                                            <command>
+                                                                <body>uri [gget DRIVER_URI_LIST]</body>
+                                                            </command>
+                                                            <nestedSteps>
+                                                                <item guid="5b3305a9-7a54-4489-9329-393e7289d7a5" action="call">
+                                                                    <command>
+                                                                        <body>fileChanged -uri $uri -dateString $changedDate</body>
+                                                                    </command>
+                                                                    <postProcessing>
+                                                                        <storeResponseAt>changed</storeResponseAt>
+                                                                        <storeResponseText>true</storeResponseText>
+                                                                    </postProcessing>
+                                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                                </item>
+                                                                <item guid="ac2f20ee-fc3d-428e-aec0-d457f4f3915e" action="if">
+                                                                    <command>
+                                                                        <body>$changed</body>
+                                                                    </command>
+                                                                    <nestedSteps>
+                                                                        <item guid="3eb71f22-0777-4e03-97ce-ca1158823ff8" action="then">
+                                                                            <nestedSteps>
+                                                                                <item guid="b7bd0b5c-2cef-4d0f-927e-b03c4a25980c" action="eval">
+                                                                                    <command>
+                                                                                        <body>set updateRequired 1</body>
+                                                                                    </command>
+                                                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                                                </item>
+                                                                            </nestedSteps>
+                                                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                                                        </item>
+                                                                    </nestedSteps>
+                                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                                </item>
+                                                            </nestedSteps>
+                                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                                        </item>
                                                     </nestedSteps>
                                                     <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
                                                     <useFieldsInCommand>false</useFieldsInCommand>
@@ -701,6 +785,13 @@ includeResponseMaps - If true, inlude a list of response maps along with heading
                                                             <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
                                                             <useFieldsInCommand>false</useFieldsInCommand>
                                                         </item>
+                                                        <item guid="3b7ce387-dcaa-4829-8946-d72e606c2936" action="call">
+                                                            <command>
+                                                                <body>writeInfo -uriPath $uriProject -uriList [gget DRIVER_URI_LIST]</body>
+                                                            </command>
+                                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                                        </item>
                                                         <item guid="bebc7177-c7ab-4b7d-8f43-bd72a16ed93b" action="if">
                                                             <command>
                                                                 <body>[param includeResponseMaps] == &quot;true&quot;</body>
@@ -725,12 +816,15 @@ includeResponseMaps - If true, inlude a list of response maps along with heading
                                                         </item>
                                                         <item guid="54d88ede-8e36-4325-aaa9-54b55e8a8c2a" action="if">
                                                             <command>
-                                                                <body>[llength [gget QC_LIB_URI_LIST]] &gt; 0 || [llength [gget PROC_LIB_URI_LIST]] &gt; 0 || [llength [gget RM_LIB_URI_LIST]] &gt; 0</body>
+                                                                <body>[llength [gget QC_LIB_URI_LIST]] &gt; 0 || [llength [gget PROC_LIB_URI_LIST]] &gt; 0 || [llength [gget RM_LIB_URI_LIST]] &gt; 0 || [llength [gget DRIVER_URI_LIST]] &gt; 0</body>
                                                             </command>
                                                             <nestedSteps>
                                                                 <item guid="51577d1b-f3b5-4f9c-bae9-cce7e64d54ca" action="then">
                                                                     <nestedSteps>
                                                                         <item guid="1b067e76-661e-47e7-a363-89f24dbff9b6" action="comment">
+                                                                            <command>
+                                                                                <body>Display summary</body>
+                                                                            </command>
                                                                             <postProcessing>
                                                                                 <analysisRules>
                                                                                     <item>
@@ -775,6 +869,9 @@ includeResponseMaps - If true, inlude a list of response maps along with heading
                                                                 <item guid="dd97dd45-8895-43d1-8cef-7590ce1bd843" action="else">
                                                                     <nestedSteps>
                                                                         <item guid="8e91bd77-8734-4587-bc65-834d64d8d939" action="comment">
+                                                                            <command>
+                                                                                <body>Display &quot;Nothing found to document&quot;</body>
+                                                                            </command>
                                                                             <postProcessing>
                                                                                 <analysisRules>
                                                                                     <item>
@@ -1057,14 +1154,14 @@ includeResponseMaps - If true, inlude a list of response maps along with heading
                 </item>
                 <item guid="a9233822-35a7-4dc9-8fdc-2048bad35f40" action="if">
                     <command>
-                        <body>$uriPath != &quot;project://my_project&quot; &amp;&amp; $uriPath != &quot;project://resources&quot; </body>
+                        <body>$uriProject != &quot;project://my_project&quot; &amp;&amp; $uriProject != &quot;project://resources&quot; </body>
                     </command>
                     <nestedSteps>
                         <item guid="6f878613-1874-4b7e-aeac-d09ccfe1019f" action="then">
                             <nestedSteps>
                                 <item guid="828c49d9-316e-4144-a98f-27521e7b1edb" action="eval">
                                     <command>
-                                        <body>set file_uri_list [file list -r -nolimit $uriPath]</body>
+                                        <body>set file_uri_list [file list -r -nolimit $uriProject]</body>
                                     </command>
                                     <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
                                     <useFieldsInCommand>false</useFieldsInCommand>
@@ -1117,7 +1214,7 @@ includeResponseMaps - If true, inlude a list of response maps along with heading
             </steps>
             <multilineDescription>Return a list of test case URI&apos;s within a given project URI</multilineDescription>
             <arguments>
-                <item name="uriPath">
+                <item name="uriProject">
                     <description>URI of project</description>
                 </item>
             </arguments>
@@ -1142,6 +1239,13 @@ includeResponseMaps - If true, inlude a list of response maps along with heading
                 <item guid="f8857105-9e1d-4999-96ad-4efcb55818e6" action="eval">
                     <command>
                         <body>set rm_uri_list {}</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="79b3b2c2-12f1-4172-a6e7-a5d78a771a1e" action="eval">
+                    <command>
+                        <body>set driver_uri_list {}</body>
                     </command>
                     <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
                     <useFieldsInCommand>false</useFieldsInCommand>
@@ -1293,6 +1397,34 @@ includeResponseMaps - If true, inlude a list of response maps along with heading
                                                                                     <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
                                                                                     <useFieldsInCommand>false</useFieldsInCommand>
                                                                                 </item>
+                                                                                <item guid="573a8cce-d1ec-49cb-b4d2-2e042688c576" action="else">
+                                                                                    <nestedSteps>
+                                                                                        <item guid="21e31918-1c7f-48a2-b1b9-d6a0be55bb97" action="if">
+                                                                                            <command>
+                                                                                                <body>[file exists $uriProject/manifest.xml]</body>
+                                                                                            </command>
+                                                                                            <nestedSteps>
+                                                                                                <item guid="a7f2a734-937e-48b9-ad03-70e716bbcb0a" action="then">
+                                                                                                    <nestedSteps>
+                                                                                                        <item guid="182ad5d2-c2bc-459d-a6ff-f7450d4ba166" action="eval">
+                                                                                                            <command>
+                                                                                                                <body>lappend driver_uri_list $uriPath</body>
+                                                                                                            </command>
+                                                                                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                                                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                                                                                        </item>
+                                                                                                    </nestedSteps>
+                                                                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                                                                </item>
+                                                                                            </nestedSteps>
+                                                                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                                                                        </item>
+                                                                                    </nestedSteps>
+                                                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                                                </item>
                                                                             </nestedSteps>
                                                                             <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
                                                                             <useFieldsInCommand>false</useFieldsInCommand>
@@ -1317,6 +1449,22 @@ includeResponseMaps - If true, inlude a list of response maps along with heading
                                                         <item guid="bcc41277-2261-494d-a4fe-d3381be6efd2" action="eval">
                                                             <command>
                                                                 <body>lappend rm_uri_list $uriPath</body>
+                                                            </command>
+                                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                                        </item>
+                                                    </nestedSteps>
+                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                </item>
+                                                <item guid="f26564be-37df-4171-964f-8ec3abab6564" action="elseif" skip="true">
+                                                    <command>
+                                                        <body>[string match *manifest.xml $uriPath]</body>
+                                                    </command>
+                                                    <nestedSteps>
+                                                        <item guid="357b5b4b-758d-469c-afda-337cb9ba807e" action="eval">
+                                                            <command>
+                                                                <body>lappend manifest_uri_list $uriPath</body>
                                                             </command>
                                                             <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
                                                             <useFieldsInCommand>false</useFieldsInCommand>
@@ -1362,11 +1510,21 @@ includeResponseMaps - If true, inlude a list of response maps along with heading
                     <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
                     <useFieldsInCommand>false</useFieldsInCommand>
                 </item>
+                <item guid="3444a4e1-2f59-4735-b71a-9057265ac5a3" action="eval">
+                    <command>
+                        <body>gset DRIVER_URI_LIST $driver_uri_list</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
             </steps>
             <multilineDescription>Get list of QuickCall Libraries and Procedure Libraries from given list of test case URI&apos;s</multilineDescription>
             <arguments>
+                <item name="uriProject">
+                    <description>URI of project</description>
+                </item>
                 <item name="uriList">
-                    <description>List of file URI&apos;s</description>
+                    <description>List of file URI&apos;s for files within the project</description>
                 </item>
             </arguments>
             <response>{&quot;proc_type&quot;:&quot;value&quot;,&quot;proc_name&quot;:&quot;value&quot;,&quot;headline&quot;:&quot;value&quot;,&quot;description&quot;:&quot;value&quot;,&quot;arguments&quot;:&quot;value&quot;}</response>
