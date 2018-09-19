@@ -8,12 +8,12 @@
             <parameters escape="true">
                 <parameters xmlns:pt="http://www.fnfr.com/schemas/parameterTree">
                     <createNewTimeStampProject pt:datatype="BOOLEAN" pt:description="only set true if a new timestamp needs to be seeded">false</createNewTimeStampProject>
-                    <newTimeStamp pt:datatype="DOUBLE" pt:description="for example 1490553076600 ms">1534728418000</newTimeStamp>
+                    <newTimeStamp pt:datatype="DOUBLE" pt:description="for example 1490553076600 ms">1537350768000</newTimeStamp>
                     <param_hostURL pt:description="velocity FQDN">ps-shared-vel-7-1-0.spirenteng.com</param_hostURL>
                     <projectName pt:description="name of the custom project that contains the timestamp info">DontEraseThisSpirentProServices</projectName>
                     <reportTemplateName pt:description="name of the report template to use for XML rendering">XML</reportTemplateName>
-                    <testRailUser pt:description="testrail username">clark.whitty@spirent.com</testRailUser>
-                    <testRailPassword pt:description="testrail api password" pt:mask="true">GXnxR9L9p7E=</testRailPassword>
+                    <testRailUser pt:description="testrail username">foo@example.com</testRailUser>
+                    <testRailPassword pt:description="testrail api password" pt:mask="true">6tgA3NkRPCMJor6ZZIWzzg==</testRailPassword>
                     <fullTestPath pt:description="full test path of this script as it appears in velocity">main/ai_TestRail/test_cases/ExportVelocityReportsToTestRail.fftc</fullTestPath>
                 </parameters>
             </parameters>
@@ -120,7 +120,14 @@
                                     <nestedSteps>
                                         <item guid="03c593fb-be6c-4613-8ec2-e854ade7cffa" action="create_custom_project" session="s2">
                                             <command>
-                                                <body> -project param(&apos;projectName&apos;) -filename LatestReportsProcessedTimestamp -comment_and_contents [param(&apos;newTimeStamp&apos;)]</body>
+                                                <body> -project [param(&apos;projectName&apos;)] -filename LatestReportsProcessedTimestamp -comment_and_contents [param(&apos;newTimeStamp&apos;)]</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                        <item guid="b0cf7a2c-bf46-473b-867b-95dd054586bd" action="upload_project" session="s1">
+                                            <command>
+                                                <body> -authToken [token] -project [param(&apos;projectName&apos;)]</body>
                                             </command>
                                             <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
                                             <useFieldsInCommand>false</useFieldsInCommand>
@@ -907,6 +914,20 @@
                                                         <item guid="d488f39a-a0c9-48f8-9afb-4ea53b94e44e" action="eval">
                                                             <command>
                                                                 <body>message = query(&apos;customReport&apos;,queryString)</body>
+                                                            </command>
+                                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                                        </item>
+                                                        <item guid="d21e3d83-7253-402d-8edd-b44bd299b2a9" action="eval">
+                                                            <command>
+                                                                <body>message = message.replace(&apos;&quot;&apos;, &quot;&quot;)</body>
+                                                            </command>
+                                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                                        </item>
+                                                        <item guid="2790da03-2e6b-4f42-9723-2d76f1f02b9b" action="eval">
+                                                            <command>
+                                                                <body>message = message.replace(&quot;&apos;&quot;, &quot;&quot;)</body>
                                                             </command>
                                                             <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
                                                             <useFieldsInCommand>false</useFieldsInCommand>

@@ -23,3 +23,8 @@ Video demonstration available at:
 https://youtu.be/0VzVSUqnW5o  
   
 ___
+Notes:  
+Requires Velocity agent 7.1.3 or higher. To upgrade the agent type "./update -update" in the installation directory  
+Be sure to set the TestRail URL in project://di_TestRail/session_profiles/rest1.ffsp  
+  
+___
