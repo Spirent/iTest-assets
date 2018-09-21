@@ -1,5 +1,13 @@
-1 QuickCall Library in project://di_Adtran_CPE
-## Library: project://di_Adtran_CPE/session_profiles/Adtran_cpe_ssh_quickcall_library.fftc
+### Project Information:
+Project: Adtran CPE  
+Description: Response maps and QuickCalls for Adtran CPE devices with emphasis on voice testing scenarios  
+Category: library  
+Class: Community  
+  
+___
+### 1 QuickCall Library in project://di_Adtran_CPE
+### Library: project://di_Adtran_CPE/session_profiles/Adtran_cpe_ssh_quickcall_library.fftc
+___
 ### Login
 Objective:  Login to an Adtran CPE session (priveleged mode)
 ______________________________________________________

@@ -1,7 +1,16 @@
+### Project Information:
+Project: ILO REST  
+Description: QuickCalls useful for automating ILO via its REST API  
+Category: framework  
+Class: Community  
+  
+___
 2 QuickCall Libraries in project://di_iLO_Rest
-## Library: project://di_iLO_Rest/session_profiles/stal_Velocity_REST_quickcall_library.fftc
+### Library: project://di_iLO_Rest/session_profiles/stal_Velocity_REST_quickcall_library.fftc
+___
 ### setup
-## Library: project://di_iLO_Rest/session_profiles/velocity_RestAPI_quickcall_library.fftc
+### Library: project://di_iLO_Rest/session_profiles/velocity_RestAPI_quickcall_library.fftc
+___
 ### activateReservation
 This quickcall is used to activate an ILO reservation.
 

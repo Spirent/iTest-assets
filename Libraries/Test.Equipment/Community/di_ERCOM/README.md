@@ -1,5 +1,13 @@
-1 QuickCall Library in project://di_ERCOM
-## Library: project://di_ERCOM/session_profiles/ercom_qclib.fftc
+### Project Information:
+Project: ERCOM  
+Description: QuickCalls and response maps   
+Category: library  
+Class: Community  
+  
+___
+### 1 QuickCall Library in project://di_ERCOM
+### Library: project://di_ERCOM/session_profiles/ercom_qclib.fftc
+___
 ### getBladeStatus
 ### getLbladeStatus
 ### getLbladeCount

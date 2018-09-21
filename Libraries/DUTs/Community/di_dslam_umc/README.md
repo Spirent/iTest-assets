@@ -1,6 +1,14 @@
-1 QuickCall Library in project://di_dslam_umc
-## Library: project://di_dslam_umc/session_profiles/umc_1000.fftc
-## Headline: Adtran QuickCall Library
+### Project Information:
+Project: UMC DSLAM  
+Description: QuickCalls and response maps useful for building system tests automating the UMC DSLAM  
+Category: library  
+Class: Community  
+  
+___
+### 1 QuickCall Library in project://di_dslam_umc
+### Library: project://di_dslam_umc/session_profiles/umc_1000.fftc
+___
+Headline: Adtran QuickCall Library
 Description:  
 Support for:  
 1100F  

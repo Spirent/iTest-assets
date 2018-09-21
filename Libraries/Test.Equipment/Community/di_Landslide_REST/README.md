@@ -1,6 +1,14 @@
-1 QuickCall Library in project://di_Landslide_REST
-## Library: project://di_Landslide_REST/session_profiles/landslide_rest_1.fftc
-## Headline: LS REST QuickCalls
+### Project Information:
+Project: Landslide REST  
+Description: QuickCall library useful for building test cases automating Spirent Landslide via REST  
+Category: library  
+Class: Community  
+  
+___
+### 1 QuickCall Library in project://di_Landslide_REST
+### Library: project://di_Landslide_REST/session_profiles/landslide_rest_1.fftc
+___
+Headline: LS REST QuickCalls
 Description:  
 Landslide REST QuickCalls bound to Landslide reference session profile  
   

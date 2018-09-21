@@ -448,12 +448,9 @@ includeResponseMaps - If true, inlude a list of response maps along with heading
                                                                                                 <expression>1</expression>
                                                                                                 <actionsWhenTrue>
                                                                                                     <item actionId="DeclareExecutionIssue">
-                                                                                                        <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                                                                        <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="Warning">
                                                                                                             <message>File not found: $uri</message>
                                                                                                         </actionProperties>
-                                                                                                    </item>
-                                                                                                    <item actionId="FailTest">
-                                                                                                        <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
                                                                                                     </item>
                                                                                                 </actionsWhenTrue>
                                                                                             </ruleProperties>
@@ -1624,12 +1621,12 @@ H1,H2{padding-left:15px}
                                                 </item>
                                                 <item guid="a3eb3ae1-285f-455c-945a-bf78ea9112f9" action="if">
                                                     <command>
-                                                        <body>[string trim $readme] == &quot;&quot;</body>
+                                                        <body>[string trim $readme] != &quot;&quot;</body>
                                                     </command>
                                                     <nestedSteps>
                                                         <item guid="890357d3-8226-4b40-9b07-2d06e9a4faa2" action="then">
                                                             <nestedSteps>
-                                                                <item guid="56f51f59-3908-4867-a2ec-d4ef049cb4e0" action="comment">
+                                                                <item guid="56f51f59-3908-4867-a2ec-d4ef049cb4e0" action="comment" skip="true">
                                                                     <postProcessing>
                                                                         <analysisRules>
                                                                             <item>
@@ -1667,6 +1664,13 @@ H1,H2{padding-left:15px}
                                                                                 <body>set readmeLines [split $readme \\n]</body>
                                                                             </command>
                                                                             <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                                                        </item>
+                                                                        <item guid="7731bb52-d36b-4570-9316-782af96806bc" action="writeFile">
+                                                                            <command>
+                                                                                <body>$uriPath/README.md &quot;### Project Information:\\n&quot;</body>
+                                                                            </command>
+                                                                            <applicationProperties type="com.fnfr.svt.execution.builtin.exec.WriteFilePropertyGroup"/>
                                                                             <useFieldsInCommand>false</useFieldsInCommand>
                                                                         </item>
                                                                         <item guid="7d10c7a9-fe56-4635-9c18-e0732a9cf355" action="foreach">
@@ -1710,7 +1714,7 @@ H1,H2{padding-left:15px}
                                                                                                 </item>
                                                                                                 <item guid="b3562cc5-c603-432d-a5ca-1a08173fdcb4" action="writeFile">
                                                                                                     <command>
-                                                                                                        <body>$uriPath/README.md &quot;  \\n&quot;</body>
+                                                                                                        <body>$uriPath/README.md &quot;  \\n___&quot;</body>
                                                                                                     </command>
                                                                                                     <applicationProperties type="com.fnfr.svt.execution.builtin.exec.WriteFilePropertyGroup"/>
                                                                                                     <useFieldsInCommand>false</useFieldsInCommand>
@@ -1761,12 +1765,9 @@ H1,H2{padding-left:15px}
                                                                 <expression>1</expression>
                                                                 <actionsWhenTrue>
                                                                     <item actionId="DeclareExecutionIssue">
-                                                                        <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                                        <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="Warning">
                                                                             <message>File not found: $readmeUri</message>
                                                                         </actionProperties>
-                                                                    </item>
-                                                                    <item actionId="FailTest">
-                                                                        <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
                                                                     </item>
                                                                 </actionsWhenTrue>
                                                             </ruleProperties>
@@ -1827,7 +1828,7 @@ H1,H2{padding-left:15px}
                                                 </item>
                                                 <item guid="10259408-618b-413d-81e2-f1e2cf96e468" action="writeFile">
                                                     <command>
-                                                        <body>$uriPath/README.md &quot;[llength [gget QC_LIB_URI_LIST]] QuickCall Library in $uriPath&quot;</body>
+                                                        <body>$uriPath/README.md &quot;### [llength [gget QC_LIB_URI_LIST]] QuickCall Library in $uriPath&quot;</body>
                                                     </command>
                                                     <applicationProperties type="com.fnfr.svt.execution.builtin.exec.WriteFilePropertyGroup"/>
                                                     <useFieldsInCommand>false</useFieldsInCommand>
@@ -2226,7 +2227,7 @@ H1,H2{padding-left:15px}
                         </item>
                         <item guid="d6d7a1ee-509a-48dd-852c-ff3af95c9a5b" action="writeFile">
                             <command>
-                                <body>$uriPath/README.md &quot;## Library: $uri&quot;</body>
+                                <body>$uriPath/README.md &quot;### Library: $uri\\n___&quot;</body>
                             </command>
                             <applicationProperties type="com.fnfr.svt.execution.builtin.exec.WriteFilePropertyGroup"/>
                             <useFieldsInCommand>false</useFieldsInCommand>
@@ -2247,7 +2248,7 @@ H1,H2{padding-left:15px}
                                         </item>
                                         <item guid="b8577758-d999-47b0-b9f8-cb93a113228d" action="writeFile">
                                             <command>
-                                                <body>$uriPath/README.md &quot;## Headline: $headline&quot;</body>
+                                                <body>$uriPath/README.md &quot;Headline: $headline&quot;</body>
                                             </command>
                                             <applicationProperties type="com.fnfr.svt.execution.builtin.exec.WriteFilePropertyGroup"/>
                                             <useFieldsInCommand>false</useFieldsInCommand>
@@ -2773,7 +2774,7 @@ H1,H2{padding-left:15px}
                         </item>
                         <item guid="f7619b4f-8e55-4373-848b-4b175c374993" action="writeFile">
                             <command>
-                                <body>$uriPath/README.md &quot;## Response Map: $uri&quot;</body>
+                                <body>$uriPath/README.md &quot;### Response Map: $uri\\n___&quot;</body>
                             </command>
                             <applicationProperties type="com.fnfr.svt.execution.builtin.exec.WriteFilePropertyGroup"/>
                             <useFieldsInCommand>false</useFieldsInCommand>
@@ -2794,7 +2795,7 @@ H1,H2{padding-left:15px}
                                         </item>
                                         <item guid="a9938a80-6d05-4d8c-a97e-5b199d5b2102" action="writeFile">
                                             <command>
-                                                <body>$uriPath/README.md &quot;## Headline: $headline&quot;</body>
+                                                <body>$uriPath/README.md &quot;Headline: $headline&quot;</body>
                                             </command>
                                             <applicationProperties type="com.fnfr.svt.execution.builtin.exec.WriteFilePropertyGroup"/>
                                             <useFieldsInCommand>false</useFieldsInCommand>

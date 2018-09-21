@@ -1,5 +1,13 @@
-1 QuickCall Library in project://di_cmts_cisco
-## Library: project://di_cmts_cisco/session_profiles/Cisco_CMTS_Telnet_Quickcalls.fftc
+### Project Information:
+Project: Cisco CMTS  
+Description: QuickCalls and response map libaries for Cisco cable modem termination systems    
+Category: library  
+Class: Community  
+  
+___
+### 1 QuickCall Library in project://di_cmts_cisco
+### Library: project://di_cmts_cisco/session_profiles/Cisco_CMTS_Telnet_Quickcalls.fftc
+___
 ### login
 Logs in to a Cisco CMTS telnet session.
 ### waitForOnline

@@ -1,5 +1,13 @@
-1 QuickCall Library in project://ui_mrv
-## Library: project://ui_mrv/session_profiles/mrv-qc.fftc
+### Project Information:
+Project: MRV Media Cross Connect  
+Description: Telnet QuickCall examples  
+Category: library  
+Class: Community  
+  
+___
+### 1 QuickCall Library in project://ui_mrv
+### Library: project://ui_mrv/session_profiles/mrv-qc.fftc
+___
 ### MRV_showport
 
 Argument | Description

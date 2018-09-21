@@ -1,0 +1,2058 @@
+<?xml version="1.0"?>
+<testCase version="7.1.0.201804110601">
+    <execution>
+        <parameters version="7.1.0.201804110601">
+            <parameters escape="true">
+                <parameters xmlns:pt="http://www.fnfr.com/schemas/parameterTree">
+                    <Attenuation_start pt:description="Starting  db ">0</Attenuation_start>
+                    <Attenuation_max>60</Attenuation_max>
+                    <Attenuation_step>3</Attenuation_step>
+                    <Min_accept_dl_rate pt:description="Download rate Mb/sec to Validate">300</Min_accept_dl_rate>
+                    <Min_accept_ul_rate pt:description="Upload rate Mb/sec">0</Min_accept_ul_rate>
+                </parameters>
+            </parameters>
+        </parameters>
+    </execution>
+    <testbed>project://ai_Wifi/topologies/Rate%20vs%20Range.tbml</testbed>
+    <procedures>
+        <item name="main">
+            <steps>
+                <item guid="1f2fd6f1-a4b4-4560-b3b1-bdbe50dc22e1" action="teststep">
+                    <command>
+                        <body>Initialize Variables</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="5189037f-d6bb-4463-bf7c-a8be90617bf1" action="eval">
+                            <command>
+                                <body>set mcsActual 0</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="b02ccffd-30b9-4545-bf1b-433f473ba0d5" action="eval">
+                            <command>
+                                <body>set mcsActualLong 0</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="2edfde13-f961-495e-952f-bc7010703ef2" action="teststep">
+                    <command>
+                        <body>Open STC and load configuration subscribe to results</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="745ce373-61bb-4a4f-9f62-585f465e7350" action="open" session="STC">
+                            <command>
+                                <body>device:STC_Wifi#Spirent_TestCenter</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.OpenStepPropertyGroup">
+                                <stepProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                <sessionProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.svt.applications.spirent.testcenter.gui" transferableType="com.fnfr.itest.applications.spirent.testcenter.properties.TestCenterGUISessionProperties">
+                                    <configureCustom16bitFilter transferableToolId="com.fnfr.svt.applications.spirent.testcenter.gui" transferableType="com.fnfr.itest.applications.spirent.testcenter.properties.Analyzer16BitFilterProperties" mask="ffff" mask.inherit="false" endOfRange="ffff" endOfRange.inherit="false"/>
+                                </sessionProperties>
+                                <sessionClass type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                <sessionVersion type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            </applicationProperties>
+                        </item>
+                        <item guid="6fd2dcd5-6d88-4c82-bb26-aac1f1f42250" action="subscribeView" session="STC" normalOffset="31.011" estimatedStepExecutionTime="0.985">
+                            <command>
+                                <body>BasicTrafficResults</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="e8aec4a3-3693-4af5-b1e2-f8fec08a89aa" action="subscribeView" session="STC">
+                            <command>
+                                <body>Ieee802.11ClientResults</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="b4634d52-003c-47b2-b2c1-e5ab9ed7ae2d" action="showSubscriptionViews" session="STC" normalOffset="1.374" estimatedStepExecutionTime="0.084">
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="ac8c353b-0a73-4c9c-85d1-9461015a3c16" action="teststep">
+                    <command>
+                        <body>Start Sequencer and accosiate and arp clients Start Traffic</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="d71a58b6-25e3-47fa-b50e-3a3180b653cd" action="startSequencer" session="STC" normalOffset="86.577" estimatedStepExecutionTime="0.631">
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="6c92b78f-4c5d-4de4-993d-fb1a40c716b7" action="teststep">
+                    <command>
+                        <body>Collect stats and chart</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="3f041bd9-9230-47c2-a9b2-7547eb580acc" action="eval">
+                            <command>
+                                <body>set i 0</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="54cce715-a2ba-4e51-9bbf-9557badb7e46" action="while">
+                            <command>
+                                <body>$i &lt; 2</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="e89b2254-f0fe-4c57-b467-743d9a8a4959" action="showResults" session="STC" normalOffset="139.477" estimatedStepExecutionTime="0.05">
+                                    <command>
+                                        <body>BasicTrafficResults Basic Counters</body>
+                                    </command>
+                                    <postProcessing>
+                                        <analysisRules>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                        <query sub="true">RxL1Rate_bps_(&quot;Port //10/5&quot;)</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="store">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                        <storageLocation>var1</storageLocation>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                        <query sub="true">RxL1Rate_bps_(&quot;Port //12/1&quot;)</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="store">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                        <storageLocation>var2</storageLocation>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                        </analysisRules>
+                                    </postProcessing>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                                <item guid="434301b2-b520-41d5-8904-cfd00a595400" action="eval">
+                                    <command>
+                                        <body>set value1 [expr $var1 / 1000000] </body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="a553d77c-acd6-4329-866b-e052ca4b5373" action="eval">
+                                    <command>
+                                        <body>set value2 [expr $var2 / 1000000] </body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="2e25b80b-cbb7-4a0f-814d-3e5da8d3d4c1" action="eval" skip="true">
+                                    <command>
+                                        <body>get $value1</body>
+                                    </command>
+                                    <postProcessing>
+                                        <analysisRules>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                        <query>group1()</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="chart_as_xy">
+                                                    <ruleProperties type="com.fnfr.svt.execution.charting.processors.ChartUsingXYPropertyGroup" chartName="xychart1" xAxisLabel="Time" yAxisLabel="Value" maxItemCount="400" series="MbpsWifi1"/>
+                                                </processorInfo>
+                                            </item>
+                                        </analysisRules>
+                                    </postProcessing>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="c9530b80-510b-4417-8878-67623dfb2fdd" action="eval" skip="true">
+                                    <command>
+                                        <body>get $value2</body>
+                                    </command>
+                                    <postProcessing>
+                                        <analysisRules>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                        <query>group1()</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="chart_as_xy">
+                                                    <ruleProperties type="com.fnfr.svt.execution.charting.processors.ChartUsingXYPropertyGroup" chartName="xychart1" xAxisLabel="Time" yAxisLabel="Value" maxItemCount="400" series="MbpsWifi2"/>
+                                                </processorInfo>
+                                            </item>
+                                        </analysisRules>
+                                    </postProcessing>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="1fa35b39-f076-46ad-b5f7-c4998601d9c5" action="showResults" session="STC" normalOffset="9.754" estimatedStepExecutionTime="0.55">
+                                    <command>
+                                        <body>Ieee802.11ClientResults</body>
+                                    </command>
+                                    <postProcessing>
+                                        <analysisRules>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                        <query>Ieee80211ClientConfigSignalStrength(&quot;Port //12/1&quot;)</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="chart_as_xy">
+                                                    <ruleProperties type="com.fnfr.svt.execution.charting.processors.ChartUsingXYPropertyGroup" chartName="xychart1" maxItemCount="400" series="RSSI"/>
+                                                </processorInfo>
+                                                <skip>true</skip>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="contains">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                                        <searchString>*MCS_64_QAM_5_6*288900000*</searchString>
+                                                        <matchType>Wildcard</matchType>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>$value == 1</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="Eval">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                                    <statement>set mcsActual 31</statement>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="SkipRemainingRules">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                                <skip>true</skip>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="contains">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                                        <searchString>*MCS_64_QAM_3_4*260000000*</searchString>
+                                                        <matchType>Wildcard</matchType>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>$value == 1</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="Eval">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                                    <statement>set mcsActual 30</statement>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="SkipRemainingRules">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                                <skip>true</skip>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="contains">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                                        <searchString>*MCS_64_QAM_2_3*231100000*</searchString>
+                                                        <matchType>Wildcard</matchType>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>$value == 1</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="Eval">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                                    <statement>set mcsActual 29</statement>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="SkipRemainingRules">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                                <skip>true</skip>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="contains">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                                        <searchString>*MCS_16_QAM_3_4*173300000*</searchString>
+                                                        <matchType>Wildcard</matchType>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>$value == 1</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="Eval">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                                    <statement>set mcsActual 28</statement>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="SkipRemainingRules">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                                <skip>true</skip>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="contains">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                                        <searchString>*MCS_16_QAM_1_2*115600000*</searchString>
+                                                        <matchType>Wildcard</matchType>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>$value == 1</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="Eval">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                                    <statement>set mcsActual 27</statement>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="SkipRemainingRules">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                                <skip>true</skip>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="contains">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                                        <searchString>*QPSK*3_4*86700000*</searchString>
+                                                        <matchType>Wildcard</matchType>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>$value == 1</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="Eval">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                                    <statement>set mcsActual 26</statement>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="SkipRemainingRules">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                                <skip>true</skip>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="contains">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                                        <searchString>*QPSK*1_2*57800000*</searchString>
+                                                        <matchType>Wildcard</matchType>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>$value == 1</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="Eval">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                                    <statement>set mcsActual 25</statement>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="SkipRemainingRules">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                                <skip>true</skip>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="contains">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                                        <searchString>*BPSK*1_2*28900000*</searchString>
+                                                        <matchType>Wildcard</matchType>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>$value == 1</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="Eval">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                                    <statement>set mcsActual 24</statement>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="SkipRemainingRules">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                                <skip>true</skip>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="contains">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                                        <searchString>*MCS_64_QAM_5_6*260000000*</searchString>
+                                                        <matchType>Wildcard</matchType>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>$value == 1</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="Eval">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                                    <statement>set mcsActualLong 31</statement>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="SkipRemainingRules">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                                <skip>true</skip>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="contains">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                                        <searchString>*MCS_64_QAM_3_4*234000000*</searchString>
+                                                        <matchType>Wildcard</matchType>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>$value == 1</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="Eval">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                                    <statement>set mcsActualLong 30</statement>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="SkipRemainingRules">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                                <skip>true</skip>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="contains">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                                        <searchString>*MCS_64_QAM_2_3*208000000*</searchString>
+                                                        <matchType>Wildcard</matchType>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>$value == 1</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="Eval">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                                    <statement>set mcsActualLong 29</statement>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="SkipRemainingRules">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                                <skip>true</skip>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="contains">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                                        <searchString>*MCS_16_QAM_3_4*156000000*</searchString>
+                                                        <matchType>Wildcard</matchType>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>$value == 1</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="Eval">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                                    <statement>set mcsActualLong 28</statement>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="SkipRemainingRules">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                                <skip>true</skip>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="contains">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                                        <searchString>*MCS_16_QAM_1_2*104000000*</searchString>
+                                                        <matchType>Wildcard</matchType>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>$value == 1</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="Eval">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                                    <statement>set mcsActualLong 27</statement>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="SkipRemainingRules">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                                <skip>true</skip>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="contains">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                                        <searchString>*QPSK*3_4*78000000*</searchString>
+                                                        <matchType>Wildcard</matchType>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>$value == 1</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="Eval">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                                    <statement>set mcsActualLong 26</statement>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="SkipRemainingRules">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                                <skip>true</skip>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="contains">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                                        <searchString>*QPSK*1_2*52000000*</searchString>
+                                                        <matchType>Wildcard</matchType>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>$value == 1</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="Eval">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                                    <statement>set mcsActualLong 25</statement>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="SkipRemainingRules">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                                <skip>true</skip>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="contains">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                                        <searchString>*BPSK*1_2*26000000*</searchString>
+                                                        <matchType>Wildcard</matchType>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>$value == 1</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="Eval">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                                    <statement>set mcsActualLong 24</statement>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="SkipRemainingRules">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                                <skip>true</skip>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="contains">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                                        <searchString>*MCS*MCS_TYPE_NA*</searchString>
+                                                        <matchType>Wildcard</matchType>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>$value == 1</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="Eval">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                                    <statement>set mcsActualLong 0</statement>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="Eval">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                                    <statement>set mcsActual 0</statement>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="SkipRemainingRules">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                        <actionsWhenFalse>
+                                                            <item actionId="AbortTest">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                            <item actionId="DeclareExecutionIssue">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                                    <message>{MCS INDEX DOES NOT REFLECT 4x4 MODE OPERATION - CHECK TOPOLOGY}</message>
+                                                                </actionProperties>
+                                                            </item>
+                                                        </actionsWhenFalse>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                                <skip>true</skip>
+                                            </item>
+                                        </analysisRules>
+                                    </postProcessing>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                                <item guid="da4b3554-041a-4d99-97b6-210877bdd557" action="eval">
+                                    <command>
+                                        <body>incr i</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="3038dcf5-2ca2-479d-b975-537072a5386f" action="sleep">
+                                    <command>
+                                        <body>5</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="5b6ba356-5a6b-407c-843f-c779225e8e9c" action="teststep">
+                    <command>
+                        <body>Loop through Attenuation and validate throughput and chart</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="6c88af83-1927-4fc3-af63-270e202924a5" action="eval">
+                            <command>
+                                <body>set i 0</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="d240bf9d-4398-4250-ad3f-43d1c83eb07b" action="while">
+                            <command>
+                                <body>$i &lt; 5</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="75028544-3759-4bab-9b77-cae3d25886ed" action="showResults" session="STC" normalOffset="139.477" estimatedStepExecutionTime="0.05">
+                                    <command>
+                                        <body>BasicTrafficResults Basic Counters</body>
+                                    </command>
+                                    <postProcessing>
+                                        <analysisRules>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                        <query sub="true">RxL1Rate_bps_(&quot;Port //10/5&quot;)</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="store">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                        <storageLocation>var1</storageLocation>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                        <query sub="true">RxL1Rate_bps_(&quot;Port //12/1&quot;)</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="store">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                        <storageLocation>var2</storageLocation>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                        </analysisRules>
+                                    </postProcessing>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                                <item guid="bc728b9e-5043-4e48-bf66-eb6d7592cd3e" action="eval">
+                                    <command>
+                                        <body>set value1 [expr $var1 / 1000000] </body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="f62c64ce-3de6-40e9-915a-c48d9fce0274" action="eval">
+                                    <command>
+                                        <body>set value2 [expr $var2 / 1000000] </body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="5cf8fa79-18cd-4934-af22-1a0a99932f86" action="eval" skip="true">
+                                    <command>
+                                        <body>get $value1</body>
+                                    </command>
+                                    <postProcessing>
+                                        <analysisRules>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                        <query>group1()</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="chart_as_xy">
+                                                    <ruleProperties type="com.fnfr.svt.execution.charting.processors.ChartUsingXYPropertyGroup" chartName="xychart1" xAxisLabel="Time" yAxisLabel="Value" maxItemCount="400" series="MbpsWifi1"/>
+                                                </processorInfo>
+                                            </item>
+                                        </analysisRules>
+                                    </postProcessing>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="c266b4be-4eb8-45d3-8179-9a47b5494fcb" action="eval" skip="true">
+                                    <command>
+                                        <body>get $value2</body>
+                                    </command>
+                                    <postProcessing>
+                                        <analysisRules>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                        <query>group1()</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="chart_as_xy">
+                                                    <ruleProperties type="com.fnfr.svt.execution.charting.processors.ChartUsingXYPropertyGroup" chartName="xychart1" xAxisLabel="Time" yAxisLabel="Value" maxItemCount="400" series="MbpsWifi2"/>
+                                                </processorInfo>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                        <query>group1()</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>$value &gt; [param Min_accept_dl_rate]</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="DeclareExecutionIssue">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="OK">
+                                                                    <message> Download Rate is greater than [param Min_accept_dl_rate] Mb/sec</message>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="PassTestIfNotAlreadyFailed">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                        <actionsWhenFalse>
+                                                            <item actionId="DeclareExecutionIssue">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                                    <message> Download Rate is LESS than [param Min_accept_dl_rate] Mb/sec</message>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="FailTest">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenFalse>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                        </analysisRules>
+                                    </postProcessing>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="de3348ed-a4d9-4155-8c6c-1dd500fc24cf" action="showResults" session="STC" normalOffset="9.754" estimatedStepExecutionTime="0.55">
+                                    <command>
+                                        <body>Ieee802.11ClientResults</body>
+                                    </command>
+                                    <postProcessing>
+                                        <analysisRules>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                        <query>Ieee80211ClientConfigSignalStrength(&quot;Port //12/1&quot;)</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="chart_as_xy">
+                                                    <ruleProperties type="com.fnfr.svt.execution.charting.processors.ChartUsingXYPropertyGroup" chartName="xychart1" maxItemCount="400" series="RSSI"/>
+                                                </processorInfo>
+                                                <skip>true</skip>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="contains">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                                        <searchString>*MCS_64_QAM_5_6*288900000*</searchString>
+                                                        <matchType>Wildcard</matchType>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>$value == 1</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="Eval">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                                    <statement>set mcsActual 31</statement>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="SkipRemainingRules">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                                <skip>true</skip>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="contains">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                                        <searchString>*MCS_64_QAM_3_4*260000000*</searchString>
+                                                        <matchType>Wildcard</matchType>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>$value == 1</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="Eval">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                                    <statement>set mcsActual 30</statement>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="SkipRemainingRules">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                                <skip>true</skip>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="contains">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                                        <searchString>*MCS_64_QAM_2_3*231100000*</searchString>
+                                                        <matchType>Wildcard</matchType>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>$value == 1</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="Eval">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                                    <statement>set mcsActual 29</statement>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="SkipRemainingRules">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                                <skip>true</skip>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="contains">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                                        <searchString>*MCS_16_QAM_3_4*173300000*</searchString>
+                                                        <matchType>Wildcard</matchType>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>$value == 1</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="Eval">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                                    <statement>set mcsActual 28</statement>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="SkipRemainingRules">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                                <skip>true</skip>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="contains">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                                        <searchString>*MCS_16_QAM_1_2*115600000*</searchString>
+                                                        <matchType>Wildcard</matchType>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>$value == 1</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="Eval">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                                    <statement>set mcsActual 27</statement>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="SkipRemainingRules">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                                <skip>true</skip>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="contains">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                                        <searchString>*QPSK*3_4*86700000*</searchString>
+                                                        <matchType>Wildcard</matchType>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>$value == 1</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="Eval">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                                    <statement>set mcsActual 26</statement>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="SkipRemainingRules">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                                <skip>true</skip>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="contains">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                                        <searchString>*QPSK*1_2*57800000*</searchString>
+                                                        <matchType>Wildcard</matchType>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>$value == 1</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="Eval">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                                    <statement>set mcsActual 25</statement>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="SkipRemainingRules">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                                <skip>true</skip>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="contains">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                                        <searchString>*BPSK*1_2*28900000*</searchString>
+                                                        <matchType>Wildcard</matchType>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>$value == 1</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="Eval">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                                    <statement>set mcsActual 24</statement>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="SkipRemainingRules">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                                <skip>true</skip>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="contains">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                                        <searchString>*MCS_64_QAM_5_6*260000000*</searchString>
+                                                        <matchType>Wildcard</matchType>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>$value == 1</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="Eval">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                                    <statement>set mcsActualLong 31</statement>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="SkipRemainingRules">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                                <skip>true</skip>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="contains">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                                        <searchString>*MCS_64_QAM_3_4*234000000*</searchString>
+                                                        <matchType>Wildcard</matchType>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>$value == 1</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="Eval">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                                    <statement>set mcsActualLong 30</statement>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="SkipRemainingRules">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                                <skip>true</skip>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="contains">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                                        <searchString>*MCS_64_QAM_2_3*208000000*</searchString>
+                                                        <matchType>Wildcard</matchType>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>$value == 1</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="Eval">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                                    <statement>set mcsActualLong 29</statement>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="SkipRemainingRules">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                                <skip>true</skip>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="contains">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                                        <searchString>*MCS_16_QAM_3_4*156000000*</searchString>
+                                                        <matchType>Wildcard</matchType>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>$value == 1</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="Eval">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                                    <statement>set mcsActualLong 28</statement>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="SkipRemainingRules">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                                <skip>true</skip>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="contains">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                                        <searchString>*MCS_16_QAM_1_2*104000000*</searchString>
+                                                        <matchType>Wildcard</matchType>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>$value == 1</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="Eval">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                                    <statement>set mcsActualLong 27</statement>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="SkipRemainingRules">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                                <skip>true</skip>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="contains">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                                        <searchString>*QPSK*3_4*78000000*</searchString>
+                                                        <matchType>Wildcard</matchType>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>$value == 1</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="Eval">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                                    <statement>set mcsActualLong 26</statement>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="SkipRemainingRules">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                                <skip>true</skip>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="contains">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                                        <searchString>*QPSK*1_2*52000000*</searchString>
+                                                        <matchType>Wildcard</matchType>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>$value == 1</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="Eval">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                                    <statement>set mcsActualLong 25</statement>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="SkipRemainingRules">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                                <skip>true</skip>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="contains">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                                        <searchString>*BPSK*1_2*26000000*</searchString>
+                                                        <matchType>Wildcard</matchType>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>$value == 1</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="Eval">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                                    <statement>set mcsActualLong 24</statement>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="SkipRemainingRules">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                                <skip>true</skip>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="contains">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                                        <searchString>*MCS*MCS_TYPE_NA*</searchString>
+                                                        <matchType>Wildcard</matchType>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>$value == 1</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="Eval">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                                    <statement>set mcsActualLong 0</statement>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="Eval">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                                    <statement>set mcsActual 0</statement>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="SkipRemainingRules">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                        <actionsWhenFalse>
+                                                            <item actionId="AbortTest">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                            <item actionId="DeclareExecutionIssue">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                                    <message>{MCS INDEX DOES NOT REFLECT 4x4 MODE OPERATION - CHECK TOPOLOGY}</message>
+                                                                </actionProperties>
+                                                            </item>
+                                                        </actionsWhenFalse>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                                <skip>true</skip>
+                                            </item>
+                                        </analysisRules>
+                                    </postProcessing>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                                <item guid="b6b88ef7-bd8e-4c48-9d34-c8503ce1652f" action="sleep">
+                                    <command>
+                                        <body>5</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                                <item guid="d09fc033-fa8c-4d74-a649-a67f028b395a" action="eval">
+                                    <command>
+                                        <body>incr i</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="7ed9985e-c0aa-43f6-8a89-3056857820db" action="teststep">
+                    <command>
+                        <body>Stop traffic</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="c8437815-4127-4038-9377-18e635a6464a" action="stopSequencer" session="STC" normalOffset="86.577" estimatedStepExecutionTime="0.631">
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="e6c65862-15bf-48bd-b556-851748900ce1" action="teststep">
+                    <command>
+                        <body>Collect final stats and complete chart</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="02393b4f-4401-4b70-be11-61bc655b7aff" action="eval">
+                            <command>
+                                <body>set i 0</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="3156b05a-30fc-4da8-83cf-0c54ad2c0f49" action="while">
+                            <command>
+                                <body>$i &lt; 3</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="8c16ec7b-854a-4e95-a1ae-985e2405ad78" action="showResults" session="STC" normalOffset="139.477" estimatedStepExecutionTime="0.05">
+                                    <command>
+                                        <body>BasicTrafficResults Basic Counters</body>
+                                    </command>
+                                    <postProcessing>
+                                        <analysisRules>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                        <query sub="true">RxL1Rate_bps_(&quot;Port //10/5&quot;)</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="store">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                        <storageLocation>var1</storageLocation>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                        <query sub="true">RxL1Rate_bps_(&quot;Port //12/1&quot;)</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="store">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                        <storageLocation>var2</storageLocation>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                        </analysisRules>
+                                    </postProcessing>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                                <item guid="4b1e29bc-8c32-46bd-afa0-0412e39fe80a" action="eval">
+                                    <command>
+                                        <body>set value1 [expr $var1 / 1000000] </body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="61700a9d-6f1e-42c9-98b0-d92f17f41983" action="eval">
+                                    <command>
+                                        <body>set value2 [expr $var2 / 1000000] </body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="f534b951-b486-40b4-8a88-94c17a3880b1" action="eval" skip="true">
+                                    <command>
+                                        <body>get $value1</body>
+                                    </command>
+                                    <postProcessing>
+                                        <analysisRules>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                        <query>group1()</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="chart_as_xy">
+                                                    <ruleProperties type="com.fnfr.svt.execution.charting.processors.ChartUsingXYPropertyGroup" chartName="xychart1" xAxisLabel="Time" yAxisLabel="Value" maxItemCount="400" series="MbpsWifi1"/>
+                                                </processorInfo>
+                                            </item>
+                                        </analysisRules>
+                                    </postProcessing>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="f0f0a57a-2da1-4cb4-8273-c34263a10501" action="eval" skip="true">
+                                    <command>
+                                        <body>get $value2</body>
+                                    </command>
+                                    <postProcessing>
+                                        <analysisRules>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                        <query>group1()</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="chart_as_xy">
+                                                    <ruleProperties type="com.fnfr.svt.execution.charting.processors.ChartUsingXYPropertyGroup" chartName="xychart1" xAxisLabel="Time" yAxisLabel="Value" maxItemCount="400" series="MbpsWifi2"/>
+                                                </processorInfo>
+                                            </item>
+                                        </analysisRules>
+                                    </postProcessing>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="aeec7c0e-4ef9-4ba3-bb07-3fa2be7a43a7" action="showResults" session="STC" normalOffset="9.754" estimatedStepExecutionTime="0.55">
+                                    <command>
+                                        <body>Ieee802.11ClientResults</body>
+                                    </command>
+                                    <postProcessing>
+                                        <analysisRules>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                        <query>Ieee80211ClientConfigSignalStrength(&quot;Port //12/1&quot;)</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="chart_as_xy">
+                                                    <ruleProperties type="com.fnfr.svt.execution.charting.processors.ChartUsingXYPropertyGroup" chartName="xychart1" maxItemCount="400" series="RSSI"/>
+                                                </processorInfo>
+                                                <skip>true</skip>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="contains">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                                        <searchString>*MCS_64_QAM_5_6*288900000*</searchString>
+                                                        <matchType>Wildcard</matchType>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>$value == 1</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="Eval">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                                    <statement>set mcsActual 31</statement>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="SkipRemainingRules">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                                <skip>true</skip>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="contains">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                                        <searchString>*MCS_64_QAM_3_4*260000000*</searchString>
+                                                        <matchType>Wildcard</matchType>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>$value == 1</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="Eval">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                                    <statement>set mcsActual 30</statement>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="SkipRemainingRules">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                                <skip>true</skip>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="contains">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                                        <searchString>*MCS_64_QAM_2_3*231100000*</searchString>
+                                                        <matchType>Wildcard</matchType>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>$value == 1</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="Eval">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                                    <statement>set mcsActual 29</statement>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="SkipRemainingRules">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                                <skip>true</skip>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="contains">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                                        <searchString>*MCS_16_QAM_3_4*173300000*</searchString>
+                                                        <matchType>Wildcard</matchType>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>$value == 1</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="Eval">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                                    <statement>set mcsActual 28</statement>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="SkipRemainingRules">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                                <skip>true</skip>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="contains">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                                        <searchString>*MCS_16_QAM_1_2*115600000*</searchString>
+                                                        <matchType>Wildcard</matchType>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>$value == 1</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="Eval">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                                    <statement>set mcsActual 27</statement>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="SkipRemainingRules">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                                <skip>true</skip>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="contains">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                                        <searchString>*QPSK*3_4*86700000*</searchString>
+                                                        <matchType>Wildcard</matchType>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>$value == 1</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="Eval">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                                    <statement>set mcsActual 26</statement>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="SkipRemainingRules">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                                <skip>true</skip>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="contains">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                                        <searchString>*QPSK*1_2*57800000*</searchString>
+                                                        <matchType>Wildcard</matchType>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>$value == 1</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="Eval">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                                    <statement>set mcsActual 25</statement>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="SkipRemainingRules">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                                <skip>true</skip>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="contains">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                                        <searchString>*BPSK*1_2*28900000*</searchString>
+                                                        <matchType>Wildcard</matchType>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>$value == 1</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="Eval">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                                    <statement>set mcsActual 24</statement>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="SkipRemainingRules">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                                <skip>true</skip>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="contains">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                                        <searchString>*MCS_64_QAM_5_6*260000000*</searchString>
+                                                        <matchType>Wildcard</matchType>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>$value == 1</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="Eval">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                                    <statement>set mcsActualLong 31</statement>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="SkipRemainingRules">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                                <skip>true</skip>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="contains">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                                        <searchString>*MCS_64_QAM_3_4*234000000*</searchString>
+                                                        <matchType>Wildcard</matchType>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>$value == 1</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="Eval">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                                    <statement>set mcsActualLong 30</statement>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="SkipRemainingRules">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                                <skip>true</skip>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="contains">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                                        <searchString>*MCS_64_QAM_2_3*208000000*</searchString>
+                                                        <matchType>Wildcard</matchType>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>$value == 1</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="Eval">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                                    <statement>set mcsActualLong 29</statement>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="SkipRemainingRules">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                                <skip>true</skip>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="contains">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                                        <searchString>*MCS_16_QAM_3_4*156000000*</searchString>
+                                                        <matchType>Wildcard</matchType>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>$value == 1</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="Eval">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                                    <statement>set mcsActualLong 28</statement>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="SkipRemainingRules">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                                <skip>true</skip>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="contains">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                                        <searchString>*MCS_16_QAM_1_2*104000000*</searchString>
+                                                        <matchType>Wildcard</matchType>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>$value == 1</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="Eval">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                                    <statement>set mcsActualLong 27</statement>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="SkipRemainingRules">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                                <skip>true</skip>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="contains">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                                        <searchString>*QPSK*3_4*78000000*</searchString>
+                                                        <matchType>Wildcard</matchType>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>$value == 1</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="Eval">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                                    <statement>set mcsActualLong 26</statement>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="SkipRemainingRules">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                                <skip>true</skip>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="contains">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                                        <searchString>*QPSK*1_2*52000000*</searchString>
+                                                        <matchType>Wildcard</matchType>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>$value == 1</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="Eval">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                                    <statement>set mcsActualLong 25</statement>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="SkipRemainingRules">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                                <skip>true</skip>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="contains">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                                        <searchString>*BPSK*1_2*26000000*</searchString>
+                                                        <matchType>Wildcard</matchType>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>$value == 1</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="Eval">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                                    <statement>set mcsActualLong 24</statement>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="SkipRemainingRules">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                                <skip>true</skip>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="contains">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                                        <searchString>*MCS*MCS_TYPE_NA*</searchString>
+                                                        <matchType>Wildcard</matchType>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>$value == 1</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="Eval">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                                    <statement>set mcsActualLong 0</statement>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="Eval">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                                    <statement>set mcsActual 0</statement>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="SkipRemainingRules">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                        <actionsWhenFalse>
+                                                            <item actionId="AbortTest">
+                                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            </item>
+                                                            <item actionId="DeclareExecutionIssue">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                                    <message>{MCS INDEX DOES NOT REFLECT 4x4 MODE OPERATION - CHECK TOPOLOGY}</message>
+                                                                </actionProperties>
+                                                            </item>
+                                                        </actionsWhenFalse>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                                <skip>true</skip>
+                                            </item>
+                                        </analysisRules>
+                                    </postProcessing>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                                <item guid="3b51b92e-d64d-42f8-9772-7559208093e4" action="sleep">
+                                    <command>
+                                        <body>5</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                                <item guid="0233a49e-7d29-4b68-8c77-dd5bc93d2a5e" action="eval">
+                                    <command>
+                                        <body>incr i</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="248b581b-9fe5-4995-9fe2-a4e40a6d3ece" action="eval">
+                            <command>
+                                <body>set i 1</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="a0b424f3-5ef7-491a-bd4b-0744ee668f29" action="while">
+                            <command>
+                                <body>$i &lt; 12</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="127a4267-d952-4acd-b81d-0d94af8d92b9" action="readFile" skip="true" useResponseMapLibraryApplicability="false">
+                                    <command>
+                                        <body>project://a_Wifi/parameters/rate_vs_range.csv</body>
+                                    </command>
+                                    <postProcessing>
+                                        <analysisRules>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                        <query sub="true">db($i)</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="store">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                        <storageLocation>db</storageLocation>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                        <query sub="true">dl($i)</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="chart_as_xy">
+                                                    <ruleProperties type="com.fnfr.svt.execution.charting.processors.ChartUsingXYPropertyGroup" chartName="Rate vs Range" style="LINE" xAxisLabel="Range (Loss in db)" yAxisLabel="Rate (Mbps)" series="GW Vendor #1">
+                                                        <title>Rate vs Range</title>
+                                                        <xValue>$db</xValue>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                        <query sub="true">ul($i)</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="chart_as_xy">
+                                                    <ruleProperties type="com.fnfr.svt.execution.charting.processors.ChartUsingXYPropertyGroup" chartName="xychart1" series="GW Vendor #1">
+                                                        <xValue>$db</xValue>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                        </analysisRules>
+                                    </postProcessing>
+                                    <applicationProperties type="com.fnfr.svt.execution.builtin.exec.ReadFilePropertyGroup"/>
+                                    <responseMap>project://a_Wifi/parameters/rate_vs_range_csv.ffrm</responseMap>
+                                    <useResponseMapLibraryFromSession>false</useResponseMapLibraryFromSession>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="3f674d42-6620-42ad-9d67-86fb939962b6" action="readFile" useResponseMapLibraryApplicability="false">
+                                    <command>
+                                        <body>project://ai_Wifi/parameters/rate_vs_range2.csv</body>
+                                    </command>
+                                    <postProcessing>
+                                        <analysisRules>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                        <query sub="true">db($i)</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="store">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                        <storageLocation>db</storageLocation>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                        <query sub="true">dl($i)</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="chart_as_xy">
+                                                    <ruleProperties type="com.fnfr.svt.execution.charting.processors.ChartUsingXYPropertyGroup" chartName="Rate vs Range" style="LINE" xAxisLabel="Range (Loss in db)" yAxisLabel="Rate (Mbps)" series="DL GW Vendor #1">
+                                                        <title>Rate vs Range</title>
+                                                        <xValue>$db</xValue>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                        <query sub="true">ul($i)</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="chart_as_xy">
+                                                    <ruleProperties type="com.fnfr.svt.execution.charting.processors.ChartUsingXYPropertyGroup" chartName="Rate vs Range" style="LINE" series="UL GW Vendor #1">
+                                                        <title>Rate vs Range</title>
+                                                        <xValue>$db</xValue>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                        </analysisRules>
+                                    </postProcessing>
+                                    <applicationProperties type="com.fnfr.svt.execution.builtin.exec.ReadFilePropertyGroup"/>
+                                    <responseMap>project://ai_Wifi/parameters/rate_vs_range_csv.ffrm</responseMap>
+                                    <useResponseMapLibraryFromSession>false</useResponseMapLibraryFromSession>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="67ec1b01-6ec7-4d98-b3f2-0ced05853f64" action="readFile" useResponseMapLibraryApplicability="false">
+                                    <command>
+                                        <body>project://ai_Wifi/parameters/rate_vs_range2.csv</body>
+                                    </command>
+                                    <postProcessing>
+                                        <analysisRules>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                        <query sub="true">dl($i)</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="chart_as_xy">
+                                                    <ruleProperties type="com.fnfr.svt.execution.charting.processors.ChartUsingXYPropertyGroup" chartName="Rate vs Range" style="LINE" xAxisLabel="Range (Loss in db)" yAxisLabel="Rate (Mbps)" series="DL GW Vendor #2">
+                                                        <title>Rate vs Range</title>
+                                                        <xValue>$db</xValue>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                        <query sub="true">ul($i)</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="chart_as_xy">
+                                                    <ruleProperties type="com.fnfr.svt.execution.charting.processors.ChartUsingXYPropertyGroup" chartName="Rate vs Range" style="LINE" series="UL GW Vendor #2">
+                                                        <title>Rate vs Range</title>
+                                                        <xValue>$db</xValue>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                        </analysisRules>
+                                    </postProcessing>
+                                    <applicationProperties type="com.fnfr.svt.execution.builtin.exec.ReadFilePropertyGroup"/>
+                                    <responseMap>project://ai_Wifi/parameters/rate_vs_range_csv.ffrm</responseMap>
+                                    <useResponseMapLibraryFromSession>false</useResponseMapLibraryFromSession>
+                                </item>
+                                <item guid="c1fef38c-f329-4a1e-a680-270340613bf0" action="eval">
+                                    <command>
+                                        <body>incr i</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="5685c420-3733-4574-9911-b28b08e27e15" action="teststep">
+                    <command>
+                        <body>Close all open devices</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="aa053c8c-03fb-4b22-8827-b17d336a3790" action="close" session="STC">
+                            <postProcessing>
+                                <analysisRules>
+                                    <item>
+                                        <extractorInfo extractorType="contains">
+                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                                <searchString>OK</searchString>
+                                            </extractorProperties>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="assert">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                <expression>$value == 1</expression>
+                                                <actionsWhenTrue>
+                                                    <item actionId="DeclareExecutionIssue">
+                                                        <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="OK">
+                                                            <message>Test  Case Passed</message>
+                                                        </actionProperties>
+                                                    </item>
+                                                    <item actionId="PassTestIfNotAlreadyFailed">
+                                                        <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                    </item>
+                                                </actionsWhenTrue>
+                                                <actionsWhenFalse>
+                                                    <item actionId="DeclareExecutionIssue">
+                                                        <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                            <message>Test  Case Failed</message>
+                                                        </actionProperties>
+                                                    </item>
+                                                    <item actionId="FailTest">
+                                                        <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                    </item>
+                                                </actionsWhenFalse>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                </analysisRules>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+        </item>
+    </procedures>
+</testCase>

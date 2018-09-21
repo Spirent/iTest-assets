@@ -1,0 +1,968 @@
+<?xml version="1.0"?>
+<testCase version="7.1.0.201804110601">
+    <general>
+        <documentation>TestRail QuickCalls</documentation>
+        <notes>QuickCalls used to for TestRail, especially useful for updating test results. Tested on hosted platform</notes>
+        <owner>cwhitty</owner>
+        <sessionClass includeTestCase="true" sessionType="rest1.ffsp"/>
+        <language>Python</language>
+    </general>
+    <procedures>
+        <item name="main">
+            <steps>
+                <item guid="142bb27e-dc82-4270-a52b-4848811a650b" action="comment">
+                    <command>
+                        <body>QC Lib</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+        </item>
+        <item name="addResultToTest" isPublic="true" isVBlock="true">
+            <description>Add a test result to a test</description>
+            <steps>
+                <item guid="a3f4e5ce-7614-4a00-9c6e-51f58a2e288d" action="eval">
+                    <command>
+                        <body>stepResults=eval(stepResults)</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="a6eac2e1-e5ad-4ed6-aee2-e64f76fd6aad" action="json">
+                    <command>
+                        <body>action=&apos;createJson&apos;, documentName=&apos;testResults&apos;, fromFile=&apos;false&apos;, jsonString=&apos;{&quot;status_id&quot;:[status],&quot;custom_fullreport&quot;:&quot;[fullReportUrl]&quot;,&quot;comment&quot;:&quot;[comment]&quot;,&quot;version&quot;:&quot;[version]&quot;,&quot;custom_step_results&quot;:\\[]}&apos;</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.execution.builtin.json.JsonPropertiesGroup">
+                        <action inherit="false">createJson</action>
+                        <jsonString inherit="false" sub="true">{&quot;status_id&quot;:[status],&quot;custom_fullreport&quot;:&quot;[fullReportUrl]&quot;,&quot;comment&quot;:&quot;[comment]&quot;,&quot;version&quot;:&quot;[version]&quot;,&quot;custom_step_results&quot;:\\[]}</jsonString>
+                        <documentName inherit="false">testResults</documentName>
+                    </applicationProperties>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="b4e05c2b-395c-45f2-ae59-ae118fa9a28d" action="eval">
+                    <command>
+                        <body>i=0</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="294ebb48-9578-4b2b-a990-d345f73f2cd6" action="for">
+                    <command>
+                        <body>statusId, actual in stepResults:</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="6e1a98d9-c35e-4cfc-87ff-3054ade628b0" action="json">
+                            <command>
+                                <body>action=&apos;addJsonNode&apos;, editResponseStructure=&apos;false&apos;, documentName=&apos;testResults&apos;, pathValue=&apos;{&quot;custom_step_results/\\[[i]]&quot;:\\[{&quot;status_id&quot;:[statusId],&quot;actual&quot;:&quot;[actual]&quot;}]}&apos;</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.execution.builtin.json.JsonPropertiesGroup">
+                                <action inherit="false">addJsonNode</action>
+                                <pathValue inherit="false" sub="true">{&quot;custom_step_results/\\[[i]]&quot;:\\[{&quot;status_id&quot;:[statusId],&quot;actual&quot;:&quot;[actual]&quot;}]}</pathValue>
+                                <documentName inherit="false">testResults</documentName>
+                            </applicationProperties>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="ab9f1480-dd7c-4edf-9145-5403bc381b8d" action="eval">
+                            <command>
+                                <body>i=i+1</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="2944ab2d-bb76-49cb-90c5-7228b28cbc54" action="POST" session="[session]" normalOffset="87.172" estimatedStepExecutionTime="3.242">
+                    <command>
+                        <body>index.php?api/v2/add_result/[testId]</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query sub="true">fn:count(mapped/Json/id)</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>value == 1</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="OK">
+                                                    <message>created a test result</message>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenTrue>
+                                        <actionsWhenFalse>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message>failed to create a test result</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="SkipRemainingRules">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                        </actionsWhenFalse>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query sub="true">mapped/Json/id</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <query>id</query>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" httpMethod="GET" httpMethod.inherit="false" message="[testResults]" message.inherit="false" action="index.php?api/v2/add_result/[testId]" action.inherit="false">
+                        <authentication transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.AuthenticationProperties" authenticationType="Basic" authenticationType.inherit="false" user="[apiUserName]" user.inherit="false" password.masked="true" password="Y96QElfOzHw40FIrwPGkWkgc0BoYGK3k" password.inherit="false" acceptAllCertificates="true" acceptAllCertificates.inherit="false"/>
+                        <httpHeader inherit="false" transferableToolId="com.fnfr.itest.applications.webservices.restful">
+                            <memberClasses>
+                                <item>com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry</item>
+                            </memberClasses>
+                            <item transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry" header="Content-Type" header.inherit="false" value="application/json" value.inherit="false"/>
+                        </httpHeader>
+                    </applicationProperties>
+                </item>
+            </steps>
+            <multilineDescription>Adds a test result to a test
+
+The ID of the test status. The built-in system statuses have the following IDs:
+1\tPassed
+2\tBlocked
+3\tUntested (not allowed when adding a result)
+4\tRetest
+5\tFailed
+</multilineDescription>
+            <arguments>
+                <item name="apiUserName">
+                    <description>API authentication user</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="apiUserPassword">
+                    <description>API authentication password</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="testId">
+                    <description>Id of test on which to add results</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="status">
+                    <description>The ID of the test status. The built-in system statuses have the following IDs:
+1\tPassed
+2\tBlocked
+3\tUntested (not allowed when adding a result)
+4\tRetest
+5\tFailed</description>
+                </item>
+                <item name="comment">
+                    <description>Test result comments</description>
+                </item>
+                <item name="version">
+                    <description>The version or build you tested against</description>
+                </item>
+                <item name="stepResults">
+                    <description>Nested list of step results, for example:
+[[1,&quot;Actual 1&quot;],[1,&quot;Actual 2&quot;]]
+It will come in as a string, so it will require an eval operation to put it back into a list, for example:
+stepResults=eval(stepResults)</description>
+                </item>
+                <item name="fullReportUrl">
+                    <description>The URL where the full report can be reviewed. This requires a custom result called &quot;Full Report&quot; (type URL) with a System Name of &quot;fullreport&quot; to have been created and applied to the test&apos;s template</description>
+                </item>
+            </arguments>
+            <response>{&quot;id&quot;:&quot;notFound&quot;}</response>
+        </item>
+        <item name="addTestCase" isPublic="true" isVBlock="true">
+            <description>Create a new case</description>
+            <steps>
+                <item guid="ad6ec2a7-e8c0-4455-8a69-580043c4c458" action="POST" session="[session]" normalOffset="87.172" estimatedStepExecutionTime="3.242">
+                    <command>
+                        <body>index.php?/api/v2/add_case/[sectionId]</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query sub="true">fn:count(mapped/Json/id)</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>value == 1</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="OK">
+                                                    <message>created a test result</message>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenTrue>
+                                        <actionsWhenFalse>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message>failed to create a test result</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="SkipRemainingRules">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                        </actionsWhenFalse>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query sub="true">mapped/Json/id</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <query>id</query>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" httpMethod="GET" httpMethod.inherit="false" message="{ &quot;title&quot; : &quot;[caseName]&quot;, &quot;template_id&quot; : &quot;[templateId]&quot; }" message.inherit="false" action="index.php?/api/v2/add_case/[sectionId]" action.inherit="false">
+                        <authentication transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.AuthenticationProperties" authenticationType="Basic" authenticationType.inherit="false" user="[apiUserName]" user.inherit="false" password.masked="true" password="Y96QElfOzHw40FIrwPGkWkgc0BoYGK3k" password.inherit="false" acceptAllCertificates="true" acceptAllCertificates.inherit="false"/>
+                        <httpHeader inherit="false" transferableToolId="com.fnfr.itest.applications.webservices.restful">
+                            <memberClasses>
+                                <item>com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry</item>
+                            </memberClasses>
+                            <item transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry" header="Content-Type" header.inherit="false" value="application/json" value.inherit="false"/>
+                        </httpHeader>
+                    </applicationProperties>
+                </item>
+            </steps>
+            <multilineDescription>Adds a test result to a test
+
+The ID of the test status. The built-in system statuses have the following IDs:
+1\tPassed
+2\tBlocked
+3\tUntested (not allowed when adding a result)
+4\tRetest
+5\tFailed
+</multilineDescription>
+            <arguments>
+                <item name="apiUserName">
+                    <description>API authentication user</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="apiUserPassword">
+                    <description>API authentication password</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="sectionId">
+                    <description>section Id where this case needs to call home</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="caseName">
+                    <description>name of the case we are creating</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="templateId">
+                    <description>default 2 is a test-step modelled test case</description>
+                    <defaultValue>2</defaultValue>
+                </item>
+            </arguments>
+            <response>{&quot;id&quot;:&quot;notFound&quot;}</response>
+        </item>
+        <item name="addTestRunToPlan" isPublic="true" isVBlock="true">
+            <description>Add a test run into a plan</description>
+            <steps>
+                <item guid="c66de56e-50b7-4cb0-b02c-2af38afaa144" action="POST" session="[session]" normalOffset="87.172" estimatedStepExecutionTime="3.242">
+                    <command>
+                        <body>index.php?api/v2/add_plan_entry/[planId]</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query sub="true">fn:count(mapped/Json/runs/item/id)</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>value == 1</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="OK">
+                                                    <message>created a test run</message>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenTrue>
+                                        <actionsWhenFalse>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message>failed to create a test run</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="SkipRemainingRules">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                        </actionsWhenFalse>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query sub="true">mapped/Json/runs/item/id</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <query>id</query>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" httpMethod="GET" httpMethod.inherit="false" action="index.php?api/v2/add_plan_entry/[planId]" action.inherit="false">
+                        <message inherit="false">{
+\t&quot;suite_id&quot;: 1,
+\t&quot;include_all&quot;: false,
+       &quot;case_ids&quot;:\\[[caseId]],
+       &quot;name&quot;:&quot;Spirent execution [name]&quot;,
+       &quot;description&quot;:&quot;[description]&quot;
+}</message>
+                        <authentication transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.AuthenticationProperties" authenticationType="Basic" authenticationType.inherit="false" user="[apiUserName]" user.inherit="false" password.masked="true" password="Y96QElfOzHw40FIrwPGkWkgc0BoYGK3k" password.inherit="false" acceptAllCertificates="true" acceptAllCertificates.inherit="false"/>
+                        <httpHeader inherit="false" transferableToolId="com.fnfr.itest.applications.webservices.restful">
+                            <memberClasses>
+                                <item>com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry</item>
+                            </memberClasses>
+                            <item transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry" header="Content-Type" header.inherit="false" value="application/json" value.inherit="false"/>
+                        </httpHeader>
+                    </applicationProperties>
+                </item>
+            </steps>
+            <multilineDescription>Adds a new test runs to a test plan</multilineDescription>
+            <arguments>
+                <item name="apiUserName">
+                    <description>API authentication user</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="apiUserPassword">
+                    <description>API authentication password</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="caseId">
+                    <description>Id of case to include in test run</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="planId">
+                    <description>Id of plan where test run should go into</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="name">
+                    <description>The name of the test run to create</description>
+                    <defaultValue>Spirent Execution</defaultValue>
+                </item>
+                <item name="description">
+                    <description>The description of the test run to create</description>
+                    <defaultValue>Test run populated from a Spirent execution</defaultValue>
+                </item>
+            </arguments>
+            <response>{&quot;id&quot;:&quot;notFound&quot;}</response>
+        </item>
+        <item name="getCaseId" isPublic="true" isVBlock="true">
+            <description>Get Case Id by Name</description>
+            <steps>
+                <item guid="31db6a70-f43a-4349-847c-c974d63f919c" action="GET" session="[session]" normalOffset="87.172" estimatedStepExecutionTime="3.242">
+                    <command>
+                        <body>index.php?api/v2/get_cases/[projectId]</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query sub="true">fn:count(mapped/Json/item\\[title=&apos;[caseName]&apos;]/id)</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>value == 1</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="OK">
+                                                    <message>found case named [caseName]</message>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenTrue>
+                                        <actionsWhenFalse>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message>failed to find a single case named [caseName]</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="SkipRemainingRules">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                        </actionsWhenFalse>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query sub="true">mapped/Json/item\\[title=&apos;[caseName]&apos;]/id</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <query>id</query>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" httpMethod="GET" httpMethod.inherit="false" action="index.php?api/v2/get_cases/[projectId]" action.inherit="false">
+                        <authentication transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.AuthenticationProperties" authenticationType="Basic" authenticationType.inherit="false" user="[apiUserName]" user.inherit="false" password.masked="true" password="Y96QElfOzHw40FIrwPGkWkgc0BoYGK3k" password.inherit="false" acceptAllCertificates="true" acceptAllCertificates.inherit="false"/>
+                        <httpHeader inherit="false" transferableToolId="com.fnfr.itest.applications.webservices.restful">
+                            <memberClasses>
+                                <item>com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry</item>
+                            </memberClasses>
+                            <item transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry" header="Content-Type" header.inherit="false" value="application/json" value.inherit="false"/>
+                        </httpHeader>
+                    </applicationProperties>
+                </item>
+            </steps>
+            <multilineDescription>Finds test case by name</multilineDescription>
+            <arguments>
+                <item name="apiUserName">
+                    <description>API authentication user</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="apiUserPassword">
+                    <description>API authentication password</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="caseName">
+                    <description>Name of case to find and report on</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="projectId">
+                    <description>Id of project where test plan resides</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+            <response>{&quot;id&quot;:&quot;notFound&quot;}</response>
+        </item>
+        <item name="getSectionId" isPublic="true" isVBlock="true">
+            <description>Get Case Id by Name</description>
+            <steps>
+                <item guid="cb321f1d-749d-4760-8a10-da52d5eb0d90" action="GET" session="[session]" normalOffset="87.172" estimatedStepExecutionTime="3.242">
+                    <command>
+                        <body>index.php?/api/v2/get_sections/[projectId]</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query sub="true">fn:count(mapped/Json/item\\[name=&apos;[sectionName]&apos;]/id)</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>value == 1</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="OK">
+                                                    <message>found case named [sectionName]</message>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenTrue>
+                                        <actionsWhenFalse>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message>failed to find a single case named [sectionName]</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="SkipRemainingRules">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                        </actionsWhenFalse>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query sub="true">mapped/Json/item\\[name=&apos;[sectionName]&apos;]/id</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <query>id</query>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" httpMethod="GET" httpMethod.inherit="false" action="index.php?/api/v2/get_sections/[projectId]" action.inherit="false">
+                        <authentication transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.AuthenticationProperties" authenticationType="Basic" authenticationType.inherit="false" user="[apiUserName]" user.inherit="false" password.masked="true" password="Y96QElfOzHw40FIrwPGkWkgc0BoYGK3k" password.inherit="false" acceptAllCertificates="true" acceptAllCertificates.inherit="false"/>
+                        <httpHeader inherit="false" transferableToolId="com.fnfr.itest.applications.webservices.restful">
+                            <memberClasses>
+                                <item>com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry</item>
+                            </memberClasses>
+                            <item transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry" header="Content-Type" header.inherit="false" value="application/json" value.inherit="false"/>
+                        </httpHeader>
+                    </applicationProperties>
+                </item>
+            </steps>
+            <multilineDescription>Finds test case by name</multilineDescription>
+            <arguments>
+                <item name="apiUserName">
+                    <description>API authentication user</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="apiUserPassword">
+                    <description>API authentication password</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="sectionName">
+                    <description>Name of section to find</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="projectId">
+                    <description>Id of project where section resides</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+            <response>{&quot;id&quot;:&quot;notFound&quot;}</response>
+        </item>
+        <item name="getPlanId" isPublic="true" isVBlock="true">
+            <description>Get Plan Id by Name</description>
+            <steps>
+                <item guid="3e9574e4-b942-49f6-b544-b25081d63d18" action="if">
+                    <command>
+                        <body>onlyActive:</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="642a2894-bcbd-45de-80e7-a3115dbf034b" action="eval">
+                            <command>
+                                <body>params=&apos;&amp;is_completed=0&apos;</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="06d148df-71e3-45cc-bce6-94dee5af1747" action="else">
+                    <nestedSteps>
+                        <item guid="da16ae41-8caf-43f2-a01a-5c045d80e14d" action="eval">
+                            <command>
+                                <body>params=None</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="8fce26b4-b009-4155-9e54-021637f2f432" action="GET" session="[session]" normalOffset="87.172" estimatedStepExecutionTime="3.242">
+                    <command>
+                        <body>index.php?api/v2/get_plans/[projectId][params]</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query sub="true">fn:count(mapped/Json/item\\[name=&apos;[planName]&apos;]/id)</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>value == 1</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="OK">
+                                                    <message>found plan named [planName]</message>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenTrue>
+                                        <actionsWhenFalse>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message>failed to find a single plan named [planName]</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="SkipRemainingRules">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                        </actionsWhenFalse>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query sub="true">mapped/Json/item\\[name=&apos;[planName]&apos;]/id</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <query>id</query>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" httpMethod="GET" httpMethod.inherit="false" action="index.php?api/v2/get_plans/[projectId][params]" action.inherit="false">
+                        <authentication transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.AuthenticationProperties" authenticationType="Basic" authenticationType.inherit="false" user="[apiUserName]" user.inherit="false" password.masked="true" password="Y96QElfOzHw40FIrwPGkWkgc0BoYGK3k" password.inherit="false" acceptAllCertificates="true" acceptAllCertificates.inherit="false"/>
+                        <httpHeader inherit="false" transferableToolId="com.fnfr.itest.applications.webservices.restful">
+                            <memberClasses>
+                                <item>com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry</item>
+                            </memberClasses>
+                            <item transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry" header="Content-Type" header.inherit="false" value="application/json" value.inherit="false"/>
+                        </httpHeader>
+                    </applicationProperties>
+                </item>
+            </steps>
+            <multilineDescription>Finds test plan by name</multilineDescription>
+            <arguments>
+                <item name="apiUserName">
+                    <description>API authentication user</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="apiUserPassword">
+                    <description>API authentication password</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="planName">
+                    <description>Name of plan to find and report on</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="projectId">
+                    <description>Id of project where test plan resides</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="onlyActive">
+                    <description>Search only for active plans</description>
+                    <defaultValue>true</defaultValue>
+                </item>
+            </arguments>
+            <response>{&quot;id&quot;:&quot;notFound&quot;}</response>
+        </item>
+        <item name="getProjectId" isPublic="true" isVBlock="true">
+            <description>Get Project Id by Name</description>
+            <steps>
+                <item guid="cfecadc8-1e4a-45ff-aaa3-f646c779d2c7" action="if">
+                    <command>
+                        <body>onlyActive:</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="70f90008-ec7f-44d7-94a0-960d99d6b253" action="eval">
+                            <command>
+                                <body>params=&apos;&amp;is_completed=0&apos;</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="3271c150-fd2c-4319-bfec-280aa80ff0e6" action="else">
+                    <nestedSteps>
+                        <item guid="8f037765-9e0b-4abd-9980-010211741ed6" action="eval">
+                            <command>
+                                <body>params=None</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="7c7b816e-5d0d-42eb-ad67-2af357c84a97" action="GET" session="[session]" normalOffset="87.172" estimatedStepExecutionTime="3.242">
+                    <command>
+                        <body>index.php?api/v2/get_projects[params]</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query sub="true">fn:count(mapped/Json/item\\[name=&apos;[projectName]&apos;]/id)</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>value == 1</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="OK">
+                                                    <message>found project named [projectName]</message>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenTrue>
+                                        <actionsWhenFalse>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message>failed to find a single project named [projectName]</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="SkipRemainingRules">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                        </actionsWhenFalse>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query sub="true">mapped/Json/item\\[name=&apos;[projectName]&apos;]/id</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <query>id</query>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" httpMethod="GET" httpMethod.inherit="false" action="index.php?api/v2/get_projects[params]" action.inherit="false">
+                        <authentication transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.AuthenticationProperties" authenticationType="Basic" authenticationType.inherit="false" user="[apiUserName]" user.inherit="false" password.masked="true" password="Y96QElfOzHw40FIrwPGkWkgc0BoYGK3k" password.inherit="false" acceptAllCertificates="true" acceptAllCertificates.inherit="false"/>
+                        <httpHeader inherit="false" transferableToolId="com.fnfr.itest.applications.webservices.restful">
+                            <memberClasses>
+                                <item>com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry</item>
+                            </memberClasses>
+                            <item transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry" header="Content-Type" header.inherit="false" value="application/json" value.inherit="false"/>
+                        </httpHeader>
+                    </applicationProperties>
+                </item>
+            </steps>
+            <multilineDescription>Finds project by name</multilineDescription>
+            <arguments>
+                <item name="apiUserName">
+                    <description>API authentication user</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="apiUserPassword">
+                    <description>API authentication password</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="projectName">
+                    <description>Name of project to find and report on</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="onlyActive">
+                    <description>Search only for active projects</description>
+                    <defaultValue>true</defaultValue>
+                </item>
+            </arguments>
+            <response>{&quot;id&quot;:&quot;notFound&quot;}</response>
+        </item>
+        <item name="getTestIds" isPublic="true" isVBlock="true">
+            <description>Get Test Ids within a Run</description>
+            <steps>
+                <item guid="a276b978-275a-44e2-94d6-fea36520ba47" action="GET" session="[session]" normalOffset="87.172" estimatedStepExecutionTime="3.242">
+                    <command>
+                        <body>index.php?api/v2/get_tests/[runId]</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query sub="true">fn:count(mapped/Json/item/id)</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>value &gt;= 1</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="OK">
+                                                    <message>found at least one test</message>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenTrue>
+                                        <actionsWhenFalse>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message>failed to find at least one test</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="SkipRemainingRules">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                        </actionsWhenFalse>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>mapped/Json/item/id</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>testList</storageLocation>
+                                        <storeInAList>true</storeInAList>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" httpMethod="GET" httpMethod.inherit="false" action="index.php?api/v2/get_tests/[runId]" action.inherit="false">
+                        <authentication transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.AuthenticationProperties" authenticationType="Basic" authenticationType.inherit="false" user="[apiUserName]" user.inherit="false" password.masked="true" password="Y96QElfOzHw40FIrwPGkWkgc0BoYGK3k" password.inherit="false" acceptAllCertificates="true" acceptAllCertificates.inherit="false"/>
+                        <httpHeader inherit="false" transferableToolId="com.fnfr.itest.applications.webservices.restful">
+                            <memberClasses>
+                                <item>com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry</item>
+                            </memberClasses>
+                            <item transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry" header="Content-Type" header.inherit="false" value="application/json" value.inherit="false"/>
+                        </httpHeader>
+                    </applicationProperties>
+                </item>
+                <item guid="f7b48642-5ce1-4290-97db-b213cb510385" action="for">
+                    <command>
+                        <body>test in testList:</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="5a4e3898-f9d1-4a70-a672-827f3e338af8" action="json">
+                            <command>
+                                <body>action=&apos;addJsonNode&apos;, editResponseStructure=&apos;true&apos;, pathValue=&apos;{&quot;ids/\\[0]&quot;:\\[[test]]}&apos;</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.execution.builtin.json.JsonPropertiesGroup">
+                                <action inherit="false">addJsonNode</action>
+                                <pathValue inherit="false" sub="true">{&quot;ids/\\[0]&quot;:\\[[test]]}</pathValue>
+                                <editResponseStructure inherit="false">true</editResponseStructure>
+                            </applicationProperties>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <multilineDescription>Shows tests in a run</multilineDescription>
+            <arguments>
+                <item name="apiUserName">
+                    <description>API authentication user</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="apiUserPassword">
+                    <description>API authentication password</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="runId">
+                    <description>Id of run to interrogate</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+            <response>{&quot;ids&quot;:[]}</response>
+        </item>
+        <item name="mapVelocityResultToTestRailStatus" isPublic="true" isVBlock="true">
+            <steps>
+                <item guid="b0b48625-92dd-4b72-974c-4606e837f6ac" action="eval">
+                    <command>
+                        <body>if velocityStatus == &quot;INDETERMINATE&quot;:
+  print(4) ; # map to Retest
+elif velocityStatus == &quot;PASS&quot;:
+  print(1) ; # map to Passed
+elif velocityStatus == &quot;FAIL&quot;:
+  print(5) ; # map to Retest
+elif velocityStatus == &quot;ABORT&quot;:
+  print(4) ; # map to Retest
+elif velocityStatus == &quot;CANCEL&quot;:
+  print(4) ; # map to Retest
+elif velocityStatus == &quot;ERROR&quot;:
+  print(4) ; # map to Retest
+
+</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>group1()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <query>testRailStatus</query>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <arguments>
+                <item name="velocityStatus">
+                    <description>INDETERMINITE, PASSED, FAILED, ABORTED, CANCELLED, ERROR</description>
+                </item>
+            </arguments>
+            <response>{&quot;testRailStatus&quot;:&quot;unknown&quot;}</response>
+        </item>
+        <item name="mapVelocitySeverityToTestRailStatus" isPublic="true" isVBlock="true">
+            <steps>
+                <item guid="f77a031d-4c07-43b6-bab5-b7ab14b89917" action="eval">
+                    <command>
+                        <body>if velocitySeverity == &quot;INFORMATION&quot;:
+  print(3) ; # map to Untested
+elif velocitySeverity == &quot;PASS&quot;:
+  print(1) ; # map to Passed
+elif velocitySeverity == &quot;WARNING&quot;:
+  print(3) ; # map to Untested
+elif velocitySeverity == &quot;ERROR&quot;:
+  print(5) ; # map to Failed
+
+</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>group1()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <query>testRailStatus</query>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <arguments>
+                <item name="velocitySeverity">
+                    <description>INFORMATION, WARNING, ERROR, OK</description>
+                </item>
+            </arguments>
+            <response>{&quot;testRailStatus&quot;:&quot;unknown&quot;}</response>
+        </item>
+    </procedures>
+</testCase>

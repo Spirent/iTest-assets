@@ -1,5 +1,13 @@
-1 QuickCall Library in project://di_Cisco_IOS
-## Library: project://di_Cisco_IOS/session_profiles/SSH_IOS_profile_quickcall_library.fftc
+### Project Information:
+Project: Cisco IOS 1  
+Description: Collection of QuickCalls and response maps for Cisco IOS devices  
+Category: library  
+Class: Reference  
+  
+___
+### 1 QuickCall Library in project://di_Cisco_IOS
+### Library: project://di_Cisco_IOS/session_profiles/SSH_IOS_profile_quickcall_library.fftc
+___
 ### ConfigureVlanTrunk
 Add or remove VLAN trunk configuration to an interface
 

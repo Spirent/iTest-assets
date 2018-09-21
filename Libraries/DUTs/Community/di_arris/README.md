@@ -1,6 +1,14 @@
-1 QuickCall Library in project://di_arris
-## Library: project://di_arris/session_profiles/arris_ssh_rco.fftc
-## Headline: SSH to Arris RG via Routed CO
+### Project Information:
+Project: Arris  
+Description: A variety of QuickCalls and response maps tested with Arris NM55 for ADSL and VDSL test applications  
+Category: library  
+Class: Community  
+  
+___
+### 1 QuickCall Library in project://di_arris
+### Library: project://di_arris/session_profiles/arris_ssh_rco.fftc
+___
+Headline: SSH to Arris RG via Routed CO
 Description:  
 Use this session when you don't have physical access to the RG LAN port.  
   

@@ -1,6 +1,14 @@
-1 QuickCall Library in project://di_ciena_next_generation
-## Library: project://di_ciena_next_generation/session_profiles/ciena_next_gen_qc.fftc
-## Headline: Quickcall library for saos 8x ciena devices
+### Project Information:
+Project: Ciena SAOS  
+Description: Several QuickCalls and response maps useful for automating Ciena metro ethernet systems running SAOS  
+Category: library  
+Class: Community  
+  
+___
+### 1 QuickCall Library in project://di_ciena_next_generation
+### Library: project://di_ciena_next_generation/session_profiles/ciena_next_gen_qc.fftc
+___
+Headline: Quickcall library for saos 8x ciena devices
 ### add_cfm_mep
 
 Argument | Description

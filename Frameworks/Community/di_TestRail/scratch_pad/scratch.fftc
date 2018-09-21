@@ -1,0 +1,194 @@
+<?xml version="1.0"?>
+<testCase version="7.1.0.201804110601">
+    <general>
+        <language>Python</language>
+    </general>
+    <procedures>
+        <item name="main">
+            <steps>
+                <item guid="a776f915-86ec-4393-8013-bfc48b97bd67" action="open" session="t1">
+                    <command>
+                        <body>project://di_TestRail/session_profiles/rest1.ffsp</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.OpenStepPropertyGroup">
+                        <stepProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulSessionProperties">
+                            <authentication transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.AuthenticationProperties" authenticationType="Basic" authenticationType.inherit="false" user="clark.whitty@spirent.com" user.inherit="false" password.masked="true" password="jhvk5XlwmnU2bQVIziTY5U/o6ElYVJcTLJ0vk1NLwnY=" password.inherit="false"/>
+                        </sessionProperties>
+                        <sessionClass type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionVersion type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    </applicationProperties>
+                </item>
+                <item guid="cf035bf4-7298-46b3-b7a5-dc817719de6a" action="eval">
+                    <command>
+                        <body>testRailUserName=&apos;clark.whitty@spirent.com&apos; ; testRailUserPassword=&apos;foobar&apos;</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="ffeab6a1-a331-49d4-ac39-e1831f01e691" action="getProjectId" session="t1">
+                    <command>
+                        <body> -apiUserName [testRailUserName] -apiUserPassword [testRailUserPassword] -projectName Project1 -onlyActive false</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>mapped/Json/id</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>projId</storageLocation>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="6a3cfa6f-421b-48d4-af98-4fd14322a4f6" action="getPlanId" session="t1">
+                    <command>
+                        <body> -apiUserName [testRailUserName] -apiUserPassword [testRailUserPassword] -planName Plan1 -projectId [projId] -onlyActive false</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>mapped/Json/id</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>planId</storageLocation>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="cd821076-4fed-46cf-b84b-3758dc0b5b37" action="getCaseId" session="t1">
+                    <command>
+                        <body> -apiUserName [testRailUserName] -apiUserPassword [testRailUserPassword] -caseName SanityTC3 -projectId [projId]</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>mapped/Json/id</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>caseId</storageLocation>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="762af0fd-2697-4e7c-85af-1e7bc4e9fe89" action="addTestRunToPlan" session="t1">
+                    <command>
+                        <body> -apiUserName [testRailUserName] -apiUserPassword [testRailUserPassword] -caseId [caseId] -planId [planId]</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>mapped/Json/id</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>runId</storageLocation>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="fbdc4fda-0f55-4f3f-a14a-06f74849d019" action="getTestIds" session="t1">
+                    <command>
+                        <body> -apiUserName [testRailUserName] -apiUserPassword [testRailUserPassword] -runId [runId]</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>mapped/Json/ids</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>testIds</storageLocation>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="7a7fb426-682b-4f99-8580-86496a4b115a" action="eval">
+                    <command>
+                        <body>stepResults=[[1,&quot;Actual 1&quot;],[1,&quot;Actual 2&quot;]]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="de4f9b99-f6d8-478a-bec2-a590f63ebcce" action="addResultToTest" session="t1">
+                    <command>
+                        <body> -apiUserName [testRailUserName] -apiUserPassword [testRailUserPassword] -testId [testIds] -status 1 -comment foobar -version 123 -stepResults [stepResults] -fullReportUrl http://www.spirent.com</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>mapped/Json/id</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>resultId</storageLocation>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="9d8d0bff-b68d-49d6-90d4-9c1d510ba59b" action="getSectionId" session="t1" skip="true">
+                    <command>
+                        <body> -apiUserName [testRailUserName] -apiUserPassword [testRailUserPassword] -sectionName Sanity -projectId 1</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="bc503e1b-f1fc-4be1-b6a1-e9f39536522f" action="addTestCase" session="t1" skip="true">
+                    <command>
+                        <body> -apiUserName [testRailUserName] -apiUserPassword [testRailUserPassword] -sectionId 1 -caseName yomomma.fftc</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="0c5abfd6-9c9f-4788-be3e-dfa35af27c79" action="close" session="t1" normalOffset="36.455">
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+        </item>
+    </procedures>
+</testCase>

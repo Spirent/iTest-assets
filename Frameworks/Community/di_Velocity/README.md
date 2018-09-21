@@ -1,5 +1,13 @@
-1 QuickCall Library in project://di_Velocity
-## Library: project://di_Velocity/session_profiles/REST.fftc
+### Project Information:
+Project: Velocity REST  
+Description: QuickCalls useful for automating Velocity via its REST API  
+Category: framework  
+Class: Community  
+  
+___
+### 1 QuickCall Library in project://di_Velocity
+### Library: project://di_Velocity/session_profiles/REST.fftc
+___
 ### get_authentication_service_url_v2
 ### get_settings_service_url
 ### get_execution_service_url

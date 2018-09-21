@@ -1,6 +1,14 @@
+### Project Information:
+Project: Documentation Generator  
+Description: Generate project documentation, for Git repository, from QuickCall and Procedure libraries  
+Category: library  
+Class: Community  
+  
+___
 3 Procedure Libraries in project://ui_documentation
-## Library: project://ui_documentation/test_cases/documentation.fftc
-## Headline: Documentation Generator
+### Library: project://ui_documentation/test_cases/documentation.fftc
+___
+Headline: Documentation Generator
 Description:  
 This test case will generate documentation for QuickCall and Procedure libraries and optionally Response Maps. The Headline and Description should be completed for General Information and all procedures. Procedure arguments should also have a description.  
   
@@ -59,8 +67,9 @@ Argument | Description
 ------------ | -------------
 uri | URI of file to check
 dateString | Change date in the form of mm/dd/yy or mmdd/yyyy.<br>Relative time strings can also be used.<br>See Tcl clock scan documentation for more info.
-## Library: project://ui_documentation/test_cases/readme_check.fftc
-## Headline: Check for missing documentation/readme.txt
+### Library: project://ui_documentation/test_cases/readme_check.fftc
+___
+Headline: Check for missing documentation/readme.txt
 Description:  
 Scan the workspace to detect any projects that don't have readmet.txt  
   
@@ -73,8 +82,9 @@ Description: <Some wording about what the project does or is used for>
 Category: <"library", "automation", or "framework">  
 Class: <"Community", "Tested by Spirent", "Reference">  
   
-## Library: project://ui_documentation/test_cases/unit_test.fftc
-## Headline: Unit Test - Documentation Generator
+### Library: project://ui_documentation/test_cases/unit_test.fftc
+___
+Headline: Unit Test - Documentation Generator
 Description:  
 Add stuff here to test the Documentation Generator tool.  
   

@@ -1,6 +1,14 @@
-1 QuickCall Library in project://di_alu
-## Library: project://di_alu/session_profiles/alu_qc.fftc
-## Headline: Alcatel-Lucent Quickcall Library
+### Project Information:
+Project: ALU 7450  
+Description: QuickCalls and response maps used to test ALU 7450 functions  
+Category: library  
+Class: Community  
+  
+___
+### 1 QuickCall Library in project://di_alu
+### Library: project://di_alu/session_profiles/alu_qc.fftc
+___
+Headline: Alcatel-Lucent Quickcall Library
 Description:  
 These quickcalls are used for ALU sessions  
   
