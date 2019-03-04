@@ -1707,36 +1707,6 @@ Example: file:/C:/stc.pcap</description>
         </item>
         <item name="attachClientProfile" isPublic="true">
             <steps>
-                <item guid="38181f88-1d79-4963-adb5-791131a17904" action="eval" session="$session" skip="true">
-                    <command>
-                        <body>stc::get $port -children-streamblock</body>
-                    </command>
-                    <postProcessing>
-                        <analysisRules>
-                            <item>
-                                <extractorInfo extractorType="regex">
-                                    <extractorProperties type="com.fnfr.svt.mapping.regex.extractors.RegexExtractorPropertyGroup" useLineMode="true">
-                                        <regex>^Result=([^\\r\\n]+)$</regex>
-                                    </extractorProperties>
-                                </extractorInfo>
-                                <processorInfo ruleType="store">
-                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
-                                        <storageLocation>streamblock</storageLocation>
-                                        <responseValue type="com.fnfr.documents.PropertyBoolean">false</responseValue>
-                                        <variable type="com.fnfr.documents.PropertyBoolean">true</variable>
-                                    </ruleProperties>
-                                </processorInfo>
-                            </item>
-                        </analysisRules>
-                    </postProcessing>
-                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
-                </item>
-                <item guid="a255bc95-4bb8-465c-a7e9-603fd748574b" action="eval" session="$session" skip="true">
-                    <command>
-                        <body>stc::perform Ieee80211AssignClientProfileCommand -ClientProfileList $clientProfileId -StreamBlockList $streamblock</body>
-                    </command>
-                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
-                </item>
                 <item guid="1991a463-0dc6-46db-9f2f-c87ffb570644" action="eval" session="$session">
                     <command>
                         <body>stc::perform Ieee80211AssignClientProfileCommand -ClientProfileList $clientProfileId</body>
@@ -1761,6 +1731,12 @@ Example: file:/C:/stc.pcap</description>
         </item>
         <item name="attenuateChannelPower" isPublic="true">
             <steps>
+                <item guid="c9943da7-f424-4763-ac8b-c94e9b0dc01d" action="eval" useFieldsInCommand="false">
+                    <command>
+                        <body>set channelPower [expr $channelPower*4]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
                 <item guid="59029987-c41a-4059-b187-b3fd35cc8ffd" action="eval" session="$session">
                     <command>
                         <body>stc::get $port -children-ieee80211phy</body>
@@ -2281,6 +2257,149 @@ Max value: 60 db</description>
                     <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
                 </item>
             </steps>
+        </item>
+        <item name="configDevice" isPublic="true">
+            <steps>
+                <item guid="b0104d8e-922d-46a9-ba3d-8b152e2e1c1a" action="if" useFieldsInCommand="false">
+                    <command>
+                        <body>$resolve_gw == &quot;true&quot;</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="594cf2fd-563c-4f78-93a8-80276f79d6da" action="then" useFieldsInCommand="false">
+                            <nestedSteps>
+                                <item guid="fb6f0abe-fe9e-453f-b016-d4e0b8df42e7" action="eval" session="$session">
+                                    <command>
+                                        <body>stc::config $device_id -Ipv4If.Address $ipv4 -Ipv4If.Gateway $gw_ip -Ipv4If.ResolveGatewayMac true</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="7c753d69-445b-49b1-8d18-94865ef66921" action="elseif" useFieldsInCommand="false">
+                            <command>
+                                <body>$resolve_gw == &quot;false&quot;</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="eb405479-a215-4ecc-81ed-371caf241a8c" action="eval" session="$session">
+                                    <command>
+                                        <body>stc::config $device_id -Ipv4If.Address $ipv4 -Ipv4If.Gateway $gw_ip -Ipv4If.GatewayMac $gw_mac -Ipv4If.ResolveGatewayMac false </body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="5f6c21fd-cddb-4f2a-b15c-65a5bc55e498" action="else" useFieldsInCommand="false">
+                            <nestedSteps>
+                                <item guid="e3b1e6b6-00c1-4cd9-b987-e062fe7e1a73" action="comment" useFieldsInCommand="false">
+                                    <command>
+                                        <body>Print wrong input</body>
+                                    </command>
+                                    <postProcessing>
+                                        <analysisRules>
+                                            <item>
+                                                <extractorInfo extractorType="none">
+                                                    <extractorProperties type="com.fnfr.svt.documents.EmptyExtractorPropertyGroup"/>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="message">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.MessageProcessorPropertyGroup" severity="Information">
+                                                        <message> Wrong Input</message>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                        </analysisRules>
+                                    </postProcessing>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <arguments>
+                <item name="device_id">
+                    <description>Device Id of the emulated device</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="ipv4">
+                    <description>ipv4 Address of the device</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="gw_ip">
+                    <description>Gateway IP address</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="resolve_gw">
+                    <description>This argument is to check whether to resolve Gateway MAC address or no. 
+true - Resolves mac address using ARP
+false - do not resolves mac address</description>
+                    <defaultValue>true</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="gw_mac">
+                    <description>Gateway mac address, if user sets resolve_gw to &apos;false&apos;, user should be pass this value, otherwise QC will fail to configure device</description>
+                </item>
+            </arguments>
+        </item>
+        <item name="associateClientProfile" isPublic="true">
+            <steps>
+                <item guid="f1c704f9-ec76-451a-8029-2ff74eaeda02" action="eval" session="$session">
+                    <command>
+                        <body>stc::perform Ieee80211AssociateCommand -ClientList $wifiPortId</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="fe018636-f239-4262-b283-ba5875bb18ba" action="eval" session="$session">
+                    <command>
+                        <body>stc::apply</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <arguments>
+                <item name="wifiPortId">
+                    <description>STC Wifi Port Id </description>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="changePortName" isPublic="true">
+            <steps>
+                <item guid="958eb3f8-8d8c-4fbf-b8f5-a623d3e9dc39" action="eval" session="$session">
+                    <command>
+                        <body>stc::config $portId -name $newPortName -AppendLocationToPortName false</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <multilineDescription>Change the Port Name as per requirement by automation.</multilineDescription>
+            <arguments>
+                <item name="portId">
+                    <description>Port Id whose name to be changed</description>
+                </item>
+                <item name="newPortName">
+                    <description>New Port Name </description>
+                </item>
+            </arguments>
+        </item>
+        <item name="disassociateClientProfile" isPublic="true">
+            <steps>
+                <item guid="f9016183-179b-4390-b79d-e5bd2b4a735e" action="eval" session="$session">
+                    <command>
+                        <body>stc::perform Ieee80211DeAssociateCommand  -ClientList $wifiPortId</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <arguments>
+                <item name="wifiPortId">
+                    <description>STC Wifi Port Id </description>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
         </item>
     </procedures>
 </testCase>
