@@ -1,43 +1,35 @@
 ### Project Information:
-Project: NewBridge DSLAM  
-Description: QuickCalls and response maps useful for building system tests automating the NewBridge DSLAM  
-Category: library  
-Class: Community  
-  
-___
-### 1 QuickCall Library in project://di_dslam_newbridge
-### Library: project://di_dslam_newbridge/session_profiles/newbridge_350.fftc
-___
+Project: NewBridge DSLAM
+Description: QuickCalls and response maps useful for building system tests automating the NewBridge DSLAM
+Category: library
+Class: Community
+ ----
+1 quickcall library in project
+## Quickcall Library: newbridge_350.fftc
 ### login
 ### getFootprint
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>card_name</td><tr></tr>
+<tr><td>card_port_num</td><tr></tr>
+<tr><td>footprint_data</td><tr></tr></table>
 
-Argument | Description
------------- | -------------
-card_name | 
-card_port_num | 
-footprint_data | 
 ### getLinkState
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>card_name</td><tr></tr>
+<tr><td>card_port_num</td><tr></tr></table>
 
-Argument | Description
------------- | -------------
-card_name | 
-card_port_num | 
 ### setDslamProfile
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>card_port_num</td><tr></tr>
+<tr><td>card_name</td><tr></tr>
+<tr><td>dslam_profile</td><tr></tr>
+<tr><td>args</td><tr></tr></table>
 
-Argument | Description
------------- | -------------
-card_port_num | 
-card_name | 
-dslam_profile | 
-args | 
 ### getPortId
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>card_port_num</td><td>\t</tr></td></table>
 
-Argument | Description
------------- | -------------
-card_port_num | \t
 ### getCommandLogs
-
-Argument | Description
------------- | -------------
-card_port_num | 
-log_file | 
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>card_port_num</td><tr></tr>
+<tr><td>log_file</td><tr></tr></table>

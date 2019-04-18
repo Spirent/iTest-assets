@@ -1,25 +1,19 @@
 ### Project Information:
-Project: Cytec Control Module  
-Description: LAN Telnet QuickCalls for IF-9 or IF-11 models  
-Category: library  
-Class: Community  
-  
-___
-### 1 QuickCall Library in project://ui_cytec
-### Library: project://ui_cytec/session_profiles/cytec.fftc
-___
+Project: Cytec Control Module
+Description: LAN Telnet QuickCalls for IF-9 or IF-11 models
+Category: library
+Class: Community
+ ----
+1 quickcall library in project
+## Quickcall Library: cytec.fftc
 ### latch
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>port</td><tr></tr></table>
 
-Argument | Description
------------- | -------------
-port | 
 ### unlatch
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>port</td><tr></tr></table>
 
-Argument | Description
------------- | -------------
-port | 
 ### clear_card
-
-Argument | Description
------------- | -------------
-cardId | 
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>cardId</td><tr></tr></table>

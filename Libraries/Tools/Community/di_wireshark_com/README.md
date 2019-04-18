@@ -1,37 +1,28 @@
 ### Project Information:
-Project: Wireshark  
-Description: QuickCall examples  
-Category: library  
-Class: Community  
-  
-___
-### 1 QuickCall Library in project://di_wireshark_com
-### Library: project://di_wireshark_com/referenceSessionProfile/wireshark_quickcall_library.fftc
-___
-Headline: Generic wireshark library
-Description:  
-Basic procedures to analyze traffic payloads  
-  
+Project: Wireshark
+Description: QuickCall examples
+Category: library
+Class: Community
+ ----
+1 quickcall library in project
+## Quickcall Library: wireshark_quickcall_library.fftc
+### Generic wireshark library
+Basic procedures to analyze traffic payloads
 ### loadCaptureFile
-Load a pcap file on the system. Requires valid URI. 
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>filePath</td><td>Where do you want to save the data.
 
-Argument | Description
------------- | -------------
-filePath | Where do you want to save the data.<br><br>Example: file:/C:/stc.pcap
+Example: file:/C:/stc.pcap</tr></td></table>
+
 ### getPacketIds
-This will return the packet IDs for a specified range so user can lop through packet details
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>startIndex</td><td>Wireshark index where you want to start.
 
-Return: list of packet IDs
+Example: 1</tr></td>
+<tr><td>count</td><td>Total number of index values you want returned.
 
-Argument | Description
------------- | -------------
-startIndex | Wireshark index where you want to start.<br><br>Example: 1
-count | Total number of index values you want returned.<br><br>Example: 100
+Example: 100</tr></td></table>
+
 ### getBasicDataFields
-This returns the basic fields used to validate L2/L3 information in the headers
-
-Return: MAC, IPv4 (source and destination)
-
-Argument | Description
------------- | -------------
-index | Valid index found in the PCAP output
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>index</td><td>Valid index found in the PCAP output</tr></td></table>

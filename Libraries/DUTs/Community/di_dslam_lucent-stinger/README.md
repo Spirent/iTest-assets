@@ -1,37 +1,30 @@
 ### Project Information:
-Project: Lucent Stinger DSLAM  
-Description: QuickCalls and response maps useful for building system tests automating the Lucent Stinger DSLAM  
-Category: library  
-Class: Community  
-  
-___
-### 1 QuickCall Library in project://di_dslam_lucent-stinger
-### Library: project://di_dslam_lucent-stinger/session_profiles/stinger.fftc
-___
+Project: Lucent Stinger DSLAM
+Description: QuickCalls and response maps useful for building system tests automating the Lucent Stinger DSLAM
+Category: library
+Class: Community
+ ----
+1 quickcall library in project
+## Quickcall Library: stinger.fftc
 ### login
 ### getFootprint
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>card_name</td><tr></tr>
+<tr><td>card_port_num</td><tr></tr>
+<tr><td>footprint_data</td><tr></tr></table>
 
-Argument | Description
------------- | -------------
-card_name | 
-card_port_num | 
-footprint_data | 
 ### getLinkState
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>card_name</td><tr></tr>
+<tr><td>card_port_num</td><tr></tr></table>
 
-Argument | Description
------------- | -------------
-card_name | 
-card_port_num | 
 ### setDslamProfile
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>card_port_num</td><tr></tr>
+<tr><td>card_name</td><tr></tr>
+<tr><td>dslam_profile</td><tr></tr>
+<tr><td>args</td><tr></tr></table>
 
-Argument | Description
------------- | -------------
-card_port_num | 
-card_name | 
-dslam_profile | 
-args | 
 ### getPortId
-
-Argument | Description
------------- | -------------
-card_port_num | \t
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>card_port_num</td><td>\t</tr></td></table>

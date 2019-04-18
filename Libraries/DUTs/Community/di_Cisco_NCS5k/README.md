@@ -1,121 +1,159 @@
 ### Project Information:
-Project: Cisco NCS5k  
-Description: Response maps and QuickCalls for Cisco NCS 5000 series MPLS aggregation router for metro aggregation  
-Category: library  
-Class: Community  
-  
-___
-### 1 QuickCall Library in project://di_Cisco_NCS5k
-### Library: project://di_Cisco_NCS5k/session_profiles/cisco_NCS5K_ssh_quickcall_library.fftc
-___
+Project: Cisco NCS5k
+Description: Response maps and QuickCalls for Cisco NCS 5000 series MPLS aggregation router for metro aggregation
+Category: library
+Class: Community
+ ----
+1 quickcall library in project
+## Quickcall Library: cisco_NCS5K_ssh_quickcall_library.fftc
 ### backup_configuration
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>backup_config_file</td><td>Backup configuration file name.</tr></td></table>
 
-Argument | Description
------------- | -------------
-backup_config_file | Backup configuration file name.
 ### restore_configuration
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>backup_config_file</td><td>Backup configuration file name.</tr></td></table>
 
-Argument | Description
------------- | -------------
-backup_config_file | Backup configuration file name.
 ### restart_bgp_process
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>as_number</td><td>BGP local AS number</tr></td></table>
 
-Argument | Description
------------- | -------------
-as_number | BGP local AS number
 ### show_install
-This procedure is extracting information about the current IOS version present on the DUT
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>active</td><td>Values:
+- null - default, parameter is not used in execution
+- yes - parameter will be used in execution
 
-Argument | Description
------------- | -------------
-active | Values:<br>- null - default, parameter is not used in execution<br>- yes - parameter will be used in execution<br><br>Shows the active package information
-rollback | 
-commited | Values:<br>- null - default, parameter is not used in execution<br>- yes - parameter will be used in execution
-summary | Values:<br>- null - default, parameter is not used in execution<br>- yes - parameter will be used in execution<br><br>Shows summary information about the IOS version
-option | Use with active parameter<br>Example:<br>detail    Show information about constituent packages<br>location  Show active packages on a node<br>summary   Show summary information<br>verbose   Show summary, component and file information for each package
+Shows the active package information</tr></td>
+<tr><td>rollback</td><tr></tr>
+<tr><td>commited</td><td>Values:
+- null - default, parameter is not used in execution
+- yes - parameter will be used in execution</tr></td>
+<tr><td>summary</td><td>Values:
+- null - default, parameter is not used in execution
+- yes - parameter will be used in execution
+
+Shows summary information about the IOS version</tr></td>
+<tr><td>option</td><td>Use with active parameter
+Example:
+detail    Show information about constituent packages
+location  Show active packages on a node
+summary   Show summary information
+verbose   Show summary, component and file information for each package</tr></td></table>
+
 ### get_xml_op
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>query</td><td>pass hte xml query
+</tr></td></table>
 
-Argument | Description
------------- | -------------
-query | pass hte xml query<br>
 ### show_version
-Get router show version
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>extra_arg</td><td>- Can be:
+brief
+| incl  "something"</tr></td></table>
 
-Argument | Description
------------- | -------------
-extra_arg | - Can be:<br>brief<br>| incl  "something"
 ### clear_drop
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>drop_option</td><td>np</tr></td>
+<tr><td>np_option</td><td>Use this in conjunction with drop_option = np
 
-Argument | Description
------------- | -------------
-drop_option | np
-np_option | Use this in conjunction with drop_option = np<br><br>all
+all</tr></td></table>
+
 ### clear_line
-Use this command do to a standard "show run" or use $output_modifier to add the "|" character and modify the output.
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>vty_line_num</td><tr></tr></table>
 
-Argument | Description
------------- | -------------
-vty_line_num | 
 ### show_controllers
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>interface</td><td>name of the interface
+use the formart: ten0/0/0/9, and NOT 0/0/0/9</tr></td>
+<tr><td>include</td><tr></tr>
+<tr><td>extra_arg</td><tr></tr>
+<tr><td>np_loc</td><tr></tr>
+<tr><td>lc_loc</td><tr></tr>
+<tr><td>np_logical_chnl_loc</td><tr></tr>
+<tr><td>bw_fia_trace_loc</td><td>show controller fabric fia trace loc 0/0/cpu0 | i "bw_if"</tr></td>
+<tr><td>fabric_plane</td><tr></tr>
+<tr><td>config_sram_np</td><td>show controllers np configSram 8 np0 location 0/0/CPU$
 
-Argument | Description
------------- | -------------
-interface | name of the interface<br>use the formart: ten0/0/0/9, and NOT 0/0/0/9
-include | 
-extra_arg | 
-np_loc | 
-lc_loc | 
-np_logical_chnl_loc | 
-bw_fia_trace_loc | show controller fabric fia trace loc 0/0/cpu0 | i "bw_if"
-fabric_plane | 
-config_sram_np | show controllers np configSram 8 np0 location 0/0/CPU$<br><br>give the np location of a particualr port to get the output <br>
-config_sram_port | show controllers np configSram 8 np0 location 0/0/CPU$<br><br>to get the output of such command , 8 is the port number of a particular port <br>
-int_option | use:  <br>all       Show all the information<br>  bert      Show BERT status<br>  control   Show configuration and control information(cisco-support)<br>  internal  Show internal information<br>  mac       Show mac information<br>  periodic  show pm data periodically<br>  phy       Show phy information<br>  pm        show ethernet performance monitoring<br>  regs      Show registers information<br>  stats     Show stats information<br>  xgxs      Show xgxs information
-wanphy | use yes
-wanphy_option | use:<br><br>  alarms     Show alarm information<br>  all        Show all information<br>  registers  Show register information
-fia_q_depth_loc | location of linecard where you want to see the ouput of :<br>show controllers fabric fia q-depth loc 0/8/cpu0<br>
-utility_filter | | utility egrep WORD<br>utility A set of common unix utilities<br>egrep   Extended regular expression grep<br>WORD    Unix commandline option string , maximum length 20
-ports_np | sh controllers np ports all location 0/8/CPU0 <br>give the np for which you want to see the port map
-port_map_np | 
-location | 
+give the np location of a particualr port to get the output 
+</tr></td>
+<tr><td>config_sram_port</td><td>show controllers np configSram 8 np0 location 0/0/CPU$
+
+to get the output of such command , 8 is the port number of a particular port 
+</tr></td>
+<tr><td>int_option</td><td>use:  
+all       Show all the information
+  bert      Show BERT status
+  control   Show configuration and control information(cisco-support)
+  internal  Show internal information
+  mac       Show mac information
+  periodic  show pm data periodically
+  phy       Show phy information
+  pm        show ethernet performance monitoring
+  regs      Show registers information
+  stats     Show stats information
+  xgxs      Show xgxs information</tr></td>
+<tr><td>wanphy</td><td>use yes</tr></td>
+<tr><td>wanphy_option</td><td>use:
+
+  alarms     Show alarm information
+  all        Show all information
+  registers  Show register information</tr></td>
+<tr><td>fia_q_depth_loc</td><td>location of linecard where you want to see the ouput of :
+show controllers fabric fia q-depth loc 0/8/cpu0
+</tr></td>
+<tr><td>utility_filter</td><td>| utility egrep WORD
+utility A set of common unix utilities
+egrep   Extended regular expression grep
+WORD    Unix commandline option string , maximum length 20</tr></td>
+<tr><td>ports_np</td><td>sh controllers np ports all location 0/8/CPU0 
+give the np for which you want to see the port map</tr></td>
+<tr><td>port_map_np</td><tr></tr>
+<tr><td>location</td><tr></tr></table>
+
 ### reload_device
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>prompt_timeout</td><td>Primpt timeout for RSP Reload</tr></td>
+<tr><td>exit_present</td><td>values: yes</tr></td>
+<tr><td>location</td><tr></tr>
+<tr><td>wait_timer</td><td>-to skip the 200 seconds sleep, use any value to initialize this paramter </tr></td></table>
 
-Argument | Description
------------- | -------------
-prompt_timeout | Primpt timeout for RSP Reload
-exit_present | values: yes
-location | 
-wait_timer | -to skip the 200 seconds sleep, use any value to initialize this paramter 
 ### hw_module_location_reload
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>loc</td><tr></tr></table>
 
-Argument | Description
------------- | -------------
-loc | 
 ### admin_reload_interactive_cli
-Use this command do to a standard "show run" or use $output_modifier to add the "|" character and modify the output.
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>loc</td><tr></tr></table>
 
-Argument | Description
------------- | -------------
-loc | 
 ### config_hw_module
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>configure</td><td>send yes if CLI should be configured</tr></td>
+<tr><td>in_context</td><tr></tr>
+<tr><td>stay_in_context</td><tr></tr>
+<tr><td>pre_configure</td><tr></tr>
+<tr><td>port</td><tr></tr>
+<tr><td>loc</td><tr></tr></table>
 
-Argument | Description
------------- | -------------
-configure | send yes if CLI should be configured
-in_context | 
-stay_in_context | 
-pre_configure | 
-port | 
-loc | 
 ### show_admin_power_supply
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>output_modifier</td><td>send "include Total"</tr></td>
+<tr><td>location</td><td>Values:
+\t- null - detail keyword will not be used
+\t- any - detail keyword will be used</tr></td>
+<tr><td>include</td><td>Value can be: "Total"</tr></td></table>
 
-Argument | Description
------------- | -------------
-output_modifier | send "include Total"
-location | Values:<br>\t- null - detail keyword will not be used<br>\t- any - detail keyword will be used
-include | Value can be: "Total"
 ### get_power_xml
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>slot</td><td>Use anything other than null to add this option to the command
+</tr></td></table>
 
-Argument | Description
------------- | -------------
-slot | Use anything other than null to add this option to the command<br>
+7 response maps in project
+## Response Map File: show_controller_interface_all_LR_SR.ffrm
+## Response Map File: show_platform.ffrm
+## Response Map File: admin_show_env_power.ffrm
+## Response Map File: show_redundancy_summary.ffrm
+## Response Map File: show_version.ffrm
+## Response Map File: show_run_qos.ffrm
+## Response Map File: show_controller_interface_all.ffrm

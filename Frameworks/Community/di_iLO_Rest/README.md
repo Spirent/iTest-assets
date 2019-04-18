@@ -1,107 +1,88 @@
 ### Project Information:
-Project: ILO REST  
-Description: QuickCalls useful for automating ILO via its REST API  
-Category: framework  
-Class: Community  
-  
-___
-2 QuickCall Libraries in project://di_iLO_Rest
-### Library: project://di_iLO_Rest/session_profiles/stal_Velocity_REST_quickcall_library.fftc
-___
-### setup
-### Library: project://di_iLO_Rest/session_profiles/velocity_RestAPI_quickcall_library.fftc
-___
+Project: ILO REST
+Description: QuickCalls useful for automating ILO via its REST API
+Category: framework
+Class: Community
+ ----
+2 quickcall libraries in project
+## Quickcall Library: velocity_RestAPI_quickcall_library.fftc
 ### activateReservation
-This quickcall is used to activate an ILO reservation.
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>topologyName</td><td>name of the toplogy</tr></td>
+<tr><td>username</td><tr></tr>
+<tr><td>password</td><tr></tr>
+<tr><td>reservationName</td><td>name of the reservation</tr></td>
+<tr><td>duration</td><td>1 hour default</tr></td></table>
 
-Argument | Description
------------- | -------------
-topologyName | name of the toplogy
-username | 
-password | 
-reservationName | name of the reservation
-duration | 1 hour default
 ### releaseReservation
-This quickcall is used to deactivate an existing ILO reservation.
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>id</td><td>reservation id</tr></td>
+<tr><td>username</td><tr></tr>
+<tr><td>password</td><tr></tr></table>
 
-Argument | Description
------------- | -------------
-id | reservation id
-username | 
-password | 
 ### showTopologies
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>username</td><tr></tr>
+<tr><td>password</td><tr></tr></table>
 
-Argument | Description
------------- | -------------
-username | 
-password | 
 ### showDevices
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>username</td><tr></tr>
+<tr><td>password</td><tr></tr></table>
 
-Argument | Description
------------- | -------------
-username | 
-password | 
 ### showReservations
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>username</td><tr></tr>
+<tr><td>password</td><tr></tr></table>
 
-Argument | Description
------------- | -------------
-username | 
-password | 
 ### getTopologyId
-This procedure returns the id of the topology 
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>topologyName</td><td>The name of the topology to be reserved</tr></td>
+<tr><td>username</td><tr></tr>
+<tr><td>password</td><tr></tr></table>
 
-Argument | Description
------------- | -------------
-topologyName | The name of the topology to be reserved
-username | 
-password | 
 ### getReservationId
-This procedure returns the id of the topology 
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>reservationName</td><td>The name of the reservation to get the ID</tr></td>
+<tr><td>timePeriod</td><td>By default, check reservations made in the last 3 hours</tr></td>
+<tr><td>username</td><tr></tr>
+<tr><td>password</td><tr></tr></table>
 
-Argument | Description
------------- | -------------
-reservationName | The name of the reservation to get the ID
-timePeriod | By default, check reservations made in the last 3 hours
-username | 
-password | 
 ### isReservationActive
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>reservationId</td><td>The id of the reservation</tr></td>
+<tr><td>username</td><tr></tr>
+<tr><td>password</td><tr></tr></table>
 
-Argument | Description
------------- | -------------
-reservationId | The id of the reservation
-username | 
-password | 
 ### lockTopology
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>topologyId</td><td>The id of the topology</tr></td>
+<tr><td>username</td><tr></tr>
+<tr><td>password</td><tr></tr></table>
 
-Argument | Description
------------- | -------------
-topologyId | The id of the topology
-username | 
-password | 
 ### unlockTopology
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>topologyId</td><td>The id of the topology</tr></td>
+<tr><td>username</td><tr></tr>
+<tr><td>password</td><tr></tr></table>
 
-Argument | Description
------------- | -------------
-topologyId | The id of the topology
-username | 
-password | 
 ### modifyTopology
-This quickcall is used to activate an ILO reservation.
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>topologyName</td><td>name of the toplogy</tr></td>
+<tr><td>fileInfo</td><td>This is the tbml-formatted information to write to the topology.</tr></td>
+<tr><td>username</td><tr></tr>
+<tr><td>password</td><tr></tr></table>
 
-Argument | Description
------------- | -------------
-topologyName | name of the toplogy
-fileInfo | This is the tbml-formatted information to write to the topology.
-username | 
-password | 
 ### activateReservation_old
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>id</td><td>topology id</tr></td>
+<tr><td>duration</td><td>1 hour default</tr></td></table>
 
-Argument | Description
------------- | -------------
-id | topology id
-duration | 1 hour default
 ### releaseReservation_old
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>id</td><td>reservation id</tr></td></table>
 
-Argument | Description
------------- | -------------
-id | reservation id
+## Quickcall Library: stal_Velocity_REST_quickcall_library.fftc
+### setup
+1 response map in project
+## Response Map File: twoColumnTable.ffrm

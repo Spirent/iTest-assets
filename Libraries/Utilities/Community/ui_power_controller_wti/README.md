@@ -1,43 +1,36 @@
 ### Project Information:
-Project: WTI Power Controller  
-Description: Telnet QuickCalls and response maps  
-Category: library  
-Class: Community  
-  
-___
-### 1 QuickCall Library in project://ui_power_controller_wti
-### Library: project://ui_power_controller_wti/session_profiles/power_controller_wti.fftc
-___
+Project: WTI Power Controller
+Description: Telnet QuickCalls and response maps
+Category: library
+Class: Community
+ ----
+1 quickcall library in project
+## Quickcall Library: power_controller_wti.fftc
 ### cpeOn
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>power_controller_port</td><tr></tr>
+<tr><td>state</td><tr></tr></table>
 
-Argument | Description
------------- | -------------
-power_controller_port | 
-state | 
 ### cpeOff
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>power_controller_port</td><tr></tr></table>
 
-Argument | Description
------------- | -------------
-power_controller_port | 
 ### portOn
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>portNumber</td><td>port number starting at 1 and ending in the max number of ports for the specified controller.</tr></td></table>
 
-Argument | Description
------------- | -------------
-portNumber | port number starting at 1 and ending in the max number of ports for the specified controller.
 ### portOff
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>portNumber</td><tr></tr></table>
 
-Argument | Description
------------- | -------------
-portNumber | 
 ### getPortState
-Returns "ON" or "OFF"
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>portNumber</td><tr></tr></table>
 
-Argument | Description
------------- | -------------
-portNumber | 
 ### getNumPorts
 ### cyclePort
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>portNumber</td><tr></tr></table>
 
-Argument | Description
------------- | -------------
-portNumber | 
+1 response map in project
+## Response Map File: port_status.ffrm

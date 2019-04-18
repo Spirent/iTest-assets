@@ -1,81 +1,92 @@
 ### Project Information:
-Project: TestRail  
-Description: QuickCalls for TestRail Automation via REST  
-Category: framework  
-Class: Community  
-  
-___
-### 1 QuickCall Library in project://di_TestRail
-### Library: project://di_TestRail/session_profiles/rest1.fftc
-___
-Headline: TestRail QuickCalls
-Description:  
-QuickCalls used to for TestRail, especially useful for updating test results. Tested on hosted platform  
-  
-### addResultToTest
-Adds a test result to a test
+Project: TestRail
+Description: QuickCalls for TestRail Automation via its REST API
+Category: framework
+Class: Community
 
-The ID of the test status. The built-in system statuses have the following IDs:
+ ----
+1 quickcall library in project
+## Quickcall Library: rest1.fftc
+### TestRail QuickCalls
+QuickCalls used to for TestRail, especially useful for updating test results. Tested on hosted platform
+### addResultToTest
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>apiUserName</td><td>API authentication user</tr></td>
+<tr><td>apiUserPassword</td><td>API authentication password</tr></td>
+<tr><td>testId</td><td>Id of test on which to add results</tr></td>
+<tr><td>status</td><td>The ID of the test status. The built-in system statuses have the following IDs:
 1\tPassed
 2\tBlocked
 3\tUntested (not allowed when adding a result)
 4\tRetest
-5\tFailed
+5\tFailed</tr></td>
+<tr><td>comment</td><td>Test result comments</tr></td>
+<tr><td>version</td><td>The version or build you tested against</tr></td>
+<tr><td>stepResults</td><td>Nested list of step results, for example:
+[[1,"Actual 1"],[1,"Actual 2"]]
+It will come in as a string, so it will require an eval operation to put it back into a list, for example:
+stepResults=eval(stepResults)</tr></td>
+<tr><td>fullReportUrl</td><td>The URL where the full report can be reviewed. This requires a custom result called "Full Report" (type URL) with a System Name of "fullreport" to have been created and applied to the test's template</tr></td></table>
 
-Argument | Description
------------- | -------------
-apiUserName | API authentication user
-apiUserPassword | API authentication password
-testId | Id of test on which to add results
-status | The ID of the test status. The built-in system statuses have the following IDs:<br>1\tPassed<br>2\tBlocked<br>3\tUntested (not allowed when adding a result)<br>4\tRetest<br>5\tFailed
-comment | Test result comments
-version | The version or build you tested against
-stepResults | Nested list of step results, for example:<br>[[1,"Actual 1"],[1,"Actual 2"]]<br>It will come in as a string, so it will require an eval operation to put it back into a list, for example:<br>stepResults=eval(stepResults)
-fullReportUrl | The URL where the full report can be reviewed. This requires a custom result called "Full Report" (type URL) with a System Name of "fullreport" to have been created and applied to the test's template
+### addTestCase
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>apiUserName</td><td>API authentication user</tr></td>
+<tr><td>apiUserPassword</td><td>API authentication password</tr></td>
+<tr><td>sectionId</td><td>section Id where this case needs to call home</tr></td>
+<tr><td>caseName</td><td>name of the case we are creating</tr></td>
+<tr><td>templateId</td><td>default 2 is a test-step modelled test case</tr></td></table>
+
 ### addTestRunToPlan
-Adds a new test runs to a test plan
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>apiUserName</td><td>API authentication user</tr></td>
+<tr><td>apiUserPassword</td><td>API authentication password</tr></td>
+<tr><td>caseId</td><td>Id of case to include in test run</tr></td>
+<tr><td>planId</td><td>Id of plan where test run should go into</tr></td>
+<tr><td>name</td><td>The name of the test run to create</tr></td>
+<tr><td>description</td><td>The description of the test run to create</tr></td></table>
 
-Argument | Description
------------- | -------------
-apiUserName | API authentication user
-apiUserPassword | API authentication password
-caseId | Id of case to include in test run
-planId | Id of plan where test run should go into
-name | The name of the test run to create
-description | The description of the test run to create
 ### getCaseId
-Finds test case by name
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>apiUserName</td><td>API authentication user</tr></td>
+<tr><td>apiUserPassword</td><td>API authentication password</tr></td>
+<tr><td>caseName</td><td>Name of case to find and report on</tr></td>
+<tr><td>projectId</td><td>Id of project where test plan resides</tr></td></table>
 
-Argument | Description
------------- | -------------
-apiUserName | API authentication user
-apiUserPassword | API authentication password
-caseName | Name of case to find and report on
-projectId | Id of project where test plan resides
+### getSectionId
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>apiUserName</td><td>API authentication user</tr></td>
+<tr><td>apiUserPassword</td><td>API authentication password</tr></td>
+<tr><td>sectionName</td><td>Name of section to find</tr></td>
+<tr><td>projectId</td><td>Id of project where section resides</tr></td></table>
+
 ### getPlanId
-Finds test plan by name
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>apiUserName</td><td>API authentication user</tr></td>
+<tr><td>apiUserPassword</td><td>API authentication password</tr></td>
+<tr><td>planName</td><td>Name of plan to find and report on</tr></td>
+<tr><td>projectId</td><td>Id of project where test plan resides</tr></td>
+<tr><td>onlyActive</td><td>Search only for active plans</tr></td></table>
 
-Argument | Description
------------- | -------------
-apiUserName | API authentication user
-apiUserPassword | API authentication password
-planName | Name of plan to find and report on
-projectId | Id of project where test plan resides
-onlyActive | Search only for active plans
 ### getProjectId
-Finds project by name
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>apiUserName</td><td>API authentication user</tr></td>
+<tr><td>apiUserPassword</td><td>API authentication password</tr></td>
+<tr><td>projectName</td><td>Name of project to find and report on</tr></td>
+<tr><td>onlyActive</td><td>Search only for active projects</tr></td></table>
 
-Argument | Description
------------- | -------------
-apiUserName | API authentication user
-apiUserPassword | API authentication password
-projectName | Name of project to find and report on
-onlyActive | Search only for active projects
 ### getTestIds
-Shows tests in a run
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>apiUserName</td><td>API authentication user</tr></td>
+<tr><td>apiUserPassword</td><td>API authentication password</tr></td>
+<tr><td>runId</td><td>Id of run to interrogate</tr></td></table>
 
-Argument | Description
------------- | -------------
-apiUserName | API authentication user
-apiUserPassword | API authentication password
-runId | Id of run to interrogate
+### mapVelocityResultToTestRailStatus
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>velocityStatus</td><td>INDETERMINITE, PASSED, FAILED, ABORTED, CANCELLED, ERROR</tr></td></table>
+
+### mapVelocitySeverityToTestRailStatus
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>velocitySeverity</td><td>INFORMATION, WARNING, ERROR, OK</tr></td></table>
+
+1 test case in project
+## Test Case File: scratch.fftc

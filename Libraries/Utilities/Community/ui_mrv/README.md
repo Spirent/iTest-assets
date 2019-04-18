@@ -1,49 +1,36 @@
 ### Project Information:
-Project: MRV Media Cross Connect  
-Description: Telnet QuickCall examples  
-Category: library  
-Class: Community  
-  
-___
-### 1 QuickCall Library in project://ui_mrv
-### Library: project://ui_mrv/session_profiles/mrv-qc.fftc
-___
+Project: MRV Media Cross Connect
+Description: Telnet QuickCall examples
+Category: library
+Class: Community
+ ----
+1 quickcall library in project
+## Quickcall Library: mrv-qc.fftc
 ### MRV_showport
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>session</td><td>Session Id</tr></td>
+<tr><td>port</td><td>One or more ports to query. The format can be c.s.p, s.p, or p, depending on the level</tr></td></table>
 
-Argument | Description
------------- | -------------
-session | Session Id
-port | One or more ports to query. The format can be c.s.p, s.p, or p, depending on the level
 ### MRV_portUp
-This qc brings up a mapped port. 
-NOTE: The port is assumed to be mapped. It does not check and will not work on an unmapped port.
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>session</td><td>Session Id</tr></td>
+<tr><td>port</td><td>Port to turn up</tr></td></table>
 
-Argument | Description
------------- | -------------
-session | Session Id
-port | Port to turn up
 ### MRV_portDown
-This qc shuts down a mapped port. 
-NOTE: The port is assumed to be mapped. It does not check and will not work on an unmapped port.
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>session</td><td>Session Id</tr></td>
+<tr><td>port</td><td>Port to shutdown</tr></td></table>
 
-Argument | Description
------------- | -------------
-session | Session Id
-port | Port to shutdown
 ### MRV_isPortUp
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>session</td><td>Session Id</tr></td>
+<tr><td>port</td><td>Port to query</tr></td></table>
 
-Argument | Description
------------- | -------------
-session | Session Id
-port | Port to query
 ### MRV_isPortDown
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>session</td><td>Session Id</tr></td>
+<tr><td>port</td><td>Port to query</tr></td></table>
 
-Argument | Description
------------- | -------------
-session | Session Id
-port | Port to query
 ### MRV_showProcCPU
-
-Argument | Description
------------- | -------------
-session | Session Id
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>session</td><td>Session Id</tr></td></table>

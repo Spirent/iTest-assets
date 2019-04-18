@@ -1,13 +1,11 @@
 ### Project Information:
-Project: ERCOM  
-Description: QuickCalls and response maps   
-Category: library  
-Class: Community  
-  
-___
-### 1 QuickCall Library in project://di_ERCOM
-### Library: project://di_ERCOM/session_profiles/ercom_qclib.fftc
-___
+Project: ERCOM
+Description: QuickCalls and response maps 
+Category: library
+Class: Community
+ ----
+1 quickcall library in project
+## Quickcall Library: ercom_qclib.fftc
 ### getBladeStatus
 ### getLbladeStatus
 ### getLbladeCount
@@ -19,29 +17,30 @@ ___
 ### DiskSpaceTooSmall
 ### getDiskSpaceInfos
 ### executionState
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>platform_id</td><tr></tr></table>
 
-Argument | Description
------------- | -------------
-platform_id | 
 ### ISIDLE
 ### stopCurrentTest
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>platform_id</td><tr></tr></table>
 
-Argument | Description
------------- | -------------
-platform_id | 
 ### directExecution
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>platform_id</td><tr></tr>
+<tr><td>Uid</td><tr></tr></table>
 
-Argument | Description
------------- | -------------
-platform_id | 
-Uid | 
 ### setTestParams
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>platform_id</td><tr></tr></table>
 
-Argument | Description
------------- | -------------
-platform_id | 
 ### getTestParams
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>platform_id</td><tr></tr></table>
 
-Argument | Description
------------- | -------------
-platform_id | 
+5 response maps in project
+## Response Map File: GetBladeStatus1.ffrm
+## Response Map File: TestParams2_xml.ffrm
+## Response Map File: getBladeStatus.ffrm
+## Response Map File: getbladestatus2.ffrm
+## Response Map File: ERCOM_config_xml.ffrm

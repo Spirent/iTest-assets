@@ -1,266 +1,228 @@
 ### Project Information:
-Project: Cyberflood 2  
-Description: QuickCall library useful for building test cases automating Spirent Cyberflood  
-Category: library  
-Class: Community  
-  
-___
-### 1 QuickCall Library in project://di_Cyberflood
-### Library: project://di_Cyberflood/session_profiles/Cyberflood_REST.fftc
-___
+Project: Cyberflood 2
+Description: QuickCall library useful for building test cases automating Spirent Cyberflood
+Category: library
+Class: Community
+ ----
+1 quickcall library in project
+## Quickcall Library: Cyberflood_REST.fftc
 ### Login
-Login.
-Returns a JSON string:
-\tstatus - status of login attempt
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>UserInfo</td><tr></tr></table>
 
-Argument | Description
------------- | -------------
-UserInfo | 
 ### Logout
 ### ConfigurationCleanup
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>delete_queues</td><td>Valid argument value: "yes". By default no action is performed on the queues.</tr></td>
+<tr><td>readd_chassis</td><td>Valid argument value: "yes". By default no action is performed on the queues.</tr></td></table>
 
-Argument | Description
------------- | -------------
-delete_queues | Valid argument value: "yes". By default no action is performed on the queues.
-readd_chassis | Valid argument value: "yes". By default no action is performed on the queues.
 ### CreateQueue
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>name</td><tr></tr>
+<tr><td>ip_device_ports</td><td>ip device groups</tr></td></table>
 
-Argument | Description
------------- | -------------
-name | 
-ip_device_ports | ip device groups
 ### CreateChassis
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>ip</td><tr></tr></table>
 
-Argument | Description
------------- | -------------
-ip | 
 ### DeleteQueue
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>name</td><tr></tr></table>
 
-Argument | Description
------------- | -------------
-name | 
 ### DeleteSubnet
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>name</td><tr></tr></table>
 
-Argument | Description
------------- | -------------
-name | 
 ### DeleteChassis
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>ip</td><tr></tr></table>
 
-Argument | Description
------------- | -------------
-ip | 
 ### DeleteLibraryTest
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>test_name</td><tr></tr></table>
 
-Argument | Description
------------- | -------------
-test_name | 
 ### DeleteVirtualRouter
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>name</td><tr></tr></table>
 
-Argument | Description
------------- | -------------
-name | 
 ### GetAvalancheTest
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>test_name</td><tr></tr></table>
 
-Argument | Description
------------- | -------------
-test_name | 
 ### GetQueueTestStatus
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>id</td><tr></tr></table>
 
-Argument | Description
------------- | -------------
-id | 
 ### GetPlayerTestState
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>id</td><tr></tr></table>
 
-Argument | Description
------------- | -------------
-id | 
 ### GetPlayerTestTimeLine
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>id</td><tr></tr>
+<tr><td>start_time</td><tr></tr></table>
 
-Argument | Description
------------- | -------------
-id | 
-start_time | 
 ### GetSubnets
 ### GetSubnet
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>name</td><tr></tr></table>
 
-Argument | Description
------------- | -------------
-name | 
 ### GetSystemAbout
 ### GetChassis
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>ip</td><tr></tr></table>
 
-Argument | Description
------------- | -------------
-ip | 
 ### GetChassisPortGroupId
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>ip</td><tr></tr>
+<tr><td>slot</td><tr></tr>
+<tr><td>portId</td><tr></tr></table>
 
-Argument | Description
------------- | -------------
-ip | 
-slot | 
-portId | 
 ### GetLibraryTests
 ### GetQueues
 ### GetQueue
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>name</td><tr></tr></table>
 
-Argument | Description
------------- | -------------
-name | 
 ### GetQueueId
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>name</td><tr></tr></table>
 
-Argument | Description
------------- | -------------
-name | 
 ### GetQueuePortGroupId
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>name</td><tr></tr>
+<tr><td>ip</td><tr></tr>
+<tr><td>portId</td><tr></tr></table>
 
-Argument | Description
------------- | -------------
-name | 
-ip | 
-portId | 
 ### GetQueuePortGroupStringId
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>name</td><tr></tr>
+<tr><td>ip</td><tr></tr>
+<tr><td>portId</td><tr></tr></table>
 
-Argument | Description
------------- | -------------
-name | 
-ip | 
-portId | 
 ### GetTrafficMixStandardTemplate
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>template_type</td><td>Values:
+- enterprise_perimeter
+- financial
+- mobile_carrier
+- spirent_enterprise
+- education</tr></td></table>
 
-Argument | Description
------------- | -------------
-template_type | Values:<br>- enterprise_perimeter<br>- financial<br>- mobile_carrier<br>- spirent_enterprise<br>- education
 ### GetVirtualRouters
 ### GetVirtualRouter
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>name</td><tr></tr></table>
 
-Argument | Description
------------- | -------------
-name | 
 ### VerifyMaxHttpBandwidthTestReport
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>test_id</td><tr></tr>
+<tr><td>expected_test_name</td><tr></tr>
+<tr><td>expected_queue_name</td><tr></tr>
+<tr><td>expected_measurement</td><tr></tr>
+<tr><td>expected_rank</td><tr></tr>
+<tr><td>expected_bw_ratio</td><tr></tr>
+<tr><td>expected_trans_ratio</td><tr></tr>
+<tr><td>expected_load</td><td>Port Speed in Mb</tr></td></table>
 
-Argument | Description
------------- | -------------
-test_id | 
-expected_test_name | 
-expected_queue_name | 
-expected_measurement | 
-expected_rank | 
-expected_bw_ratio | 
-expected_trans_ratio | 
-expected_load | Port Speed in Mb
 ### VerifyMaxHttpOpenConnectionsTestReport
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>test_id</td><tr></tr>
+<tr><td>expected_test_name</td><tr></tr>
+<tr><td>expected_queue_name</td><tr></tr>
+<tr><td>expected_measurement</td><tr></tr>
+<tr><td>expected_rank</td><tr></tr>
+<tr><td>expected_open_ratio</td><tr></tr></table>
 
-Argument | Description
------------- | -------------
-test_id | 
-expected_test_name | 
-expected_queue_name | 
-expected_measurement | 
-expected_rank | 
-expected_open_ratio | 
 ### VerifyConnectionsPerSecondTestReport
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>test_id</td><tr></tr>
+<tr><td>expected_test_name</td><tr></tr>
+<tr><td>expected_queue_name</td><tr></tr>
+<tr><td>expected_measurement</td><tr></tr>
+<tr><td>expected_rank</td><tr></tr>
+<tr><td>expected_fail_cps_ratio</td><tr></tr>
+<tr><td>expected_fail_measurement</td><tr></tr></table>
 
-Argument | Description
------------- | -------------
-test_id | 
-expected_test_name | 
-expected_queue_name | 
-expected_measurement | 
-expected_rank | 
-expected_fail_cps_ratio | 
-expected_fail_measurement | 
 ### VerifyMixedTrafficBandwidthTestReport
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>test_id</td><tr></tr>
+<tr><td>expected_test_name</td><tr></tr>
+<tr><td>expected_queue_name</td><tr></tr>
+<tr><td>expected_measurement</td><tr></tr>
+<tr><td>expected_rank</td><tr></tr>
+<tr><td>expected_bw_ratio</td><tr></tr>
+<tr><td>expected_trans_ratio</td><tr></tr>
+<tr><td>expected_load</td><td>Port Speed in Mb</tr></td></table>
 
-Argument | Description
------------- | -------------
-test_id | 
-expected_test_name | 
-expected_queue_name | 
-expected_measurement | 
-expected_rank | 
-expected_bw_ratio | 
-expected_trans_ratio | 
-expected_load | Port Speed in Mb
 ### GetPostTestResults
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>id</td><tr></tr></table>
 
-Argument | Description
------------- | -------------
-id | 
 ### getToken
 ### userAdd
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>role</td><td>user or admin</tr></td>
+<tr><td>email</td><tr></tr>
+<tr><td>password</td><tr></tr>
+<tr><td>firstName</td><tr></tr>
+<tr><td>lastName</td><tr></tr>
+<tr><td>department</td><tr></tr>
+<tr><td>location</td><tr></tr></table>
 
-Argument | Description
------------- | -------------
-role | user or admin
-email | 
-password | 
-firstName | 
-lastName | 
-department | 
-location | 
 ### subnetIpv4Create
 ### subnetGetIpv4All
 ### subnetGetIpv4
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>subnetName</td><tr></tr></table>
 
-Argument | Description
------------- | -------------
-subnetName | 
 ### updateEmixTrafficMix
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>trafficMixId</td><td>user or admin</tr></td>
+<tr><td>testId</td><tr></tr></table>
 
-Argument | Description
------------- | -------------
-trafficMixId | user or admin
-testId | 
 ### startTest
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>testName</td><tr></tr></table>
 
-Argument | Description
------------- | -------------
-testName | 
 ### getTestId
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>testName</td><tr></tr></table>
 
-Argument | Description
------------- | -------------
-testName | 
 ### monitorTest
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>testRunId</td><tr></tr>
+<tr><td>monitorInterval</td><td>Interval between successive polling of the test status and statistics.</tr></td></table>
 
-Argument | Description
------------- | -------------
-testRunId | 
-monitorInterval | Interval between successive polling of the test status and statistics.
 ### getTestRunResults
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>testRunId</td><tr></tr></table>
 
-Argument | Description
------------- | -------------
-testRunId | 
 ### getTestRunTimeline
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>testRunId</td><tr></tr></table>
 
-Argument | Description
------------- | -------------
-testRunId | 
 ### getTestRunStatistics
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>testRunId</td><tr></tr></table>
 
-Argument | Description
------------- | -------------
-testRunId | 
 ### getTrafficMixAll
 ### getTrafficMix
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>trafficMixId</td><tr></tr></table>
 
-Argument | Description
------------- | -------------
-trafficMixId | 
 ### getTrafficMixID
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>trafficMixName</td><tr></tr></table>
 
-Argument | Description
------------- | -------------
-trafficMixName | 
 ### userDelete
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>userId</td><tr></tr></table>
 
-Argument | Description
------------- | -------------
-userId | 
 ### userGetId
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>email</td><tr></tr></table>
 
-Argument | Description
------------- | -------------
-email | 
 ### systemAbout
+1 response map in project
+## Response Map File: api_v2_test_runs_statistics.ffrm

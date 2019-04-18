@@ -1,32 +1,27 @@
 ### Project Information:
-Project: Nokia 7750  
-Description: QuickCalls and response maps for basic configuration  
-Category: library  
-Class: Reference  
-  
-___
-### 1 QuickCall Library in project://di_Nokia_7750
-### Library: project://di_Nokia_7750/session_profiles/nokia_7750_ssh_base_quickcall_library.fftc
-___
+Project: Nokia 7750
+Description: QuickCalls and response maps for basic configuration of the ALU / Nokia 7750
+Category: library
+Class: Reference
+
+ ----
+1 quickcall library in project
+## Quickcall Library: nokia_7750_ssh_base_quickcall_library.fftc
 ### Ping
-Ping specified IP.
-Returns JSON string: 
-\tpacket_loss - percentage of packets lost
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>ip_address</td><td>IP Address to ping</tr></td></table>
 
-Argument | Description
------------- | -------------
-ip_address | IP Address to ping
 ### ConfigureInterfaceMtu
-Configure the MTU on a given port
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>interface</td><td>Name of port to modify</tr></td>
+<tr><td>new_mtu</td><td>Size of MTU to configure
+</tr></td></table>
 
-Argument | Description
------------- | -------------
-interface | Name of port to modify
-new_mtu | Size of MTU to configure<br>
 ### ConfigureInterfaceLldp
-Configure an LLDP on an interface 
+<table><tr><th>Argument</th><th>Description</th></tr>
+<tr><td>interface</td><td>Port number to modify
+example 2/2/1</tr></td>
+<tr><td>disable</td><td>If "no", will enable LLDP, else, will disable LLDP</tr></td></table>
 
-Argument | Description
------------- | -------------
-interface | Port number to modify<br>example 2/2/1
-disable | If "no", will enable LLDP, else, will disable LLDP
+1 response map in project
+## Response Map File: ping.ffrm
