@@ -1,0 +1,584 @@
+<?xml version="1.0"?>
+<testCase version="7.3.2.0">
+    <general>
+        <documentation>HTTP Throughput Example</documentation>
+        <notes>simple HTTP Throughput test</notes>
+        <owner>cwhitty</owner>
+        <language>Python</language>
+    </general>
+    <execution>
+        <parameters version="7.3.2.0">
+            <parameters escape="true">
+                <parameters xmlns:pt="http://www.fnfr.com/schemas/parameterTree">
+                    <baseUrl pt:description="base URL of the controller">https://ac-cf-controller.spirenteng.com</baseUrl>
+                    <bandwidth pt:datatype="INTEGER" pt:description="bandwidth in Kbps">200000</bandwidth>
+                    <duration pt:description="time in steady state">30</duration>
+                </parameters>
+            </parameters>
+        </parameters>
+    </execution>
+    <procedures>
+        <item name="main">
+            <steps>
+                <item guid="93983d04-d0b4-4ba6-895e-5cc98f7fae31" action="comment" useFieldsInCommand="false">
+                    <command>
+                        <body>open session</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="ea7aa066-92eb-4782-8fc1-b1187d37df85" action="open" session="t1">
+                            <command>
+                                <body>application:com.fnfr.itest.applications.spirent.customtool.cyberflood</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.OpenStepPropertyGroup">
+                                <stepProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                <sessionProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulSessionProperties" url="[param(&apos;baseUrl&apos;)]/api/v2" url.inherit="false" acceptAllCookies="true" acceptAllCookies.inherit="false" autoRedirect.inherit="false">
+                                    <authentication transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.AuthenticationProperties" acceptAllCertificates="true" acceptAllCertificates.inherit="false"/>
+                                </sessionProperties>
+                                <sessionClass type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                <sessionVersion type="com.fnfr.documents.PropertyString">7.3.0</sessionVersion>
+                            </applicationProperties>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="8d4755e5-0e34-4b7a-81d0-3f2d92f505ee" action="comment" useFieldsInCommand="false">
+                    <command>
+                        <body>authenticate with cyberflood and grab the token for the sake of the custom GET inside the test loop</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="3bf5354c-04c9-483a-bea9-83978523f148" action="Authentication" session="t1" context="SessionStateConsole" normalOffset="40.419" estimatedStepExecutionTime="3.184">
+                            <command>
+                                <body>-email apt-cf-user@spirent.com -password *******</body>
+                            </command>
+                            <postProcessing>
+                                <analysisRules>
+                                    <item>
+                                        <extractorInfo extractorType="query">
+                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                <query>mapped/Json/xtoken</query>
+                                            </extractorProperties>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="store">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                <storageLocation>xtoken</storageLocation>
+                                                <responseValue type="com.fnfr.documents.PropertyBoolean">false</responseValue>
+                                                <variable type="com.fnfr.documents.PropertyBoolean">true</variable>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                </analysisRules>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.itest.platform2.shared.documents.ntaf.NtafTransferableDocumentObject" action="Authentication" subharness="http://spirent.com/CustomizedSessions/tools/CyberFlood/harness/main" harness="http://spirent.com/CustomizedSessions/tools/CyberFlood/harness/main" harnessName="Spirent Custom Tool" email="apt-cf-user@spirent.com" email.inherit="false" email.sub="false" password.masked="true" password="SrqvrrOjrgE=" password.inherit="false" password.sub="false"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="eddca517-6dc5-42da-93f2-a28ad9cee1ba" action="comment" useFieldsInCommand="false">
+                    <command>
+                        <body>find the test case that we want to run</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="b6b688a6-3ee8-4038-9da8-f7290427c145" action="ListHttpThroughputTests" session="t1" context="SessionStateConsole" normalOffset="19.796" estimatedStepExecutionTime="1.358">
+                            <command>
+                                <body>-id -name -description -author -updatedBy apt-cf-user@spirent.com -updatedAt -updateAtOperator eq -createdAt -createdAtOperator eq -per_page 0 -page 1</body>
+                            </command>
+                            <postProcessing>
+                                <analysisRules>
+                                    <item>
+                                        <extractorInfo extractorType="query">
+                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                <query>mapped/Json/item[name=&apos;HTTP Throughput&apos;]/id</query>
+                                            </extractorProperties>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="store">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                <storageLocation>testId</storageLocation>
+                                                <responseValue type="com.fnfr.documents.PropertyBoolean">false</responseValue>
+                                                <variable type="com.fnfr.documents.PropertyBoolean">true</variable>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                </analysisRules>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.itest.platform2.shared.documents.ntaf.NtafTransferableDocumentObject" action="ListHttpThroughputTests" subharness="http://spirent.com/CustomizedSessions/tools/CyberFlood/harness/main" harness="http://spirent.com/CustomizedSessions/tools/CyberFlood/harness/main" harnessName="Spirent Custom Tool" updatedBy="apt-cf-user@spirent.com" updatedBy.inherit="false" updatedBy.sub="false"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="a0791d3e-ed50-43ae-b437-d6b06052970f" action="comment" useFieldsInCommand="false">
+                    <command>
+                        <body>determine the current bandwidth setting and set the value to the current parameter</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="069bb60a-3cf9-4414-8190-c30496d67418" action="GetHttpThroughputTest" session="t1">
+                            <command>
+                                <body>-testId [testId]</body>
+                            </command>
+                            <postProcessing>
+                                <analysisRules>
+                                    <item>
+                                        <extractorInfo extractorType="query">
+                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                <query>mapped/Json/config/loadSpecification/bandwidth</query>
+                                            </extractorProperties>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="message">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.MessageProcessorPropertyGroup" severity="Information">
+                                                <message>Bandwidth currently set to {value} Kbps</message>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                </analysisRules>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.itest.platform2.shared.documents.ntaf.NtafTransferableDocumentObject" action="GetHttpThroughputTest" subharness="http://spirent.com/CustomizedSessions/tools/CyberFlood/harness/main" harness="http://spirent.com/CustomizedSessions/tools/CyberFlood/harness/main" harnessName="Spirent Custom Tool" testId="[testId]" testId.inherit="false"/>
+                        </item>
+                        <item guid="c5ac3f27-34eb-476e-ba0d-39af368b84d2" action="UpdateHttpThroughputTest" session="t1">
+                            <command>
+                                <body>-testId [testId] -name -description -projectId -config -queueId -queueName -debug -subnetClientId -subnetServerId -criteria -networks -interfaces -protocol -virtualRoutersClientId -virtualRoutersServerId -trafficPattern -testType -loadSpecification {&quot;duration&quot;:[param(&apos;duration&apos;)],&quot;startup&quot;:5,&quot;rampup&quot;:5,&quot;rampdown&quot;:5,&quot;shutdown&quot;:5,&quot;bandwidth&quot;:[param(&apos;bandwidth&apos;)]} -dut</body>
+                            </command>
+                            <postProcessing>
+                                <analysisRules>
+                                    <item>
+                                        <extractorInfo extractorType="query">
+                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                <query>mapped/Json/config/loadSpecification/bandwidth</query>
+                                            </extractorProperties>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="message">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.MessageProcessorPropertyGroup" severity="Information">
+                                                <message>Setting bandwidth to {value} Kbps</message>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                </analysisRules>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.itest.platform2.shared.documents.ntaf.NtafTransferableDocumentObject" action="UpdateHttpThroughputTest" subharness="http://spirent.com/CustomizedSessions/tools/CyberFlood/harness/main" harness="http://spirent.com/CustomizedSessions/tools/CyberFlood/harness/main" harnessName="Spirent Custom Tool" testId="[testId]" testId.inherit="false" loadSpecification="{&quot;duration&quot;:[param(&apos;duration&apos;)],&quot;startup&quot;:5,&quot;rampup&quot;:5,&quot;rampdown&quot;:5,&quot;shutdown&quot;:5,&quot;bandwidth&quot;:[param(&apos;bandwidth&apos;)]}" loadSpecification.inherit="false"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="93d87dfd-fb1c-49a8-a31a-5dec3ec20b84" action="comment" useFieldsInCommand="false">
+                    <command>
+                        <body>start test and grab the testRunId</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="7ccb9097-f75e-4d83-89ad-e235ebe62f31" action="StartTest" session="t1" context="SessionStateConsole" normalOffset="17.817" estimatedStepExecutionTime="3.809">
+                            <command>
+                                <body>-testId [testId]</body>
+                            </command>
+                            <postProcessing>
+                                <analysisRules>
+                                    <item>
+                                        <extractorInfo extractorType="query">
+                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                <query>id()</query>
+                                            </extractorProperties>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="store">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                <storageLocation>testRunId</storageLocation>
+                                                <responseValue type="com.fnfr.documents.PropertyBoolean">false</responseValue>
+                                                <variable type="com.fnfr.documents.PropertyBoolean">true</variable>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                </analysisRules>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.itest.platform2.shared.documents.ntaf.NtafTransferableDocumentObject" action="StartTest" subharness="http://spirent.com/CustomizedSessions/tools/CyberFlood/harness/main" harness="http://spirent.com/CustomizedSessions/tools/CyberFlood/harness/main" harnessName="Spirent Custom Tool" testId="[testId]" testId.inherit="false"/>
+                        </item>
+                        <item guid="f4224f67-7ed6-4619-9edc-bdad22fce9fe" action="GetTestRun" session="t1" context="SessionStateConsole" normalOffset="243.166" estimatedStepExecutionTime="1.856">
+                            <command>
+                                <body>-testRunId [testRunId]</body>
+                            </command>
+                            <postProcessing>
+                                <analysisRules>
+                                    <item>
+                                        <extractorInfo extractorType="query">
+                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                <query>status()</query>
+                                            </extractorProperties>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="assert">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                <expression>value == &quot;running&quot;</expression>
+                                                <actionsWhenTrue>
+                                                    <item actionId="DeclareExecutionIssue">
+                                                        <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="Information">
+                                                            <message>Test is {value}...</message>
+                                                        </actionProperties>
+                                                    </item>
+                                                    <item actionId="PassTestIfNotAlreadyFailed">
+                                                        <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                    </item>
+                                                </actionsWhenTrue>
+                                                <actionsWhenFalse>
+                                                    <item actionId="DeclareExecutionIssue">
+                                                        <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="Information">
+                                                            <message>Test is {value}...</message>
+                                                        </actionProperties>
+                                                    </item>
+                                                    <item actionId="RepeatStep">
+                                                        <actionProperties type="com.fnfr.svt.execution.builtin.actions.RepeatStepPropertyGroup" maxRepeatCount="60" delayBetweenRepeats="15.0"/>
+                                                    </item>
+                                                    <item actionId="SkipRemainingRules">
+                                                        <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                    </item>
+                                                </actionsWhenFalse>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                    <item>
+                                        <extractorInfo extractorType="query">
+                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                <query>mapped/Json/runId</query>
+                                            </extractorProperties>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="store">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                <storageLocation>runId</storageLocation>
+                                                <responseValue type="com.fnfr.documents.PropertyBoolean">false</responseValue>
+                                                <variable type="com.fnfr.documents.PropertyBoolean">true</variable>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                </analysisRules>
+                            </postProcessing>
+                            <eventHandlers>
+                                <item name="OnQueryExtractorInvalidQuery">
+                                    <item actionId="DeclareExecutionIssue">
+                                        <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="Information">
+                                            <message>{auto_message_wait}</message>
+                                        </actionProperties>
+                                    </item>
+                                    <item actionId="RepeatStep">
+                                        <actionProperties type="com.fnfr.svt.execution.builtin.actions.RepeatStepPropertyGroup"/>
+                                    </item>
+                                </item>
+                                <item name="OnNoMatchesFound">
+                                    <item actionId="DeclareExecutionIssue">
+                                        <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="Information">
+                                            <message>{auto_message_wait}</message>
+                                        </actionProperties>
+                                    </item>
+                                    <item actionId="RepeatStep">
+                                        <actionProperties type="com.fnfr.svt.execution.builtin.actions.RepeatStepPropertyGroup"/>
+                                    </item>
+                                </item>
+                            </eventHandlers>
+                            <applicationProperties type="com.fnfr.itest.platform2.shared.documents.ntaf.NtafTransferableDocumentObject" action="GetTestRun" subharness="http://spirent.com/CustomizedSessions/tools/CyberFlood/harness/main" harness="http://spirent.com/CustomizedSessions/tools/CyberFlood/harness/main" harnessName="Spirent Custom Tool" testRunId="[testRunId]" testRunId.inherit="false"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="df19b534-28f3-44d9-b787-be78ec68b030" action="comment" useFieldsInCommand="false">
+                    <command>
+                        <body>stay in a loop while the test runs within some timeout value</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="91c76255-66c2-41ba-9e89-831b29186cbd" action="eval" useFieldsInCommand="false">
+                            <command>
+                                <body>done = False ; timeout = 300</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="989eda99-2512-4cdb-bdfb-15ebd5ccf88b" action="while" useFieldsInCommand="false">
+                            <command>
+                                <body>(not done) and (timeout &gt; 0):</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="029fe7b8-2a16-45ec-99f2-e4118d780ad5" action="GetTestRun" session="t1" context="SessionStateConsole" normalOffset="243.166" estimatedStepExecutionTime="1.856">
+                                    <command>
+                                        <body>-testRunId [testRunId]</body>
+                                    </command>
+                                    <postProcessing>
+                                        <analysisRules>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                        <query>status()</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="assert">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                        <expression>(value == &quot;finished&quot;) | (value == &quot;stopped&quot;)</expression>
+                                                        <actionsWhenTrue>
+                                                            <item actionId="Eval">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                                    <statement>done=True</statement>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="DeclareExecutionIssue">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="Information">
+                                                                    <message>Test is {value}...</message>
+                                                                </actionProperties>
+                                                            </item>
+                                                        </actionsWhenTrue>
+                                                        <actionsWhenFalse>
+                                                            <item actionId="Eval">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                                    <statement>done=False</statement>
+                                                                </actionProperties>
+                                                            </item>
+                                                            <item actionId="DeclareExecutionIssue">
+                                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="Information">
+                                                                    <message>Test is {value}...</message>
+                                                                </actionProperties>
+                                                            </item>
+                                                        </actionsWhenFalse>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                        </analysisRules>
+                                    </postProcessing>
+                                    <eventHandlers>
+                                        <item name="OnQueryExtractorInvalidQuery">
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="Information">
+                                                    <message>{auto_message_wait}</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="RepeatStep">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.RepeatStepPropertyGroup"/>
+                                            </item>
+                                        </item>
+                                        <item name="OnNoMatchesFound">
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="Information">
+                                                    <message>{auto_message_wait}</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="RepeatStep">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.RepeatStepPropertyGroup"/>
+                                            </item>
+                                        </item>
+                                    </eventHandlers>
+                                    <applicationProperties type="com.fnfr.itest.platform2.shared.documents.ntaf.NtafTransferableDocumentObject" action="GetTestRun" subharness="http://spirent.com/CustomizedSessions/tools/CyberFlood/harness/main" harness="http://spirent.com/CustomizedSessions/tools/CyberFlood/harness/main" harnessName="Spirent Custom Tool" testRunId="[testRunId]" testRunId.inherit="false"/>
+                                </item>
+                                <item guid="b845c2c2-7012-4fe2-adab-d5940c97ef08" action="GET" session="t1">
+                                    <postProcessing>
+                                        <analysisRules>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup" declareNoMatchIssue="false">
+                                                        <query>mapped/Json/client/item[subType=&apos;attemptedTxns&apos;]/id/../value</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="message">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.MessageProcessorPropertyGroup" severity="Information">
+                                                        <message>    Attempted Txns: {value}</message>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup" declareNoMatchIssue="false">
+                                                        <query>mapped/Json/client/item[subType=&apos;successfulTxns&apos;]/id/../value</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="message">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.MessageProcessorPropertyGroup" severity="Information">
+                                                        <message>    Successful Txns: {value}</message>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup" declareNoMatchIssue="false">
+                                                        <query>mapped/Json/client/item[subType=&apos;unsuccessfulTxns&apos;]/id/../value</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="message">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.MessageProcessorPropertyGroup" severity="Information">
+                                                        <message>    Unsuccessful Txns: {value}</message>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                        </analysisRules>
+                                    </postProcessing>
+                                    <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" action="[param(&apos;baseUrl&apos;)]/api/v2/test_runs/[testRunId]/statistics" action.inherit="false">
+                                        <authentication transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.AuthenticationProperties" acceptAllCertificates="true" acceptAllCertificates.inherit="false"/>
+                                        <httpHeader inherit="false" transferableToolId="com.fnfr.itest.applications.webservices.restful">
+                                            <memberClasses>
+                                                <item>com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry</item>
+                                            </memberClasses>
+                                            <item transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry" header="Authorization" header.inherit="false" value="Bearer [xtoken]" value.inherit="false"/>
+                                        </httpHeader>
+                                    </applicationProperties>
+                                </item>
+                                <item guid="09174ed3-3955-46c0-910a-b2ca25794902" action="sleep">
+                                    <command>
+                                        <body>5</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                                <item guid="d3fba83b-146e-4bf5-aa6a-ee3b4730ea8e" action="eval" useFieldsInCommand="false">
+                                    <command>
+                                        <body>timeout = timeout - 5</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="d40635da-1440-4162-b375-efa04a101343" action="comment" useFieldsInCommand="false">
+                    <command>
+                        <body>grab the final results</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="c713d8fc-23c4-4b44-be3c-d148206e6e30" action="ListTestRunResults" session="t1" context="SessionStateConsole" estimatedStepExecutionTime="1.856">
+                            <command>
+                                <body>-testRunId [testRunId] -id -author -grade -runId -testId -queueId -updatedAt -updateAtOperator eq -createdAt -createdAtOperator eq -startedAt -startedAtOperator eq -finishedAt -finishedAtOperator eq -duration -durationOperator eq -score -scoreOperator eq -per_page 0 -page 1</body>
+                            </command>
+                            <postProcessing>
+                                <analysisRules>
+                                    <item>
+                                        <extractorInfo extractorType="query">
+                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                <query>mapped/Json/item/raw/Summary/Completion</query>
+                                            </extractorProperties>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="message">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.MessageProcessorPropertyGroup" severity="Information">
+                                                <message>Test reached {value} percent completion</message>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                    <item>
+                                        <extractorInfo extractorType="query">
+                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                <query>mapped/Json/item/grade</query>
+                                            </extractorProperties>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="message">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.MessageProcessorPropertyGroup" severity="Information">
+                                                <message>    Grade: {value}</message>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                    <item>
+                                        <extractorInfo extractorType="query">
+                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                <query>mapped/Json/item/score</query>
+                                            </extractorProperties>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="message">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.MessageProcessorPropertyGroup" severity="Information">
+                                                <message>    Score: {value}</message>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                    <item>
+                                        <extractorInfo extractorType="query">
+                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                <query>mapped/Json/item/raw/Summary/Executed</query>
+                                            </extractorProperties>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="message">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.MessageProcessorPropertyGroup" severity="Information">
+                                                <message>    Executed: {value}</message>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                    <item>
+                                        <extractorInfo extractorType="query">
+                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                <query>mapped/Json/item/raw/Summary/Passed</query>
+                                            </extractorProperties>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="message">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.MessageProcessorPropertyGroup" severity="Information">
+                                                <message>    Passed: {value}</message>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                    <item>
+                                        <extractorInfo extractorType="query">
+                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                <query>mapped/Json/item/raw/Summary/Failed</query>
+                                            </extractorProperties>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="message">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.MessageProcessorPropertyGroup" severity="Information">
+                                                <message>    Failed: {value}</message>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                    <item>
+                                        <extractorInfo extractorType="query">
+                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                <query>mapped/Json/item/score</query>
+                                            </extractorProperties>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="assert">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                <expression>int(value) == 100</expression>
+                                                <actionsWhenTrue>
+                                                    <item actionId="DeclareExecutionIssue">
+                                                        <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="OK">
+                                                            <message>Test passed with score of 100</message>
+                                                        </actionProperties>
+                                                    </item>
+                                                    <item actionId="PassTestIfNotAlreadyFailed">
+                                                        <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                    </item>
+                                                </actionsWhenTrue>
+                                                <actionsWhenFalse>
+                                                    <item actionId="DeclareExecutionIssue">
+                                                        <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                            <message>Test failed with score {value} which is less than expected of 100</message>
+                                                        </actionProperties>
+                                                    </item>
+                                                    <item actionId="FailTest">
+                                                        <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                    </item>
+                                                </actionsWhenFalse>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                </analysisRules>
+                            </postProcessing>
+                            <eventHandlers>
+                                <item name="OnQueryExtractorInvalidQuery">
+                                    <item actionId="DeclareExecutionIssue">
+                                        <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="Information">
+                                            <message>{auto_message_wait}</message>
+                                        </actionProperties>
+                                    </item>
+                                    <item actionId="RepeatStep">
+                                        <actionProperties type="com.fnfr.svt.execution.builtin.actions.RepeatStepPropertyGroup"/>
+                                    </item>
+                                </item>
+                                <item name="OnNoMatchesFound">
+                                    <item actionId="DeclareExecutionIssue">
+                                        <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="Information">
+                                            <message>{auto_message_wait}</message>
+                                        </actionProperties>
+                                    </item>
+                                    <item actionId="RepeatStep">
+                                        <actionProperties type="com.fnfr.svt.execution.builtin.actions.RepeatStepPropertyGroup"/>
+                                    </item>
+                                </item>
+                            </eventHandlers>
+                            <applicationProperties type="com.fnfr.itest.platform2.shared.documents.ntaf.NtafTransferableDocumentObject" action="ListTestRunResults" subharness="http://spirent.com/CustomizedSessions/tools/CyberFlood/harness/main" harness="http://spirent.com/CustomizedSessions/tools/CyberFlood/harness/main" harnessName="Spirent Custom Tool" testRunId="[testRunId]" testRunId.inherit="false"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="f805283e-d64f-4be0-8d60-cf31d0246bb6" action="comment" useFieldsInCommand="false">
+                    <command>
+                        <body>close session</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="5e1724f7-9122-4a04-980a-2e30897fb88f" action="close" session="t1" normalOffset="13.853">
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+        </item>
+    </procedures>
+</testCase>
