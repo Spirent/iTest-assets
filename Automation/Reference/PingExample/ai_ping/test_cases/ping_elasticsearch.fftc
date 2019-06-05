@@ -1,0 +1,410 @@
+<?xml version="1.0"?>
+<testCase version="7.3.0.201903220921">
+    <general>
+        <documentation>Ping + Elasticsearch</documentation>
+        <notes>A simple ping test case with the ability to add stats to an Elasticsearch index</notes>
+        <language>Python</language>
+    </general>
+    <execution>
+        <parameters version="7.3.0.201903220921">
+            <parameters escape="true">
+                <parameters xmlns:pt="http://www.fnfr.com/schemas/parameterTree">
+                    <pingTarget pt:description="IP Address or URL to ping">www.google.com</pingTarget>
+                    <elastic_user pt:description="Username for Elasticsearch API">api</elastic_user>
+                    <elastic_password pt:description="Password for Elasticsearch API">index</elastic_password>
+                </parameters>
+            </parameters>
+        </parameters>
+    </execution>
+    <testbed>project://ai_ping/topologies/windows.tbml</testbed>
+    <procedures>
+        <item name="main">
+            <steps>
+                <item guid="34cb5ef2-ea08-4b4c-86f9-98b3dce68ff4" action="comment" useFieldsInCommand="false">
+                    <command>
+                        <body>Open sessions</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="b2c3fb42-6655-4511-912e-5126725c06cb" action="open" session="local">
+                            <command>
+                                <body>device:local#cli</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.OpenStepPropertyGroup">
+                                <stepProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                                <sessionProperties type="com.fnfr.svt.applications.cmd.CmdSessionProperties"/>
+                                <sessionClass type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                <sessionVersion type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            </applicationProperties>
+                        </item>
+                        <item guid="e07b839d-b44c-4f02-8fd0-5d75bc59c6eb" action="open" session="Elastic">
+                            <command>
+                                <body>device:local#REST</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.OpenStepPropertyGroup">
+                                <stepProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                <sessionProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulSessionProperties">
+                                    <authentication transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.AuthenticationProperties" user="[param(&apos;elastic_user&apos;)]" user.inherit="false" password.masked="true" password="4RvNHVItEyvmusBU817R3OrYANzZETwjitHtkZVYmkc=" password.inherit="false"/>
+                                </sessionProperties>
+                                <sessionClass type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                <sessionVersion type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            </applicationProperties>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="c727a586-a590-48da-818d-9303e409e556" action="eval" useFieldsInCommand="false">
+                    <command>
+                        <body>print(param(&apos;pingTarget&apos;))</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="regex">
+                                    <extractorProperties type="com.fnfr.svt.mapping.regex.extractors.RegexExtractorPropertyGroup">
+                                        <regex>[^\\r\\n]+</regex>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="message">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.MessageProcessorPropertyGroup" severity="Information">
+                                        <message>Ping Target: {value}</message>
+                                        <extractData>true</extractData>
+                                        <tag>ping_target</tag>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="5b0d35e6-6a74-40b9-a085-7c316fe0a2d3" action="Ping" session="local" useFieldsInCommand="false">
+                    <command>
+                        <body> -target [param(&apos;pingTarget&apos;)]</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>mapped/Json/rtt_min</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>rtt_min</storageLocation>
+                                        <responseValue type="com.fnfr.documents.PropertyBoolean">false</responseValue>
+                                        <variable type="com.fnfr.documents.PropertyBoolean">true</variable>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>mapped/Json/rtt_max</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>rtt_max</storageLocation>
+                                        <responseValue type="com.fnfr.documents.PropertyBoolean">false</responseValue>
+                                        <variable type="com.fnfr.documents.PropertyBoolean">true</variable>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>mapped/Json/rtt_avg</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>rtt_avg</storageLocation>
+                                        <responseValue type="com.fnfr.documents.PropertyBoolean">false</responseValue>
+                                        <variable type="com.fnfr.documents.PropertyBoolean">true</variable>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>mapped/Json/loss_percent</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>loss_percent</storageLocation>
+                                        <responseValue type="com.fnfr.documents.PropertyBoolean">false</responseValue>
+                                        <variable type="com.fnfr.documents.PropertyBoolean">true</variable>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>mapped/Json/rtt_avg</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="message">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.MessageProcessorPropertyGroup" severity="Information">
+                                        <message>Average Ping time: {value}</message>
+                                        <extractData>true</extractData>
+                                        <tag>avg_ping</tag>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>mapped/Json/rtt_min</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="message">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.MessageProcessorPropertyGroup" severity="Information">
+                                        <message>Min ping time: {value}</message>
+                                        <extractData>true</extractData>
+                                        <tag>min_ping</tag>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>mapped/Json/rtt_max</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="message">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.MessageProcessorPropertyGroup" severity="Information">
+                                        <message>Max ping time: {value}</message>
+                                        <extractData>true</extractData>
+                                        <tag>max_ping</tag>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>mapped/Json/loss_percent</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="message">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.MessageProcessorPropertyGroup" severity="Information">
+                                        <message>Percent packet loss: {value}</message>
+                                        <extractData>true</extractData>
+                                        <tag>ping_loss_percent</tag>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>mapped/Json/loss_percent</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>int(value) == 0</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="PassTestIfNotAlreadyFailed">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="OK">
+                                                    <message>Ping of [param(&apos;pingTarget&apos;)] successful. 0% loss.</message>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenTrue>
+                                        <actionsWhenFalse>
+                                            <item actionId="FailTest">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message>Ping of [param(&apos;pingTarget&apos;)] not successful. [value]% loss.</message>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenFalse>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="9bd3e78b-680c-4582-85f8-fe9a6af8c988" action="comment" useFieldsInCommand="false">
+                    <command>
+                        <body>Add results to Elasticsearch</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="3ca82da9-afcd-4b70-b5c1-c81615ca83f5" action="comment" useFieldsInCommand="false">
+                            <command>
+                                <body>Create ping_data structure</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="2f6f44a9-3526-4be9-9f15-6001a9148359" action="comment" useFieldsInCommand="false">
+                                    <command>
+                                        <body>Create timestamp formatted for Elastic</body>
+                                    </command>
+                                    <nestedSteps>
+                                        <item guid="499ab57d-3a05-41bd-9f3b-60c05f9e714e" action="eval" useFieldsInCommand="false">
+                                            <command>
+                                                <body>import datetime</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                        </item>
+                                        <item guid="2447f99c-60bb-414b-b764-a0ac441e8977" action="eval" useFieldsInCommand="false">
+                                            <command>
+                                                <body>utc_time = datetime.datetime.utcnow()</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                        </item>
+                                        <item guid="1ee71a5b-18af-487b-a310-89f5d6683661" action="eval" useFieldsInCommand="false">
+                                            <command>
+                                                <body>timestamp = utc_time.strftime(&quot;%Y-%m-%d %H:%M:%S&quot;)</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                        </item>
+                                        <item guid="b03b4288-8efb-444f-addd-c0aeada404fa" action="eval" useFieldsInCommand="false">
+                                            <command>
+                                                <body>space_index = timestamp.find(&apos; &apos;)</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                        </item>
+                                        <item guid="6b19825d-c9ce-4837-9ca5-0b4991b9a5d6" action="eval" useFieldsInCommand="false">
+                                            <command>
+                                                <body>timestamp = timestamp[:space_index] + &apos;T&apos; + timestamp[space_index+1:] + &apos;Z&apos;</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                        </item>
+                                        <item guid="5d93f9c8-3d42-43be-a22a-dc7f830469a5" action="eval" useFieldsInCommand="false">
+                                            <command>
+                                                <body>print(timestamp)</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                                <item guid="fca6ffc1-fd79-4c2d-a72e-662a6b9b8b67" action="eval" useFieldsInCommand="false">
+                                    <command>
+                                        <body>import json</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                                <item guid="080f2884-5ff8-42cc-9e42-e14eb8c9a218" action="eval" useFieldsInCommand="false">
+                                    <command>
+                                        <body>ping_data = {}</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                                <item guid="866e6952-d294-4d13-b6e2-24b4c38b98e5" action="eval" useFieldsInCommand="false">
+                                    <command>
+                                        <body>ping_data[&apos;target&apos;]=param(&apos;pingTarget&apos;)</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                                <item guid="2b6e326f-d794-48ca-aa34-40a3cf67498e" action="eval" useFieldsInCommand="false">
+                                    <command>
+                                        <body>ping_data[&apos;min_ping&apos;]=rtt_min</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                                <item guid="dbe20551-4d87-488a-848c-f7cbe2bf6ac1" action="eval" useFieldsInCommand="false">
+                                    <command>
+                                        <body>ping_data[&apos;max_ping&apos;]=rtt_max</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                                <item guid="d48b98aa-5a94-4be8-899a-33e084d80ab3" action="eval" useFieldsInCommand="false">
+                                    <command>
+                                        <body>ping_data[&apos;avg_ping&apos;]=rtt_avg</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                                <item guid="b6d88165-dc9b-491b-b76e-aac57ce19850" action="eval" useFieldsInCommand="false">
+                                    <command>
+                                        <body>ping_data[&apos;packet_loss&apos;]=loss_percent</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                                <item guid="fa56354a-4948-4fbb-978f-fb548324f31a" action="eval" useFieldsInCommand="false">
+                                    <command>
+                                        <body>ping_data[&apos;date&apos;]=timestamp</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                                <item guid="31dbb281-0e63-493d-af56-148cf1ac617e" action="eval" useFieldsInCommand="false">
+                                    <command>
+                                        <body>ping_data = json.dumps(ping_data)</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                                <item guid="a5ab58b6-68d8-4b76-b359-f130ecdbe609" action="eval" useFieldsInCommand="false">
+                                    <command>
+                                        <body>print(ping_data)</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="b83c5a4b-f4ce-46d8-ac04-1751ed87deba" action="AddDocument" session="Elastic" useFieldsInCommand="false">
+                            <command>
+                                <body> -elastic_user param(&apos;elastic_user&apos;) -elastic_password param(&apos;elastic_password&apos;) -index ping_data -type test_run -data [ping_data]</body>
+                            </command>
+                            <postProcessing>
+                                <analysisRules>
+                                    <item>
+                                        <extractorInfo extractorType="query">
+                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                <query>mapped/Json/status</query>
+                                            </extractorProperties>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="assert">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                <expression>value == &quot;ok&quot;</expression>
+                                                <actionsWhenTrue>
+                                                    <item actionId="DeclareExecutionIssue">
+                                                        <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="OK">
+                                                            <message>Ping data successfully added to database</message>
+                                                        </actionProperties>
+                                                    </item>
+                                                    <item actionId="SkipRemainingRules">
+                                                        <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                    </item>
+                                                </actionsWhenTrue>
+                                                <actionsWhenFalse>
+                                                    <item actionId="DeclareExecutionIssue">
+                                                        <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                            <message>Problem adding ping data to database.</message>
+                                                        </actionProperties>
+                                                    </item>
+                                                    <item actionId="FailTest">
+                                                        <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                    </item>
+                                                </actionsWhenFalse>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                    <item>
+                                        <extractorInfo extractorType="query">
+                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                <query>mapped/Json/error_message</query>
+                                            </extractorProperties>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="message">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.MessageProcessorPropertyGroup">
+                                                <message>Message from Elasticsearch: {value}</message>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                </analysisRules>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+        </item>
+    </procedures>
+</testCase>
