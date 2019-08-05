@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<testCase version="7.2.0.201812200559">
+<testCase version="7.3.5.0">
     <general>
         <documentation>Tcl Procedure Library - File and Directory Commands</documentation>
         <notes>Language: TCL
@@ -890,43 +890,114 @@ C:\\Users\\user1\\workspace\\my_project</multilineDescription>
                     </command>
                     <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
                 </item>
-                <item guid="d4488a20-b34d-421a-9223-0419b58cea5f" action="eval" useFieldsInCommand="false">
+                <item guid="6dac9e0a-c767-4de8-af6b-d0496b6a7c4f" action="comment" useFieldsInCommand="false">
                     <command>
-                        <body>set URI ${arg[1]}</body>
-                    </command>
-                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
-                </item>
-                <item guid="e15d8827-33fb-4f1e-877e-ca2e9925f20e" action="eval" useFieldsInCommand="false">
-                    <command>
-                        <body>set file_contents ${arg[2]}</body>
-                    </command>
-                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
-                </item>
-                <item guid="c1aac5ea-529b-4471-8ce5-1a9c8a360a97" action="if" useFieldsInCommand="false">
-                    <command>
-                        <body>[string tolower [string trim $mode]] == &quot;append&quot;</body>
+                        <body>Get the first arg from description </body>
                     </command>
                     <nestedSteps>
-                        <item guid="4a6df3a9-7561-44b7-b92a-e83fd44531de" action="then" useFieldsInCommand="false">
+                        <item guid="d4488a20-b34d-421a-9223-0419b58cea5f" action="eval" useFieldsInCommand="false">
+                            <command>
+                                <body>set uri ${arg[1]}</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="a3434b6a-81ae-46a2-b686-51ad8e800782" action="comment" useFieldsInCommand="false">
+                    <command>
+                        <body>Get second arg and replace escaped newlines with real ones</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="193bbc46-c8e4-45ca-aec0-fa34f0526726" action="eval" useFieldsInCommand="false">
+                            <command>
+                                <body>set a2 [string map {\\\\r &quot;&quot; \\\\n \\n} ${arg[2]}]</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="2853c690-65b8-42e8-90df-419ce97b1e0d" action="comment" useFieldsInCommand="false">
+                    <command>
+                        <body>Remove lines that only have a double quote</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="ee93b6fb-682f-4ec3-8d22-6882f31f0c98" action="eval" useFieldsInCommand="false">
+                            <command>
+                                <body>set a2 [string trim $a2 \\&quot;]</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="4202a872-1a43-4c15-87e7-f9bfe0c9aaab" action="eval" useFieldsInCommand="false">
+                            <command>
+                                <body>set file_contents &quot;&quot;</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="6594af86-18d3-4e8f-9f92-7a5e856329bb" action="foreach" useFieldsInCommand="false">
+                            <command>
+                                <body>line [split $a2 \\n]</body>
+                            </command>
                             <nestedSteps>
-                                <item guid="7537c2a2-70ce-4a53-9302-060d4d96b3c3" action="writeFile" useFieldsInCommand="false">
+                                <item guid="5bc7a80a-ee2e-44dc-a6f5-1366ca5b1628" action="if" useFieldsInCommand="false">
                                     <command>
-                                        <body>$URI $file_contents</body>
+                                        <body>$line != &quot;\\&quot;&quot;</body>
                                     </command>
-                                    <applicationProperties type="com.fnfr.svt.execution.builtin.exec.WriteFilePropertyGroup"/>
+                                    <nestedSteps>
+                                        <item guid="0ec68f8f-9917-48fb-bd8e-3f0eaa2d27c0" action="then" useFieldsInCommand="false">
+                                            <nestedSteps>
+                                                <item guid="8779d4e9-d697-41d3-9244-18d5638a04bc" action="eval" useFieldsInCommand="false">
+                                                    <command>
+                                                        <body>set file_contents &quot;$file_contents$line\\n&quot;</body>
+                                                    </command>
+                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                </item>
+                                            </nestedSteps>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
                                 </item>
                             </nestedSteps>
                             <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
                         </item>
-                        <item guid="2cc37ecb-0e3a-4d84-af4f-a668a942deed" action="else" useFieldsInCommand="false">
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="8e9f86b2-f126-4a80-9e7f-82ebd44722ef" action="comment" useFieldsInCommand="false">
+                    <command>
+                        <body>Append or overwrite file</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="c1aac5ea-529b-4471-8ce5-1a9c8a360a97" action="if" useFieldsInCommand="false">
+                            <command>
+                                <body>[string tolower [string trim $mode]] == &quot;append&quot;</body>
+                            </command>
                             <nestedSteps>
-                                <item guid="40fad02c-a6ec-4af0-ad4f-db7ea60abee7" action="writeFile" useFieldsInCommand="false">
-                                    <command>
-                                        <body>$URI $file_contents</body>
-                                    </command>
-                                    <applicationProperties type="com.fnfr.svt.execution.builtin.exec.WriteFilePropertyGroup">
-                                        <appendMode>Overwrite</appendMode>
-                                    </applicationProperties>
+                                <item guid="4a6df3a9-7561-44b7-b92a-e83fd44531de" action="then" useFieldsInCommand="false">
+                                    <nestedSteps>
+                                        <item guid="7537c2a2-70ce-4a53-9302-060d4d96b3c3" action="writeFile" useFieldsInCommand="false">
+                                            <command>
+                                                <body>$uri $file_contents</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.execution.builtin.exec.WriteFilePropertyGroup"/>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                                <item guid="2cc37ecb-0e3a-4d84-af4f-a668a942deed" action="else" useFieldsInCommand="false">
+                                    <nestedSteps>
+                                        <item guid="40fad02c-a6ec-4af0-ad4f-db7ea60abee7" action="writeFile" useFieldsInCommand="false">
+                                            <command>
+                                                <body>$uri $file_contents</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.execution.builtin.exec.WriteFilePropertyGroup">
+                                                <appendMode>Overwrite</appendMode>
+                                            </applicationProperties>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
                                 </item>
                             </nestedSteps>
                             <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
@@ -955,6 +1026,7 @@ NOTES:
                     <defaultValue>Append</defaultValue>
                 </item>
             </arguments>
+            <response>{}</response>
         </item>
     </procedures>
 </testCase>
