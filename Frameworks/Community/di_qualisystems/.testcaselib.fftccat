@@ -1,0 +1,166 @@
+<?xml version="1.0"?>
+<TestCaseCatalog version="7.1.0.201804110601">
+    <testCaseCatalog>
+        <item name="session_profiles/quali_lib.fftc">
+            <tcDescriptor version="7.1.0.201804110601">
+                <general>
+                    <isProcedureLibrary>true</isProcedureLibrary>
+                    <sessionClass includeTestCase="true" sessionType="qq_db.ffsp"/>
+                </general>
+                <procedures>
+                    <item name="activate_reservation" isPublic="true">
+                        <multilineDescription>Activates an existing reservation. The topology was created in the create_reservation command and a reservation id must have been returned. The function returns 1 for success and 0 for failure. The command will not end the reservation in case of failure.</multilineDescription>
+                        <arguments>
+                            <item name="reservationId">
+                                <description>The id of the reservation returned by the create_reservation command</description>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="connect_route" isPublic="true">
+                        <multilineDescription>The function returns 0 for failure or 1 for success. </multilineDescription>
+                        <arguments>
+                            <item name="reservationId">
+                                <description>The id of the reservation returned by the create_reservation command</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="connect_route_old" isPublic="true">
+                        <multilineDescription>The function returns 0 for failure or 1 for success. </multilineDescription>
+                        <arguments>
+                            <item name="reservationId">
+                                <description>The id of the reservation returned by the create_reservation command</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="routes">
+                                <description>Route to be connected (space separated values)
+E.g. &quot;{TG/IXIA/XM12_02:11/15 Ciena_3930-11:9} {Ciena_3930-11:11 PE12:ge-1/3/1}&quot;</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="create_reservation" isPublic="true">
+                        <multilineDescription>Creates an immediate reservation, adds resources and creates the routes (similar to adding topology). Returns 0 for failure and reservation id for success. (reservation id example: &apos;91d65fec-aa8e-46a6-a754-ec7ff29fbd4e&apos;)
+This function will not activate the resources (create the L1 mappings) until the activate_reservation function is called.</multilineDescription>
+                        <arguments>
+                            <item name="reservationName">
+                                <description>The name/description of the reservation. Note that multiple reservations with the same name can be added in RM. The difference is the reservation id.</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="reservationDuration">
+                                <description>Duration in minutes of the reservation</description>
+                                <defaultValue>120</defaultValue>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="reservationUser">
+                                <description>The user who is making the reservation. This has to be provisioned in the QS Resource Manager DB prior to running the script. Should be the same username used at the logon.</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="routes">
+                                <description>This is where you tell the RM how and what to connect in your topology.
+In the example below i want to create a topology with 4 routes. Each route (or endpoint) has a source and a target resource and in the RM client are the connectors between the devices.
+Each route is delimited by {} and has 2 resources separated by space and another value for the sharing (specify the word &quot;shared&quot; for a shared route). If no sharing value is specified then the route will be considered not shared. The routes argument value should be included in double quotes.
+routes input examples:
+Example 1. &quot;{TG/IXIA/XM12_02:11/15 Ciena_3930-11:9} {Ciena_3930-11:11 PE12:ge-1/3/1 shared} {Ciena_3960-11:11 PE11:xe-4/0/0} {Ciena_3960-11:7 TG/IXIA/XM12_02:11/16}&quot;
+Example 2 with dual media ports &quot;{TG/Spirent/STC_01:4/1/copper Ciena_3960-14:1/copper}&quot;</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="create_reservation_with_topology" isPublic="true">
+                        <multilineDescription>Creates an immediate reservation, adds resources and creates the routes (similar to adding topology). Returns 0 for failure and reservation id for success. (reservation id example: &apos;91d65fec-aa8e-46a6-a754-ec7ff29fbd4e&apos;)
+This function will not activate the resources (create the L1 mappings) until the activate_reservation function is called.</multilineDescription>
+                        <arguments>
+                            <item name="reservationName">
+                                <description>The name/description of the reservation. Note that multiple reservations with the same name can be added in RM. The difference is the reservation id.</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="reservationDuration">
+                                <description>Duration in minutes of the reservation</description>
+                                <defaultValue>120</defaultValue>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="reservationUser">
+                                <description>The user who is making the reservation. This has to be provisioned in the QS Resource Manager DB prior to running the script. Should be the same username used at the logon.</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="topologyFullPath">
+                                <description>The full path of the topology which you want to load. This has been previously built in the RM GUI.</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="database_login" isPublic="true">
+                        <multilineDescription>Login to the QualiSystems Database using API commands. These credentials are taken from the global parameter file.</multilineDescription>
+                        <arguments>
+                            <item name="user">
+                                <description>The user must be present in the RM DB with access to the desired domain</description>
+                                <defaultValue>tcluser</defaultValue>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="password">
+                                <defaultValue>tcluser</defaultValue>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="domain">
+                                <description>Domain where user has access</description>
+                                <defaultValue>Global</defaultValue>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="database_logoff" isPublic="true"/>
+                    <item name="disconnect_route" isPublic="true">
+                        <multilineDescription>The function returns 0 for failure or 1 for success. </multilineDescription>
+                        <arguments>
+                            <item name="reservationId">
+                                <description>The id of the reservation returned by the create_reservation command</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="disconnect_route_old" isPublic="true">
+                        <multilineDescription>The function returns 0 for failure or 1 for success. </multilineDescription>
+                        <arguments>
+                            <item name="reservationId">
+                                <description>The id of the reservation returned by the create_reservation command</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="routes">
+                                <description>Route to be disconnected (space separated values)
+E.g. &quot;{TG/IXIA/XM12_02:11/15 Ciena_3930-11:9} {Ciena_3930-11:11 PE12:ge-1/3/1}&quot;</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="end_reservation" isPublic="true">
+                        <multilineDescription>Creates an immediate reservation, adds resources and creates the routes (similar to adding topology). Returns 0 for failure and reservation id for success. (reservation id example: &apos;91d65fec-aa8e-46a6-a754-ec7ff29fbd4e&apos;)
+This function will not activate the resources (create the L1 mappings) until the activate_reservation function is called.</multilineDescription>
+                        <arguments>
+                            <item name="reservationId">
+                                <description>The reservation id returned in the create_reservation command.</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="get_reservation_by_topology" isPublic="true"/>
+                    <item name="get_resource_ip" isPublic="true">
+                        <multilineDescription>The function returns 0 for failure or the ip address for success. </multilineDescription>
+                        <arguments>
+                            <item name="resourceId">
+                                <description>The resource id it has the same format as in the &quot;create_reservation&quot; command / &quot;routes&quot; parameter. However only the &quot;parent&quot; resource is specified
+Examples: 
+TG/IXIA/XM12_02
+TG/Spirent/STC_01
+Ciena_3930-11
+Ciena_3930-11
+PE12</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                    </item>
+                </procedures>
+            </tcDescriptor>
+        </item>
+    </testCaseCatalog>
+</TestCaseCatalog>

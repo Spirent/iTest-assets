@@ -1,0 +1,915 @@
+<?xml version="1.0"?>
+<TestCaseCatalog version="7.1.0.201804110601">
+    <testCaseCatalog>
+        <item name="session_profiles/adtran_nv838_qc.fftc">
+            <tcDescriptor version="7.1.0.201804110601">
+                <general>
+                    <documentation>Quickcall library for Adtran NV838</documentation>
+                    <notes>QuickCalls for ADTRAN NV838.</notes>
+                    <sessionClass includeTestCase="true" sessionType="nv838_ref_telnet.ffsp"/>
+                </general>
+                <procedures>
+                    <item name="login" isPublic="true">
+                        <arguments>
+                            <item name="userid">
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="password">
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="abort_execution">
+                                <description>If there is a failure in login this argument determines if execution is aborted or not.
+Default value is 1 (for yes). This corresponds with current behavior.</description>
+                                <defaultValue>1</defaultValue>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="get_version" isPublic="true">
+                        <arguments>
+                            <item name="required_version">
+                                <defaultValue>[param Versions/ad_nv838]</defaultValue>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="verify_version" isPublic="true">
+                        <arguments>
+                            <item name="required_version">
+                                <defaultValue>[param Versions/ad_nv838]</defaultValue>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="config_ews" isPublic="true">
+                        <description>Configure EWS (Port based) Service</description>
+                    </item>
+                    <item name="config_ers" isPublic="true"/>
+                    <item name="delete_cfm_service" isPublic="true"/>
+                    <item name="config_evc" isPublic="true">
+                        <description>Configure the EVC</description>
+                        <multilineDescription>This is a local procedure
+</multilineDescription>
+                        <arguments>
+                            <item name="session">
+                                <defaultValue>$session</defaultValue>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="evc_name">
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="efm_group">
+                                <defaultValue>1/0/1</defaultValue>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="s_tag">
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="config_evc_map" isPublic="true">
+                        <description>Configure EVC MAP</description>
+                        <multilineDescription>This is a local procedure
+session id is required
+This procedure is part of building the Port-based Service where the S-tag is associated with the port</multilineDescription>
+                        <arguments>
+                            <item name="session">
+                                <description>session id is required for local procedures</description>
+                                <defaultValue>$session</defaultValue>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="map_name">
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="evc_name">
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="uni_port">
+                                <defaultValue>1/0/1</defaultValue>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="cos">
+                                <defaultValue>4</defaultValue>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="config_vlan_evc_map" isPublic="true">
+                        <description>Config VLAN EVC Map</description>
+                        <multilineDescription>This procedure is part of building VLAN-based Service where the S-tag on an EVC  is associated with the cd-vlan on frames from the Ethernet (UNI - customer) port</multilineDescription>
+                        <arguments>
+                            <item name="map_name">
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="evc_name">
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="uni_port">
+                                <defaultValue>1/0/1</defaultValue>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="vlan">
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="cos">
+                                <defaultValue>4</defaultValue>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="config_policer_profile" isPublic="true">
+                        <description>Provision Service Profile for EWS</description>
+                        <arguments>
+                            <item name="policer_name">
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="cir">
+                                <defaultValue>2000</defaultValue>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="eir">
+                                <defaultValue>0</defaultValue>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="cbs">
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="ebs">
+                                <defaultValue>0</defaultValue>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="map_name">
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="config_nv-838" isPublic="true" defaultSessionProfile="project://di_adtran/session_profiles/nv838_ref_telnet.ffsp">
+                        <multilineDescription>For command &quot;show evc-map&quot; -
+Changed step event for Repeat Step &quot;OnRepeatStepMaxCountExceeded&quot; to Abort Test</multilineDescription>
+                        <arguments>
+                            <item name="session">
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="evc_name">
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="efm_group">
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="s_tag">
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="vlan">
+                                <description>If the vlan is non-zero this is an ERS service and is used in the evc map. Otherwise this is EWS and it is not used.
+</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="map_name">
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="uni_port">
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="cos">
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="policer_name">
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="cir">
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="cbs">
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="cleanup" isPublic="true">
+                        <arguments>
+                            <item name="nte_key">
+                                <description>Primary key into configuration data</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="get_tx_rx_stats" isPublic="true">
+                        <arguments>
+                            <item name="ethernet_port"/>
+                        </arguments>
+                    </item>
+                    <item name="clear_stats" isPublic="true">
+                        <arguments>
+                            <item name="ethernet_port"/>
+                        </arguments>
+                    </item>
+                    <item name="add_mep" isPublic="true" defaultSessionProfile="nv838_ref_telnet.ffsp">
+                        <arguments>
+                            <item name="md">
+                                <description>The name of the maintenence domain</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="ma">
+                                <description>The name of the maintenence association.  At AT&amp;T will always be &quot;serv.&quot;
+</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="level">
+                                <description>The level for the maintenence domain.
+</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="ccm_interval">
+                                <description>The interval to send CCM heartbeats in seconds.
+</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="component">
+                                <description>The component setting.  Typically 2.</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="vlan">
+                                <description>The vlan to associate.  In EWS this will be set to &quot;none.&quot;
+</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="interface">
+                                <description>The interface to be used.</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="mep_id">
+                                <description>The ID to assign to the MEP.</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="remove_mep" isPublic="true" defaultSessionProfile="nv838_ref_telnet.ffsp">
+                        <arguments>
+                            <item name="md">
+                                <description>The maintenence domain.</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="level">
+                                <description>The level of the maintenece domain.</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="enter_config_mode" isPublic="true" defaultSessionProfile="nv838_ref_telnet.ffsp">
+                        <arguments>
+                            <item name="session">
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="check_local_mep_error_status_by_mep_id" isPublic="true" defaultSessionProfile="nv838_ref_telnet.ffsp">
+                        <arguments>
+                            <item name="mep_id">
+                                <description>The mep ID to check.</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="check_remote_mep_error_status_by_mep_id" isPublic="true" defaultSessionProfile="nv838_ref_telnet.ffsp">
+                        <arguments>
+                            <item name="mep_id">
+                                <description>The mep ID to check.</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="check_cfm_service_status" isPublic="true" defaultSessionProfile="nv838_ref_telnet.ffsp">
+                        <arguments>
+                            <item name="mep_id">
+                                <description>The mep ID to check.</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="md"/>
+                            <item name="ma"/>
+                        </arguments>
+                    </item>
+                    <item name="shut_down_ccm" isPublic="true" defaultSessionProfile="nv838_ref_telnet.ffsp">
+                        <arguments>
+                            <item name="interface">
+                                <description>The interface to use.</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="mep_id">
+                                <description>The numerical id of the MEP.</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="md">
+                                <description>The maintenence domain.
+</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="ma">
+                                <description>The maintenence association.
+</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="change_ccm_interval" isPublic="true" defaultSessionProfile="nv838_ref_telnet.ffsp">
+                        <arguments>
+                            <item name="md">
+                                <description>The maintenence domain.
+</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="level">
+                                <description>The level of the MEP.</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="ma">
+                                <description>The maintenence association.
+</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="ccm_interval">
+                                <description>The CCM interval in seconds.</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="enable_ccm" isPublic="true" defaultSessionProfile="nv838_ref_telnet.ffsp">
+                        <arguments>
+                            <item name="interface">
+                                <description>The interface to use.</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="mep_id">
+                                <description>The numerical id of the MEP.</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="md">
+                                <description>The maintenence domain.
+</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="ma">
+                                <description>The maintenence association.
+</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="ethernet_ping" isPublic="true" defaultSessionProfile="nv838_ref_telnet.ffsp">
+                        <description>This does an ethernet ping which would typically be used as part EOAM testing.</description>
+                        <version>1.0 </version>
+                        <multilineDescription>This does an ethernet ping.</multilineDescription>
+                        <arguments>
+                            <item name="md">
+                                <description>The MD of the source, e.g vpls:280029-4.</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="ma">
+                                <description>The source MA of the MEP, e.g. serv.
+</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="destination_mep_id">
+                                <description>The destination MEP ID (e.g. 1011).
+</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="source_mep_id">
+                                <description>The source MEP ID.</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="count">
+                                <description>Number of pings to send.</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="priority">
+                                <description>The priority.</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="size">
+                                <description>The size of the packets.</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="timeout">
+                                <description>The timeout (in ms).</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="interval">
+                                <description>The interval to send pings (in ms).
+</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="data">
+                                <description>Data to be carried in the loopback message (e.g. ABCDE).</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="verbose">
+                                <description>If you want verbose output (1) or not (0).  Default is no.</description>
+                                <defaultValue>0</defaultValue>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="cfm_delete_domain" isPublic="true" defaultSessionProfile="nv838_ref_telnet.ffsp">
+                        <description>This does an ethernet ping which would typically be used as part EOAM testing.</description>
+                        <version>1.0 </version>
+                        <multilineDescription>This does an ethernet ping.</multilineDescription>
+                        <arguments>
+                            <item name="md"/>
+                            <item name="ma"/>
+                        </arguments>
+                    </item>
+                    <item name="add_mep_1" isPublic="true" defaultSessionProfile="nv838_ref_telnet.ffsp">
+                        <arguments>
+                            <item name="md">
+                                <description>The name of the maintenence domain</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="ma">
+                                <description>The name of the maintenence association.  At AT&amp;T will always be &quot;serv.&quot;
+</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="port"/>
+                            <item name="level">
+                                <description>The level for the maintenence domain.
+</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="ccm_interval">
+                                <description>The interval to send CCM heartbeats in seconds.
+</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="component">
+                                <description>The component setting.  Typically 2.</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="vlan">
+                                <description>The vlan to associate.  In EWS this will be set to &quot;none.&quot;
+</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="mep_id">
+                                <description>The ID to assign to the MEP.</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="set_cfm_service_ma" isPublic="true">
+                        <arguments>
+                            <item name="md"/>
+                            <item name="ma"/>
+                        </arguments>
+                    </item>
+                    <item name="delete_cfm_service_ma" isPublic="true">
+                        <arguments>
+                            <item name="md"/>
+                            <item name="ma"/>
+                            <item name="vlan"/>
+                        </arguments>
+                    </item>
+                    <item name="disable_cfm_service" isPublic="true">
+                        <arguments>
+                            <item name="md"/>
+                            <item name="ma"/>
+                            <item name="vlan"/>
+                        </arguments>
+                    </item>
+                    <item name="enable_cfm_service" isPublic="true">
+                        <arguments>
+                            <item name="md"/>
+                            <item name="ma"/>
+                            <item name="vlan"/>
+                        </arguments>
+                    </item>
+                    <item name="set_cfm_domain" isPublic="true">
+                        <arguments>
+                            <item name="md"/>
+                            <item name="ma"/>
+                            <item name="vlan"/>
+                        </arguments>
+                    </item>
+                    <item name="set_cfm_domain_level" isPublic="true">
+                        <arguments>
+                            <item name="md"/>
+                            <item name="level"/>
+                            <item name="ma"/>
+                            <item name="vlan"/>
+                        </arguments>
+                    </item>
+                    <item name="cfm_link_trace" isPublic="true">
+                        <arguments>
+                            <item name="md"/>
+                            <item name="destination_mep_id"/>
+                            <item name="source_mep_id"/>
+                            <item name="level"/>
+                            <item name="ma"/>
+                            <item name="vlan"/>
+                        </arguments>
+                    </item>
+                </procedures>
+            </tcDescriptor>
+        </item>
+        <item name="session_profiles/adtran_ta5K_qc.fftc">
+            <tcDescriptor version="7.1.0.201804110601">
+                <general>
+                    <documentation>Quickcall library for Adtran TA5000</documentation>
+                    <sessionClass includeTestCase="true" sessionType="ta5K_ref_telnet.ffsp"/>
+                </general>
+                <procedures>
+                    <item name="cleanup" isPublic="true">
+                        <description>Remove the TA5000 configuration</description>
+                        <multilineDescription>Delete the efm bonding group.
+Remove the evc
+Leave the management interface in place</multilineDescription>
+                        <arguments>
+                            <item name="nte_key">
+                                <description>The primary key into the configuration data</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="clear_stats" isPublic="true">
+                        <arguments>
+                            <item name="shelf"/>
+                            <item name="slot"/>
+                            <item name="port"/>
+                        </arguments>
+                    </item>
+                    <item name="config_ews" isPublic="true">
+                        <description>Configure EWS Service on TA5000</description>
+                        <arguments>
+                            <item name="group_name">
+                                <description>Comma separate list of slot/port pairs</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="group_links"/>
+                            <item name="slot">
+                                <description>The slot for the efm bonding group</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="port">
+                                <description>The port for the efm bonding group</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="upstream">
+                                <description>Max upstream rate</description>
+                                <defaultValue>10000</defaultValue>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="downstream">
+                                <description>Max downstream rate</description>
+                                <defaultValue>10000</defaultValue>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="active_links_min">
+                                <description>Minimum number of active links in the link group</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="ip">
+                                <description>Inband management IP address</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="mask">
+                                <description>Network mask </description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="gw">
+                                <description>Inband network default gateway</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="evc_name">
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="s_tag">
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="efm_group">
+                                <description>EFM group name</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="gig_port">
+                                <description>GigE port
+</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="skip">
+                                <description>This is used to skip the create and delete of the bonding group. 
+Possible values are yes, no.</description>
+                                <defaultValue>no</defaultValue>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="config_evc" isPublic="true">
+                        <description>Configure the EVC on TA5000</description>
+                        <multilineDescription>This local procedure creates the evc, sets the s-tag, efm_group, and gigabit_ethernet port. There are required arguments.
+If the vlan argument is 0 this is EWS and the ce-vlan is not configured (match command).
+If the argument is non-0 it is ERS and the command is issued.</multilineDescription>
+                        <arguments>
+                            <item name="session">
+                                <defaultValue>$session</defaultValue>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="evc_name">
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="s_tag">
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="efm_group">
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="gig_port">
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="config_efm_link" isPublic="true">
+                        <description>Add or modify a link in an efm_group</description>
+                        <multilineDescription>EFM - Ethernet in the First Mile
+SHDSL - Symmetric High-speed Digital Subscriber Line 
+
+The upstream and downstream rates are intended to be the rates that should be guaranteed to the customer.  For example, if an 8 MB service is being sold to the customer, the upstream and downstream rates should be provisioned to be 8 MB.  If the group rate falls below this value due to (1) SHDSL pairs dropping or (2) SHDSL pairs not training to a high-enough rate, the TA5000 will declare a bandwidth alarm, indicating the provisioned EFM group bandwidth is not being provided.
+
+</multilineDescription>
+                        <arguments>
+                            <item name="session">
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="shelf">
+                                <defaultValue>1</defaultValue>
+                            </item>
+                            <item name="group_name">
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="slot_port">
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="upstream">
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="downstream">
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="active_links_min">
+                                <description>The Minimum Links command, is used to set the group alarm threshold for the SHDSL pairs in the EFM bonding group and should be set to equal the number of pairs configured for the service.  The minimum_links variable is equivalent to the number of links in the bonding group</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="config_inband_mgmt" isPublic="true">
+                        <description>Configure inband network interface</description>
+                        <multilineDescription>This information is pushed to the NetVanta 838</multilineDescription>
+                        <arguments>
+                            <item name="session">
+                                <defaultValue>$session</defaultValue>
+                            </item>
+                            <item name="group_name">
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="ip">
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="mask">
+                                <defaultValue>255.255.128.0</defaultValue>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="gw">
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="nv_name">
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="ipv6">
+                                <description>Optional - ipv6 address</description>
+                            </item>
+                            <item name="prefix">
+                                <description>IPv6 Prefix</description>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="config_ta5000" isPublic="true" defaultSessionProfile="project://di_adtran/session_profiles/ta5K_ref_telnet.ffsp">
+                        <arguments>
+                            <item name="nv_name">
+                                <description>The name of the NV-838. This is used to identify the efm-group</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="evc_name">
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="group_links">
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="shelf">
+                                <defaultValue>1</defaultValue>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="slot">
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="port">
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="s_tag">
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="upstream">
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="downstream">
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="active_links_min">
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="ip">
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="mask">
+                                <defaultValue>255.255.255.0</defaultValue>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="gw">
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="gig_port">
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="ipv6">
+                                <description>Optional IPv6 address</description>
+                            </item>
+                            <item name="prefix">
+                                <description>IPv6 prefix - only required with an IPv6 address</description>
+                            </item>
+                            <item name="skip">
+                                <description>This is used to skip the create and delete of the bonding group. 
+Possible values are yes, no.</description>
+                                <defaultValue>no</defaultValue>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="create_efm_bonding_group_wizard" isPublic="true">
+                        <description>Create EFM Bonding group</description>
+                        <arguments>
+                            <item name="shelf">
+                                <description>The links to be added to the new bonding group. These are listed in slot/port format, and port ranges can be used.  For example, 1/1-8 would add slot 1, ports 1 through 8 to the new bonding group.</description>
+                                <defaultValue>1</defaultValue>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="group_name">
+                                <description>The name of this EFM bonding group</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="group_links">
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="upstream">
+                                <description>This is the provisioned upstream group bandwidth, in kB</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="downstream">
+                                <description>This is the provisioned downstream group bandwidth. For SHDSL, this will be equivalent to upstream_rate (SHDSL is symmetric).</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="active_links_min">
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="create_efm_bonding_group" isPublic="true">
+                        <description>Create EFM Bonding group</description>
+                        <arguments>
+                            <item name="shelf">
+                                <description>Only 1 shelf. This could be hard coded</description>
+                                <defaultValue>1</defaultValue>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="slot">
+                                <description>The slot of the bonding group.</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="port">
+                                <description>The port of the bonding group.</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="group_name">
+                                <description>The name of this EFM bonding group</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="group_links">
+                                <description>The links to be added to the new bonding group. These are listed in slot/port format, and port ranges can be used.  For example, 1/1-8 would add slot 1, ports 1 through 8 to the new bonding group.</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="upstream">
+                                <description>This is the provisioned upstream group bandwidth, in kB</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="downstream">
+                                <description>This is the provisioned downstream group bandwidth. For SHDSL, this will be equivalent to upstream_rate (SHDSL is symmetric).</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="active_links_min">
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="skip">
+                                <description>At times it is desirable to leave the existing configuration alone. When yes this procedure issues a message and returns.</description>
+                                <defaultValue>no</defaultValue>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="delete_efm_bonding_group" isPublic="true">
+                        <description>Create EFM Bonding group</description>
+                        <arguments>
+                            <item name="session"/>
+                            <item name="shelf">
+                                <description>The links to be added to the new bonding group. These are listed in slot/port format, and port ranges can be used.  For example, 1/1-8 would add slot 1, ports 1 through 8 to the new bonding group.</description>
+                                <defaultValue>1</defaultValue>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="alias">
+                                <description>The alias  name of this EFM bonding group</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="skip">
+                                <description>At times it is desirable to leave the existing configuration alone. When yes this procedure issues a message and returns.</description>
+                                <defaultValue>no</defaultValue>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="evc_status" isPublic="true">
+                        <description>Run  &apos;show evc evc_name&apos; command for running status</description>
+                        <multilineDescription>Check for RUNNING. If found return 1, otherwise 0</multilineDescription>
+                        <arguments>
+                            <item name="evc_name">
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="get_version" isPublic="true">
+                        <arguments>
+                            <item name="required_version">
+                                <defaultValue>[param Versions/ad_ta5000]</defaultValue>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="get_tx_rx_stats" isPublic="true">
+                        <arguments>
+                            <item name="shelf">
+                                <defaultValue>1</defaultValue>
+                            </item>
+                            <item name="slot"/>
+                            <item name="port"/>
+                        </arguments>
+                    </item>
+                    <item name="get_active_nni" isPublic="true" defaultSessionProfile="project://di_adtran/session_profiles/ta5K_ref_telnet.ffsp">
+                        <description>Get the TA5000 Active NNI Port</description>
+                        <multilineDescription>Use the show redundancy command to check the Current State. 
+Possible values are Active or Standby
+
+</multilineDescription>
+                    </item>
+                    <item name="login" isPublic="true">
+                        <description>login</description>
+                        <multilineDescription>Login detects if the Acme NOC prompt is displayed. If so, login to the NOC proceeds, followed by telnet to the device and login.
+If not, login to the device.</multilineDescription>
+                        <arguments>
+                            <item name="userid">
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="password">
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="ip">
+                                <description>If logging in through the NOC then the IP of the destination is required</description>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="remove_efm_link" isPublic="true">
+                        <arguments>
+                            <item name="session"/>
+                            <item name="shelf">
+                                <defaultValue>1</defaultValue>
+                            </item>
+                            <item name="slot_port">
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="upstream">
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="downstream">
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="active_links_min"/>
+                        </arguments>
+                    </item>
+                    <item name="verify_version" isPublic="true">
+                        <arguments>
+                            <item name="required_version">
+                                <defaultValue>[param Versions/ad_ta5000]</defaultValue>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                    </item>
+                </procedures>
+            </tcDescriptor>
+        </item>
+    </testCaseCatalog>
+</TestCaseCatalog>

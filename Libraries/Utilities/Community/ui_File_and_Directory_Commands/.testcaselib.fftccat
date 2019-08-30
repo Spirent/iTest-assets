@@ -1,0 +1,271 @@
+<?xml version="1.0"?>
+<TestCaseCatalog version="7.2.0.201901300819">
+    <testCaseCatalog>
+        <item name="File_and_Directory_Commands.fftc">
+            <tcDescriptor version="7.2.0.201901300819">
+                <general>
+                    <documentation>Tcl Procedure Library - File and Directory Commands</documentation>
+                    <notes>Language: TCL
+Function: File and directory procedures to be called from Python test cases. 
+
+See iTest UsersGuide for &quot;file&quot; commands and &quot;writeFile&quot; documentation. The procedures below attempt to offer similar syntax:
+
+file_copy
+file_delete
+file_exists
+file_isDirectory
+file_isFile
+file_list
+file_mkdir
+file_mkTempDir
+file_mkTempFile
+file_move
+file_pathToUri
+file_rmdir
+file_uriToPath
+writeFile
+
+
+</notes>
+                    <owner>Malcom Terry</owner>
+                    <isProcedureLibrary>true</isProcedureLibrary>
+                </general>
+                <procedures>
+                    <item name="file_copy" isPublic="true">
+                        <description>Copying files to a destination URI</description>
+                        <author>Malcom Terry</author>
+                        <multilineDescription>Copies files from the specified source directory or file URI to the
+specified destination. Creates destination directories as needed.
+
+Syntax:
+call file_copy [-r] [-y] sourceURI destinationURI
+
+Returns:
+number of files copied
+
+Limitations:
+-r must have a value of 0 or 1
+-y must have a value of 0 or 1</multilineDescription>
+                        <arguments>
+                            <item name="y">
+                                <description>1=yes-overwrite existing files</description>
+                                <defaultValue>0</defaultValue>
+                            </item>
+                            <item name="r">
+                                <description>1=recursive</description>
+                                <defaultValue>0</defaultValue>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="file_delete" isPublic="true">
+                        <description>Delete files</description>
+                        <author>Malcom Terry</author>
+                        <multilineDescription>Syntax:
+call file_delete [-r] URI
+
+Returns:
+Number of files deleted</multilineDescription>
+                        <arguments>
+                            <item name="r">
+                                <description>1=recursive</description>
+                                <defaultValue>0</defaultValue>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="file_exists" isPublic="true">
+                        <description>Determine whether a file or folder exists</description>
+                        <author>Malcom Terry</author>
+                        <multilineDescription>Syntax:
+call file_exists URI
+
+Returns:
+1 if URI exists, otherwise 0</multilineDescription>
+                    </item>
+                    <item name="file_isDirectory" isPublic="true">
+                        <description>Determine whether a URI</description>
+                        <author>Malcom Terry</author>
+                        <multilineDescription>Syntax:
+call file_isDirectory URI
+
+Returns:
+1 if URI exists, otherwise 0</multilineDescription>
+                    </item>
+                    <item name="file_isFile" isPublic="true">
+                        <description>Determine whether a URI represents a</description>
+                        <author>Malcom Terry</author>
+                        <multilineDescription>Syntax:
+call file_isFile URI
+
+Returns:
+1 if URI exists, otherwise 0</multilineDescription>
+                    </item>
+                    <item name="file_list" isPublic="true">
+                        <description>List the files in a URI</description>
+                        <author>Malcom Terry</author>
+                        <multilineDescription>Returns the list of files in the specified URI. If the URI does not exist, returns an empty list.
+
+Syntax:
+call file_list [-r] [-p] [-nolimit] URI
+
+Returns: 
+Returns a text list of URIs for all matching files and folders. The list is limited to 5000 files
+(see the -nolimit argument).
+</multilineDescription>
+                        <arguments>
+                            <item name="r">
+                                <description>1=recursive</description>
+                                <defaultValue>0</defaultValue>
+                            </item>
+                            <item name="p">
+                                <description>1=return a list of URIs - one per line
+0=return a list of URIs - space-delimited</description>
+                                <defaultValue>0</defaultValue>
+                            </item>
+                            <item name="nolimit">
+                                <description>0=limit to number of URIs returned to 5000
+1=no limit to number of URIs returned (For a large directory, this can be very
+slow and an out-of-memory error is possible.)</description>
+                                <defaultValue>0</defaultValue>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="file_mkdir" isPublic="true">
+                        <description>Add a directory</description>
+                        <author>Malcom Terry</author>
+                        <multilineDescription>Creates the specified directory. If a directory already exists at the specified location, then the
+mkdir command succeeds and has no effect.
+
+Syntax:
+call file_mkdir URI
+
+Returns: nothing</multilineDescription>
+                    </item>
+                    <item name="file_mkTempDir" isPublic="true">
+                        <description>Create a unique temporary</description>
+                        <author>Malcom Terry</author>
+                        <multilineDescription>Create a unique temporary directory named iTestTempDir_*, where * is a random number.
+
+By default, the temporary directory and its contents are deleted when the current test case
+execution has completed (or aborted). Use the -k option to keep the directory.
+
+Syntax:
+call file_mkTempDir [-k] [prefix] [suffix]
+
+Returns:
+URI of the temporary directory
+
+</multilineDescription>
+                        <arguments>
+                            <item name="k">
+                                <description>1=Keep temporary directory after test case execution terminated</description>
+                                <defaultValue>0</defaultValue>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="file_mkTempFile" isPublic="true">
+                        <description>Make Temporary File</description>
+                        <author>Malcom Terry</author>
+                        <multilineDescription>Create a unique temporary file named iTestTempFile_*, where * is a random number.
+
+By default, the temporary file is deleted when the current test case execution has completed (or
+aborted). Use the -k option to keep the file.
+
+Syntax:
+call file_mkTempFile [-k] [prefix] [suffix]
+
+Returns: URI of the temporary file</multilineDescription>
+                        <arguments>
+                            <item name="k">
+                                <description>1=Keep temporary file after test case execution terminated</description>
+                                <defaultValue>0</defaultValue>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="file_move" isPublic="true">
+                        <description>Move or rename files to a destination URI</description>
+                        <author>Malcom Terry</author>
+                        <multilineDescription>Moves files from the specified source directory or file URI to the
+specified destination. Creates destination directories as needed.
+
+Syntax:
+call file_move [-y] sourceURI destinationURI
+
+Returns:
+Number of files moved (always 0 when empty directories are moved).
+Number is limited to 5000, even if more are moved.
+
+Limitations:
+-y must have a value of 0 or 1</multilineDescription>
+                        <arguments>
+                            <item name="y">
+                                <description>1=yes-overwrite existing files</description>
+                                <defaultValue>0</defaultValue>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="file_pathToUri" isPublic="true">
+                        <description>Get the URI of a path</description>
+                        <author>Malcom Terry</author>
+                        <multilineDescription>Syntax: 
+call file_pathToURI &lt;path&gt;
+
+Returns:
+URI
+
+Examples:
+file:/C:/temp
+project://my_project
+</multilineDescription>
+                    </item>
+                    <item name="file_rmdir" isPublic="true">
+                        <description>Delete a directory</description>
+                        <author>Malcom Terry</author>
+                        <multilineDescription>Deletes the specified folder and its contents recursively.
+
+Syntax:
+call file_rmdir URI
+
+Returns: nothing
+</multilineDescription>
+                    </item>
+                    <item name="file_uriToPath" isPublic="true">
+                        <description>Get the path of a URI</description>
+                        <author>Malcom Terry</author>
+                        <multilineDescription>Syntax: 
+call file_uriToPath &lt;URI&gt;
+
+Returns:
+path to file or directory
+
+Examples:
+c:\\temp
+C:\\Users\\user1\\workspace\\my_project</multilineDescription>
+                    </item>
+                    <item name="writeFile" isPublic="true">
+                        <description>Write information to a file</description>
+                        <author>Malcom Terry</author>
+                        <multilineDescription>Syntax: 
+call writeFile -mode &lt;Append|Overwrite&gt; &lt;URI&gt; &lt;file contents&gt;
+
+Returns: nothing
+
+Limitations:
+File type: Text
+Line delimiter: PLATFORM
+Encoding: UTF-8
+
+NOTES:
+1. The writeFile iTest command for Python language may be supported in future versions of iTest.
+</multilineDescription>
+                        <arguments>
+                            <item name="mode">
+                                <description>Append | Overwrite</description>
+                                <defaultValue>Append</defaultValue>
+                            </item>
+                        </arguments>
+                    </item>
+                </procedures>
+            </tcDescriptor>
+        </item>
+    </testCaseCatalog>
+</TestCaseCatalog>

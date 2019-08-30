@@ -1,0 +1,166 @@
+<?xml version="1.0"?>
+<TestCaseCatalog version="7.1.0.201804110601">
+    <testCaseCatalog>
+        <item name="session_profiles/VsphereBaseQuickCallLibrary.fftc">
+            <tcDescriptor version="7.1.0.201804110601">
+                <general>
+                    <sessionClass includeTestCase="true" sessionType="VsphereBaseSessionProfile.ffsp"/>
+                </general>
+                <procedures>
+                    <item name="getSnapShotList" isPublic="true">
+                        <description>Get a list of snapshots for a specified VM</description>
+                        <responseMap>project://di_vsphere/response_maps/getSnapshotList.ffrm</responseMap>
+                        <multilineDescription>query a specified virtual machine for a list of all snapshots related to that VM.  This functionality does not exist in the VMWare module for iTest as of 4.4, so we use the pysphere module.</multilineDescription>
+                        <arguments>
+                            <item name="serverName">
+                                <description>hostname of the vcenter instance.  This shouldn&apos;t be required, but since we&apos;re calling out to a python script, we have to do it.</description>
+                                <defaultValue>evci1-vcenter.rich.tek.com</defaultValue>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="username">
+                                <description>login username</description>
+                                <defaultValue>siadmin@vsphere.local</defaultValue>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="password">
+                                <description>password.  Duh.</description>
+                                <defaultValue>siadmin</defaultValue>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="vmName">
+                                <description>name of VM to query for snapshots</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="threadSession">
+                                <description>the session name must be a variable so that the procedure is threadsafe.  If there is more than one open step with the same session ID, an error will be thrown.
+
+This argument only needs to be passed in when it is called in a thread</description>
+                                <defaultValue>s1</defaultValue>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="revertToNamedSnapshot" isPublic="true">
+                        <description>Revert a VM to a named snapshot</description>
+                        <arguments>
+                            <item name="serverName">
+                                <description>hostname of the vcenter instance.  This shouldn&apos;t be required, but since we&apos;re calling out to a python script, we have to do it.</description>
+                                <defaultValue>evci1-vcenter.rich.tek.com</defaultValue>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="username">
+                                <description>login username</description>
+                                <defaultValue>siadmin@vsphere.local</defaultValue>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="password">
+                                <description>password.  Duh.</description>
+                                <defaultValue>siadmin</defaultValue>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="vmName">
+                                <description>name of VM to query for snapshots</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="targetSnapshotName">
+                                <defaultValue>baseline</defaultValue>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="threadSession">
+                                <description>the session name must be a variable so that the procedure is threadsafe.  If there is more than one open step with the same session ID, an error will be thrown.
+
+This argument only needs to be passed in when it is called in a thread</description>
+                                <defaultValue>s1</defaultValue>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="deleteNamedSnapshot" isPublic="true">
+                        <description>Revert a VM to a named snapshot</description>
+                        <arguments>
+                            <item name="serverName">
+                                <description>hostname of the vcenter instance.  This shouldn&apos;t be required, but since we&apos;re calling out to a python script, we have to do it.</description>
+                                <defaultValue>evci1-vcenter.rich.tek.com</defaultValue>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="username">
+                                <description>login username</description>
+                                <defaultValue>siadmin@vsphere.local</defaultValue>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="password">
+                                <description>password.  Duh.</description>
+                                <defaultValue>siadmin</defaultValue>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="vmName">
+                                <description>name of VM to query for snapshots</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="targetSnapshotName">
+                                <defaultValue>baseline</defaultValue>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="revertVm" isPublic="true">
+                        <description>Poweroff, revert and poweron a VM</description>
+                        <multilineDescription>revertVm powers down a target VM, and reverts its state to the specfied snapshot.  By default, this is the snapshot named &quot;baseline&quot;</multilineDescription>
+                        <arguments>
+                            <item name="vmName">
+                                <description>Name of the VM to manipulate; the parent of the snapshot</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="targetSnapshotName">
+                                <description>name of the snapshot to revert to.  By default, we revert to the snapshot named &quot;baseline&quot;</description>
+                                <defaultValue>baseline</defaultValue>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="threadSession">
+                                <description>the session name must be a variable so that the procedure is threadsafe.  If there is more than one open step with the same session ID, an error will be thrown.
+
+This argument only needs to be passed in when it is called in a thread</description>
+                                <defaultValue>s1</defaultValue>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="snapshotVm" isPublic="true">
+                        <description>Create a snapshot of the specified VM, and delete existing snapshots with the same name</description>
+                        <multilineDescription>Create a new snapshot of the target VM.  Also, delete any snapshots with the same name.</multilineDescription>
+                        <arguments>
+                            <item name="vmName">
+                                <description>VM to snapshot</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="snapshotName">
+                                <description>name of new snapshot</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="waitForVM" isPublic="true">
+                        <arguments>
+                            <item name="vmName">
+                                <description>Name of VM to manipulate</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="revertAndStartVm" isPublic="true">
+                        <arguments>
+                            <item name="vmName"/>
+                            <item name="threadSession">
+                                <description>the session name must be a variable so that the procedure is threadsafe.  If there is more than one open step with the same session ID, an error will be thrown.
+
+This argument only needs to be passed in when it is called in a thread</description>
+                                <defaultValue>s1</defaultValue>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                    </item>
+                </procedures>
+            </tcDescriptor>
+        </item>
+    </testCaseCatalog>
+</TestCaseCatalog>

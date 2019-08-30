@@ -1,0 +1,273 @@
+<?xml version="1.0"?>
+<TestCaseCatalog version="7.1.0.201804110601">
+    <testCaseCatalog>
+        <item name="session_profiles/Abacus_tclsh_quickcall_library.fftc">
+            <tcDescriptor version="7.1.0.201804110601">
+                <general>
+                    <sessionClass includeTestCase="true" sessionType="Abacus_tclsh_base.ffsp"/>
+                </general>
+                <procedures>
+                    <item name="Disconnect" isPublic="true">
+                        <description>Gracefilly Disconnect from Abacus Session</description>
+                        <version>1.0</version>
+                        <multilineDescription>Gracefully disconnect from an Abacus Tcl session</multilineDescription>
+                        <arguments>
+                            <item name="chassis_ip">
+                                <description>IP of chassis to disconnect from</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="GetEvents" isPublic="true">
+                        <description>Get Execution Events from an Abacus Session</description>
+                        <multilineDescription>Notes: Strips the first and last events (test start and test complete) before passing them back. 
+
+Response : A tab-seperated table containing a description of the event and the channel associated with it. </multilineDescription>
+                        <response>{&quot;channel&quot;:&quot;value&quot;,&quot;message&quot;:&quot;value&quot;}</response>
+                    </item>
+                    <item name="GetXmlReport" isPublic="true" isVBlock="true">
+                        <description>Download the XML report from an Abacus session</description>
+                        <version>1.0</version>
+                        <multilineDescription>Generate and download the XML report from an Abacus session.
+Notes: XML report must be enabled in the Abacus environment file.
+
+Block Response:
+1. report\t\t\tContents of the XML report file</multilineDescription>
+                        <arguments>
+                            <item name="download_path">
+                                <description>Path to download XML report to.
+i.e. C:\\abacus_reports
+</description>
+                            </item>
+                            <item name="filename">
+                                <description>Name of file 
+i.e. iTest_Analog_CallWaiting_001.xml</description>
+                            </item>
+                        </arguments>
+                        <response>{&quot;report&quot;:&quot;value&quot;}</response>
+                    </item>
+                    <item name="StartTest" isPublic="true" isVBlock="true">
+                        <description>Start an Abacus Test Script</description>
+                        <version>1.0</version>
+                        <multilineDescription>Start an Abacus test script without waiting for it to complete.
+Block Response:
+1.  success\t\t\t\t\tReturns &quot;1 if successful, &quot;0&quot; if not
+2. error_message\t\t\tReturns a string of error messages on failure, blank on success.</multilineDescription>
+                        <response>{&quot;success&quot;:&quot;value&quot;,&quot;error_message&quot;:&quot;value&quot;}</response>
+                    </item>
+                    <item name="RunTest" isPublic="true" isVBlock="true">
+                        <description>Run an Abacus Test Script To Completion</description>
+                        <version>1.0</version>
+                        <multilineDescription>Start an Abacus test script and wait for it to complete. Should only be used with Abacus scripts with a definite end. 
+
+Block response:
+______________________________________________________
+1. success\t\t\t\t|\tReturns a &quot;1&quot; for success, &quot;0&quot; for failure.
+2. error_message\t\t|\tReturns a string of error messages on failure, blank on success.</multilineDescription>
+                        <arguments>
+                            <item name="timeout">
+                                <description>Time in seconds to wait for script to finish. Defaults to 300. </description>
+                                <defaultValue>300</defaultValue>
+                            </item>
+                        </arguments>
+                        <response>{&quot;success&quot;:&quot;value&quot;,&quot;error_message&quot;:&quot;value&quot;}</response>
+                    </item>
+                    <item name="StopTest" isPublic="true">
+                        <description>Stop a Running Abacus Test</description>
+                        <version>1.0</version>
+                        <multilineDescription>Objective:  Stop a running Abacus test.</multilineDescription>
+                    </item>
+                    <item name="TestSetup" isPublic="true" isVBlock="true">
+                        <description>Setup an Abacus Tcl session by loading libraries and perparing namespaces.</description>
+                        <version>1.0</version>
+                        <multilineDescription> Connect to Abacus chassis through a running instance of Abacus Automation Server, load environment file and create needed namespaces.
+
+Block Response:
+1. success\t\t\t\t|\tReturns a &quot;1&quot; for success, &quot;0&quot; for failure.
+2. error_message\t\t|\tReturns a string of error messages on failure, blank on success.</multilineDescription>
+                        <arguments>
+                            <item name="chassis_ip">
+                                <description>IP Address of Abacus chassis to connect to
+</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="automation_server">
+                                <description>IP address where Abacus Automation Server is running</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="env_file">
+                                <description>Name of environment file to load. Must be in the default Abacus environment folder on the automation server.</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="password">
+                                <description>Password used to connect to Abacus chassis. Blank by default. </description>
+                                <defaultValue>&quot;&quot;</defaultValue>
+                            </item>
+                        </arguments>
+                        <response>{&quot;success&quot;:&quot;value&quot;,&quot;error_message&quot;:&quot;value&quot;}</response>
+                    </item>
+                    <item name="ChangeScript" isPublic="true" isVBlock="true">
+                        <description>Change the Script Used by an Active Abacus Session</description>
+                        <version>1.0</version>
+                        <multilineDescription>Change the call script used by the current Abacus config. 
+
+Block Response:
+1. success\t\t\t\t|\tReturns a &quot;1&quot; for success, &quot;0&quot; for failure.</multilineDescription>
+                        <arguments>
+                            <item name="new_script">
+                                <description>Name of the script to change to as it appears in the Partition and Timing window on Abacus. </description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                        <response>{&quot;success&quot;:&quot;value&quot;}</response>
+                    </item>
+                    <item name="ChangeLines" isPublic="true" isVBlock="true">
+                        <description>Change Partition and Timing Settings</description>
+                        <version>1.0</version>
+                        <multilineDescription>Change which lines are used and optionally their O/T configuration and phone book. Corresponds to what is seen in the Association tab of the Partition and Timing window in the Abacus GUI.
+______________________________________________________
+Response Structure\t\t|\tDescription    
+______________________________________________________
+1. success\t\t\t\t|\tReturns a &quot;1&quot; for success, &quot;0&quot; for failure.</multilineDescription>
+                        <arguments>
+                            <item name="start_line_no">
+                                <description> Index of the line to start counting from. Corresponds to the &apos;From&apos; column. </description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="end_line_no">
+                                <description>Index of line to end on. Corresponds to the &apos;To&apos; column</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="otto_config">
+                                <description>Change which lines originiate and which lines terminate. Optional. Will not change existing config if not present. 
+Options are: ALL_ORIGINATE, OTOT, ALL_TERMINATE</description>
+                            </item>
+                            <item name="phonebook">
+                                <description>Use &quot;Own&quot; or &quot;External&quot; phonebook. Optional. Will only change existing config if argument is given</description>
+                            </item>
+                        </arguments>
+                        <response>{&quot;success&quot;:&quot;value&quot;}</response>
+                    </item>
+                    <item name="ChangeCallerID" isPublic="true" isVBlock="true">
+                        <description>Change Caller ID</description>
+                        <version>1.0</version>
+                        <multilineDescription>Change the expected caller ID name and/or number in the active Abacus config.
+
+Block Response:
+1. success\t\t\t\t|\tReturns a &quot;1&quot; for success, &quot;0&quot; for failure.</multilineDescription>
+                        <arguments>
+                            <item name="phone_num">
+                                <description>Phone number to change caller ID on</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="cid_number">
+                                <description> New expected caller ID phone number. Will not change existing config if not present. </description>
+                            </item>
+                            <item name="cid_name">
+                                <description> New expected caller ID name. Will not change existing config if not present. </description>
+                            </item>
+                        </arguments>
+                        <response>{&quot;success&quot;:&quot;value&quot;}</response>
+                    </item>
+                    <item name="EnableCallerID" isPublic="true" isVBlock="true">
+                        <description>Enable Caller ID</description>
+                        <multilineDescription>Enable Caller ID in Abacus (Changes protocol to &quot;Loop Start with CID&quot;)
+
+Block Response:
+1. success\t\t\t\t|\tReturns a &quot;1&quot; for success, &quot;0&quot; for failure.</multilineDescription>
+                        <response>{&quot;success&quot;:&quot;value&quot;}</response>
+                    </item>
+                    <item name="DisableCallerID" isPublic="true" isVBlock="true">
+                        <description>Enable Caller ID</description>
+                        <author>Alex Orr</author>
+                        <multilineDescription>Disable Caller ID in Abacus (Changes protocol to &quot;Loop Start&quot;)
+
+Block Response:
+1. success\t\t\t\t|\tReturns a &quot;1&quot; for success, &quot;0&quot; for failure.</multilineDescription>
+                        <response>{&quot;success&quot;:&quot;value&quot;}</response>
+                    </item>
+                    <item name="GetQualityStats" isPublic="true">
+                        <description>Get Minimum PESQ Score Stats from Abacus after a Test Run</description>
+                        <responseMap>project://di_Abacus_tclsh/response_maps/get_quality_stats.ffrm</responseMap>
+                        <version>1.0</version>
+                        <multilineDescription>Get min PESQ quality stats from the last abacus test run. Must be called after a test is completed.
+
+Returns a table of minimum PESQ scores per channel.</multilineDescription>
+                        <response>{&quot;pesq&quot;:&quot;value&quot;,&quot;pes-mos-lqo&quot;:&quot;value&quot;,&quot;jmos&quot;:&quot;value&quot;}</response>
+                    </item>
+                    <item name="ChangeCircuits" isPublic="true" isVBlock="true">
+                        <description>Enable or Disable Abacus Circuits</description>
+                        <version>1.0</version>
+                        <multilineDescription>Enable or disable circuits in a running Abacus config. Corresponds to config seen in the protocol selection window
+
+No response.</multilineDescription>
+                        <arguments>
+                            <item name="enable_list">
+                                <description>List of channels to enable</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                        <response>{&quot;success&quot;:&quot;value&quot;}</response>
+                    </item>
+                    <item name="SetPhonebook" isPublic="true" isVBlock="true">
+                        <description>Set Internal Phonebook</description>
+                        <multilineDescription>Set the phonebook in Abacus session. Corresponds to the Phonebook tab of the Partition and Timing window.
+
+Block response:
+1. success\t\t\treturns &quot;1&quot; on success, &quot;0&quot; on failure</multilineDescription>
+                        <arguments>
+                            <item name="num_list">
+                                <description>List of phone numbers in order to be applied to phonebook.
+</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                        <response>{&quot;success&quot;:&quot;value&quot;}</response>
+                    </item>
+                    <item name="SetPhoneBookExternal" isPublic="true" isVBlock="true">
+                        <description>Set External Phonebook</description>
+                        <multilineDescription>Set the phonebook in Abacus session. Corresponds to the Phonebook tab of the Partition and Timing window.
+
+Block response:
+1. success\t\t\treturns &quot;1&quot; on success, &quot;0&quot; on failure</multilineDescription>
+                        <arguments>
+                            <item name="num_list">
+                                <description>List of phone numbers in order to be applied to phonebook.
+</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                        <response>{&quot;success&quot;:&quot;value&quot;}</response>
+                    </item>
+                    <item name="SetThreshold" isPublic="true" isVBlock="true">
+                        <description>Set Threshold</description>
+                        <version>1.0</version>
+                        <multilineDescription>Change a threshold and reaction in the Abacus Thresholds and Errors config
+
+Block response:
+1. success\t\t\treturns &quot;1&quot; on success, &quot;0&quot; on failure</multilineDescription>
+                        <arguments>
+                            <item name="error_condition">
+                                <description>Name of the error condition to change as named in the XML config. 
+Example: ERR_NO_ANSWER</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="new_threshold">
+                                <description>New threshold to set in seconds</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="new_error_reaction">
+                                <description>New reaction to take when threshold is met. Examples:
+No Reaction
+Freeze
+Stop script and test</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                        <response>{&quot;success&quot;:&quot;value&quot;}</response>
+                    </item>
+                </procedures>
+            </tcDescriptor>
+        </item>
+    </testCaseCatalog>
+</TestCaseCatalog>

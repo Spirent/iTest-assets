@@ -1,0 +1,141 @@
+<?xml version="1.0"?>
+<TestCaseCatalog version="7.1.0.201804110601">
+    <testCaseCatalog>
+        <item name="session_profiles/snmp/cisco_snmp_quickcall_library.fftc">
+            <tcDescriptor version="7.1.0.201804110601">
+                <general>
+                    <documentation>Cisco SNMP QC library</documentation>
+                    <notes>Use this for common SNMP procedures</notes>
+                    <isProcedureLibrary>true</isProcedureLibrary>
+                    <sessionClass includeTestCase="true" sessionType="project://di_cisco_ios_com/session_profiles/snmp/cisco_snmp.ffsp"/>
+                </general>
+                <procedures>
+                    <item name="getInterfaceStates" isPublic="true">
+                        <description>Get interface state via SNMP</description>
+                        <responseMap>project://di_cisco_ios_com/response_maps/custom/quickcalls/snmp/interfaceStates.ffrm</responseMap>
+                        <multilineDescription>This will the interface states on the system for a quick status check</multilineDescription>
+                    </item>
+                </procedures>
+            </tcDescriptor>
+        </item>
+        <item name="session_profiles/telnet/cisco_telnet_quickcall_library.fftc">
+            <tcDescriptor version="7.1.0.201804110601">
+                <general>
+                    <documentation>Cisco 7200 QC library</documentation>
+                    <isProcedureLibrary>true</isProcedureLibrary>
+                    <sessionClass includeTestCase="true" sessionType="project://di_cisco_ios_com/session_profiles/telnet/cisco_telnet.ffsp"/>
+                </general>
+                <procedures>
+                    <item name="login" isPublic="true" defaultSessionProfile="application:com.fnfr.svt.applications.telnet">
+                        <description>Login to Cisco</description>
+                        <author>Spirent</author>
+                        <multilineDescription>Automatically login to cisco device - privileged mode
+
+Return value = prompt respose
+e.g.
+
+Bad login:
+Password Status: % Login invalid
+Enable Password Status: % Login invalid
+
+or
+
+Good login:
+Password Status:
+Enable Password Status:</multilineDescription>
+                        <arguments>
+                            <item name="username">
+                                <description>Valid username</description>
+                            </item>
+                            <item name="password">
+                                <description>valid password</description>
+                                <defaultValue>good-day</defaultValue>
+                            </item>
+                            <item name="enablePassword">
+                                <description>Leave blank if the same as password</description>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="getVersion" isPublic="true" isVBlock="true">
+                        <description>Return the current FW version</description>
+                        <response>{&quot;version&quot;:&quot;value&quot;}</response>
+                    </item>
+                    <item name="checkCounters" isPublic="true" isVBlock="true">
+                        <description>Clear counters on interface</description>
+                        <responseMap>project://di_cisco_ios_com/response_maps/custom/jsonBlockToQueries.ffrm</responseMap>
+                        <multilineDescription>This procedure is used to clear counters for Ethernet interface.</multilineDescription>
+                        <arguments>
+                            <item name="ifc">
+                                <description>Enter a valid interface value.
+
+e.g. - fastEthernet 6/0</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="clearCounters">
+                                <description>Clear counter is if set to 1 (true). Default value is 0 (false).
+Acceptable values: 0|1</description>
+                                <defaultValue>0</defaultValue>
+                            </item>
+                        </arguments>
+                        <response>{&quot;inputRateBitsSec&quot;:&quot;value&quot;,&quot;inputRatePktsSec&quot;:&quot;value&quot;,&quot;outputRateBitsSec&quot;:&quot;value&quot;,&quot;outputRatePktsSec&quot;:&quot;value&quot;,&quot;pktsInput&quot;:&quot;value&quot;,&quot;pktsOutput&quot;:&quot;value&quot;}</response>
+                    </item>
+                    <item name="saveRunningConfigTftp" isPublic="true">
+                        <description>Save running config</description>
+                        <author>mbarfield</author>
+                        <multilineDescription>Save running config to TFTP server</multilineDescription>
+                        <arguments>
+                            <item name="tftpServerIp">
+                                <description>Valid IP address</description>
+                                <defaultValue>10.108.36.206</defaultValue>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="filename">
+                                <description>Valid config file name</description>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="restoreRunningConfigTftp" isPublic="true">
+                        <description>Restore running config</description>
+                        <author>mbarfield</author>
+                        <multilineDescription>Restore running config to TFTP server</multilineDescription>
+                        <arguments>
+                            <item name="tftpServerIp">
+                                <description>Valid IP address</description>
+                                <defaultValue>10.108.36.206</defaultValue>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="filename">
+                                <description>Valid config file name</description>
+                                <defaultValue>irl_cisco_7200_1-confg</defaultValue>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="graphProcesses" isPublic="true">
+                        <description>Create benchmark graphs of CPU and Memory</description>
+                        <multilineDescription>This is intended to run as a background process throughout the entire test. By default we capture stats every 30 seconds.</multilineDescription>
+                        <arguments>
+                            <item name="delaySec">
+                                <description>Number of seconds to wait before checking process info.</description>
+                                <defaultValue>30</defaultValue>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="queryIfcStates" isPublic="true">
+                        <description>Query all the interface states and and return summary</description>
+                        <multilineDescription>This procedure will query all the interface states and return a summary view of the system.</multilineDescription>
+                    </item>
+                    <item name="showVersion2" isPublic="true">
+                        <description>Gets teh equipment info</description>
+                        <arguments>
+                            <item name="fwVersion">
+                                <description>Expected FW version</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                    </item>
+                </procedures>
+            </tcDescriptor>
+        </item>
+    </testCaseCatalog>
+</TestCaseCatalog>
