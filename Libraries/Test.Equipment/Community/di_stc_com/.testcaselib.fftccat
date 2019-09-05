@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
-<TestCaseCatalog version="7.1.0.201804110601">
+<TestCaseCatalog version="8.0.0.201908290812">
     <testCaseCatalog>
         <item name="session_profiles/Spirent_TestCenter_REST_ref_session_profile_quickcall_library.fftc">
-            <tcDescriptor version="7.1.0.201804110601">
+            <tcDescriptor version="8.0.0.201908290812">
                 <general>
                     <notes>Spirent TestCenter QuickCalls for traffic management, capture controls, and 802.11 wifi operations
 Video at: https://youtu.be/Jt9g0owf0Qg</notes>
@@ -294,7 +294,7 @@ true or false (1|0)</description>
             </tcDescriptor>
         </item>
         <item name="session_profiles/sqlite_quickcall_library.fftc">
-            <tcDescriptor version="7.1.0.201804110601">
+            <tcDescriptor version="8.0.0.201908290812">
                 <general>
                     <documentation>QC library for SQLite</documentation>
                     <notes>QC library for SQLite</notes>
@@ -311,7 +311,7 @@ true or false (1|0)</description>
             </tcDescriptor>
         </item>
         <item name="session_profiles/stc_quickcall_library.fftc">
-            <tcDescriptor version="7.1.0.201804110601">
+            <tcDescriptor version="8.0.0.201908290812">
                 <general>
                     <documentation>STC TCL QC library</documentation>
                     <notes>STC TCL QC library</notes>
@@ -426,6 +426,147 @@ Example: file:/C:/stc.pcap</description>
                             </item>
                         </arguments>
                     </item>
+                    <item name="get_port_id_by_location" isPublic="true">
+                        <arguments>
+                            <item name="location">
+                                <description>location: Location of the port </description>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="getClientProfileId" isPublic="true">
+                        <arguments>
+                            <item name="clientProfileName">
+                                <description>Name of the Client Profile to be attached to Ethernet Port</description>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="attachClientProfile" isPublic="true">
+                        <arguments>
+                            <item name="clientProfileId">
+                                <description>clientProfileId:  AP client profile ID</description>
+                            </item>
+                            <item name="port">
+                                <description>port: Wifi Port</description>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="attenuateChannelPower" isPublic="true">
+                        <arguments>
+                            <item name="port">
+                                <description>port -&gt; This is the port on which the power attenuation need to be applied.</description>
+                            </item>
+                            <item name="channelPower">
+                                <description>Power of the channel, larger the number, higher will be the attenuation</description>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="modifyMIMO" isPublic="true">
+                        <multilineDescription>This procedure modifies MIMO type based on Parameter</multilineDescription>
+                        <arguments>
+                            <item name="wifiPort">
+                                <description>Port where the MIMO configuration need to be modified</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="mimoType">
+                                <description>MIMO type to be modified, it will have following values
+MIMO_1X1
+MIMO_2X2
+MIMO_3X3
+MIMO_4X4</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="modifyChannelFreqncy" isPublic="true">
+                        <arguments>
+                            <item name="wifiPort">
+                                <description>Port where the Freqncy Channel need to be modified</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="frqBand">
+                                <description>Frequncy band that need to be set
+
+Following are different options
+
+Value                                Description
+FREQ_AUTO                      Auto
+FREQ_2_4_GHZ                 2.4 GHz
+FREQ_5_0_GHZ                 5.0 GHz</description>
+                                <defaultValue>FREQ_5_0_GHZ</defaultValue>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="getBSSID" isPublic="true" isVBlock="true">
+                        <arguments>
+                            <item name="wifiPort">
+                                <description>wifiPort --&gt; Port where the Client are attached</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="clientProfileId">
+                                <description>clientProfileId --&gt; Profile ID of the client </description>
+                            </item>
+                        </arguments>
+                        <response>{&quot;bssid&quot;:&quot;value&quot;}</response>
+                    </item>
+                    <item name="setChannelBW" isPublic="true">
+                        <arguments>
+                            <item name="wifiPort">
+                                <description>Port where the MIMO configuration need to be modified</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="channelType">
+                                <description>It will be of type 
+ChannelBandWidth20Mhz
+ChannelBandWidth40Mhz
+ChannelBandWidth80Mhz</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="clearChannelBW" isPublic="true"/>
+                    <item name="getEmulateDeviceIdForPort" isPublic="true">
+                        <arguments>
+                            <item name="InPort">
+                                <description>Port for Which user wants to get the the emulated device id. This works for existing device (1 device) for a port</description>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="getTechnologyType" isPublic="true">
+                        <arguments>
+                            <item name="wifiPort">
+                                <description>Wifi Port of STC </description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="setSMAattenuation" isPublic="true">
+                        <multilineDescription>This Procedure will the channel Attenuation, since it might be called multiple time for setting multiple attenaution on different SMA&apos;s, 
+stc::apply need to used by calling test case</multilineDescription>
+                        <arguments>
+                            <item name="smaPort">
+                                <description>smaPort 
+
+This is SMA port (Attenuator) on Wifi Port generally 
+
+1 2 3 4 --&gt;  For 2.4 GHz 
+5 6 7 8 --&gt;  For 5.0 GHz</description>
+                            </item>
+                            <item name="attenLevel">
+                                <description>Default Attenuation level.
+
+QC will multiply attenuation by 4 (to increment approx) so that correct attenuation level is mantained
+
+Min value: 0 db
+Max value: 60 db</description>
+                                <defaultValue>0</defaultValue>
+                            </item>
+                            <item name="wifiPort">
+                                <description>Wifi Port on which the SMA&apos;s are present</description>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="stcApply" isPublic="true"/>
                 </procedures>
             </tcDescriptor>
         </item>
