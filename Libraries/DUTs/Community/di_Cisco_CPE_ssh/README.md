@@ -1,7 +1,7 @@
 ### Project Information:
-Project: Cisco CPE
-Description: Automation library for Cisco CPE devices with emphasis on voice testing
-Category: library
+Project: Cisco CPE  
+Description: Automation library for Cisco CPE devices with emphasis on voice testing  
+Category: library  
 Class: Community
  ----
 1 quickcall library in project

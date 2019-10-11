@@ -1,7 +1,7 @@
 ### Project Information:
-Project: Abacus
-Description: Response maps and QuickCalls for Abacus VOIP and PSTN test automation
-Category: library
+Project: Abacus  
+Description: Response maps and QuickCalls for Abacus VOIP and PSTN test automation  
+Category: library  
 Class: Tested by Spirent
  ----
 1 quickcall library in project

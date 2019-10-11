@@ -1,7 +1,7 @@
 ### Project Information:
-Project: VMware vSphere
-Description: Client QuickCalls and response maps
-Category: library
+Project: VMware vSphere  
+Description: Client QuickCalls and response maps  
+Category: library  
 Class: Community
  ----
 1 quickcall library in project

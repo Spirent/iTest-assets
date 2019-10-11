@@ -1,7 +1,7 @@
 ### Project Information:
-Project: Cisco NCS5k
-Description: Response maps and QuickCalls for Cisco NCS 5000 series MPLS aggregation router for metro aggregation
-Category: library
+Project: Cisco NCS5k  
+Description: Response maps and QuickCalls for Cisco NCS 5000 series MPLS aggregation router for metro aggregation  
+Category: library  
 Class: Community
  ----
 1 quickcall library in project

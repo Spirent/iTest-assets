@@ -1,7 +1,7 @@
 ### Project Information:
-Project: Cisco CMTS
-Description: QuickCalls and response map libaries for Cisco cable modem termination systems  
-Category: library
+Project: Cisco CMTS  
+Description: QuickCalls and response map libaries for Cisco cable modem termination systems    
+Category: library  
 Class: Community
  ----
 1 quickcall library in project

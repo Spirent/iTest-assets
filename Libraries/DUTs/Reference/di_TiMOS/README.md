@@ -1,7 +1,7 @@
 ### Project Information:
-Project: Alcatel-Lucent (TiMOS) Service Router
-Description: QuickCalls and response map examples
-Category: library
+Project: Alcatel-Lucent (TiMOS) Service Router  
+Description: QuickCalls and response map examples  
+Category: library  
 Class: Reference
  ----
 1 quickcall library in project

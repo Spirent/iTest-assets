@@ -1,7 +1,7 @@
 ### Project Information:
-Project: CloudShell
-Description: QuickCalls for automating Quali CloudShell
-Category: framework
+Project: CloudShell  
+Description: QuickCalls for automating Quali CloudShell  
+Category: framework  
 Class: Community
  ----
 1 quickcall library in project

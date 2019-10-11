@@ -1,7 +1,7 @@
 ### Project Information:
-Project: Velocity Utilities
-Description: QuickCalls useful for iTest and Velocity interraction
-Category: framework
+Project: Velocity Utilities  
+Description: QuickCalls useful for iTest and Velocity interraction  
+Category: framework  
 Class: Community
  ----
 1 test case in project

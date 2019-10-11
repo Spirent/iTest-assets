@@ -1,7 +1,7 @@
 ### Project Information:
-Project: Cisco IOS 2
-Description: Collection of QuickCalls and response maps for Cisco IOS devices
-Category: library
+Project: Cisco IOS 2  
+Description: Collection of QuickCalls and response maps for Cisco IOS devices  
+Category: library  
 Class: Community
  ----
 2 quickcall libraries in project

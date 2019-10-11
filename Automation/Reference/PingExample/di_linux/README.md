@@ -1,7 +1,7 @@
 ### Project Information:
-Project: Linux
-Description: Simple linux device project used with example ping test cases
-Category: automation
+Project: Linux  
+Description: Simple linux device project used with example ping test cases  
+Category: automation  
 Class: Reference
  ----
 1 quickcall library in project

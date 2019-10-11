@@ -1,7 +1,7 @@
 ### Project Information:
-Project: ICOS Router
-Description: SSH and Telnet QuickCalls and response maps for the ICOS Router
-Category: library
+Project: ICOS Router  
+Description: SSH and Telnet QuickCalls and response maps for the ICOS Router  
+Category: library  
 Class: Community
  ----
 2 quickcall libraries in project

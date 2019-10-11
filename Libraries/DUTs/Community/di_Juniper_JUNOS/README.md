@@ -1,7 +1,7 @@
 ### Project Information:
-Project: Juniper Router
-Description: SSH and Telnet QuickCalls and response maps for the Juniper Router
-Category: library
+Project: Juniper Router  
+Description: SSH and Telnet QuickCalls and response maps for the Juniper Router  
+Category: library  
 Class: Community
  ----
 3 quickcall libraries in project

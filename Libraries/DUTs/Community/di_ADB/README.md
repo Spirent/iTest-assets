@@ -1,7 +1,7 @@
 ### Project Information:
-Project: Android
-Description: Library of QuickCalls and response maps for automating Android mobile phones via the Android Debug Bridge, ADB
-Category: library
+Project: Android  
+Description: Library of QuickCalls and response maps for automating Android mobile phones via the Android Debug Bridge, ADB  
+Category: library  
 Class: Community
  ----
 1 quickcall library in project

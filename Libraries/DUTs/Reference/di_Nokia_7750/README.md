@@ -1,8 +1,8 @@
 ### Project Information:
-Project: Nokia 7750
-Description: QuickCalls and response maps for basic configuration of the ALU / Nokia 7750
-Category: library
-Class: Reference
+Project: Nokia 7750  
+Description: QuickCalls and response maps for basic configuration of the ALU / Nokia 7750  
+Category: library  
+Class: Reference  
 
  ----
 1 quickcall library in project

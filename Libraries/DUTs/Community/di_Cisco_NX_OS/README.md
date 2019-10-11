@@ -1,7 +1,7 @@
 ### Project Information:
-Project: Cisco NX OS
-Description: Large library of QuickCalls and response maps for Cisco Nexus devices running NXOS
-Category: library
+Project: Cisco NX OS  
+Description: Large library of QuickCalls and response maps for Cisco Nexus devices running NXOS  
+Category: library  
 Class: Community
  ----
 1 quickcall library in project
