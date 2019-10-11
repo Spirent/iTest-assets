@@ -1,7 +1,7 @@
 ### Project Information:
-Project: Adtran CPE
-Description: Response maps and QuickCalls for Adtran CPE devices with emphasis on voice testing scenarios
-Category: library
+Project: Adtran CPE  
+Description: Response maps and QuickCalls for Adtran CPE devices with emphasis on voice testing scenarios  
+Category: library  
 Class: Community
  ----
 1 quickcall library in project

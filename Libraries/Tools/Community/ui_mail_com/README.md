@@ -1,7 +1,7 @@
 ### Project Information:
-Project: POP3 and SMTP Email
-Description: QuickCalls examples
-Category: library
+Project: POP3 and SMTP Email  
+Description: QuickCalls examples  
+Category: library  
 Class: Community
  ----
 2 quickcall libraries in project

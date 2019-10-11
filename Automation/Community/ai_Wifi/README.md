@@ -1,7 +1,7 @@
 ### Project Information:
-Project: Wifi - Rate vs. Range
-Description: Test cases for Wifi gateway testing
-Category: automation
+Project: Wifi - Rate vs. Range  
+Description: Test cases for Wifi gateway testing  
+Category: automation  
 Class: Community
  ----
 1 test case in project

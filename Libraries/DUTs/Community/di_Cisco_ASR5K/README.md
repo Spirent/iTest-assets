@@ -1,7 +1,7 @@
 ### Project Information:
-Project: Cisco ASR 5000
-Description: Collection of response maps and QuickCalls applicable to Cisco ASR device testing
-Category: library
+Project: Cisco ASR 5000  
+Description: Collection of response maps and QuickCalls applicable to Cisco ASR device testing  
+Category: library  
 Class: Community
  ----
 2 quickcall libraries in project

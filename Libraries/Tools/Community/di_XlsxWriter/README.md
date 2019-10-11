@@ -1,7 +1,7 @@
 ### Project Information:
-Project: Excel Spreadsheets
-Description: Create workbooks and worksheets in XLSX format
-Category: library
+Project: Excel Spreadsheets  
+Description: Create workbooks and worksheets in XLSX format  
+Category: library  
 Class: Community
  ----
 1 quickcall library in project

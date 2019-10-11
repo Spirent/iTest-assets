@@ -1,7 +1,7 @@
 ### Project Information:
-Project: ERCOM
-Description: QuickCalls and response maps 
-Category: library
+Project: ERCOM  
+Description: QuickCalls and response maps   
+Category: library  
 Class: Community
  ----
 1 quickcall library in project

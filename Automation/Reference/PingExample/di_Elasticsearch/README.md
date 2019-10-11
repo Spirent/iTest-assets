@@ -1,7 +1,7 @@
 ### Project Information:
-Project: Elasticsearch
-Description: Elasticsearch device project to go with example ping test cases
-Category: automation
+Project: Elasticsearch  
+Description: Elasticsearch device project to go with example ping test cases  
+Category: automation  
 Class: Reference
  ----
 1 quickcall library in project

@@ -1,8 +1,8 @@
 ### Project Information:
-Project: Documentation Generator
-Description: Generate project documentation, for Git repository, from QuickCall and Procedure libraries
-Category: library
-Class: Community
+Project: Documentation Generator  
+Description: Generate project documentation, for Git repository, from QuickCall and Procedure libraries  
+Category: library  
+Class: Community  
 
  ----
 3 test cases in project

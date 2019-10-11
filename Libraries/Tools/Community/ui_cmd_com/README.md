@@ -1,8 +1,8 @@
 ### Project Information:
-Project: Command Session
-Description: QuickCalls and response map examples showing various response formats and analysis rules
-Category: library
-Class: Community
+Project: Command Session  
+Description: QuickCalls and response map examples showing various response formats and analysis rules  
+Category: library  
+Class: Community  
 
  ----
 1 quickcall library in project

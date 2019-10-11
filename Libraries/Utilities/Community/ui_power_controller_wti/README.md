@@ -1,7 +1,7 @@
 ### Project Information:
-Project: WTI Power Controller
-Description: Telnet QuickCalls and response maps
-Category: library
+Project: WTI Power Controller  
+Description: Telnet QuickCalls and response maps  
+Category: library  
 Class: Community
  ----
 1 quickcall library in project

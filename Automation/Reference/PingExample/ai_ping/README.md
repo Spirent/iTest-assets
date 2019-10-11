@@ -1,7 +1,7 @@
 ### Project Information:
-Project: Ping Example
-Description: Simple example ping test cases
-Category: automation
+Project: Ping Example  
+Description: Simple example ping test cases  
+Category: automation  
 Class: Reference
  ----
 2 test cases in project

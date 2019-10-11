@@ -1,10 +1,10 @@
 ### Project Information:
-Project: Landslide
-Description: This project contains a Landslide session profile and quickcall library.
-Category: library
-Class: Reference
-
-This project is the device project for Landslide.  It contains a Landslide session and quickcall library.
+Project: Landslide  
+Description: This project contains a Landslide session profile and quickcall library.  
+Category: library  
+Class: Reference  
+  
+This project is the device project for Landslide.  It contains a Landslide session and quickcall library.  
 
  ----
 1 quickcall library in project

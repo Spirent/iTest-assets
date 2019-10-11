@@ -1,7 +1,7 @@
 ### Project Information:
-Project: Velocity REST
-Description: QuickCalls useful for automating Velocity via its REST API
-Category: framework
+Project: Velocity REST  
+Description: QuickCalls useful for automating Velocity via its REST API  
+Category: framework  
 Class: Community
  ----
 2 quickcall libraries in project

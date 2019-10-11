@@ -1,7 +1,7 @@
 ### Project Information:
-Project: MRV Media Cross Connect
-Description: Telnet QuickCall examples
-Category: library
+Project: MRV Media Cross Connect  
+Description: Telnet QuickCall examples  
+Category: library  
 Class: Community
  ----
 1 quickcall library in project

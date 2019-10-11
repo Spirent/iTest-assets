@@ -1,7 +1,7 @@
 ### Project Information:
-Project: Cisco Serving Gateway/PDN Gateway (SPGW)
-Description: SSH QuickCalls and response maps
-Category: library
+Project: Cisco Serving Gateway/PDN Gateway (SPGW)  
+Description: SSH QuickCalls and response maps  
+Category: library  
 Class: Community
  ----
 1 quickcall library in project

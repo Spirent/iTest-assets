@@ -1,9 +1,9 @@
 ### Project Information:
-Project: Spirent Attero powered by Calnex
-Description: QuickCall library for network impairment emulation - delay, frame loss, reordering, capturing, link flapping, and more
-Category: library
-Class: Community
-
+Project: Spirent Attero powered by Calnex  
+Description: QuickCall library for network impairment emulation - delay, frame loss, reordering, capturing, link flapping, and more  
+Category: library  
+Class: Community  
+  
 <b>Tags:</b> Test Equipment, Impairment
  ----
 2 quickcall libraries in project
