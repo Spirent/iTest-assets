@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<ResponseMap version="7.3.3.0">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="command"/>
+            <responseBody>Wi-Fi is disabled 
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;terminal RequiredForRendering=&quot;true&quot;&gt;
+        &lt;prompt&gt;charter@CHARTER-NUC_1 C:\\\\Users\\\\Charter&amp;gt;&lt;/prompt&gt;
+        &lt;promptExtraction&gt;LAST_LINE&lt;/promptExtraction&gt;
+        &lt;connClosed/&gt;
+        &lt;idleTime&gt;0.762&lt;/idleTime&gt;
+        &lt;contentType&gt;text&lt;/contentType&gt;
+        &lt;terminator&gt;SLASH_R&lt;/terminator&gt;
+    &lt;/terminal&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="isEmpty">
+                    <queryFormatString>.//isEmpty</queryFormatString>
+                </item>
+                <item name="responseLine">
+                    <queryFormatString>.//responseLine</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.8</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="pattern1">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Wi-Fi is\\s+</regex>
+                            <start>0</start>
+                            <end>9</end>
+                        </item>
+                        <item name="WiFi_status">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>9</start>
+                            <end>17</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>Wi-Fi is disabled</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="adb * shell dumpsys wifi | find &quot;Wi-Fi is&quot;" priority="49">
+        <application>
+            <item>com.fnfr.itest.applications.spirent.customtool.adb</item>
+        </application>
+    </applicabilityProperties>
+</ResponseMap>
