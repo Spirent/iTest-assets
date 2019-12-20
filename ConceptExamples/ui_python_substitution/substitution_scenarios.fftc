@@ -1,0 +1,601 @@
+<?xml version="1.0"?>
+<testCase version="8.0.0.201908290812">
+    <general>
+        <language>Python</language>
+    </general>
+    <execution>
+        <parameters version="8.0.0.201908290812">
+            <parameters escape="true">
+                <parameters xmlns:pt="http://www.fnfr.com/schemas/parameterTree">
+                    <user>itest</user>
+                    <workstation>
+                        <location>cloud</location>
+                    </workstation>
+                </parameters>
+            </parameters>
+        </parameters>
+    </execution>
+    <requirements>
+        <requirement key="user">itest</requirement>
+    </requirements>
+    <procedures>
+        <item name="main">
+            <steps>
+                <item guid="d6ac13b3-318c-4dc3-8936-9a1c1c8cae5f" action="comment" useFieldsInCommand="false">
+                    <command>
+                        <body>Step properties substitution</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="781fa2a8-5c99-4960-aeae-f0dcb1553cbe" action="comment" useFieldsInCommand="false">
+                            <command>
+                                <body>Open ssh session with user substitution</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="b5dd4fa1-1203-4c3c-b6c9-f3fcd1cfd8f0" action="comment" useFieldsInCommand="false">
+                            <command>
+                                <body>Use brackets. [user]</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="e98cd9c7-82d3-4fe9-b032-92c49909240d" action="eval" useFieldsInCommand="false">
+                            <command>
+                                <body>user=&apos;demo_user&apos;</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="6c599fa3-df00-4d0e-ba98-a81b975e5245" action="open" session="demo" skip="true">
+                            <command>
+                                <body>application:com.fnfr.svt.applications.ssh</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.OpenStepPropertyGroup">
+                                <stepProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                                <sessionProperties type="com.fnfr.svt.applications.ssh.documents.SSHProperties">
+                                    <ipAddress inherit="false">1.1.1.1</ipAddress>
+                                    <user inherit="false">[user]</user>
+                                </sessionProperties>
+                                <sessionClass type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                <sessionVersion type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            </applicationProperties>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="285c5dc6-01fb-4844-b238-34121db946e4" action="comment" useFieldsInCommand="false">
+                    <command>
+                        <body>Queries substitution</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="a22c955d-22cc-40d5-98b2-bd36c69eee00" action="eval" useFieldsInCommand="false">
+                            <command>
+                                <body>script_language=&apos;python&apos;</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="ca2ac2f0-a229-4ff0-9028-c3586facb9f8" action="comment" useFieldsInCommand="false">
+                            <command>
+                                <body>Substitute XPATH query mapped/Json/fileSets/item[language=&apos;python&apos;]/fileNameMatch in analysis rule</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="de3fe042-3cf3-4441-b017-a807fbd931ef" action="comment" useFieldsInCommand="false">
+                            <command>
+                                <body>Substitute fileNameMatch_by_language(&quot;python&quot;)  in analysis rule</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="cac9369e-90c2-4d89-8a81-205485ec80b8" action="readFile" responseMap="velocity_manifest.ffrm" useResponseMapLibraryApplicability="false" useFieldsInCommand="false">
+                            <command>
+                                <body>velocity_manifest.json</body>
+                            </command>
+                            <postProcessing>
+                                <analysisRules>
+                                    <item>
+                                        <extractorInfo extractorType="query">
+                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                <query sub="true">[&apos;mapped/Json/fileSets/item[language=&quot;&apos;+script_language +&apos;&quot;]/fileNameMatch&apos;]</query>
+                                            </extractorProperties>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="assert">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                <expression>1</expression>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                    <item>
+                                        <extractorInfo extractorType="query">
+                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                <query sub="true">[&apos;fileNameMatch_by_language(&quot;&apos;+ script_language + &apos;&quot;)&apos;]</query>
+                                            </extractorProperties>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="assert">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                <expression>1</expression>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                </analysisRules>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.svt.execution.builtin.exec.ReadFilePropertyGroup"/>
+                            <useResponseMapLibraryFromSession>false</useResponseMapLibraryFromSession>
+                        </item>
+                        <item guid="762f6b21-9676-42ff-bb4c-8ce9fad4b3e7" action="comment" useFieldsInCommand="false">
+                            <command>
+                                <body>Query on stored response. </body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="a1e15cd8-d93a-4e06-9212-b201dd509e42" action="readFile" responseMap="velocity_manifest.ffrm" useResponseMapLibraryApplicability="false" useFieldsInCommand="false">
+                                    <command>
+                                        <body>velocity_manifest.json</body>
+                                    </command>
+                                    <postProcessing>
+                                        <storeResponseAt>json_data</storeResponseAt>
+                                    </postProcessing>
+                                    <applicationProperties type="com.fnfr.svt.execution.builtin.exec.ReadFilePropertyGroup"/>
+                                    <useResponseMapLibraryFromSession>false</useResponseMapLibraryFromSession>
+                                </item>
+                                <item guid="26b657f8-907d-4320-8923-52de46f7a15b" action="comment" useFieldsInCommand="false">
+                                    <command>
+                                        <body>Substitution for ResponseMap Query</body>
+                                    </command>
+                                    <nestedSteps>
+                                        <item guid="4a009372-bdff-4c7d-a0a5-38320d349535" action="eval" useFieldsInCommand="false">
+                                            <command>
+                                                <body>python_file_match=query(&apos;json_data&apos;,&apos;fileNameMatch_by_language(&quot;{}&quot;)&apos;.format(script_language));print(python_file_match)</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                                <item guid="e98be70b-cf85-4858-b2d5-1ca45a5fdc04" action="comment" useFieldsInCommand="false">
+                                    <command>
+                                        <body>Substitution for xpath queries</body>
+                                    </command>
+                                    <nestedSteps>
+                                        <item guid="2ecb2c3c-c7cb-426f-9240-c32cd4e0562d" action="eval" useFieldsInCommand="false">
+                                            <command>
+                                                <body>xpath_query=&quot;mapped/Json/fileSets/item[language=&apos;{}&apos;]/fileNameMatch&quot;.format(script_language);print(xpath_query)</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                        </item>
+                                        <item guid="0de49961-6993-4b81-8ce6-0a10b489fb20" action="eval" useFieldsInCommand="false">
+                                            <command>
+                                                <body>python_file_match=query(&apos;json_data&apos;,xpath_query);print(python_file_match)</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="0d0585cb-fbdf-43d1-8565-0c0dc426ec50" action="comment" useFieldsInCommand="false">
+                    <command>
+                        <body>Substitution in Analysis rule execution messages</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="9a1fac54-915d-450e-92c2-773f88756f72" action="comment" useFieldsInCommand="false">
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="a25d4ca5-1317-466c-94d0-635daa328c6b" action="readFile" responseMap="velocity_manifest.ffrm" useResponseMapLibraryApplicability="false" useFieldsInCommand="false">
+                            <command>
+                                <body>velocity_manifest.json</body>
+                            </command>
+                            <postProcessing>
+                                <analysisRules>
+                                    <item>
+                                        <extractorInfo extractorType="query">
+                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                <query sub="true">mapped/Json/fileSets/item[language=&apos;python&apos;]/fileNameMatch</query>
+                                            </extractorProperties>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="assert">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                <expression>value != &apos;nAn&apos;</expression>
+                                                <actionOnMultiple>True if all true</actionOnMultiple>
+                                                <actionsWhenTrue>
+                                                    <item actionId="DeclareExecutionIssue">
+                                                        <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="OK">
+                                                            <message>Python files are [value]</message>
+                                                        </actionProperties>
+                                                    </item>
+                                                    <item actionId="Eval">
+                                                        <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                            <statement>python_files=value</statement>
+                                                        </actionProperties>
+                                                    </item>
+                                                </actionsWhenTrue>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                </analysisRules>
+                                <storeResponseAt>json_data</storeResponseAt>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.svt.execution.builtin.exec.ReadFilePropertyGroup"/>
+                            <useResponseMapLibraryFromSession>false</useResponseMapLibraryFromSession>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="0de8a233-c3c9-42b8-96b9-0bc81f49ea29" action="comment" useFieldsInCommand="false">
+                    <command>
+                        <body>Dictionary substitution</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="f6dc64f3-f019-4c92-b666-d73a9594da5e" action="eval" useFieldsInCommand="false">
+                            <command>
+                                <body>demo_dict={}</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="a6a20f73-37fc-42d5-8f10-7b7055c74ada" action="eval" useFieldsInCommand="false">
+                            <command>
+                                <body>script_language=&apos;python&apos;</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="23dac9ce-fd12-4273-80eb-21e1e130ad08" action="eval" useFieldsInCommand="false">
+                            <command>
+                                <body>demo_dict[&apos;languages&apos;]={}</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="552a2cf6-bd99-4f14-966e-b3bc915bb166" action="eval" useFieldsInCommand="false">
+                            <command>
+                                <body>demo_dict[&apos;languages&apos;][&apos;python&apos;]=&apos;dict_python_value&apos;</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="e27c90af-3853-4876-85e7-7b8043a4d858" action="eval" useFieldsInCommand="false">
+                            <command>
+                                <body>print(demo_dict[&apos;languages&apos;][script_language])</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="a3edcfce-926f-4dec-ac2f-e130e8a88a96" action="comment" useFieldsInCommand="false">
+                            <command>
+                                <body>dict substitution in analysis rule</body>
+                            </command>
+                            <postProcessing>
+                                <analysisRules>
+                                    <item>
+                                        <extractorInfo extractorType="none">
+                                            <extractorProperties type="com.fnfr.svt.documents.EmptyExtractorPropertyGroup"/>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="assert">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                <expression>1</expression>
+                                                <actionsWhenTrue>
+                                                    <item actionId="DeclareExecutionIssue">
+                                                        <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="OK">
+                                                            <message> Dict value is [demo_dict[&apos;languages&apos;][script_language]]</message>
+                                                        </actionProperties>
+                                                    </item>
+                                                    <item actionId="PassTestIfNotAlreadyFailed">
+                                                        <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                    </item>
+                                                </actionsWhenTrue>
+                                                <actionsWhenFalse>
+                                                    <item actionId="DeclareExecutionIssue">
+                                                        <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                            <message>{auto_message_false}</message>
+                                                        </actionProperties>
+                                                    </item>
+                                                    <item actionId="FailTest">
+                                                        <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                    </item>
+                                                </actionsWhenFalse>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                </analysisRules>
+                            </postProcessing>
+                            <nestedSteps>
+                                <item guid="bcb49a98-26d7-4470-9aff-602bf2f980ed" action="comment" useFieldsInCommand="false">
+                                    <command>
+                                        <body>In analysis rule; step properties square brackets are needed</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="a74538f4-c9be-4596-8aea-3e475529c699" action="comment" useFieldsInCommand="false">
+                    <command>
+                        <body>Substitution for parameter read</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="e44fe908-2652-4e4a-a5f3-136f85bfba13" action="eval" useFieldsInCommand="false">
+                            <command>
+                                <body>param1=&apos;user&apos;</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="e52d7154-feae-486a-950a-8a370918cc47" action="eval" useFieldsInCommand="false">
+                            <command>
+                                <body>username=param(&apos;{}&apos;.format(param1));print(username)</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="34385323-666d-443f-af23-418fb0feb64f" action="comment" useFieldsInCommand="false">
+                            <command>
+                                <body>substitution for nested parameters</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="1d73dcb7-5232-4166-bdf1-17e8f5bd972a" action="eval" useFieldsInCommand="false">
+                                    <command>
+                                        <body>parent=&apos;workstation&apos;</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                                <item guid="0c4bedf8-a781-4481-874a-9d88f148ce3a" action="eval" useFieldsInCommand="false">
+                                    <command>
+                                        <body>child=&apos;location&apos;</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                                <item guid="e956a999-5352-4fa8-8317-f648413acf23" action="eval" useFieldsInCommand="false">
+                                    <command>
+                                        <body>location_of_workstation=param(&apos;{}/{}&apos;.format(parent,child));print(location_of_workstation)</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="7912a8b9-ca67-443a-8d9f-de9156f0a396" action="comment" useFieldsInCommand="false">
+                    <command>
+                        <body>Substitution for JSON step</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="92f5bf55-0e5d-4e54-ba08-7f28eac52e22" action="comment" useFieldsInCommand="false">
+                            <command>
+                                <body>Add a dict to a JSON file</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="87ad3c3a-2279-4631-926a-426594009bf8" action="json" useFieldsInCommand="false">
+                            <command>
+                                <body>action=&apos;createJson&apos;, documentName=&apos;json_doc&apos;, fromFile=&apos;false&apos;, jsonString=&apos;{}&apos;</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.execution.builtin.json.JsonPropertiesGroup">
+                                <action inherit="false">createJson</action>
+                                <jsonString inherit="false">{}</jsonString>
+                                <documentName inherit="false">json_doc</documentName>
+                            </applicationProperties>
+                        </item>
+                        <item guid="46297bb3-02c1-42bc-a959-30b72a080a10" action="eval" useFieldsInCommand="false">
+                            <command>
+                                <body>velocity_dict={}</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="e4f1cf77-1287-4c7b-baaf-fc1040d53907" action="eval" useFieldsInCommand="false">
+                            <command>
+                                <body>velocity_dict[&apos;url&apos;]=&apos;1.1.1.1&apos;</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="3edf11d2-c2f3-4a4f-993f-9a22d3a5b3db" action="eval" useFieldsInCommand="false">
+                            <command>
+                                <body>velocity_dict[&apos;user&apos;]=&apos;demo_user&apos;</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="2923b65a-116f-4554-a1b9-c3e8c4177cf4" action="eval" useFieldsInCommand="false">
+                            <command>
+                                <body>velocity_dict[&apos;password&apos;]=&apos;demo_passwd&apos;</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="a8a180ca-7771-46d0-aa6a-be598cc82493" action="json" useFieldsInCommand="false">
+                            <command>
+                                <body>action=&apos;addJsonNode&apos;, editResponseStructure=&apos;false&apos;, documentName=&apos;json_doc&apos;, pathValue=&apos;{&quot;/&quot;:{&quot;velocity&quot;:&quot;[velocity_dict]&quot;}}&apos;</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.execution.builtin.json.JsonPropertiesGroup">
+                                <action inherit="false">addJsonNode</action>
+                                <pathValue inherit="false" sub="true">{&quot;/&quot;:{&quot;velocity&quot;:&quot;[velocity_dict]&quot;}}</pathValue>
+                                <documentName inherit="false">json_doc</documentName>
+                            </applicationProperties>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="02b4d552-6ee3-4a91-996c-2c9ff1fa2a74" action="comment" useFieldsInCommand="false">
+                    <command>
+                        <body>Substitution for argument values in procedure call</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="cbcf1caf-97b6-49a5-8516-b21b6c3f6cca" action="eval" useFieldsInCommand="false">
+                            <command>
+                                <body>arg_value=&apos;value_to_be_used&apos;</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="91ec480e-7d71-44d0-ad0b-bd5dabd3a623" action="call" useFieldsInCommand="false">
+                            <command>
+                                <body>procedure1(arg1=arg_value) </body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="3fdea2a1-e783-4bbc-923f-5747be1979f1" action="comment" useFieldsInCommand="false">
+                    <command>
+                        <body>Substitution for argument values in QC Lib procedure call</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="43a03c5a-084f-49b5-a757-bb2ac5de9658" action="eval" useFieldsInCommand="false">
+                            <command>
+                                <body>arg=&apos;argument_value&apos;</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="2603fd8a-103e-48b5-a0ed-46777bc098f7" action="open" session="sp">
+                            <command>
+                                <body>project://ui_python_substitution/session_profiles/demo_sp.ffsp</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.OpenStepPropertyGroup">
+                                <stepProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                                <sessionProperties type="com.fnfr.svt.applications.cmd.CmdSessionProperties"/>
+                                <sessionClass type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                <sessionVersion type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            </applicationProperties>
+                        </item>
+                        <item guid="89089adb-723c-47e6-84c4-31acbd28cfdd" action="demo_qc_procedure" session="sp" useFieldsInCommand="false">
+                            <command>
+                                <body> -argument1 [arg]</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                        </item>
+                        <item guid="133c5282-cbd6-458f-8719-9ed83304a24d" action="comment" useFieldsInCommand="false">
+                            <command>
+                                <body>If to the argument value a certain string needs to be added than the syntax is:</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="6c643a2d-cdd9-4a43-8728-570a33a9f2ae" action="comment" useFieldsInCommand="false">
+                                    <command>
+                                        <body>E.G have a variable for IP but arg needs to be IP/32</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                                <item guid="8010ab6a-d503-48b3-aaa5-110e19a40068" action="eval" useFieldsInCommand="false">
+                                    <command>
+                                        <body>IP=&apos;1.1.1.1&apos;</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                                <item guid="21289d2d-0c5b-43a5-b1a8-b518725e344b" action="demo_qc_procedure" session="sp" useFieldsInCommand="false">
+                                    <command>
+                                        <body> -argument1 [IP+&apos;/32&apos;]</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="bd45806d-3022-4bed-aeef-1ecb324583be" action="comment" useFieldsInCommand="false">
+                    <command>
+                        <body>Substitution for assert</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="43c10b2a-ade7-4c9d-b58e-6211126c866d" action="eval" useFieldsInCommand="false">
+                            <command>
+                                <body>ref_value=100</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="ebc78e41-e50d-415a-8a11-ac1c8840598d" action="eval" useFieldsInCommand="false">
+                            <command>
+                                <body>print(120)</body>
+                            </command>
+                            <postProcessing>
+                                <analysisRules>
+                                    <item>
+                                        <extractorInfo extractorType="regex">
+                                            <extractorProperties type="com.fnfr.svt.mapping.regex.extractors.RegexExtractorPropertyGroup">
+                                                <regex>.+</regex>
+                                            </extractorProperties>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="assert">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                <expression>value &gt;= ref_value</expression>
+                                                <actionsWhenTrue>
+                                                    <item actionId="DeclareExecutionIssue">
+                                                        <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="OK">
+                                                            <message>  Extracted value [value] is greater than reference value [ref_value]</message>
+                                                        </actionProperties>
+                                                    </item>
+                                                    <item actionId="PassTestIfNotAlreadyFailed">
+                                                        <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                    </item>
+                                                </actionsWhenTrue>
+                                                <actionsWhenFalse>
+                                                    <item actionId="DeclareExecutionIssue">
+                                                        <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                            <message>Extracted value [value] is not greater than reference value [ref_value]</message>
+                                                        </actionProperties>
+                                                    </item>
+                                                </actionsWhenFalse>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                </analysisRules>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="4c7e71cb-a3d9-4ebe-ab8a-0b32af67d239" action="comment" useFieldsInCommand="false">
+                    <command>
+                        <body>Substitution for eval steps</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="31bdd2fa-6aaa-4984-8e70-d09a674cd069" action="eval" useFieldsInCommand="false">
+                            <command>
+                                <body>value1=100</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="147b7991-a6b4-435f-a5ed-6bacf3a678a2" action="eval" useFieldsInCommand="false">
+                            <command>
+                                <body>value2=value1 + 200;print(value2)</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="6bc64ea9-3c8e-4d80-9e82-c14a73a3b21b" action="comment" useFieldsInCommand="false">
+                    <command>
+                        <body>Substitution for comment steps</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="e297f38b-9f53-48a2-976d-14356907a5a9" action="eval" useFieldsInCommand="false">
+                            <command>
+                                <body>step =1</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="c2072883-0235-4458-8831-eabd737284b0" action="comment">
+                            <command>
+                                <body>Current step is step [step]</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+        </item>
+        <item name="procedure1">
+            <steps>
+                <item guid="83eb13fc-4300-4f33-9cf9-dac8b73b7911" action="eval" useFieldsInCommand="false">
+                    <command>
+                        <body>print(&apos;Value set for procedure argument arg 1 is: {}&apos;.format(arg1))</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <arguments>
+                <item name="arg1"/>
+            </arguments>
+        </item>
+    </procedures>
+</testCase>
