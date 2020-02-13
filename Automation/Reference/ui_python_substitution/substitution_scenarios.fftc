@@ -485,51 +485,107 @@
                             <command>
                                 <body>Add a dict to a JSON file</body>
                             </command>
+                            <nestedSteps>
+                                <item guid="87ad3c3a-2279-4631-926a-426594009bf8" action="json" useFieldsInCommand="false">
+                                    <command>
+                                        <body>action=&apos;createJson&apos;, documentName=&apos;json_doc&apos;, fromFile=&apos;false&apos;, jsonString=&apos;{}&apos;</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.execution.builtin.json.JsonPropertiesGroup">
+                                        <action inherit="false">createJson</action>
+                                        <jsonString inherit="false">{}</jsonString>
+                                        <documentName inherit="false">json_doc</documentName>
+                                    </applicationProperties>
+                                </item>
+                                <item guid="46297bb3-02c1-42bc-a959-30b72a080a10" action="eval" useFieldsInCommand="false">
+                                    <command>
+                                        <body>velocity_dict={}</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                                <item guid="e4f1cf77-1287-4c7b-baaf-fc1040d53907" action="eval" useFieldsInCommand="false">
+                                    <command>
+                                        <body>velocity_dict[&apos;url&apos;]=&apos;1.1.1.1&apos;</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                                <item guid="3edf11d2-c2f3-4a4f-993f-9a22d3a5b3db" action="eval" useFieldsInCommand="false">
+                                    <command>
+                                        <body>velocity_dict[&apos;user&apos;]=&apos;demo_user&apos;</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                                <item guid="2923b65a-116f-4554-a1b9-c3e8c4177cf4" action="eval" useFieldsInCommand="false">
+                                    <command>
+                                        <body>velocity_dict[&apos;password&apos;]=&apos;demo_passwd&apos;</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                                <item guid="a8a180ca-7771-46d0-aa6a-be598cc82493" action="json" useFieldsInCommand="false">
+                                    <command>
+                                        <body>action=&apos;addJsonNode&apos;, editResponseStructure=&apos;false&apos;, documentName=&apos;json_doc&apos;, pathValue=&apos;{&quot;/&quot;:{&quot;velocity&quot;:[velocity_dict]}}&apos;</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.execution.builtin.json.JsonPropertiesGroup">
+                                        <action inherit="false">addJsonNode</action>
+                                        <pathValue inherit="false" sub="true">{&quot;/&quot;:{&quot;velocity&quot;:[velocity_dict]}}</pathValue>
+                                        <documentName inherit="false">json_doc</documentName>
+                                    </applicationProperties>
+                                </item>
+                            </nestedSteps>
                             <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
                         </item>
-                        <item guid="87ad3c3a-2279-4631-926a-426594009bf8" action="json" useFieldsInCommand="false">
+                        <item guid="98096e64-a591-4e09-9f0a-c2bf2f71f788" action="comment" useFieldsInCommand="false">
                             <command>
-                                <body>action=&apos;createJson&apos;, documentName=&apos;json_doc&apos;, fromFile=&apos;false&apos;, jsonString=&apos;{}&apos;</body>
+                                <body>Variable substitution using a JSON list</body>
                             </command>
-                            <applicationProperties type="com.fnfr.svt.execution.builtin.json.JsonPropertiesGroup">
-                                <action inherit="false">createJson</action>
-                                <jsonString inherit="false">{}</jsonString>
-                                <documentName inherit="false">json_doc</documentName>
-                            </applicationProperties>
-                        </item>
-                        <item guid="46297bb3-02c1-42bc-a959-30b72a080a10" action="eval" useFieldsInCommand="false">
-                            <command>
-                                <body>velocity_dict={}</body>
-                            </command>
+                            <nestedSteps>
+                                <item guid="a17280d7-0d93-4c9a-97b1-b13b4c8c9aac" action="json" useFieldsInCommand="false">
+                                    <command>
+                                        <body>action=&apos;addJsonNode&apos;, editResponseStructure=&apos;true&apos;, pathValue=&apos;{&quot;/&quot;:{&quot;resultFiles&quot;:\\\\[[resultFileList]]}}&apos;</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.execution.builtin.json.JsonPropertiesGroup">
+                                        <action inherit="false">addJsonNode</action>
+                                        <pathValue inherit="false" sub="true">{&quot;/&quot;:{&quot;resultFiles&quot;:\\[[resultFileList]]}}</pathValue>
+                                        <editResponseStructure inherit="false">true</editResponseStructure>
+                                    </applicationProperties>
+                                </item>
+                                <item guid="341db5ed-4546-490b-b9b5-bd341334b53c" action="comment" useFieldsInCommand="false">
+                                    <command>
+                                        <body>Always use the step properties when editing a JSON step to avoid issues with escaped characters</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                                <item guid="624a7d0c-999e-4977-b9f2-46b21d6fdc20" action="comment" useFieldsInCommand="false">
+                                    <command>
+                                        <body>Note that only the leading literal square bracket is escaped</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                                <item guid="ac8534ea-aa40-40ac-97cd-feecda9350e3" action="comment" useFieldsInCommand="false">
+                                    <command>
+                                        <body>Create a JSON list of arbitrary length with variable substitution</body>
+                                    </command>
+                                    <nestedSteps>
+                                        <item guid="db4e5bab-bbb4-4c08-a31c-b000c2273b15" action="json" useFieldsInCommand="false">
+                                            <command>
+                                                <body>action=&apos;addJsonNode&apos;, editResponseStructure=&apos;true&apos;, pathValue=&apos;{&quot;ports/\\\\[0]/status&quot;:&quot;[status]&quot;,&quot;ports/\\\\[0]/name&quot;:&quot;[name]&quot;}&apos;</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.execution.builtin.json.JsonPropertiesGroup">
+                                                <action inherit="false">addJsonNode</action>
+                                                <pathValue inherit="false" sub="true">{&quot;ports/\\[0]/status&quot;:&quot;[status]&quot;,&quot;ports/\\[0]/name&quot;:&quot;[name]&quot;}</pathValue>
+                                                <editResponseStructure inherit="false">true</editResponseStructure>
+                                            </applicationProperties>
+                                        </item>
+                                        <item guid="7384b952-437b-4cfd-8801-d0db7b68f1b6" action="comment" useFieldsInCommand="false">
+                                            <command>
+                                                <body>Use this method to build a JSON list in a loop when you may not know the length of the list</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
                             <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
-                        </item>
-                        <item guid="e4f1cf77-1287-4c7b-baaf-fc1040d53907" action="eval" useFieldsInCommand="false">
-                            <command>
-                                <body>velocity_dict[&apos;url&apos;]=&apos;1.1.1.1&apos;</body>
-                            </command>
-                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
-                        </item>
-                        <item guid="3edf11d2-c2f3-4a4f-993f-9a22d3a5b3db" action="eval" useFieldsInCommand="false">
-                            <command>
-                                <body>velocity_dict[&apos;user&apos;]=&apos;demo_user&apos;</body>
-                            </command>
-                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
-                        </item>
-                        <item guid="2923b65a-116f-4554-a1b9-c3e8c4177cf4" action="eval" useFieldsInCommand="false">
-                            <command>
-                                <body>velocity_dict[&apos;password&apos;]=&apos;demo_passwd&apos;</body>
-                            </command>
-                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
-                        </item>
-                        <item guid="a8a180ca-7771-46d0-aa6a-be598cc82493" action="json" useFieldsInCommand="false">
-                            <command>
-                                <body>action=&apos;addJsonNode&apos;, editResponseStructure=&apos;false&apos;, documentName=&apos;json_doc&apos;, pathValue=&apos;{&quot;/&quot;:{&quot;velocity&quot;:[velocity_dict]}}&apos;</body>
-                            </command>
-                            <applicationProperties type="com.fnfr.svt.execution.builtin.json.JsonPropertiesGroup">
-                                <action inherit="false">addJsonNode</action>
-                                <pathValue inherit="false" sub="true">{&quot;/&quot;:{&quot;velocity&quot;:[velocity_dict]}}</pathValue>
-                                <documentName inherit="false">json_doc</documentName>
-                            </applicationProperties>
                         </item>
                     </nestedSteps>
                     <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
