@@ -1,0 +1,102 @@
+{
+	"defaultData": {
+		"commandSequence": [
+			"%file% %parameterNameValuePairList%"
+		],
+		"description": "%file% script run from core regression",
+		"executionMessages": {
+			"error": "^.*(ERROR|CRITICAL).*",
+			"info": "^.*(DEBUG|INFO).*",
+			"ok": "^.*(verified).*",
+			"warning": "^.*(WARNING).*"
+		},
+		"headline": "%file% from Core Regression Suite",
+		"hidden": false,
+		"namespace": "CoreRegression",
+		"owner": "Joe Scripter",
+		"parameters": [{
+			"description": "for all scripts (from defaultData)",
+			"name": "build",
+			"type": "TEXT",
+			"value": "72e8644"
+		}],
+		"timeout": 10,
+		"verdictMethod": "EXIT_CODE_VERDICT_PARSING",
+		"verdictParsing": {
+			"failTest": "Finished: FAILED",
+			"failTestIfPassing": "Failure number \\d+",
+			"passTest": "Finished: PASSED",
+			"passTestIfNotAlreadyFailed": "SUCCESS"
+		}
+	},
+	"fileSets": [{
+		"fileNameMatch": ".*\\.bat",
+		"commandSequence": [
+			"%file% %param_build%"
+		],
+		"language": "batch"
+	}, {
+		"fileNameMatch": "simple\\.ps1",
+		"language": "powershell"
+	}, {
+		"fileNameMatch": "timeout\\.sh",
+		"language": "bash",
+		"timeout": 1
+	}, {
+		"fileNameMatch": "execution_env\\.py",
+		"language": "python",
+		"requirements": [{
+			"name": "product.arch",
+			"value": "x86_64"
+		}]
+	}, {
+		"fileNameMatch": ".*addTwoNumbersTogether\\.py",
+		"extractedData": [{
+			"pattern": "^Added: (.*)$",
+			"tag": "addedNumbers"
+		}, {
+			"pattern": "^Subtracted: (.*)$",
+			"tag": "subtractedNumbers"
+		}],
+		"language": "python",
+		"parameters": [{
+			"description": "first number",
+			"name": "input_number1",
+			"type": "TEXT",
+			"value": "10"
+		}, {
+			"description": "second number",
+			"name": "input_number2",
+			"type": "TEXT",
+			"value": "5"
+		}, {
+			"description": "added numbers",
+			"name": "output_addedNumbers",
+			"type": "TEXT",
+			"value": "NA"
+		}, {
+			"description": "subtracted numbers",
+			"name": "output_subtractedNumbers",
+			"type": "TEXT",
+			"value": "NA"
+		}]
+	}, {
+		"fileNameMatch": "extractedData\\.py",
+		"extractedData": [{
+			"pattern": "^DUT Version : (.*)$",
+			"tag": "DUT Build Number"
+		}, {
+			"pattern": "^Response Time : (\\d+)$",
+			"tag": "Response Latency ms"
+		}],
+		"language": "python"
+	}, {
+		"fileNameMatch": ".*\\.py",
+		"parameters": [{
+			"description": "for all other .py files (from fileNameMatch)",
+			"name": "python_parameter",
+			"type": "TEXT",
+			"value": "my Python parameter"
+		}]
+	}]
+}
