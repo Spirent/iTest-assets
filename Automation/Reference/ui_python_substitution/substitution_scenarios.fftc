@@ -538,14 +538,31 @@
                                 <body>Variable substitution using a JSON list</body>
                             </command>
                             <nestedSteps>
+                                <item guid="03659ca9-baf7-44a9-a294-c68f11fd7297" action="json" useFieldsInCommand="false">
+                                    <command>
+                                        <body>action=&apos;createJson&apos;, documentName=&apos;json_doc_filelist&apos;, fromFile=&apos;false&apos;, jsonString=&apos;{}&apos;</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.execution.builtin.json.JsonPropertiesGroup">
+                                        <action inherit="false">createJson</action>
+                                        <jsonString inherit="false">{}</jsonString>
+                                        <documentName inherit="false">json_doc_filelist</documentName>
+                                    </applicationProperties>
+                                </item>
+                                <item guid="31c0eed5-d744-4225-bd53-f9b4db9a28e8" action="eval" useFieldsInCommand="false">
+                                    <command>
+                                        <body>resultFileList = [&apos;file1.txt&apos;,&apos;file2.txt&apos;]</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
                                 <item guid="a17280d7-0d93-4c9a-97b1-b13b4c8c9aac" action="json" useFieldsInCommand="false">
                                     <command>
-                                        <body>action=&apos;addJsonNode&apos;, editResponseStructure=&apos;true&apos;, pathValue=&apos;{&quot;/&quot;:{&quot;resultFiles&quot;:\\\\[[resultFileList]]}}&apos;</body>
+                                        <body>action=&apos;addJsonNode&apos;, editResponseStructure=&apos;false&apos;, documentName=&apos;json_doc_filelist&apos;, pathValue=&apos;{&quot;/&quot;:{&quot;resultFiles&quot;:\\\\[[resultFileList]]}}&apos;</body>
                                     </command>
                                     <applicationProperties type="com.fnfr.svt.execution.builtin.json.JsonPropertiesGroup">
                                         <action inherit="false">addJsonNode</action>
                                         <pathValue inherit="false" sub="true">{&quot;/&quot;:{&quot;resultFiles&quot;:\\[[resultFileList]]}}</pathValue>
-                                        <editResponseStructure inherit="false">true</editResponseStructure>
+                                        <editResponseStructure inherit="false" defaultValue=""/>
+                                        <documentName inherit="false">json_doc_filelist</documentName>
                                     </applicationProperties>
                                 </item>
                                 <item guid="341db5ed-4546-490b-b9b5-bd341334b53c" action="comment" useFieldsInCommand="false">
@@ -565,20 +582,56 @@
                                         <body>Create a JSON list of arbitrary length with variable substitution</body>
                                     </command>
                                     <nestedSteps>
-                                        <item guid="db4e5bab-bbb4-4c08-a31c-b000c2273b15" action="json" useFieldsInCommand="false">
+                                        <item guid="b9d98c29-92d8-4c07-9f16-4016ecd2cf24" action="json" useFieldsInCommand="false">
                                             <command>
-                                                <body>action=&apos;addJsonNode&apos;, editResponseStructure=&apos;true&apos;, pathValue=&apos;{&quot;ports/\\\\[0]/status&quot;:&quot;[status]&quot;,&quot;ports/\\\\[0]/name&quot;:&quot;[name]&quot;}&apos;</body>
+                                                <body>action=&apos;createJson&apos;, documentName=&apos;json_doc_portlist&apos;, fromFile=&apos;false&apos;, jsonString=&apos;{&quot;ports&quot;:[]}&apos;</body>
                                             </command>
                                             <applicationProperties type="com.fnfr.svt.execution.builtin.json.JsonPropertiesGroup">
-                                                <action inherit="false">addJsonNode</action>
-                                                <pathValue inherit="false" sub="true">{&quot;ports/\\[0]/status&quot;:&quot;[status]&quot;,&quot;ports/\\[0]/name&quot;:&quot;[name]&quot;}</pathValue>
-                                                <editResponseStructure inherit="false">true</editResponseStructure>
+                                                <action inherit="false">createJson</action>
+                                                <jsonString inherit="false">{&quot;ports&quot;:[]}</jsonString>
+                                                <documentName inherit="false">json_doc_portlist</documentName>
                                             </applicationProperties>
                                         </item>
                                         <item guid="7384b952-437b-4cfd-8801-d0db7b68f1b6" action="comment" useFieldsInCommand="false">
                                             <command>
                                                 <body>Use this method to build a JSON list in a loop when you may not know the length of the list</body>
                                             </command>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                        </item>
+                                        <item guid="086ce6e4-8459-406e-85b1-3f05576f88ad" action="for" useFieldsInCommand="false">
+                                            <command>
+                                                <body>i in range(0, 10):</body>
+                                            </command>
+                                            <nestedSteps>
+                                                <item guid="c1e1002e-9e00-46b9-bcdf-97c6148853fa" action="eval" useFieldsInCommand="false">
+                                                    <command>
+                                                        <body>name= &apos;ge-0/0/&apos;+str(i)</body>
+                                                    </command>
+                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                </item>
+                                                <item guid="987d5ff8-7781-4840-ac84-4f57ee727780" action="eval" useFieldsInCommand="false">
+                                                    <command>
+                                                        <body>status = &apos;up&apos;</body>
+                                                    </command>
+                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                </item>
+                                                <item guid="a4df83c9-9038-45c6-a9f6-de9c1b8cf9da" action="json" useFieldsInCommand="false">
+                                                    <command>
+                                                        <body>action=&apos;addJsonNode&apos;, editResponseStructure=&apos;false&apos;, documentName=&apos;json_doc_portlist&apos;, pathValue=&apos;{&quot;ports/\\\\[[i]]&quot;:\\\\[{&quot;name&quot;:&quot;[name]&quot;,&quot;status&quot;:&quot;[status]&quot;}]}&apos;</body>
+                                                    </command>
+                                                    <applicationProperties type="com.fnfr.svt.execution.builtin.json.JsonPropertiesGroup">
+                                                        <action inherit="false">addJsonNode</action>
+                                                        <pathValue inherit="false" sub="true">{&quot;ports/\\[[i]]&quot;:\\[{&quot;name&quot;:&quot;[name]&quot;,&quot;status&quot;:&quot;[status]&quot;}]}</pathValue>
+                                                        <documentName inherit="false">json_doc_portlist</documentName>
+                                                    </applicationProperties>
+                                                </item>
+                                                <item guid="ea534a81-8c86-4033-91ed-4e8ce1831f4a" action="comment" useFieldsInCommand="false">
+                                                    <command>
+                                                        <body>Note that only the leading literal square brackets are escaped</body>
+                                                    </command>
+                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                </item>
+                                            </nestedSteps>
                                             <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
                                         </item>
                                     </nestedSteps>
