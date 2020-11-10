@@ -359,7 +359,7 @@
             </steps>
             <response>{}</response>
         </item>
-        <item name="Upload_MapFile" isPublic="true">
+        <item name="UploadMapFile" isPublic="true">
             <steps>
                 <item guid="e3aeeede-bdbe-4c1a-a0be-e10d96f45f0a" action="POST" session="$session">
                     <command>
@@ -371,12 +371,12 @@
             <multilineDescription>Uploads a map file.</multilineDescription>
             <arguments>
                 <item name="mapId">
-                    <description>“mapId”(required) - The $session map name or id to be uploaded.</description>
+                    <description>“mapId”(required) - The sne map name or id to modify.</description>
                     <isMandatory>true</isMandatory>
                 </item>
             </arguments>
         </item>
-        <item name="Start" isPublic="true">
+        <item name="StartMap" isPublic="true">
             <steps>
                 <item guid="b4afa300-5069-45f5-914c-ef02db7ff2d0" action="PUT" session="$session">
                     <command>
@@ -388,12 +388,12 @@
             <multilineDescription>Starts executing a loaded map.</multilineDescription>
             <arguments>
                 <item name="mapId">
-                    <description>“mapId”(required) - The $session map name or id to be started.</description>
+                    <description>“mapId”(required) - The sne map name or id to modify.</description>
                     <isMandatory>true</isMandatory>
                 </item>
             </arguments>
         </item>
-        <item name="Stop" isPublic="true">
+        <item name="StopMap" isPublic="true">
             <steps>
                 <item guid="9e7fdf39-c44c-4bf7-8861-f136b25ad381" action="PUT" session="$session">
                     <command>
@@ -405,12 +405,12 @@
             <multilineDescription>Stops executing a running map but does not unload it from the $session.</multilineDescription>
             <arguments>
                 <item name="mapId">
-                    <description>“mapId”(required) - The $session map name or id to be stopped.</description>
+                    <description>“mapId”(required) - The sne map name or id to modify.</description>
                     <isMandatory>true</isMandatory>
                 </item>
             </arguments>
         </item>
-        <item name="Unload_MapFile" isPublic="true">
+        <item name="UnloadMapFile" isPublic="true">
             <steps>
                 <item guid="fe301fe9-867d-4c71-a5b2-4fdc64a50c12" action="PUT" session="$session">
                     <command>
@@ -422,7 +422,7 @@
             <multilineDescription>Unloads a stopped map from the $session.</multilineDescription>
             <arguments>
                 <item name="mapId">
-                    <description>“mapId”(required) - The $session map name or id to be unloaded.</description>
+                    <description>“mapId”(required) - The sne map name or id to modify.</description>
                     <isMandatory>true</isMandatory>
                 </item>
             </arguments>
@@ -434,41 +434,6 @@
                         <body>/api/maps</body>
                     </command>
                     <postProcessing>
-                        <analysisRules>
-                            <item>
-                                <extractorInfo extractorType="query">
-                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
-                                        <query>status()</query>
-                                    </extractorProperties>
-                                </extractorInfo>
-                                <processorInfo ruleType="store">
-                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
-                                        <storageLocation>status</storageLocation>
-                                        <responseValue type="com.fnfr.documents.PropertyBoolean">false</responseValue>
-                                        <variable type="com.fnfr.documents.PropertyBoolean">true</variable>
-                                        <secret type="com.fnfr.documents.PropertyBoolean">false</secret>
-                                    </ruleProperties>
-                                </processorInfo>
-                                <skip>true</skip>
-                            </item>
-                            <item>
-                                <extractorInfo extractorType="query">
-                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
-                                        <query>maps()</query>
-                                    </extractorProperties>
-                                </extractorInfo>
-                                <processorInfo ruleType="store">
-                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
-                                        <storageLocation>maps</storageLocation>
-                                        <storeInAList>true</storeInAList>
-                                        <responseValue type="com.fnfr.documents.PropertyBoolean">false</responseValue>
-                                        <variable type="com.fnfr.documents.PropertyBoolean">true</variable>
-                                        <secret type="com.fnfr.documents.PropertyBoolean">false</secret>
-                                    </ruleProperties>
-                                </processorInfo>
-                                <skip>true</skip>
-                            </item>
-                        </analysisRules>
                         <storeResponseAt>resp</storeResponseAt>
                         <storeResponseText>true</storeResponseText>
                         <appendRespToFile inherit="false">false</appendRespToFile>
@@ -476,38 +441,6 @@
                         <appendTimestamp inherit="false">false</appendTimestamp>
                     </postProcessing>
                     <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" action="/api/maps" action.inherit="false" includeHttpHeaders.inherit="false"/>
-                </item>
-                <item guid="2c4ef7de-7ba5-42bd-a9a9-4389496fd24c" action="write" skip="true">
-                    <command>
-                        <body>{ &quot;status&quot;: $status\\r\\n,</body>
-                    </command>
-                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
-                </item>
-                <item guid="c637e006-0163-4581-a47c-8dbd60cabb02" action="write" skip="true">
-                    <command>
-                        <body>\\n&quot;maps&quot;: </body>
-                    </command>
-                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
-                </item>
-                <item guid="3c3f7e90-24ab-459b-8123-c2ef054d1322" action="foreach" skip="true" useFieldsInCommand="false">
-                    <command>
-                        <body>i $maps</body>
-                    </command>
-                    <nestedSteps>
-                        <item guid="3ae6a9c2-8604-4fa0-ab8f-3ef40a67041e" action="write">
-                            <command>
-                                <body>\\r\\n$i</body>
-                            </command>
-                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
-                        </item>
-                    </nestedSteps>
-                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
-                </item>
-                <item guid="b1897a64-abec-4d18-8552-078b92b70d6e" action="write" skip="true">
-                    <command>
-                        <body>}\\r\\n</body>
-                    </command>
-                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
                 </item>
                 <item guid="7732ef98-4f7e-46f4-8287-5be7c81e324f" action="return">
                     <command>
@@ -558,7 +491,7 @@
             <multilineDescription>Retrives information about a specific loaded map.</multilineDescription>
             <arguments>
                 <item name="mapId">
-                    <description>“mapId”(required) - The $session map name or id of the loaded map.</description>
+                    <description>“mapId”(required) - The sne map name or id to modify.</description>
                     <isMandatory>true</isMandatory>
                 </item>
             </arguments>
@@ -589,7 +522,7 @@
             <multilineDescription>Retrives information about all impairments in loaded map.</multilineDescription>
             <arguments>
                 <item name="mapId">
-                    <description>“mapId”(required) - The $session map name or id of the loaded map.</description>
+                    <description>“mapId”(required) - The sne map name or id to modify.</description>
                     <isMandatory>true</isMandatory>
                 </item>
             </arguments>
@@ -607,11 +540,15 @@
             <multilineDescription>Updates the enabled status of an impairment.</multilineDescription>
             <arguments>
                 <item name="mapId">
-                    <description>“mapId”(required) - The $session map name or id to modify.</description>
+                    <description>“mapId”(required) - The sne map name or id to modify.</description>
                     <isMandatory>true</isMandatory>
                 </item>
                 <item name="impId">
                     <description>“impId” - The impairment name or id.</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="enabled">
+                    <description>true or false</description>
                     <isMandatory>true</isMandatory>
                 </item>
                 <item name="userToken">
@@ -649,7 +586,7 @@ curl -X GET &quot;http://192.168.1.100/api/maps/{mapId}/{port}?userToken={userTo
             <multilineDescription>Retrieves the enabled status of an impairment.</multilineDescription>
             <arguments>
                 <item name="mapId">
-                    <description>“mapId”(required) - The $session map name or id to modify.</description>
+                    <description>“mapId”(required) - The sne map name or id to modify.</description>
                     <isMandatory>true</isMandatory>
                 </item>
                 <item name="impId">
@@ -691,7 +628,7 @@ curl -X GET &quot;http://192.168.1.100/api/maps/{mapId}/{port}?userToken={userTo
             <multilineDescription>Retrieves the current settings of the delay impairment.</multilineDescription>
             <arguments>
                 <item name="mapId">
-                    <description>“mapId”(required) - The $session map name or id to modify.</description>
+                    <description>“mapId”(required) - The sne map name or id to modify.</description>
                     <isMandatory>true</isMandatory>
                 </item>
                 <item name="impId">
@@ -720,7 +657,7 @@ curl -X GET &quot;http://192.168.1.100/api/maps/{mapId}/{port}?userToken={userTo
             <multilineDescription>Updates the current settings of the Delay impairment.</multilineDescription>
             <arguments>
                 <item name="mapId">
-                    <description>“mapId”(required) - The $session map name or id to modify.</description>
+                    <description>“mapId”(required) - The sne map name or id to modify.</description>
                     <isMandatory>true</isMandatory>
                 </item>
                 <item name="impId">
@@ -755,7 +692,7 @@ curl -X GET &quot;http://192.168.1.100/api/maps/{mapId}/{port}?userToken={userTo
             <multilineDescription>Retrieves the current settings of the Jitter impairment.</multilineDescription>
             <arguments>
                 <item name="mapId">
-                    <description>“mapId”(required) - The $session map name or id to modify.</description>
+                    <description>“mapId”(required) - The sne map name or id to modify.</description>
                     <isMandatory>true</isMandatory>
                 </item>
                 <item name="impId">
@@ -785,7 +722,7 @@ curl -X GET &quot;http://192.168.1.100/api/maps/{mapId}/{port}?userToken={userTo
             <multilineDescription>Updates the current settings of the Jitter impairment.</multilineDescription>
             <arguments>
                 <item name="mapId">
-                    <description>“mapId”(required) - The $session map name or id to modify.</description>
+                    <description>“mapId”(required) - The sne map name or id to modify.</description>
                     <isMandatory>true</isMandatory>
                 </item>
                 <item name="impId">
@@ -827,7 +764,7 @@ curl -X GET &quot;http://192.168.1.100/api/maps/{mapId}/{port}?userToken={userTo
             <multilineDescription>Retrieves the current settings of the Packet Drop impairment.</multilineDescription>
             <arguments>
                 <item name="mapId">
-                    <description>“mapId”(required) - The $session map name or id to modify.</description>
+                    <description>“mapId”(required) - The sne map name or id to modify.</description>
                     <isMandatory>true</isMandatory>
                 </item>
                 <item name="impId">
@@ -856,7 +793,7 @@ curl -X GET &quot;http://192.168.1.100/api/maps/{mapId}/{port}?userToken={userTo
             <multilineDescription>Updates the current settings of the Packet Drop impairment.</multilineDescription>
             <arguments>
                 <item name="mapId">
-                    <description>“mapId”(required) - The $session map name or id to modify.</description>
+                    <description>“mapId”(required) - The sne map name or id to modify.</description>
                     <isMandatory>true</isMandatory>
                 </item>
                 <item name="impId">
@@ -898,7 +835,7 @@ curl -X GET &quot;http://192.168.1.100/api/maps/{mapId}/{port}?userToken={userTo
             <multilineDescription>Retrieves the current settings of the Bandwidth Throttle impairment.</multilineDescription>
             <arguments>
                 <item name="mapId">
-                    <description>“mapId”(required) - The $session map name or id to modify.</description>
+                    <description>“mapId”(required) - The sne map name or id to modify.</description>
                     <isMandatory>true</isMandatory>
                 </item>
                 <item name="impId">
@@ -928,7 +865,7 @@ curl -X GET &quot;http://192.168.1.100/api/maps/{mapId}/{port}?userToken={userTo
             <multilineDescription>Updates the current settings of the Bandwidth Throttle impairment.</multilineDescription>
             <arguments>
                 <item name="mapId">
-                    <description>“mapId”(required) - The $session map name or id to modify.</description>
+                    <description>“mapId”(required) - The sne map name or id to modify.</description>
                     <isMandatory>true</isMandatory>
                 </item>
                 <item name="impId">
@@ -970,7 +907,7 @@ curl -X GET &quot;http://192.168.1.100/api/maps/{mapId}/{port}?userToken={userTo
             <multilineDescription>Retrieves the current settings of the Packet Duplication impairment</multilineDescription>
             <arguments>
                 <item name="mapId">
-                    <description>“mapId”(required) - The $session map name or id to modify.</description>
+                    <description>“mapId”(required) - The sne map name or id to modify.</description>
                     <isMandatory>true</isMandatory>
                 </item>
                 <item name="impId">
@@ -999,7 +936,7 @@ curl -X GET &quot;http://192.168.1.100/api/maps/{mapId}/{port}?userToken={userTo
             <multilineDescription>Updates the current settings of the Packet Duplication impairment.</multilineDescription>
             <arguments>
                 <item name="mapId">
-                    <description>“mapId”(required) - The $session map name or id to modify.</description>
+                    <description>“mapId”(required) - The sne map name or id to modify.</description>
                     <isMandatory>true</isMandatory>
                 </item>
                 <item name="impId">
@@ -1041,7 +978,7 @@ curl -X GET &quot;http://192.168.1.100/api/maps/{mapId}/{port}?userToken={userTo
             <multilineDescription>Retrieves the current settings of the Ethernet Fragmentation impairment.</multilineDescription>
             <arguments>
                 <item name="mapId">
-                    <description>“mapId”(required) - The $session map name or id to modify.</description>
+                    <description>“mapId”(required) - The sne map name or id to modify.</description>
                     <isMandatory>true</isMandatory>
                 </item>
                 <item name="impId">
@@ -1070,7 +1007,7 @@ curl -X GET &quot;http://192.168.1.100/api/maps/{mapId}/{port}?userToken={userTo
             <multilineDescription>Updates the current settings of the Ethernet Fragmentation impairment.</multilineDescription>
             <arguments>
                 <item name="mapId">
-                    <description>“mapId”(required) - The $session map name or id to modify.</description>
+                    <description>“mapId”(required) - The sne map name or id to modify.</description>
                     <isMandatory>true</isMandatory>
                 </item>
                 <item name="impId">
@@ -1112,7 +1049,7 @@ curl -X GET &quot;http://192.168.1.100/api/maps/{mapId}/{port}?userToken={userTo
             <multilineDescription>Retrieves the current settings of the Packet Reorder impairment.</multilineDescription>
             <arguments>
                 <item name="mapId">
-                    <description>“mapId”(required) - The $session map name or id to modify.</description>
+                    <description>“mapId”(required) - The sne map name or id to modify.</description>
                     <isMandatory>true</isMandatory>
                 </item>
                 <item name="impId">
@@ -1141,7 +1078,7 @@ curl -X GET &quot;http://192.168.1.100/api/maps/{mapId}/{port}?userToken={userTo
             <multilineDescription>Updates the current settings of the Packet Reorder impairment.</multilineDescription>
             <arguments>
                 <item name="mapId">
-                    <description>“mapId”(required) - The $session map name or id to modify.</description>
+                    <description>“mapId”(required) - The sne map name or id to modify.</description>
                     <isMandatory>true</isMandatory>
                 </item>
                 <item name="impId">
@@ -1183,7 +1120,7 @@ curl -X GET &quot;http://192.168.1.100/api/maps/{mapId}/{port}?userToken={userTo
             <multilineDescription>Retrieves the current settings of the Bit Error impairment.</multilineDescription>
             <arguments>
                 <item name="mapId">
-                    <description>“mapId”(required) - The $session map name or id to modify.</description>
+                    <description>“mapId”(required) - The sne map name or id to modify.</description>
                     <isMandatory>true</isMandatory>
                 </item>
                 <item name="impId">
@@ -1212,7 +1149,7 @@ curl -X GET &quot;http://192.168.1.100/api/maps/{mapId}/{port}?userToken={userTo
             <multilineDescription>Updates the current settings of the Bit Error impairment.</multilineDescription>
             <arguments>
                 <item name="mapId">
-                    <description>“mapId”(required) - The $session map name or id to modify.</description>
+                    <description>“mapId”(required) - The sne map name or id to modify.</description>
                     <isMandatory>true</isMandatory>
                 </item>
                 <item name="impId">
@@ -1254,7 +1191,7 @@ curl -X GET &quot;http://192.168.1.100/api/maps/{mapId}/{port}?userToken={userTo
             <multilineDescription>Retrieves the current settings of the Packet Counting Filter.</multilineDescription>
             <arguments>
                 <item name="mapId">
-                    <description>“mapId”(required) - The $session map name or id to modify.</description>
+                    <description>“mapId”(required) - The sne map name or id to modify.</description>
                     <isMandatory>true</isMandatory>
                 </item>
                 <item name="impId">
@@ -1284,7 +1221,7 @@ curl -X GET &quot;http://192.168.1.100/api/maps/{mapId}/{port}?userToken={userTo
             <multilineDescription>Updates the current settings of the Packet Counting Filter.</multilineDescription>
             <arguments>
                 <item name="mapId">
-                    <description>“mapId”(required) - The $session map name or id to modify.</description>
+                    <description>“mapId”(required) - The sne map name or id to modify.</description>
                     <isMandatory>true</isMandatory>
                 </item>
                 <item name="impId">
@@ -1327,7 +1264,7 @@ curl -X GET &quot;http://192.168.1.100/api/maps/{mapId}/{port}?userToken={userTo
             <multilineDescription>Retrieves the current settings of the Packet Counting Filter.</multilineDescription>
             <arguments>
                 <item name="mapId">
-                    <description>“mapId”(required) - The $session map name or id to modify.</description>
+                    <description>“mapId”(required) - The sne map name or id to modify.</description>
                     <isMandatory>true</isMandatory>
                 </item>
                 <item name="impId">
@@ -1362,7 +1299,7 @@ curl -X GET &quot;http://192.168.1.100/api/maps/{mapId}/{port}?userToken={userTo
             <multilineDescription>Updates the current settings of the Traffic Generator.</multilineDescription>
             <arguments>
                 <item name="mapId">
-                    <description>“mapId”(required) - The $session map name or id to modify.</description>
+                    <description>“mapId”(required) - The sne map name or id to modify.</description>
                     <isMandatory>true</isMandatory>
                 </item>
                 <item name="impId">
@@ -1391,11 +1328,13 @@ curl -X GET &quot;http://192.168.1.100/api/maps/{mapId}/{port}?userToken={userTo
             <multilineDescription>Sets the link status to up for a port.</multilineDescription>
             <arguments>
                 <item name="mapId">
-                    <description>“mapId”(required) - The $session map name or id to modify.</description>
+                    <description>“mapId”(required) - The sne map name or id to modify.</description>
                     <isMandatory>true</isMandatory>
                 </item>
                 <item name="port">
-                    <description>“port” - The physical port number.</description>
+                    <description>“port” - The physical port number.
+
+Int32 - 1 thru 8</description>
                     <isMandatory>true</isMandatory>
                 </item>
             </arguments>
@@ -1412,11 +1351,14 @@ curl -X GET &quot;http://192.168.1.100/api/maps/{mapId}/{port}?userToken={userTo
             <multilineDescription>Sets the link status to Down for a port.</multilineDescription>
             <arguments>
                 <item name="mapId">
-                    <description>“mapId”(required) - The $session map name or id to modify.</description>
+                    <description>“mapId”(required) - The sne map name or id to modify.</description>
                     <isMandatory>true</isMandatory>
                 </item>
                 <item name="port">
-                    <description>“port” - The physical port number.</description>
+                    <description>“port” - The physical port number.
+
+
+Int32 - 1 thru 8</description>
                     <isMandatory>true</isMandatory>
                 </item>
             </arguments>
@@ -1447,11 +1389,14 @@ curl -X GET &quot;http://192.168.1.100/api/maps/{mapId}/{port}?userToken={userTo
             <multilineDescription>Retrieves the link status of a port.</multilineDescription>
             <arguments>
                 <item name="mapId">
-                    <description>“mapId”(required) - The $session map name or id to modify.</description>
+                    <description>“mapId”(required) - The sne map name or id to modify.</description>
                     <isMandatory>true</isMandatory>
                 </item>
                 <item name="port">
-                    <description>“port” - The physical port number.</description>
+                    <description>“port” - The physical port number.
+
+
+Int32 - 1 thru 8</description>
                     <isMandatory>true</isMandatory>
                 </item>
                 <item name="userToken">
