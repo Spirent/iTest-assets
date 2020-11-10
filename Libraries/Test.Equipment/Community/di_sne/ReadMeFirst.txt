@@ -1,14 +1,14 @@
 RESTful Remote Control API
 
-$session units can be controlled using a RESTful API, allowing for automation of a wide range of tests. 
+sne units can be controlled using a RESTful API, allowing for automation of a wide range of tests. 
 A list of available RESTful API commands, as well as an interface to try them out, 
 can be accessed by navigating to http://<ip_address>/swagger in a web browser, 
-where <ip_address> is the IP address of your $session. 
+where <ip_address> is the IP address of your sne. 
 See also the RESTful Remote Control API Manual for further information. 
 
 Operation Overview
 
-As the $session hardware does not persist or store any network maps, 
+As the sne hardware does not persist or store any network maps, 
 the RESTful API requires that you upload an XML version of your network map to the emulator – 
 this operation automatically happens when you are using the GUI.
 
