@@ -557,12 +557,6 @@ Example: SYST:PHASECAL:DEL xxx.txt</multilineDescription>
         </item>
         <item name="FindConnAvailable" isPublic="true" defaultSessionProfile="project://di_vertex/session_profiles/vertex_telnet.ffsp" isJsonPretty="true">
             <steps>
-                <item guid="d5c29d2d-f1e7-40a0-9592-8c31e500e112" action="eval" useFieldsInCommand="false">
-                    <command>
-                        <body>set found false</body>
-                    </command>
-                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
-                </item>
                 <item guid="42a106b5-a5d0-4aa0-9647-eb4fe2700710" action="command" session="$session" responseMap="project://di_vertex/response_maps/CON_LIBAV.ffrm" useResponseMapLibraryApplicability="false" useFieldsInCommand="false">
                     <command>
                         <body>CON:LIBAV?</body>
@@ -577,19 +571,21 @@ Example: SYST:PHASECAL:DEL xxx.txt</multilineDescription>
                                 </extractorInfo>
                                 <processorInfo ruleType="assert">
                                     <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
-                                        <expression>$value == 1</expression>
+                                        <expression>[query . Desc_by_Name(&quot;$connection&quot;)] != &quot;&quot;</expression>
                                         <actionsWhenTrue>
                                             <item actionId="Eval">
                                                 <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
-                                                    <statement>set found true</statement>
-                                                </actionProperties>
-                                            </item>
-                                            <item actionId="DeclareExecutionIssue">
-                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="Information">
-                                                    <message> $connection : [query . Desc_by_Name(&quot;$connection&quot;)]</message>
+                                                    <statement>set resp &quot;$connection : [query . Desc_by_Name(&quot;$connection&quot;)]&quot;</statement>
                                                 </actionProperties>
                                             </item>
                                         </actionsWhenTrue>
+                                        <actionsWhenFalse>
+                                            <item actionId="Eval">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                    <statement>set resp &quot;Not Found&quot;</statement>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenFalse>
                                     </ruleProperties>
                                 </processorInfo>
                             </item>
@@ -605,19 +601,20 @@ Example: SYST:PHASECAL:DEL xxx.txt</multilineDescription>
                 </item>
                 <item guid="204b158e-d953-4daa-b001-ca0b35f45332" action="return">
                     <command>
-                        <body>$found</body>
+                        <body>$resp</body>
                     </command>
                     <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
                 </item>
             </steps>
-            <multilineDescription>Find the connectiona name from the available connection set up configurations.
+            <multilineDescription>Find the connection name from the available connection set up configurations.
 Vertex &gt;CON:LIBAV?
 
-Returns &quot;true&quot; if the connection exists in the list of available connections library entries.
+If found, returns the connection name and its description.
 
-Otherwise return: &quot;false&quot;</multilineDescription>
+Otherwise, will return: &quot;Not Found&quot;.</multilineDescription>
             <arguments>
                 <item name="connection">
+                    <description>Connection Type</description>
                     <isMandatory>true</isMandatory>
                 </item>
             </arguments>
@@ -5064,12 +5061,6 @@ A1-&gt;B1,A1-&gt;B2,A2-&gt;B1,A2-&gt;B2</multilineDescription>
         </item>
         <item name="FindPropagationConditions" isPublic="true" defaultSessionProfile="project://di_vertex/session_profiles/vertex_telnet.ffsp">
             <steps>
-                <item guid="f6f693a7-1c4c-4d36-8beb-899eb8ea9690" action="eval" useFieldsInCommand="false">
-                    <command>
-                        <body>set found false</body>
-                    </command>
-                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
-                </item>
                 <item guid="eaf7243e-a3c7-49c4-abff-db0d7d32a110" action="command" session="$session" responseMap="project://di_vertex/response_maps/CHM_PROP_LIBAV.ffrm" useResponseMapLibraryApplicability="false">
                     <command>
                         <body>CHM$channel_number:PROP:LIBAV?</body>
@@ -5084,19 +5075,21 @@ A1-&gt;B1,A1-&gt;B2,A2-&gt;B1,A2-&gt;B2</multilineDescription>
                                 </extractorInfo>
                                 <processorInfo ruleType="assert">
                                     <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
-                                        <expression>$value == 1</expression>
+                                        <expression>[query . Desc_by_Name(&quot;$propagation_conditions&quot;)] != &quot;&quot;</expression>
                                         <actionsWhenTrue>
                                             <item actionId="Eval">
                                                 <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
-                                                    <statement>set found true</statement>
-                                                </actionProperties>
-                                            </item>
-                                            <item actionId="DeclareExecutionIssue">
-                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="Information">
-                                                    <message> $propagation_conditions : [query . Desc_by_Name(&quot;$propagation_conditions&quot;)]</message>
+                                                    <statement>set resp &quot;$propagation_conditions : [query . Desc_by_Name(&quot;$propagation_conditions&quot;)]&quot;</statement>
                                                 </actionProperties>
                                             </item>
                                         </actionsWhenTrue>
+                                        <actionsWhenFalse>
+                                            <item actionId="Eval">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                    <statement>set resp &quot;Not Found&quot;</statement>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenFalse>
                                     </ruleProperties>
                                 </processorInfo>
                             </item>
@@ -5112,14 +5105,16 @@ A1-&gt;B1,A1-&gt;B2,A2-&gt;B1,A2-&gt;B2</multilineDescription>
                 </item>
                 <item guid="d151b794-2c03-4951-a514-e8d02bdc3904" action="return">
                     <command>
-                        <body>$found</body>
+                        <body>$resp</body>
                     </command>
                     <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
                 </item>
             </steps>
-            <multilineDescription>Query available propagation conditions in the library.
+            <multilineDescription>Find the propagation condition in the  available propagation conditions from the library.
 
-Returns the list of available propagation conditions library entries is filtered according to Fading Mode in the system.</multilineDescription>
+If found, returns the propagation condition and its description.
+
+Otherwise, will return: &quot;Not Found&quot;.</multilineDescription>
             <arguments>
                 <item name="channel_number">
                     <description>1 to #Channel Models in Connection Setup</description>
@@ -5127,6 +5122,7 @@ Returns the list of available propagation conditions library entries is filtered
                     <isMandatory>true</isMandatory>
                 </item>
                 <item name="propagation_conditions">
+                    <description>Name of Vertex Propagation Condition</description>
                     <isMandatory>true</isMandatory>
                 </item>
             </arguments>
