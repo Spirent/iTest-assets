@@ -13,6 +13,38 @@
                     </command>
                     <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
                 </item>
+                <item guid="a78a4064-1dfa-4159-96eb-b4d8e2c01adf" action="open" session="v1">
+                    <command>
+                        <body>project://di_vertex/session_profiles/vertex_telnet.ffsp</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.OpenStepPropertyGroup">
+                        <stepProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                        <sessionProperties type="com.fnfr.svt.applications.telnet.documents.TelnetSessionProperties"/>
+                        <sessionClass type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionVersion type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    </applicationProperties>
+                </item>
+                <item guid="3b33d9bd-5b72-40f7-bbd9-e7f8a9d6050e" action="command" session="v1">
+                    <command>
+                        <body>\\r</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="73019b7a-1acb-4b29-b361-d60adaee4d56" action="FindConnAvailable" session="v1" useFieldsInCommand="false">
+                    <command>
+                        <body>-connection 2X2_BI_TDD_MOTA</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="4acec827-cc69-491d-8fc7-6cbae637ef4c" action="FindPropagationConditions" session="v1" useFieldsInCommand="false">
+                    <command>
+                        <body>-channel_number 1 -propagation_conditions GSM_HT1_12path_100kph</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="9052fae8-e0fc-42f2-bb52-45dfc1d630d0" action="close" session="v1" useFieldsInCommand="false">
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
             </steps>
             <response>{&quot;key&quot;:&quot;value&quot;}</response>
         </item>
@@ -580,30 +612,68 @@ Example: SYST:PHASECAL:DEL xxx.txt</multilineDescription>
             <multilineDescription>Query a connection setup from the connection setup library.</multilineDescription>
             <response>{&quot;connection_setup_command&quot;:&quot;value&quot;}</response>
         </item>
-        <item name="GetConnAvailable" isPublic="true" defaultSessionProfile="project://di_vertex/session_profiles/vertex_telnet.ffsp" isJsonPretty="true">
+        <item name="FindConnAvailable" isPublic="true" defaultSessionProfile="project://di_vertex/session_profiles/vertex_telnet.ffsp" isJsonPretty="true">
             <steps>
-                <item guid="42a106b5-a5d0-4aa0-9647-eb4fe2700710" action="command" session="$session">
+                <item guid="d5c29d2d-f1e7-40a0-9592-8c31e500e112" action="eval" useFieldsInCommand="false">
+                    <command>
+                        <body>set found false</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="42a106b5-a5d0-4aa0-9647-eb4fe2700710" action="command" session="$session" responseMap="project://di_vertex/response_maps/CON_LIBAV.ffrm" useResponseMapLibraryApplicability="false" useFieldsInCommand="false">
                     <command>
                         <body>CON:LIBAV?</body>
                     </command>
                     <postProcessing>
-                        <storeResponseAt>resp</storeResponseAt>
-                        <storeResponseText>true</storeResponseText>
-                        <appendRespToFile inherit="false">false</appendRespToFile>
-                        <appendCommand inherit="false">false</appendCommand>
-                        <appendTimestamp inherit="false">false</appendTimestamp>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="contains">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                        <searchString>$connection</searchString>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$value == 1</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="Eval">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                    <statement>set found true</statement>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="Information">
+                                                    <message> $connection : [query . Desc_by_Name(&quot;$connection&quot;)]</message>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenTrue>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                        <appendRespToFile inherit="false" defaultValue=""/>
+                        <appendCommand inherit="false" defaultValue=""/>
+                        <appendTimestamp inherit="false" defaultValue=""/>
                     </postProcessing>
-                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                        <lineTerminator inherit="false">SLASH_R_SLASH_N</lineTerminator>
+                    </applicationProperties>
+                    <useResponseMapLibraryFromSession>false</useResponseMapLibraryFromSession>
                 </item>
-                <item guid="a6f7aaa1-4a5d-44ec-aafc-fe294c395309" action="return">
+                <item guid="204b158e-d953-4daa-b001-ca0b35f45332" action="return">
                     <command>
-                        <body>$resp</body>
+                        <body>$found</body>
                     </command>
                     <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
                 </item>
             </steps>
             <multilineDescription>Query the available connection set up configurations.
 Vertex &gt;CON:LIBAV?</multilineDescription>
+            <arguments>
+                <item name="connection">
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
             <response>{
   &quot;con_libav&quot;: &quot;value&quot;
 }</response>
@@ -5045,24 +5115,57 @@ A1-&gt;B1,A1-&gt;B2,A2-&gt;B1,A2-&gt;B2</multilineDescription>
             </arguments>
             <response>{&quot;propagation_condition&quot;:&quot;value&quot;}</response>
         </item>
-        <item name="GetAvailablePropagationConditions" isPublic="true" defaultSessionProfile="project://di_vertex/session_profiles/vertex_telnet.ffsp">
+        <item name="FindPropagationConditions" isPublic="true" defaultSessionProfile="project://di_vertex/session_profiles/vertex_telnet.ffsp">
             <steps>
-                <item guid="eaf7243e-a3c7-49c4-abff-db0d7d32a110" action="command" session="$session">
+                <item guid="f6f693a7-1c4c-4d36-8beb-899eb8ea9690" action="eval" useFieldsInCommand="false">
+                    <command>
+                        <body>set found false</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="eaf7243e-a3c7-49c4-abff-db0d7d32a110" action="command" session="$session" responseMap="project://di_vertex/response_maps/CHM_PROP_LIBAV.ffrm" useResponseMapLibraryApplicability="false">
                     <command>
                         <body>CHM$channel_number:PROP:LIBAV?</body>
                     </command>
                     <postProcessing>
-                        <storeResponseAt>resp</storeResponseAt>
-                        <storeResponseText>true</storeResponseText>
-                        <appendRespToFile inherit="false">false</appendRespToFile>
-                        <appendCommand inherit="false">false</appendCommand>
-                        <appendTimestamp inherit="false">false</appendTimestamp>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="contains">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                        <searchString>$propagation_conditions</searchString>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$value == 1</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="Eval">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                    <statement>set found true</statement>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="Information">
+                                                    <message> $propagation_conditions : [query . Desc_by_Name(&quot;$propagation_conditions&quot;)]</message>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenTrue>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                        <appendRespToFile inherit="false" defaultValue=""/>
+                        <appendCommand inherit="false" defaultValue=""/>
+                        <appendTimestamp inherit="false" defaultValue=""/>
                     </postProcessing>
-                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                        <lineTerminator inherit="false">SLASH_R_SLASH_N</lineTerminator>
+                    </applicationProperties>
+                    <useResponseMapLibraryFromSession>false</useResponseMapLibraryFromSession>
                 </item>
                 <item guid="d151b794-2c03-4951-a514-e8d02bdc3904" action="return">
                     <command>
-                        <body>$resp</body>
+                        <body>$found</body>
                     </command>
                     <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
                 </item>
@@ -5074,6 +5177,9 @@ Returns the list of available propagation conditions library entries is filtered
                 <item name="channel_number">
                     <description>1 to #Channel Models in Connection Setup</description>
                     <defaultValue>1</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="propagation_conditions">
                     <isMandatory>true</isMandatory>
                 </item>
             </arguments>
