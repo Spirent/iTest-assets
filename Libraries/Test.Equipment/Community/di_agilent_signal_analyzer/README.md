@@ -1,5 +1,5 @@
 ### Project Information:
-Project: Spirent Vertex Channel Emulator  
+Project: Agilent Signal Analyzer  
 Description: QuickCall library for Agilent Signal Analyzer.   
 Category: library  
 Class: Community  
