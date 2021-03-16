@@ -1,0 +1,1620 @@
+<?xml version="1.0"?>
+<testCase version="8.3.5.0">
+    <general>
+        <documentation>Umetrix® Video GED Remote Control Library</documentation>
+        <notes>Umetrix® Video GED Remote Control Library. 
+Umetrix Video GED Remote Control is an optional command set for controlling Umetrix Video GED tests remotely via any socket client. 
+Remote functionality includes:
+• synchronizing time
+• configuring capture channels
+• starting/stopping a capture session
+• performing post-processing on a session</notes>
+        <owner>Inti Sanchez</owner>
+        <isProcedureLibrary>true</isProcedureLibrary>
+        <language>Python</language>
+    </general>
+    <execution>
+        <parameters version="8.3.5.0">
+            <parameters escape="true">
+                <parameters xmlns:pt="http://www.fnfr.com/schemas/parameterTree">
+                    <IPAddress/>
+                    <Port>7073</Port>
+                </parameters>
+            </parameters>
+        </parameters>
+    </execution>
+    <procedures>
+        <item name="main">
+            <steps>
+                <item guid="cd4d82ee-cec8-48dd-b6d8-b05908d9e452" action="comment" useFieldsInCommand="false">
+                    <command>
+                        <body>Spirent Umetrix Video - GED Remote Control Library</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="df183be9-8600-4e0d-adeb-44f43fe442ad" action="readFile" responseMap="response_maps/error_codes_csv.ffrm" useResponseMapLibraryApplicability="false" useFieldsInCommand="false">
+                    <command>
+                        <body>error_codes.csv</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.execution.builtin.exec.ReadFilePropertyGroup"/>
+                    <useResponseMapLibraryFromSession>false</useResponseMapLibraryFromSession>
+                </item>
+            </steps>
+        </item>
+        <item name="ConfigureChannel" isPublic="true" isVBlock="true">
+            <steps>
+                <item guid="f251c2b2-eebf-4167-aed4-886ed9697823" action="open" session="c1" responseMap="response_maps/umetrixGED.ffrm" useResponseMapLibraryApplicability="false" useFieldsInCommand="false">
+                    <command>
+                        <body>application:com.fnfr.svt.applications.python</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup" declareNoMatchIssue="false">
+                                        <query>(.//group0)[4]</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>resp</storageLocation>
+                                        <query>resp</query>
+                                        <responseValue type="com.fnfr.documents.PropertyBoolean">true</responseValue>
+                                        <variable type="com.fnfr.documents.PropertyBoolean">true</variable>
+                                        <secret type="com.fnfr.documents.PropertyBoolean">false</secret>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.OpenStepPropertyGroup">
+                        <stepProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionProperties type="com.fnfr.svt.applications.python.PythonSessionProperties">
+                            <pythonProperties>
+                                <initializationScript inherit="false">import socket 
+import struct
+
+client_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM,socket.IPPROTO_TCP)
+client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 0)
+client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER,struct.pack(&quot;ii&quot;, 1, 0))
+client_socket.connect((&apos;[param(&apos;IPAddress&apos;)]&apos;,[param(&apos;Port&apos;)]))
+
+payload=&apos;CONFIGURE CHANNEL: [index],[description],[fitt],[stimulus_framerate],[content_framerate]\\n&apos;
+
+client_socket.sendall(payload.encode(&apos;utf-8&apos;))
+data=client_socket.recv(1024)
+data=client_socket.recv(1024)
+
+print(str(data,&apos;utf-8&apos;).rstrip(&quot;\\r\\n&quot;))
+
+client_socket.close()</initializationScript>
+                            </pythonProperties>
+                        </sessionProperties>
+                        <sessionClass type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionVersion type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    </applicationProperties>
+                    <useResponseMapLibraryFromSession>false</useResponseMapLibraryFromSession>
+                </item>
+                <item guid="a14edc9c-e8b1-4b35-b5b3-10de2e5afc8d" action="close" session="c1" useFieldsInCommand="false">
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <multilineDescription>Sets up a channel configuration for recording. This step is required for all enabled channels before starting a capture.</multilineDescription>
+            <arguments>
+                <item name="index">
+                    <description>Channel Index</description>
+                    <defaultValue>1</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="description">
+                    <description>Channel description.</description>
+                    <defaultValue>Some description</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="fitt">
+                    <description>must be between 1 and 12 inclusive</description>
+                    <defaultValue>6</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="content_framerate">
+                    <description>must be between 1 and 60 inclusive</description>
+                    <defaultValue>15</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="stimulus_framerate">
+                    <description>optional - must be between 1 and 60 inclusive. 
+If specified, indicates this is Video Chat</description>
+                    <defaultValue>20</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+            <response>{&quot;resp&quot;:&quot;value&quot;}</response>
+        </item>
+        <item name="GetChannelConfiguration" isPublic="true" isVBlock="true">
+            <steps>
+                <item guid="be804e26-6c5d-4f86-add4-2210836cd525" action="open" session="c1" responseMap="response_maps/umetrixGED.ffrm" useResponseMapLibraryApplicability="false" useFieldsInCommand="false">
+                    <command>
+                        <body>application:com.fnfr.svt.applications.python</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup" declareNoMatchIssue="false">
+                                        <query>(.//group0)[4]</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>resp</storageLocation>
+                                        <query>resp</query>
+                                        <responseValue type="com.fnfr.documents.PropertyBoolean">true</responseValue>
+                                        <variable type="com.fnfr.documents.PropertyBoolean">true</variable>
+                                        <secret type="com.fnfr.documents.PropertyBoolean">false</secret>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.OpenStepPropertyGroup">
+                        <stepProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionProperties type="com.fnfr.svt.applications.python.PythonSessionProperties">
+                            <pythonProperties>
+                                <initializationScript inherit="false">import socket 
+import struct
+
+client_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM,socket.IPPROTO_TCP)
+client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 0)
+client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER,struct.pack(&quot;ii&quot;, 1, 0))
+client_socket.connect((&apos;[param(&apos;IPAddress&apos;)]&apos;,[param(&apos;Port&apos;)]))
+
+payload=&apos;GET CHANNEL CONFIGURATION: [index]\\n&apos;
+
+client_socket.send(payload.encode(&apos;utf-8&apos;))
+data=client_socket.recv(1024)
+data=client_socket.recv(1024)
+
+print(str(data,&apos;utf-8&apos;).rstrip(&quot;\\r\\n&quot;))
+
+client_socket.close()</initializationScript>
+                            </pythonProperties>
+                        </sessionProperties>
+                        <sessionClass type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionVersion type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    </applicationProperties>
+                    <useResponseMapLibraryFromSession>false</useResponseMapLibraryFromSession>
+                </item>
+                <item guid="a180a591-8163-470f-93c7-2172264ecf8b" action="close" session="c1" useFieldsInCommand="false">
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <multilineDescription>Sets up a channel configuration for recording. This step is required for all enabled channels before starting a capture.</multilineDescription>
+            <arguments>
+                <item name="index">
+                    <description>Channel Index</description>
+                    <defaultValue>0</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+            <response>{&quot;resp&quot;:&quot;value&quot;}</response>
+        </item>
+        <item name="StartCaptureAutoreport" isPublic="true" isVBlock="true">
+            <steps>
+                <item guid="66189ee7-09b5-4f94-80f1-c3abc3744c4a" action="open" session="c1" responseMap="response_maps/umetrixGED.ffrm" useResponseMapLibraryApplicability="false" useFieldsInCommand="false">
+                    <command>
+                        <body>application:com.fnfr.svt.applications.python</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>(.//group0)[4]</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>resp</storageLocation>
+                                        <query>resp</query>
+                                        <responseValue type="com.fnfr.documents.PropertyBoolean">true</responseValue>
+                                        <variable type="com.fnfr.documents.PropertyBoolean">true</variable>
+                                        <secret type="com.fnfr.documents.PropertyBoolean">false</secret>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.OpenStepPropertyGroup">
+                        <stepProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionProperties type="com.fnfr.svt.applications.python.PythonSessionProperties">
+                            <pythonProperties>
+                                <initializationScript inherit="false">
+import socket 
+import struct
+
+client_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM,socket.IPPROTO_TCP)
+client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 0)
+client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER,struct.pack(&quot;ii&quot;, 1, 0))
+client_socket.connect((&apos;[param(&apos;IPAddress&apos;)]&apos;,[param(&apos;Port&apos;)]))
+payload=&apos;START CAPTURE AUTOREPORT\\n&apos;
+
+client_socket.send(payload.encode(&apos;utf-8&apos;))
+data=client_socket.recv(1024)
+data=client_socket.recv(1024)
+
+print(str(data,&apos;utf-8&apos;).rstrip(&quot;\\r\\n&quot;))
+
+client_socket.close()</initializationScript>
+                            </pythonProperties>
+                        </sessionProperties>
+                        <sessionClass type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionVersion type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    </applicationProperties>
+                    <useResponseMapLibraryFromSession>false</useResponseMapLibraryFromSession>
+                </item>
+                <item guid="452767e4-8c9b-43e4-b1bc-f1ab205a5048" action="close" session="c1" useFieldsInCommand="false">
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <multilineDescription>Enable real-time reporting of capture status.</multilineDescription>
+            <response>{&quot;resp&quot;:&quot;value&quot;}</response>
+        </item>
+        <item name="StopCaptureAutoreport" isPublic="true" isVBlock="true">
+            <steps>
+                <item guid="64e730cb-1f14-4e4b-a4b4-68443b033de6" action="open" session="c1" responseMap="response_maps/umetrixGED.ffrm" useResponseMapLibraryApplicability="false" useFieldsInCommand="false">
+                    <command>
+                        <body>application:com.fnfr.svt.applications.python</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>(.//group0)[4]</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>resp</storageLocation>
+                                        <query>resp</query>
+                                        <responseValue type="com.fnfr.documents.PropertyBoolean">true</responseValue>
+                                        <variable type="com.fnfr.documents.PropertyBoolean">true</variable>
+                                        <secret type="com.fnfr.documents.PropertyBoolean">false</secret>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.OpenStepPropertyGroup">
+                        <stepProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionProperties type="com.fnfr.svt.applications.python.PythonSessionProperties">
+                            <pythonProperties>
+                                <initializationScript inherit="false">
+import socket 
+import struct
+
+client_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM,socket.IPPROTO_TCP)
+client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 0)
+client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER,struct.pack(&quot;ii&quot;, 1, 0))
+client_socket.connect((&apos;[param(&apos;IPAddress&apos;)]&apos;,[param(&apos;Port&apos;)]))
+
+payload=&apos;STOP CAPTURE AUTOREPORT&apos;
+
+client_socket.send(payload.encode(&apos;utf-8&apos;))
+data=client_socket.recv(1024)
+data=client_socket.recv(1024)
+
+print(str(data,&apos;utf-8&apos;).rstrip(&quot;\\r\\n&quot;))
+
+client_socket.close()</initializationScript>
+                            </pythonProperties>
+                        </sessionProperties>
+                        <sessionClass type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionVersion type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    </applicationProperties>
+                    <useResponseMapLibraryFromSession>false</useResponseMapLibraryFromSession>
+                </item>
+                <item guid="2b3512a6-4bf0-4f92-8934-a23cc876832c" action="close" session="c1" useFieldsInCommand="false">
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <multilineDescription>Disables real-time reporting of capture status.</multilineDescription>
+            <response>{&quot;resp&quot;:&quot;value&quot;}</response>
+        </item>
+        <item name="StartCaptureFixed" isPublic="true" isVBlock="true">
+            <steps>
+                <item guid="609c50dc-190d-4600-9368-a5721b9f2121" action="open" session="c1" responseMap="response_maps/umetrixGED.ffrm" useResponseMapLibraryApplicability="false" useFieldsInCommand="false">
+                    <command>
+                        <body>application:com.fnfr.svt.applications.python</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>(.//group0)[4]</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>resp</storageLocation>
+                                        <query>resp</query>
+                                        <responseValue type="com.fnfr.documents.PropertyBoolean">true</responseValue>
+                                        <variable type="com.fnfr.documents.PropertyBoolean">true</variable>
+                                        <secret type="com.fnfr.documents.PropertyBoolean">false</secret>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.OpenStepPropertyGroup">
+                        <stepProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionProperties type="com.fnfr.svt.applications.python.PythonSessionProperties">
+                            <pythonProperties>
+                                <initializationScript inherit="false">
+import socket 
+import struct
+
+client_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM,socket.IPPROTO_TCP)
+client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 0)
+client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER,struct.pack(&quot;ii&quot;, 1, 0))
+client_socket.connect((&apos;[param(&apos;IPAddress&apos;)]&apos;,[param(&apos;Port&apos;)]))
+
+payload=&apos;START CAPTURE FIXED: [SessionDescription], [DurationInSeconds]&apos;
+
+client_socket.send(payload.encode(&apos;utf-8&apos;))
+data=client_socket.recv(1024)
+data=client_socket.recv(1024)
+
+print(str(data,&apos;utf-8&apos;).rstrip(&quot;\\r\\n&quot;))
+
+client_socket.close()</initializationScript>
+                            </pythonProperties>
+                        </sessionProperties>
+                        <sessionClass type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionVersion type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    </applicationProperties>
+                    <useResponseMapLibraryFromSession>false</useResponseMapLibraryFromSession>
+                </item>
+                <item guid="da6731df-c291-4a61-af18-0f69361137eb" action="close" session="c1" useFieldsInCommand="false">
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <multilineDescription>Starts a capture of defined fixed duration.</multilineDescription>
+            <arguments>
+                <item name="SessionDescription">
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="DurationInSeconds">
+                    <defaultValue>60</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+            <response>{&quot;resp&quot;:&quot;value&quot;}</response>
+        </item>
+        <item name="StopCapture" isPublic="true" isVBlock="true">
+            <steps>
+                <item guid="d7f8db4f-00b0-4208-9556-e64e1e75e7ed" action="open" session="c1" responseMap="response_maps/umetrixGED.ffrm" useResponseMapLibraryApplicability="false" useFieldsInCommand="false">
+                    <command>
+                        <body>application:com.fnfr.svt.applications.python</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>(.//group0)[4]</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>resp</storageLocation>
+                                        <query>resp</query>
+                                        <responseValue type="com.fnfr.documents.PropertyBoolean">true</responseValue>
+                                        <variable type="com.fnfr.documents.PropertyBoolean">true</variable>
+                                        <secret type="com.fnfr.documents.PropertyBoolean">false</secret>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.OpenStepPropertyGroup">
+                        <stepProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionProperties type="com.fnfr.svt.applications.python.PythonSessionProperties">
+                            <pythonProperties>
+                                <initializationScript inherit="false">
+import socket 
+import struct
+
+client_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM,socket.IPPROTO_TCP)
+client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 0)
+client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER,struct.pack(&quot;ii&quot;, 1, 0))
+client_socket.connect((&apos;[param(&apos;IPAddress&apos;)]&apos;,[param(&apos;Port&apos;)]))
+
+payload=&apos;STOP CAPTURE: [SessionDescription]&apos;
+
+client_socket.send(payload.encode(&apos;utf-8&apos;))
+data=client_socket.recv(1024)
+data=client_socket.recv(1024)
+
+print(str(data,&apos;utf-8&apos;).rstrip(&quot;\\r\\n&quot;))
+
+client_socket.close()</initializationScript>
+                            </pythonProperties>
+                        </sessionProperties>
+                        <sessionClass type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionVersion type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    </applicationProperties>
+                    <useResponseMapLibraryFromSession>false</useResponseMapLibraryFromSession>
+                </item>
+                <item guid="b6df2e01-fd85-4cc1-86fa-923169c5d0ac" action="close" session="c1" useFieldsInCommand="false">
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <multilineDescription>Stops any capture currently running. This can be called to preemptively stop a capture of fixed duration, but does not need to be. If it is called to stop a capture session of fixed duration, then the session description provided in this call will override that provided in the START CAPTURE FIXED command.</multilineDescription>
+            <arguments>
+                <item name="SessionDescription">
+                    <description>A description for the capture session as a whole.</description>
+                    <defaultValue>my first session</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+            <response>{&quot;resp&quot;:&quot;value&quot;}</response>
+        </item>
+        <item name="StartProcessAutoreport" isPublic="true" isVBlock="true">
+            <steps>
+                <item guid="4304a5b8-0cc8-49d7-9dff-1e0ebb541fc5" action="open" session="c1" responseMap="response_maps/umetrixGED.ffrm" useResponseMapLibraryApplicability="false" useFieldsInCommand="false">
+                    <command>
+                        <body>application:com.fnfr.svt.applications.python</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>(.//group0)[4]</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>resp</storageLocation>
+                                        <query>resp</query>
+                                        <responseValue type="com.fnfr.documents.PropertyBoolean">true</responseValue>
+                                        <variable type="com.fnfr.documents.PropertyBoolean">true</variable>
+                                        <secret type="com.fnfr.documents.PropertyBoolean">false</secret>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.OpenStepPropertyGroup">
+                        <stepProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionProperties type="com.fnfr.svt.applications.python.PythonSessionProperties">
+                            <pythonProperties>
+                                <initializationScript inherit="false">
+import socket 
+import struct
+
+client_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM,socket.IPPROTO_TCP)
+client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 0)
+client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER,struct.pack(&quot;ii&quot;, 1, 0))
+client_socket.connect((&apos;[param(&apos;IPAddress&apos;)]&apos;,[param(&apos;Port&apos;)]))
+
+payload=&apos;START PROCESS AUTOREPORT&apos;
+
+client_socket.send(payload.encode(&apos;utf-8&apos;))
+data=client_socket.recv(1024)
+data=client_socket.recv(1024)
+
+print(str(data,&apos;utf-8&apos;).rstrip(&quot;\\r\\n&quot;))
+
+client_socket.close()</initializationScript>
+                            </pythonProperties>
+                        </sessionProperties>
+                        <sessionClass type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionVersion type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    </applicationProperties>
+                    <useResponseMapLibraryFromSession>false</useResponseMapLibraryFromSession>
+                </item>
+                <item guid="def0c322-da3e-4154-8f75-88113540809f" action="close" session="c1" useFieldsInCommand="false">
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <multilineDescription>Enables real-time reporting of processing status.</multilineDescription>
+            <response>{&quot;resp&quot;:&quot;value&quot;}</response>
+        </item>
+        <item name="StopProcessAutoreport" isPublic="true" isVBlock="true">
+            <steps>
+                <item guid="fc6ef509-0add-4491-a8e4-e7e026ca76f2" action="open" session="c1" responseMap="response_maps/umetrixGED.ffrm" useResponseMapLibraryApplicability="false" useFieldsInCommand="false">
+                    <command>
+                        <body>application:com.fnfr.svt.applications.python</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>(.//group0)[4]</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>resp</storageLocation>
+                                        <query>resp</query>
+                                        <responseValue type="com.fnfr.documents.PropertyBoolean">true</responseValue>
+                                        <variable type="com.fnfr.documents.PropertyBoolean">true</variable>
+                                        <secret type="com.fnfr.documents.PropertyBoolean">false</secret>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.OpenStepPropertyGroup">
+                        <stepProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionProperties type="com.fnfr.svt.applications.python.PythonSessionProperties">
+                            <pythonProperties>
+                                <initializationScript inherit="false">
+import socket 
+import struct
+
+client_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM,socket.IPPROTO_TCP)
+client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 0)
+client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER,struct.pack(&quot;ii&quot;, 1, 0))
+client_socket.connect((&apos;[param(&apos;IPAddress&apos;)]&apos;,[param(&apos;Port&apos;)]))
+
+payload=&apos;STOP PROCESS AUTOREPORT&apos;
+
+client_socket.send(payload.encode(&apos;utf-8&apos;))
+data=client_socket.recv(1024)
+data=client_socket.recv(1024)
+
+print(str(data,&apos;utf-8&apos;).rstrip(&quot;\\r\\n&quot;))
+
+client_socket.close()</initializationScript>
+                            </pythonProperties>
+                        </sessionProperties>
+                        <sessionClass type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionVersion type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    </applicationProperties>
+                    <useResponseMapLibraryFromSession>false</useResponseMapLibraryFromSession>
+                </item>
+                <item guid="d6d0ea4b-4e2a-457c-9c24-b925b7307273" action="close" session="c1" useFieldsInCommand="false">
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <multilineDescription>Disables real-time reporting of processing status.</multilineDescription>
+            <response>{&quot;resp&quot;:&quot;value&quot;}</response>
+        </item>
+        <item name="StartProcess" isPublic="true" isVBlock="true">
+            <steps>
+                <item guid="c7a3992b-5f03-4d3d-bc73-e795b6cb585f" action="open" session="c1" responseMap="response_maps/umetrixGED.ffrm" useResponseMapLibraryApplicability="false" useFieldsInCommand="false">
+                    <command>
+                        <body>application:com.fnfr.svt.applications.python</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>(.//group0)[4]</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>resp</storageLocation>
+                                        <query>resp</query>
+                                        <responseValue type="com.fnfr.documents.PropertyBoolean">true</responseValue>
+                                        <variable type="com.fnfr.documents.PropertyBoolean">true</variable>
+                                        <secret type="com.fnfr.documents.PropertyBoolean">false</secret>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.OpenStepPropertyGroup">
+                        <stepProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionProperties type="com.fnfr.svt.applications.python.PythonSessionProperties">
+                            <pythonProperties>
+                                <initializationScript inherit="false">
+import socket 
+import struct
+
+client_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM,socket.IPPROTO_TCP)
+client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 0)
+client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER,struct.pack(&quot;ii&quot;, 1, 0))
+client_socket.connect((&apos;[param(&apos;IPAddress&apos;)]&apos;,[param(&apos;Port&apos;)]))
+
+payload=&apos;START PROCESS: [CapturePath], [ChannelIndex]&apos;
+
+client_socket.send(payload.encode(&apos;utf-8&apos;))
+data=client_socket.recv(1024)
+data=client_socket.recv(1024)
+
+print(str(data,&apos;utf-8&apos;).rstrip(&quot;\\r\\n&quot;))
+
+client_socket.close()</initializationScript>
+                            </pythonProperties>
+                        </sessionProperties>
+                        <sessionClass type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionVersion type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    </applicationProperties>
+                    <useResponseMapLibraryFromSession>false</useResponseMapLibraryFromSession>
+                </item>
+                <item guid="57e2ccff-96cb-42db-94f8-59e041d35478" action="close" session="c1" useFieldsInCommand="false">
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <multilineDescription>Executes post processing on the referenced channel in a session.</multilineDescription>
+            <arguments>
+                <item name="CapturePath">
+                    <description>The command will work with either the captureinfo.xml full file path as returned by the start capture command, or just the path to the parent folder of the captureinfo.xml file.
+
+Example:
+C:\\Users\\chromatic_user\\AppData\\Local\\ Metrico Wireless\\Chromatic\\captures\\2011-03-18-131509</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="ChannelIndex">
+                    <description>Channel Index</description>
+                    <defaultValue>0</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+            <response>{&quot;resp&quot;:&quot;value&quot;}</response>
+        </item>
+        <item name="CancelProcess" isPublic="true" isVBlock="true">
+            <steps>
+                <item guid="9797338a-f521-4c52-89b7-bc97f4f84aca" action="open" session="c1" responseMap="response_maps/umetrixGED.ffrm" useResponseMapLibraryApplicability="false" useFieldsInCommand="false">
+                    <command>
+                        <body>application:com.fnfr.svt.applications.python</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>(.//group0)[4]</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>resp</storageLocation>
+                                        <query>resp</query>
+                                        <responseValue type="com.fnfr.documents.PropertyBoolean">true</responseValue>
+                                        <variable type="com.fnfr.documents.PropertyBoolean">true</variable>
+                                        <secret type="com.fnfr.documents.PropertyBoolean">false</secret>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.OpenStepPropertyGroup">
+                        <stepProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionProperties type="com.fnfr.svt.applications.python.PythonSessionProperties">
+                            <pythonProperties>
+                                <initializationScript inherit="false">
+import socket 
+import struct
+
+client_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM,socket.IPPROTO_TCP)
+client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 0)
+client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER,struct.pack(&quot;ii&quot;, 1, 0))
+client_socket.connect((&apos;[param(&apos;IPAddress&apos;)]&apos;,[param(&apos;Port&apos;)]))
+
+payload=&apos;CANCEL PROCESS&apos;
+
+client_socket.send(payload.encode(&apos;utf-8&apos;))
+data=client_socket.recv(1024)
+data=client_socket.recv(1024)
+
+print(str(data,&apos;utf-8&apos;).rstrip(&quot;\\r\\n&quot;))
+
+client_socket.close()</initializationScript>
+                            </pythonProperties>
+                        </sessionProperties>
+                        <sessionClass type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionVersion type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    </applicationProperties>
+                    <useResponseMapLibraryFromSession>false</useResponseMapLibraryFromSession>
+                </item>
+                <item guid="9ecc752a-5cf6-42e5-811d-6407d9f15f4d" action="close" session="c1" useFieldsInCommand="false">
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <multilineDescription>Cancels any currently running post-processing tasks.</multilineDescription>
+            <response>{&quot;resp&quot;:&quot;value&quot;}</response>
+        </item>
+        <item name="AutoProcess" isPublic="true" isVBlock="true">
+            <steps>
+                <item guid="6b449099-59dd-4c0a-a884-bdea4fd17eac" action="open" session="c1" responseMap="response_maps/umetrixGED.ffrm" useResponseMapLibraryApplicability="false" useFieldsInCommand="false">
+                    <command>
+                        <body>application:com.fnfr.svt.applications.python</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>(.//group0)[4]</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>resp</storageLocation>
+                                        <query>resp</query>
+                                        <responseValue type="com.fnfr.documents.PropertyBoolean">true</responseValue>
+                                        <variable type="com.fnfr.documents.PropertyBoolean">true</variable>
+                                        <secret type="com.fnfr.documents.PropertyBoolean">false</secret>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.OpenStepPropertyGroup">
+                        <stepProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionProperties type="com.fnfr.svt.applications.python.PythonSessionProperties">
+                            <pythonProperties>
+                                <initializationScript inherit="false">
+import socket 
+import struct
+
+client_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM,socket.IPPROTO_TCP)
+client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 0)
+client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER,struct.pack(&quot;ii&quot;, 1, 0))
+client_socket.connect((&apos;[param(&apos;IPAddress&apos;)]&apos;,[param(&apos;Port&apos;)]))
+
+payload=&apos;AUTOPROCESS: [ChannelIndex], [ChannelDescription], [FITTFrames], [VideoContentFramerate], [VideoStimulusFramerate], [CaptureFolderPath], [CaptureFilename], [CaptureLength]&apos;
+
+client_socket.send(payload.encode(&apos;utf-8&apos;))
+data=client_socket.recv(1024)
+data=client_socket.recv(1024)
+
+print(str(data,&apos;utf-8&apos;).rstrip(&quot;\\r\\n&quot;))
+
+client_socket.close()</initializationScript>
+                            </pythonProperties>
+                        </sessionProperties>
+                        <sessionClass type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionVersion type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    </applicationProperties>
+                    <useResponseMapLibraryFromSession>false</useResponseMapLibraryFromSession>
+                </item>
+                <item guid="0655a655-0204-4eb2-8aa6-2ac0a7e2f4ee" action="close" session="c1" useFieldsInCommand="false">
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <multilineDescription>Configures a channel and performs a fixed duration capture on the selected channel index for the supplied capture length in seconds. After capture completes, data captured video is automatically post- processed.</multilineDescription>
+            <arguments>
+                <item name="ChannelIndex">
+                    <description>Channel Index</description>
+                    <defaultValue>0</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="ChannelDescription">
+                    <description>Channel Description</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="FITTFrames">
+                    <description>must be between 1 and 10</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="VideoContentFramerate">
+                    <description>must be between 1 and 30</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="VideoStimulusFramerate">
+                    <description>optional - must be between 1 and 30</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="CaptureFolderPath">
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="CaptureFilename">
+                    <description>Optional</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="CaptureLength">
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+            <response>{&quot;resp&quot;:&quot;value&quot;}</response>
+        </item>
+        <item name="CreateReport" isPublic="true" isVBlock="true">
+            <steps>
+                <item guid="84823f95-7c32-41b8-acea-f5532154cc1c" action="open" session="c1" responseMap="response_maps/umetrixGED.ffrm" useResponseMapLibraryApplicability="false" useFieldsInCommand="false">
+                    <command>
+                        <body>application:com.fnfr.svt.applications.python</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>(.//group0)[4]</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>resp</storageLocation>
+                                        <query>resp</query>
+                                        <responseValue type="com.fnfr.documents.PropertyBoolean">true</responseValue>
+                                        <variable type="com.fnfr.documents.PropertyBoolean">true</variable>
+                                        <secret type="com.fnfr.documents.PropertyBoolean">false</secret>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.OpenStepPropertyGroup">
+                        <stepProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionProperties type="com.fnfr.svt.applications.python.PythonSessionProperties">
+                            <pythonProperties>
+                                <initializationScript inherit="false">
+import socket 
+import struct
+
+client_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM,socket.IPPROTO_TCP)
+client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 0)
+client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER,struct.pack(&quot;ii&quot;, 1, 0))
+client_socket.connect((&apos;[param(&apos;IPAddress&apos;)]&apos;,[param(&apos;Port&apos;)]))
+
+payload=&apos;CREATE REPORT: [ChannelIndex], [CaptureFolderPath], [PlaytimeUTC],[ReportFileName]&apos;
+
+client_socket.send(payload.encode(&apos;utf-8&apos;))
+data=client_socket.recv(1024)
+data=client_socket.recv(1024)
+
+print(str(data,&apos;utf-8&apos;).rstrip(&quot;\\r\\n&quot;))
+
+client_socket.close()</initializationScript>
+                            </pythonProperties>
+                        </sessionProperties>
+                        <sessionClass type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionVersion type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    </applicationProperties>
+                    <useResponseMapLibraryFromSession>false</useResponseMapLibraryFromSession>
+                </item>
+                <item guid="2d4b36c1-3765-4e92-b948-803c60f9de2c" action="close" session="c1" useFieldsInCommand="false">
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <multilineDescription>Create a Umetrix Video Excel report from the Capture in CaptureFolderPath.</multilineDescription>
+            <arguments>
+                <item name="ChannelIndex">
+                    <description>Channel Index</description>
+                    <defaultValue>0</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="CaptureFolderPath">
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="PlaytimeUTC">
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="ReportFileName">
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+            <response>{&quot;resp&quot;:&quot;value&quot;}</response>
+        </item>
+        <item name="GetUTCTimeStamp" isPublic="true" isVBlock="true">
+            <steps>
+                <item guid="92cac504-a872-4b71-9375-7ecf191ad859" action="open" session="c1" responseMap="response_maps/umetrixGED.ffrm" useResponseMapLibraryApplicability="false" useFieldsInCommand="false">
+                    <command>
+                        <body>application:com.fnfr.svt.applications.python</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>(.//group0)[4]</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>resp</storageLocation>
+                                        <query>resp</query>
+                                        <responseValue type="com.fnfr.documents.PropertyBoolean">true</responseValue>
+                                        <variable type="com.fnfr.documents.PropertyBoolean">true</variable>
+                                        <secret type="com.fnfr.documents.PropertyBoolean">false</secret>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.OpenStepPropertyGroup">
+                        <stepProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionProperties type="com.fnfr.svt.applications.python.PythonSessionProperties">
+                            <pythonProperties>
+                                <initializationScript inherit="false">
+import socket 
+import struct
+
+client_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM,socket.IPPROTO_TCP)
+client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 0)
+client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER,struct.pack(&quot;ii&quot;, 1, 0))
+client_socket.connect((&apos;[param(&apos;IPAddress&apos;)]&apos;,[param(&apos;Port&apos;)]))
+
+payload=&apos;GET UTC TIMESTAMP&apos;
+
+client_socket.send(payload.encode(&apos;utf-8&apos;))
+data=client_socket.recv(1024)
+data=client_socket.recv(1024)
+
+print(str(data,&apos;utf-8&apos;).rstrip(&quot;\\r\\n&quot;))
+
+client_socket.close()</initializationScript>
+                            </pythonProperties>
+                        </sessionProperties>
+                        <sessionClass type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionVersion type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    </applicationProperties>
+                    <useResponseMapLibraryFromSession>false</useResponseMapLibraryFromSession>
+                </item>
+                <item guid="4e325f5a-7794-41f5-9172-68a2ef61d6fb" action="close" session="c1" useFieldsInCommand="false">
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <multilineDescription>Returns a string representing the Umetrix Video system’s current UTC time. String format is: “yyyy/MM/dd HH:mm:ss.fff”</multilineDescription>
+            <response>{&quot;resp&quot;:&quot;value&quot;}</response>
+        </item>
+        <item name="TimeSYNCInternet" isPublic="true" isVBlock="true">
+            <steps>
+                <item guid="2af017cd-0b0b-42e3-8f77-e151c73df39b" action="open" session="c1" responseMap="response_maps/umetrixGED.ffrm" useResponseMapLibraryApplicability="false" useFieldsInCommand="false">
+                    <command>
+                        <body>application:com.fnfr.svt.applications.python</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>(.//group0)[4]</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>resp</storageLocation>
+                                        <query>resp</query>
+                                        <responseValue type="com.fnfr.documents.PropertyBoolean">true</responseValue>
+                                        <variable type="com.fnfr.documents.PropertyBoolean">true</variable>
+                                        <secret type="com.fnfr.documents.PropertyBoolean">false</secret>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.OpenStepPropertyGroup">
+                        <stepProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionProperties type="com.fnfr.svt.applications.python.PythonSessionProperties">
+                            <pythonProperties>
+                                <initializationScript inherit="false">
+import socket 
+import struct
+
+client_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM,socket.IPPROTO_TCP)
+client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 0)
+client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER,struct.pack(&quot;ii&quot;, 1, 0))
+client_socket.connect((&apos;[param(&apos;IPAddress&apos;)]&apos;,[param(&apos;Port&apos;)]))
+
+payload=&apos;TIME SYNC INTERNET&apos;
+
+client_socket.send(payload.encode(&apos;utf-8&apos;))
+data=client_socket.recv(1024)
+data=client_socket.recv(1024)
+
+print(str(data,&apos;utf-8&apos;).rstrip(&quot;\\r\\n&quot;))
+
+client_socket.close()</initializationScript>
+                            </pythonProperties>
+                        </sessionProperties>
+                        <sessionClass type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionVersion type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    </applicationProperties>
+                    <useResponseMapLibraryFromSession>false</useResponseMapLibraryFromSession>
+                </item>
+                <item guid="3b1ddeca-bcae-4ce4-b0cd-5e3ac38be7fe" action="close" session="c1" useFieldsInCommand="false">
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <multilineDescription>Attempts to synchronize the test PC clock to the Audio Server using internet time synchronization.</multilineDescription>
+            <response>{&quot;resp&quot;:&quot;value&quot;}</response>
+        </item>
+        <item name="TimeSYNCGps" isPublic="true" isVBlock="true">
+            <steps>
+                <item guid="1379defd-116e-4125-a0ce-afda4d17d1d7" action="open" session="c1" responseMap="response_maps/umetrixGED.ffrm" useResponseMapLibraryApplicability="false" useFieldsInCommand="false">
+                    <command>
+                        <body>application:com.fnfr.svt.applications.python</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>(.//group0)[4]</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>resp</storageLocation>
+                                        <query>resp</query>
+                                        <responseValue type="com.fnfr.documents.PropertyBoolean">true</responseValue>
+                                        <variable type="com.fnfr.documents.PropertyBoolean">true</variable>
+                                        <secret type="com.fnfr.documents.PropertyBoolean">false</secret>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.OpenStepPropertyGroup">
+                        <stepProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionProperties type="com.fnfr.svt.applications.python.PythonSessionProperties">
+                            <pythonProperties>
+                                <initializationScript inherit="false">
+import socket 
+import struct
+
+client_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM,socket.IPPROTO_TCP)
+client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 0)
+client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER,struct.pack(&quot;ii&quot;, 1, 0))
+client_socket.connect((&apos;[param(&apos;IPAddress&apos;)]&apos;,[param(&apos;Port&apos;)]))
+
+payload=&apos;TIME SYNC GPS&apos;
+
+client_socket.send(payload.encode(&apos;utf-8&apos;))
+data=client_socket.recv(1024)
+data=client_socket.recv(1024)
+
+print(str(data,&apos;utf-8&apos;).rstrip(&quot;\\r\\n&quot;))
+
+client_socket.close()</initializationScript>
+                            </pythonProperties>
+                        </sessionProperties>
+                        <sessionClass type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionVersion type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    </applicationProperties>
+                    <useResponseMapLibraryFromSession>false</useResponseMapLibraryFromSession>
+                </item>
+                <item guid="b8fc6475-f312-4646-8bd9-9365edac6b9a" action="close" session="c1" useFieldsInCommand="false">
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <multilineDescription>Attempts to synchronize the test PC clock to the Audio Server using GPS time synchronization.</multilineDescription>
+            <response>{&quot;resp&quot;:&quot;value&quot;}</response>
+        </item>
+        <item name="Version" isPublic="true" isVBlock="true">
+            <steps>
+                <item guid="d6c756f3-44c0-4f2a-8c83-eae5043abe08" action="open" session="c1" responseMap="response_maps/umetrixGED.ffrm" useResponseMapLibraryApplicability="false" useFieldsInCommand="false">
+                    <command>
+                        <body>application:com.fnfr.svt.applications.python</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>(.//group0)[4]</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>resp</storageLocation>
+                                        <query>resp</query>
+                                        <responseValue type="com.fnfr.documents.PropertyBoolean">true</responseValue>
+                                        <variable type="com.fnfr.documents.PropertyBoolean">true</variable>
+                                        <secret type="com.fnfr.documents.PropertyBoolean">false</secret>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.OpenStepPropertyGroup">
+                        <stepProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionProperties type="com.fnfr.svt.applications.python.PythonSessionProperties">
+                            <pythonProperties>
+                                <initializationScript inherit="false">
+import socket 
+import struct
+
+client_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM,socket.IPPROTO_TCP)
+client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 0)
+client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER,struct.pack(&quot;ii&quot;, 1, 0))
+client_socket.connect((&apos;[param(&apos;IPAddress&apos;)]&apos;,[param(&apos;Port&apos;)]))
+
+payload=&apos;VERSION&apos;
+
+client_socket.send(payload.encode(&apos;utf-8&apos;))
+data=client_socket.recv(1024)
+data=client_socket.recv(1024)
+
+print(str(data,&apos;utf-8&apos;).rstrip(&quot;\\r\\n&quot;))
+
+client_socket.close()</initializationScript>
+                            </pythonProperties>
+                        </sessionProperties>
+                        <sessionClass type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionVersion type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    </applicationProperties>
+                    <useResponseMapLibraryFromSession>false</useResponseMapLibraryFromSession>
+                </item>
+                <item guid="baa95436-a0de-403f-9db0-284b7e4bec9c" action="close" session="c1" useFieldsInCommand="false">
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <multilineDescription>Returns the version of the currently running Umetrix Video application.</multilineDescription>
+            <response>{&quot;resp&quot;:&quot;value&quot;}</response>
+        </item>
+        <item name="GetDiskInfo" isPublic="true" isVBlock="true">
+            <steps>
+                <item guid="c71c4ab6-0ae3-4f30-99ef-7acc006dbad8" action="open" session="c1" responseMap="response_maps/umetrixGED.ffrm" useResponseMapLibraryApplicability="false" useFieldsInCommand="false">
+                    <command>
+                        <body>application:com.fnfr.svt.applications.python</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>(.//group0)[4]</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>resp</storageLocation>
+                                        <query>resp</query>
+                                        <responseValue type="com.fnfr.documents.PropertyBoolean">true</responseValue>
+                                        <variable type="com.fnfr.documents.PropertyBoolean">true</variable>
+                                        <secret type="com.fnfr.documents.PropertyBoolean">false</secret>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.OpenStepPropertyGroup">
+                        <stepProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionProperties type="com.fnfr.svt.applications.python.PythonSessionProperties">
+                            <pythonProperties>
+                                <initializationScript inherit="false">
+import socket 
+import struct
+
+client_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM,socket.IPPROTO_TCP)
+client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 0)
+client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER,struct.pack(&quot;ii&quot;, 1, 0))
+client_socket.connect((&apos;[param(&apos;IPAddress&apos;)]&apos;,[param(&apos;Port&apos;)]))
+
+payload=&apos;GET DISK INFO: [infoType]&apos;
+
+client_socket.send(payload.encode(&apos;utf-8&apos;))
+data=client_socket.recv(1024)
+data=client_socket.recv(1024)
+
+print(str(data,&apos;utf-8&apos;).rstrip(&quot;\\r\\n&quot;))
+
+client_socket.close()</initializationScript>
+                            </pythonProperties>
+                        </sessionProperties>
+                        <sessionClass type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionVersion type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    </applicationProperties>
+                    <useResponseMapLibraryFromSession>false</useResponseMapLibraryFromSession>
+                </item>
+                <item guid="4bc77bbc-0642-45ce-a7a3-c2ec8ef87699" action="close" session="c1" useFieldsInCommand="false">
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <multilineDescription>Returns the value in bytes on the main system hard drive for the corresponding infoType requested.</multilineDescription>
+            <arguments>
+                <item name="infoType">
+                    <description>Either ‘total’ or ‘free’ to represent the information needed.</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+            <response>{&quot;resp&quot;:&quot;value&quot;}</response>
+        </item>
+        <item name="Archive" isPublic="true" isVBlock="true">
+            <steps>
+                <item guid="a5d7006d-5a53-4f2e-88c3-eaeed661645d" action="open" session="c1" responseMap="response_maps/umetrixGED.ffrm" useResponseMapLibraryApplicability="false" useFieldsInCommand="false">
+                    <command>
+                        <body>application:com.fnfr.svt.applications.python</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>(.//group0)[4]</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>resp</storageLocation>
+                                        <query>resp</query>
+                                        <responseValue type="com.fnfr.documents.PropertyBoolean">true</responseValue>
+                                        <variable type="com.fnfr.documents.PropertyBoolean">true</variable>
+                                        <secret type="com.fnfr.documents.PropertyBoolean">false</secret>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.OpenStepPropertyGroup">
+                        <stepProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionProperties type="com.fnfr.svt.applications.python.PythonSessionProperties">
+                            <pythonProperties>
+                                <initializationScript inherit="false">
+import socket 
+import struct
+
+client_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM,socket.IPPROTO_TCP)
+client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 0)
+client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER,struct.pack(&quot;ii&quot;, 1, 0))
+client_socket.connect((&apos;[param(&apos;IPAddress&apos;)]&apos;,[param(&apos;Port&apos;)]))
+
+payload=&apos;ARCHIVE: [ExternalLocation],[CapturePath]&apos;
+
+client_socket.send(payload.encode(&apos;utf-8&apos;))
+data=client_socket.recv(1024)
+data=client_socket.recv(1024)
+
+print(str(data,&apos;utf-8&apos;).rstrip(&quot;\\r\\n&quot;))
+
+client_socket.close()</initializationScript>
+                            </pythonProperties>
+                        </sessionProperties>
+                        <sessionClass type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionVersion type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    </applicationProperties>
+                    <useResponseMapLibraryFromSession>false</useResponseMapLibraryFromSession>
+                </item>
+                <item guid="cb347be8-83bf-41fc-8787-188093b7cf00" action="close" session="c1" useFieldsInCommand="false">
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <multilineDescription>Create a ZIP archive of captures and move them to a designated location.</multilineDescription>
+            <arguments>
+                <item name="ExternalLocation">
+                    <description>The complete file path to the location to move the created archive.</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="CapturePath">
+                    <description>One or more file paths pointing to Umetrix Video captures.</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+            <response>{&quot;resp&quot;:&quot;value&quot;}</response>
+        </item>
+        <item name="Restart" isPublic="true" isVBlock="true">
+            <steps>
+                <item guid="d48f61c5-c273-499e-8c06-12375c6f2105" action="open" session="c1" responseMap="response_maps/umetrixGED.ffrm" useResponseMapLibraryApplicability="false" useFieldsInCommand="false">
+                    <command>
+                        <body>application:com.fnfr.svt.applications.python</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>(.//group0)[4]</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>resp</storageLocation>
+                                        <query>resp</query>
+                                        <responseValue type="com.fnfr.documents.PropertyBoolean">true</responseValue>
+                                        <variable type="com.fnfr.documents.PropertyBoolean">true</variable>
+                                        <secret type="com.fnfr.documents.PropertyBoolean">false</secret>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.OpenStepPropertyGroup">
+                        <stepProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionProperties type="com.fnfr.svt.applications.python.PythonSessionProperties">
+                            <pythonProperties>
+                                <initializationScript inherit="false">
+import socket 
+import struct
+
+client_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM,socket.IPPROTO_TCP)
+client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 0)
+client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER,struct.pack(&quot;ii&quot;, 1, 0))
+client_socket.connect((&apos;[param(&apos;IPAddress&apos;)]&apos;,[param(&apos;Port&apos;)]))
+
+payload=&apos;RESTART&apos;
+
+client_socket.send(payload.encode(&apos;utf-8&apos;))
+data=client_socket.recv(1024)
+data=client_socket.recv(1024)
+
+print(str(data,&apos;utf-8&apos;).rstrip(&quot;\\r\\n&quot;))
+
+client_socket.close()</initializationScript>
+                            </pythonProperties>
+                        </sessionProperties>
+                        <sessionClass type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionVersion type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    </applicationProperties>
+                    <useResponseMapLibraryFromSession>false</useResponseMapLibraryFromSession>
+                </item>
+                <item guid="b052a9d9-1f9f-4c40-9f15-5e94cb9e130c" action="close" session="c1" useFieldsInCommand="false">
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <multilineDescription>Restarts the Umetrix Video application.</multilineDescription>
+            <response>{&quot;resp&quot;:&quot;value&quot;}</response>
+        </item>
+        <item name="SetGEDCircle" isPublic="true" isVBlock="true">
+            <steps>
+                <item guid="41715386-6af3-44a7-9f8d-0fac8a193332" action="open" session="c1" responseMap="response_maps/umetrixGED.ffrm" useResponseMapLibraryApplicability="false" useFieldsInCommand="false">
+                    <command>
+                        <body>application:com.fnfr.svt.applications.python</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>(.//group0)[4]</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>resp</storageLocation>
+                                        <query>resp</query>
+                                        <responseValue type="com.fnfr.documents.PropertyBoolean">true</responseValue>
+                                        <variable type="com.fnfr.documents.PropertyBoolean">true</variable>
+                                        <secret type="com.fnfr.documents.PropertyBoolean">false</secret>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.OpenStepPropertyGroup">
+                        <stepProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionProperties type="com.fnfr.svt.applications.python.PythonSessionProperties">
+                            <pythonProperties>
+                                <initializationScript inherit="false">
+import socket 
+import struct
+
+client_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM,socket.IPPROTO_TCP)
+client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 0)
+client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER,struct.pack(&quot;ii&quot;, 1, 0))
+client_socket.connect((&apos;[param(&apos;IPAddress&apos;)]&apos;,[param(&apos;Port&apos;)]))
+
+payload=&apos;SET GED CIRCLE: [ChannelIndex], [CircleCount]&apos;
+
+client_socket.send(payload.encode(&apos;utf-8&apos;))
+data=client_socket.recv(1024)
+data=client_socket.recv(1024)
+
+print(str(data,&apos;utf-8&apos;).rstrip(&quot;\\r\\n&quot;))
+
+client_socket.close()</initializationScript>
+                            </pythonProperties>
+                        </sessionProperties>
+                        <sessionClass type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionVersion type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    </applicationProperties>
+                    <useResponseMapLibraryFromSession>false</useResponseMapLibraryFromSession>
+                </item>
+                <item guid="1a4abd1f-8b86-4a89-9010-a9c21a75853c" action="close" session="c1" useFieldsInCommand="false">
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <multilineDescription>This sets the number of circles to be used for testing. By default, 5 circles will be used for each channel. 4 circles cannot be used for a 60fps configuration.</multilineDescription>
+            <arguments>
+                <item name="ChannelIndex">
+                    <description>Channel to be configured.</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="CircleCount">
+                    <description>Number of circles to be used for the test.</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+            <response>{&quot;resp&quot;:&quot;value&quot;}</response>
+        </item>
+        <item name="SetAVSYNCOffset" isPublic="true" isVBlock="true">
+            <steps>
+                <item guid="cb694f57-87c2-4864-befd-11cee4159afd" action="open" session="c1" responseMap="response_maps/umetrixGED.ffrm" useResponseMapLibraryApplicability="false" useFieldsInCommand="false">
+                    <command>
+                        <body>application:com.fnfr.svt.applications.python</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>(.//group0)[4]</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>resp</storageLocation>
+                                        <query>resp</query>
+                                        <responseValue type="com.fnfr.documents.PropertyBoolean">true</responseValue>
+                                        <variable type="com.fnfr.documents.PropertyBoolean">true</variable>
+                                        <secret type="com.fnfr.documents.PropertyBoolean">false</secret>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.OpenStepPropertyGroup">
+                        <stepProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionProperties type="com.fnfr.svt.applications.python.PythonSessionProperties">
+                            <pythonProperties>
+                                <initializationScript inherit="false">
+import socket 
+import struct
+
+client_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM,socket.IPPROTO_TCP)
+client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 0)
+client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER,struct.pack(&quot;ii&quot;, 1, 0))
+client_socket.connect((&apos;[param(&apos;IPAddress&apos;)]&apos;,[param(&apos;Port&apos;)]))
+
+payload=&apos;SET AVSYNC OFFSET: [OffsetValue]&apos;
+
+client_socket.send(payload.encode(&apos;utf-8&apos;))
+data=client_socket.recv(1024)
+data=client_socket.recv(1024)
+
+print(str(data,&apos;utf-8&apos;).rstrip(&quot;\\r\\n&quot;))
+
+client_socket.close()</initializationScript>
+                            </pythonProperties>
+                        </sessionProperties>
+                        <sessionClass type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionVersion type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    </applicationProperties>
+                    <useResponseMapLibraryFromSession>false</useResponseMapLibraryFromSession>
+                </item>
+                <item guid="052ab642-cbdf-466f-ac14-1b9d22f71af7" action="close" session="c1" useFieldsInCommand="false">
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <multilineDescription>Updates the AVSYNC value in settings. This offset value is used in the calculation of AV sync.</multilineDescription>
+            <arguments>
+                <item name="OffsetValue">
+                    <description>A description for the AVSYNC as a whole.</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+            <response>{&quot;resp&quot;:&quot;value&quot;}</response>
+        </item>
+        <item name="SetAUTOProcessing" isPublic="true" isVBlock="true">
+            <steps>
+                <item guid="b7cfb589-314c-4d88-83ce-7bd3623a4cd8" action="open" session="c1" responseMap="response_maps/umetrixGED.ffrm" useResponseMapLibraryApplicability="false" useFieldsInCommand="false">
+                    <command>
+                        <body>application:com.fnfr.svt.applications.python</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>(.//group0)[4]</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>resp</storageLocation>
+                                        <query>resp</query>
+                                        <responseValue type="com.fnfr.documents.PropertyBoolean">true</responseValue>
+                                        <variable type="com.fnfr.documents.PropertyBoolean">true</variable>
+                                        <secret type="com.fnfr.documents.PropertyBoolean">false</secret>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.OpenStepPropertyGroup">
+                        <stepProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionProperties type="com.fnfr.svt.applications.python.PythonSessionProperties">
+                            <pythonProperties>
+                                <initializationScript inherit="false">
+import socket 
+import struct
+
+client_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM,socket.IPPROTO_TCP)
+client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 0)
+client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER,struct.pack(&quot;ii&quot;, 1, 0))
+client_socket.connect((&apos;[param(&apos;IPAddress&apos;)]&apos;,[param(&apos;Port&apos;)]))
+
+payload=&apos;SET AUTO PROCESSING: [AutoProcessValue]&apos;
+
+client_socket.send(payload.encode(&apos;utf-8&apos;))
+data=client_socket.recv(1024)
+data=client_socket.recv(1024)
+
+print(str(data,&apos;utf-8&apos;).rstrip(&quot;\\r\\n&quot;))
+
+client_socket.close()</initializationScript>
+                            </pythonProperties>
+                        </sessionProperties>
+                        <sessionClass type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionVersion type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    </applicationProperties>
+                    <useResponseMapLibraryFromSession>false</useResponseMapLibraryFromSession>
+                </item>
+                <item guid="46c8d2d5-e838-4254-8b0b-99d0820fefb7" action="close" session="c1" useFieldsInCommand="false">
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <multilineDescription>By setting the value to true, the session will be automatically processed after the capture of session is complete.</multilineDescription>
+            <arguments>
+                <item name="AutoProcessValue">
+                    <description>Value to be set for the sessions to be processed.</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+            <response>{&quot;resp&quot;:&quot;value&quot;}</response>
+        </item>
+        <item name="GetAUTOProcessingStatus" isPublic="true" isVBlock="true">
+            <steps>
+                <item guid="250e4e4c-84a5-466a-8f99-bf415257990a" action="open" session="c1" responseMap="response_maps/umetrixGED.ffrm" useResponseMapLibraryApplicability="false" useFieldsInCommand="false">
+                    <command>
+                        <body>application:com.fnfr.svt.applications.python</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>(.//group0)[4]</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>resp</storageLocation>
+                                        <query>resp</query>
+                                        <responseValue type="com.fnfr.documents.PropertyBoolean">true</responseValue>
+                                        <variable type="com.fnfr.documents.PropertyBoolean">true</variable>
+                                        <secret type="com.fnfr.documents.PropertyBoolean">false</secret>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.OpenStepPropertyGroup">
+                        <stepProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionProperties type="com.fnfr.svt.applications.python.PythonSessionProperties">
+                            <pythonProperties>
+                                <initializationScript inherit="false">
+import socket 
+import struct
+
+client_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM,socket.IPPROTO_TCP)
+client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 0)
+client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER,struct.pack(&quot;ii&quot;, 1, 0))
+client_socket.connect((&apos;[param(&apos;IPAddress&apos;)]&apos;,[param(&apos;Port&apos;)]))
+
+payload=&apos;GET AUTO PROCESSING STATUS&apos;
+
+client_socket.send(payload.encode(&apos;utf-8&apos;))
+data=client_socket.recv(1024)
+data=client_socket.recv(1024)
+
+print(str(data,&apos;utf-8&apos;).rstrip(&quot;\\r\\n&quot;))
+
+client_socket.close()</initializationScript>
+                            </pythonProperties>
+                        </sessionProperties>
+                        <sessionClass type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionVersion type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    </applicationProperties>
+                    <useResponseMapLibraryFromSession>false</useResponseMapLibraryFromSession>
+                </item>
+                <item guid="41c2cc78-7bc4-469f-b0db-164876025bde" action="close" session="c1" useFieldsInCommand="false">
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <multilineDescription>Get the current setting for AUTO PROCESSING.</multilineDescription>
+            <response>{&quot;resp&quot;:&quot;value&quot;}</response>
+        </item>
+    </procedures>
+</testCase>
