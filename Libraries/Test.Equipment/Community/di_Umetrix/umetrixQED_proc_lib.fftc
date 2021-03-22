@@ -13,16 +13,6 @@ Remote functionality includes:
         <isProcedureLibrary>true</isProcedureLibrary>
         <language>Python</language>
     </general>
-    <execution>
-        <parameters version="8.3.5.0">
-            <parameters escape="true">
-                <parameters xmlns:pt="http://www.fnfr.com/schemas/parameterTree">
-                    <IPAddress/>
-                    <Port>7073</Port>
-                </parameters>
-            </parameters>
-        </parameters>
-    </execution>
     <procedures>
         <item name="main">
             <steps>
@@ -77,7 +67,7 @@ import struct
 client_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM,socket.IPPROTO_TCP)
 client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 0)
 client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER,struct.pack(&quot;ii&quot;, 1, 0))
-client_socket.connect((&apos;[param(&apos;IPAddress&apos;)]&apos;,[param(&apos;Port&apos;)]))
+client_socket.connect((&apos;[IPAddress]&apos;,[Port]))
 
 payload=&apos;CONFIGURE CHANNEL: [index],[description],[fitt],[stimulus_framerate],[content_framerate]\\n&apos;
 
@@ -101,6 +91,15 @@ client_socket.close()</initializationScript>
             </steps>
             <multilineDescription>Sets up a channel configuration for recording. This step is required for all enabled channels before starting a capture.</multilineDescription>
             <arguments>
+                <item name="IPAddress">
+                    <description>IP Address of the Umetrix Video host.</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="Port">
+                    <description>Umetrix Video TCP Port number.</description>
+                    <defaultValue>7073</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
                 <item name="index">
                     <description>Channel Index</description>
                     <defaultValue>1</defaultValue>
@@ -166,7 +165,7 @@ import struct
 client_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM,socket.IPPROTO_TCP)
 client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 0)
 client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER,struct.pack(&quot;ii&quot;, 1, 0))
-client_socket.connect((&apos;[param(&apos;IPAddress&apos;)]&apos;,[param(&apos;Port&apos;)]))
+client_socket.connect((&apos;[IPAddress]&apos;,[Port]))
 
 payload=&apos;GET CHANNEL CONFIGURATION: [index]\\n&apos;
 
@@ -190,6 +189,15 @@ client_socket.close()</initializationScript>
             </steps>
             <multilineDescription>Sets up a channel configuration for recording. This step is required for all enabled channels before starting a capture.</multilineDescription>
             <arguments>
+                <item name="IPAddress">
+                    <description>IP Address of the Umetrix Video host.</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="Port">
+                    <description>Umetrix Video TCP Port number.</description>
+                    <defaultValue>7073</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
                 <item name="index">
                     <description>Channel Index</description>
                     <defaultValue>0</defaultValue>
@@ -235,7 +243,8 @@ import struct
 client_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM,socket.IPPROTO_TCP)
 client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 0)
 client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER,struct.pack(&quot;ii&quot;, 1, 0))
-client_socket.connect((&apos;[param(&apos;IPAddress&apos;)]&apos;,[param(&apos;Port&apos;)]))
+client_socket.connect((&apos;[IPAddress]&apos;,[Port]))
+
 payload=&apos;START CAPTURE AUTOREPORT\\n&apos;
 
 client_socket.send(payload.encode(&apos;utf-8&apos;))
@@ -257,6 +266,17 @@ client_socket.close()</initializationScript>
                 </item>
             </steps>
             <multilineDescription>Enable real-time reporting of capture status.</multilineDescription>
+            <arguments>
+                <item name="IPAddress">
+                    <description>IP Address of the Umetrix Video host.</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="Port">
+                    <description>Umetrix Video TCP Port number.</description>
+                    <defaultValue>7073</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
             <response>{&quot;resp&quot;:&quot;value&quot;}</response>
         </item>
         <item name="StopCaptureAutoreport" isPublic="true" isVBlock="true">
@@ -296,7 +316,7 @@ import struct
 client_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM,socket.IPPROTO_TCP)
 client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 0)
 client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER,struct.pack(&quot;ii&quot;, 1, 0))
-client_socket.connect((&apos;[param(&apos;IPAddress&apos;)]&apos;,[param(&apos;Port&apos;)]))
+client_socket.connect((&apos;[IPAddress]&apos;,[Port]))
 
 payload=&apos;STOP CAPTURE AUTOREPORT&apos;
 
@@ -319,6 +339,17 @@ client_socket.close()</initializationScript>
                 </item>
             </steps>
             <multilineDescription>Disables real-time reporting of capture status.</multilineDescription>
+            <arguments>
+                <item name="IPAddress">
+                    <description>IP Address of the Umetrix Video host.</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="Port">
+                    <description>Umetrix Video TCP Port number.</description>
+                    <defaultValue>7073</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
             <response>{&quot;resp&quot;:&quot;value&quot;}</response>
         </item>
         <item name="StartCaptureFixed" isPublic="true" isVBlock="true">
@@ -358,7 +389,7 @@ import struct
 client_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM,socket.IPPROTO_TCP)
 client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 0)
 client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER,struct.pack(&quot;ii&quot;, 1, 0))
-client_socket.connect((&apos;[param(&apos;IPAddress&apos;)]&apos;,[param(&apos;Port&apos;)]))
+client_socket.connect((&apos;[IPAddress]&apos;,[Port]))
 
 payload=&apos;START CAPTURE FIXED: [SessionDescription], [DurationInSeconds]&apos;
 
@@ -382,6 +413,15 @@ client_socket.close()</initializationScript>
             </steps>
             <multilineDescription>Starts a capture of defined fixed duration.</multilineDescription>
             <arguments>
+                <item name="IPAddress">
+                    <description>IP Address of the Umetrix Video host.</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="Port">
+                    <description>Umetrix Video TCP Port number.</description>
+                    <defaultValue>7073</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
                 <item name="SessionDescription">
                     <isMandatory>true</isMandatory>
                 </item>
@@ -429,7 +469,7 @@ import struct
 client_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM,socket.IPPROTO_TCP)
 client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 0)
 client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER,struct.pack(&quot;ii&quot;, 1, 0))
-client_socket.connect((&apos;[param(&apos;IPAddress&apos;)]&apos;,[param(&apos;Port&apos;)]))
+client_socket.connect((&apos;[IPAddress]&apos;,[Port]))
 
 payload=&apos;STOP CAPTURE: [SessionDescription]&apos;
 
@@ -453,6 +493,15 @@ client_socket.close()</initializationScript>
             </steps>
             <multilineDescription>Stops any capture currently running. This can be called to preemptively stop a capture of fixed duration, but does not need to be. If it is called to stop a capture session of fixed duration, then the session description provided in this call will override that provided in the START CAPTURE FIXED command.</multilineDescription>
             <arguments>
+                <item name="IPAddress">
+                    <description>IP Address of the Umetrix Video host.</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="Port">
+                    <description>Umetrix Video TCP Port number.</description>
+                    <defaultValue>7073</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
                 <item name="SessionDescription">
                     <description>A description for the capture session as a whole.</description>
                     <defaultValue>my first session</defaultValue>
@@ -498,7 +547,7 @@ import struct
 client_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM,socket.IPPROTO_TCP)
 client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 0)
 client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER,struct.pack(&quot;ii&quot;, 1, 0))
-client_socket.connect((&apos;[param(&apos;IPAddress&apos;)]&apos;,[param(&apos;Port&apos;)]))
+client_socket.connect((&apos;[IPAddress]&apos;,[Port]))
 
 payload=&apos;START PROCESS AUTOREPORT&apos;
 
@@ -521,6 +570,17 @@ client_socket.close()</initializationScript>
                 </item>
             </steps>
             <multilineDescription>Enables real-time reporting of processing status.</multilineDescription>
+            <arguments>
+                <item name="IPAddress">
+                    <description>IP Address of the Umetrix Video host.</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="Port">
+                    <description>Umetrix Video TCP Port number.</description>
+                    <defaultValue>7073</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
             <response>{&quot;resp&quot;:&quot;value&quot;}</response>
         </item>
         <item name="StopProcessAutoreport" isPublic="true" isVBlock="true">
@@ -560,7 +620,7 @@ import struct
 client_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM,socket.IPPROTO_TCP)
 client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 0)
 client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER,struct.pack(&quot;ii&quot;, 1, 0))
-client_socket.connect((&apos;[param(&apos;IPAddress&apos;)]&apos;,[param(&apos;Port&apos;)]))
+client_socket.connect((&apos;[IPAddress]&apos;,[Port]))
 
 payload=&apos;STOP PROCESS AUTOREPORT&apos;
 
@@ -583,6 +643,17 @@ client_socket.close()</initializationScript>
                 </item>
             </steps>
             <multilineDescription>Disables real-time reporting of processing status.</multilineDescription>
+            <arguments>
+                <item name="IPAddress">
+                    <description>IP Address of the Umetrix Video host.</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="Port">
+                    <description>Umetrix Video TCP Port number.</description>
+                    <defaultValue>7073</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
             <response>{&quot;resp&quot;:&quot;value&quot;}</response>
         </item>
         <item name="StartProcess" isPublic="true" isVBlock="true">
@@ -622,7 +693,7 @@ import struct
 client_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM,socket.IPPROTO_TCP)
 client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 0)
 client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER,struct.pack(&quot;ii&quot;, 1, 0))
-client_socket.connect((&apos;[param(&apos;IPAddress&apos;)]&apos;,[param(&apos;Port&apos;)]))
+client_socket.connect((&apos;[IPAddress]&apos;,[Port]))
 
 payload=&apos;START PROCESS: [CapturePath], [ChannelIndex]&apos;
 
@@ -646,6 +717,15 @@ client_socket.close()</initializationScript>
             </steps>
             <multilineDescription>Executes post processing on the referenced channel in a session.</multilineDescription>
             <arguments>
+                <item name="IPAddress">
+                    <description>IP Address of the Umetrix Video host.</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="Port">
+                    <description>Umetrix Video TCP Port number.</description>
+                    <defaultValue>7073</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
                 <item name="CapturePath">
                     <description>The command will work with either the captureinfo.xml full file path as returned by the start capture command, or just the path to the parent folder of the captureinfo.xml file.
 
@@ -698,7 +778,7 @@ import struct
 client_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM,socket.IPPROTO_TCP)
 client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 0)
 client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER,struct.pack(&quot;ii&quot;, 1, 0))
-client_socket.connect((&apos;[param(&apos;IPAddress&apos;)]&apos;,[param(&apos;Port&apos;)]))
+client_socket.connect((&apos;[IPAddress]&apos;,[Port]))
 
 payload=&apos;CANCEL PROCESS&apos;
 
@@ -721,6 +801,17 @@ client_socket.close()</initializationScript>
                 </item>
             </steps>
             <multilineDescription>Cancels any currently running post-processing tasks.</multilineDescription>
+            <arguments>
+                <item name="IPAddress">
+                    <description>IP Address of the Umetrix Video host.</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="Port">
+                    <description>Umetrix Video TCP Port number.</description>
+                    <defaultValue>7073</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
             <response>{&quot;resp&quot;:&quot;value&quot;}</response>
         </item>
         <item name="AutoProcess" isPublic="true" isVBlock="true">
@@ -760,7 +851,7 @@ import struct
 client_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM,socket.IPPROTO_TCP)
 client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 0)
 client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER,struct.pack(&quot;ii&quot;, 1, 0))
-client_socket.connect((&apos;[param(&apos;IPAddress&apos;)]&apos;,[param(&apos;Port&apos;)]))
+client_socket.connect((&apos;[IPAddress]&apos;,[Port]))
 
 payload=&apos;AUTOPROCESS: [ChannelIndex], [ChannelDescription], [FITTFrames], [VideoContentFramerate], [VideoStimulusFramerate], [CaptureFolderPath], [CaptureFilename], [CaptureLength]&apos;
 
@@ -784,6 +875,15 @@ client_socket.close()</initializationScript>
             </steps>
             <multilineDescription>Configures a channel and performs a fixed duration capture on the selected channel index for the supplied capture length in seconds. After capture completes, data captured video is automatically post- processed.</multilineDescription>
             <arguments>
+                <item name="IPAddress">
+                    <description>IP Address of the Umetrix Video host.</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="Port">
+                    <description>Umetrix Video TCP Port number.</description>
+                    <defaultValue>7073</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
                 <item name="ChannelIndex">
                     <description>Channel Index</description>
                     <defaultValue>0</defaultValue>
@@ -855,7 +955,7 @@ import struct
 client_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM,socket.IPPROTO_TCP)
 client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 0)
 client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER,struct.pack(&quot;ii&quot;, 1, 0))
-client_socket.connect((&apos;[param(&apos;IPAddress&apos;)]&apos;,[param(&apos;Port&apos;)]))
+client_socket.connect((&apos;[IPAddress]&apos;,[Port]))
 
 payload=&apos;CREATE REPORT: [ChannelIndex], [CaptureFolderPath], [PlaytimeUTC],[ReportFileName]&apos;
 
@@ -879,6 +979,15 @@ client_socket.close()</initializationScript>
             </steps>
             <multilineDescription>Create a Umetrix Video Excel report from the Capture in CaptureFolderPath.</multilineDescription>
             <arguments>
+                <item name="IPAddress">
+                    <description>IP Address of the Umetrix Video host.</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="Port">
+                    <description>Umetrix Video TCP Port number.</description>
+                    <defaultValue>7073</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
                 <item name="ChannelIndex">
                     <description>Channel Index</description>
                     <defaultValue>0</defaultValue>
@@ -933,7 +1042,7 @@ import struct
 client_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM,socket.IPPROTO_TCP)
 client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 0)
 client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER,struct.pack(&quot;ii&quot;, 1, 0))
-client_socket.connect((&apos;[param(&apos;IPAddress&apos;)]&apos;,[param(&apos;Port&apos;)]))
+client_socket.connect((&apos;[IPAddress]&apos;,[Port]))
 
 payload=&apos;GET UTC TIMESTAMP&apos;
 
@@ -956,6 +1065,17 @@ client_socket.close()</initializationScript>
                 </item>
             </steps>
             <multilineDescription>Returns a string representing the Umetrix Video system’s current UTC time. String format is: “yyyy/MM/dd HH:mm:ss.fff”</multilineDescription>
+            <arguments>
+                <item name="IPAddress">
+                    <description>IP Address of the Umetrix Video host.</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="Port">
+                    <description>Umetrix Video TCP Port number.</description>
+                    <defaultValue>7073</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
             <response>{&quot;resp&quot;:&quot;value&quot;}</response>
         </item>
         <item name="TimeSYNCInternet" isPublic="true" isVBlock="true">
@@ -995,7 +1115,7 @@ import struct
 client_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM,socket.IPPROTO_TCP)
 client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 0)
 client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER,struct.pack(&quot;ii&quot;, 1, 0))
-client_socket.connect((&apos;[param(&apos;IPAddress&apos;)]&apos;,[param(&apos;Port&apos;)]))
+client_socket.connect((&apos;[IPAddress]&apos;,[Port]))
 
 payload=&apos;TIME SYNC INTERNET&apos;
 
@@ -1018,6 +1138,17 @@ client_socket.close()</initializationScript>
                 </item>
             </steps>
             <multilineDescription>Attempts to synchronize the test PC clock to the Audio Server using internet time synchronization.</multilineDescription>
+            <arguments>
+                <item name="IPAddress">
+                    <description>IP Address of the Umetrix Video host.</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="Port">
+                    <description>Umetrix Video TCP Port number.</description>
+                    <defaultValue>7073</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
             <response>{&quot;resp&quot;:&quot;value&quot;}</response>
         </item>
         <item name="TimeSYNCGps" isPublic="true" isVBlock="true">
@@ -1057,7 +1188,7 @@ import struct
 client_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM,socket.IPPROTO_TCP)
 client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 0)
 client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER,struct.pack(&quot;ii&quot;, 1, 0))
-client_socket.connect((&apos;[param(&apos;IPAddress&apos;)]&apos;,[param(&apos;Port&apos;)]))
+client_socket.connect((&apos;[IPAddress]&apos;,[Port]))
 
 payload=&apos;TIME SYNC GPS&apos;
 
@@ -1080,6 +1211,17 @@ client_socket.close()</initializationScript>
                 </item>
             </steps>
             <multilineDescription>Attempts to synchronize the test PC clock to the Audio Server using GPS time synchronization.</multilineDescription>
+            <arguments>
+                <item name="IPAddress">
+                    <description>IP Address of the Umetrix Video host.</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="Port">
+                    <description>Umetrix Video TCP Port number.</description>
+                    <defaultValue>7073</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
             <response>{&quot;resp&quot;:&quot;value&quot;}</response>
         </item>
         <item name="Version" isPublic="true" isVBlock="true">
@@ -1119,7 +1261,7 @@ import struct
 client_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM,socket.IPPROTO_TCP)
 client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 0)
 client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER,struct.pack(&quot;ii&quot;, 1, 0))
-client_socket.connect((&apos;[param(&apos;IPAddress&apos;)]&apos;,[param(&apos;Port&apos;)]))
+client_socket.connect((&apos;[IPAddress]&apos;,[Port]))
 
 payload=&apos;VERSION&apos;
 
@@ -1142,6 +1284,17 @@ client_socket.close()</initializationScript>
                 </item>
             </steps>
             <multilineDescription>Returns the version of the currently running Umetrix Video application.</multilineDescription>
+            <arguments>
+                <item name="IPAddress">
+                    <description>IP Address of the Umetrix Video host.</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="Port">
+                    <description>Umetrix Video TCP Port number.</description>
+                    <defaultValue>7073</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
             <response>{&quot;resp&quot;:&quot;value&quot;}</response>
         </item>
         <item name="GetDiskInfo" isPublic="true" isVBlock="true">
@@ -1181,7 +1334,7 @@ import struct
 client_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM,socket.IPPROTO_TCP)
 client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 0)
 client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER,struct.pack(&quot;ii&quot;, 1, 0))
-client_socket.connect((&apos;[param(&apos;IPAddress&apos;)]&apos;,[param(&apos;Port&apos;)]))
+client_socket.connect((&apos;[IPAddress]&apos;,[Port]))
 
 payload=&apos;GET DISK INFO: [infoType]&apos;
 
@@ -1205,6 +1358,15 @@ client_socket.close()</initializationScript>
             </steps>
             <multilineDescription>Returns the value in bytes on the main system hard drive for the corresponding infoType requested.</multilineDescription>
             <arguments>
+                <item name="IPAddress">
+                    <description>IP Address of the Umetrix Video host.</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="Port">
+                    <description>Umetrix Video TCP Port number.</description>
+                    <defaultValue>7073</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
                 <item name="infoType">
                     <description>Either ‘total’ or ‘free’ to represent the information needed.</description>
                     <isMandatory>true</isMandatory>
@@ -1249,7 +1411,7 @@ import struct
 client_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM,socket.IPPROTO_TCP)
 client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 0)
 client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER,struct.pack(&quot;ii&quot;, 1, 0))
-client_socket.connect((&apos;[param(&apos;IPAddress&apos;)]&apos;,[param(&apos;Port&apos;)]))
+client_socket.connect((&apos;[IPAddress]&apos;,[Port]))
 
 payload=&apos;ARCHIVE: [ExternalLocation],[CapturePath]&apos;
 
@@ -1273,6 +1435,15 @@ client_socket.close()</initializationScript>
             </steps>
             <multilineDescription>Create a ZIP archive of captures and move them to a designated location.</multilineDescription>
             <arguments>
+                <item name="IPAddress">
+                    <description>IP Address of the Umetrix Video host.</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="Port">
+                    <description>Umetrix Video TCP Port number.</description>
+                    <defaultValue>7073</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
                 <item name="ExternalLocation">
                     <description>The complete file path to the location to move the created archive.</description>
                     <isMandatory>true</isMandatory>
@@ -1321,7 +1492,7 @@ import struct
 client_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM,socket.IPPROTO_TCP)
 client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 0)
 client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER,struct.pack(&quot;ii&quot;, 1, 0))
-client_socket.connect((&apos;[param(&apos;IPAddress&apos;)]&apos;,[param(&apos;Port&apos;)]))
+client_socket.connect((&apos;[IPAddress]&apos;,[Port]))
 
 payload=&apos;RESTART&apos;
 
@@ -1344,6 +1515,17 @@ client_socket.close()</initializationScript>
                 </item>
             </steps>
             <multilineDescription>Restarts the Umetrix Video application.</multilineDescription>
+            <arguments>
+                <item name="IPAddress">
+                    <description>IP Address of the Umetrix Video host.</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="Port">
+                    <description>Umetrix Video TCP Port number.</description>
+                    <defaultValue>7073</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
             <response>{&quot;resp&quot;:&quot;value&quot;}</response>
         </item>
         <item name="SetGEDCircle" isPublic="true" isVBlock="true">
@@ -1383,7 +1565,7 @@ import struct
 client_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM,socket.IPPROTO_TCP)
 client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 0)
 client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER,struct.pack(&quot;ii&quot;, 1, 0))
-client_socket.connect((&apos;[param(&apos;IPAddress&apos;)]&apos;,[param(&apos;Port&apos;)]))
+client_socket.connect((&apos;[IPAddress]&apos;,[Port]))
 
 payload=&apos;SET GED CIRCLE: [ChannelIndex], [CircleCount]&apos;
 
@@ -1407,6 +1589,15 @@ client_socket.close()</initializationScript>
             </steps>
             <multilineDescription>This sets the number of circles to be used for testing. By default, 5 circles will be used for each channel. 4 circles cannot be used for a 60fps configuration.</multilineDescription>
             <arguments>
+                <item name="IPAddress">
+                    <description>IP Address of the Umetrix Video host.</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="Port">
+                    <description>Umetrix Video TCP Port number.</description>
+                    <defaultValue>7073</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
                 <item name="ChannelIndex">
                     <description>Channel to be configured.</description>
                     <isMandatory>true</isMandatory>
@@ -1455,7 +1646,7 @@ import struct
 client_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM,socket.IPPROTO_TCP)
 client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 0)
 client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER,struct.pack(&quot;ii&quot;, 1, 0))
-client_socket.connect((&apos;[param(&apos;IPAddress&apos;)]&apos;,[param(&apos;Port&apos;)]))
+client_socket.connect((&apos;[IPAddress]&apos;,[Port]))
 
 payload=&apos;SET AVSYNC OFFSET: [OffsetValue]&apos;
 
@@ -1479,6 +1670,15 @@ client_socket.close()</initializationScript>
             </steps>
             <multilineDescription>Updates the AVSYNC value in settings. This offset value is used in the calculation of AV sync.</multilineDescription>
             <arguments>
+                <item name="IPAddress">
+                    <description>IP Address of the Umetrix Video host.</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="Port">
+                    <description>Umetrix Video TCP Port number.</description>
+                    <defaultValue>7073</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
                 <item name="OffsetValue">
                     <description>A description for the AVSYNC as a whole.</description>
                     <isMandatory>true</isMandatory>
@@ -1523,7 +1723,7 @@ import struct
 client_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM,socket.IPPROTO_TCP)
 client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 0)
 client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER,struct.pack(&quot;ii&quot;, 1, 0))
-client_socket.connect((&apos;[param(&apos;IPAddress&apos;)]&apos;,[param(&apos;Port&apos;)]))
+client_socket.connect((&apos;[IPAddress]&apos;,[Port]))
 
 payload=&apos;SET AUTO PROCESSING: [AutoProcessValue]&apos;
 
@@ -1547,6 +1747,15 @@ client_socket.close()</initializationScript>
             </steps>
             <multilineDescription>By setting the value to true, the session will be automatically processed after the capture of session is complete.</multilineDescription>
             <arguments>
+                <item name="IPAddress">
+                    <description>IP Address of the Umetrix Video host.</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="Port">
+                    <description>Umetrix Video TCP Port number.</description>
+                    <defaultValue>7073</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
                 <item name="AutoProcessValue">
                     <description>Value to be set for the sessions to be processed.</description>
                     <isMandatory>true</isMandatory>
@@ -1591,7 +1800,7 @@ import struct
 client_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM,socket.IPPROTO_TCP)
 client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 0)
 client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER,struct.pack(&quot;ii&quot;, 1, 0))
-client_socket.connect((&apos;[param(&apos;IPAddress&apos;)]&apos;,[param(&apos;Port&apos;)]))
+client_socket.connect((&apos;[IPAddress]&apos;,[Port]))
 
 payload=&apos;GET AUTO PROCESSING STATUS&apos;
 
@@ -1614,6 +1823,17 @@ client_socket.close()</initializationScript>
                 </item>
             </steps>
             <multilineDescription>Get the current setting for AUTO PROCESSING.</multilineDescription>
+            <arguments>
+                <item name="IPAddress">
+                    <description>IP Address of the Umetrix Video host.</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="Port">
+                    <description>Umetrix Video TCP Port number.</description>
+                    <defaultValue>7073</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
             <response>{&quot;resp&quot;:&quot;value&quot;}</response>
         </item>
     </procedures>
