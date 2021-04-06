@@ -12,13 +12,35 @@ Class: Tested by Spirent
 ### Spirent TestCenter QuickCall Library
 Spirent TestCenter basic Quickcalls
 ### StartArp
+```
+Starts ARP/ND on all devices in config. Returns status in a JSON block.
+Returns block 
+ status "OK" if all ARPs resolve successfully, "error" otherwise
+```
+
 ### RunTraffic
+```
+Run all traffic generators in current STC config for a specified time and return basic traffic stats.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>run_time</td><td>Time in seconds to run traffic</tr></td></table>
 
 ### StartTraffic
+```
+Start all traffic generators in current STC config
+```
+
 ### StopTraffic
+```
+Stop all traffic generators in current STC config
+```
+
 ### GetPortInfo
+```
+Get info on all ports in the current STC config.
+```
+
 41 response maps in project
 ## Response Map File: STC_open.ffrm
 ## Response Map File: 2214-filter2-output.ffrm

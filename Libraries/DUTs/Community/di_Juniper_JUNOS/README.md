@@ -9,13 +9,25 @@ Class: Community
 ### Juniper QC library
 Juniper QC library
 ### login
+```
+Used to autoatically login to session
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>username</td><td>Valid username</tr></td>
 <tr><td>password</td><td>valid password</tr></td>
 <tr><td>enablePassword</td><td>Leave blank if the same as password</tr></td></table>
 
 ### getVersion
+```
+Get current SW version good for intital system checks
+```
+
 ### checkCounters
+```
+This procedure is used to clear counters for Ethernet interface.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>ifc</td><td>Enter a valid interface value.
 
@@ -24,38 +36,70 @@ e.g. - fastEthernet 6/0</tr></td>
 Acceptable values: 0|1</tr></td></table>
 
 ### saveRunningConfigTftp
+```
+Save the running config to a TFTP server
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>tftpServerIp</td><td>Valid IP address</tr></td>
 <tr><td>filename</td><td>Valid config file name</tr></td></table>
 
 ### restoreRunningConfigTftp
+```
+Restorre the running config from a TFTP server
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>tftpServerIp</td><td>Valid IP address</tr></td>
 <tr><td>filename</td><td>Valid config file name</tr></td></table>
 
 ### graphProcesses
+```
+This is intended to run as a background process throughout the entire test. By default we capture stats every 30 seconds.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>delaySec</td><td>Number of seconds to wait before checking process info.</tr></td></table>
 
 ### interfaceCheckState
+```
+Use to validate if interfaces are up
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>interfaces</td><td>Valid list of interfaces to check</tr></td></table>
 
 ### interfaceGetState
+```
+Get the interface state from a vaild interface
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>interface</td><td>Valid interface</tr></td></table>
 
 ### interfaceModifyState
+```
+Use QC to easitly enable/disable interfaces
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>interface</td><td>Valid interface to modify</tr></td>
 <tr><td>state</td><td>Two options: enable|disable</tr></td></table>
 
 ### commitConfirmed
+```
+Use commit confirmed so if the console gets knocked out then the commit won't happen. The system will rollback on its own.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>timeout</td><td>Number of minutes until automatic rollback (1..65535)</tr></td>
 <tr><td>commitImmediately</td><td>Will commit after "commit confirmed" true|false</tr></td></table>
 
 ### setTermLengthZero
+```
+Set terminal length to 0
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>session</td><td>Session name if not called from a QC</tr></td></table>
 
@@ -69,6 +113,10 @@ Acceptable values: 0|1</tr></td></table>
 <tr><td>delConf</td><td>If changed from default, will remove specified LSP config</tr></td></table>
 
 ### LoadConfig
+```
+Load config from local disk
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>load_operation</td><td>Options:
 
@@ -88,10 +136,22 @@ All operation are from base of config mode (relative option to be added later)</
 <tr><td>path_type_name</td><td>Can be:  primary/secondary <path_name></tr></td></table>
 
 ### CheckInterfaceUp
+```
+Returns a block JSON string.
+\tint_status: 1 is interface is enabled and connected, 0 otherwise
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>interface</td><td>Name of interface as it appears on router</tr></td></table>
 
 ### clear_lsp_optimization
+```
+Clear the LSP optimization
+
+Return:
+Always returns 1
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>lsp_name</td><tr></tr></table>
 
@@ -100,6 +160,10 @@ All operation are from base of config mode (relative option to be added later)</
 <tr><td>interface_list</td><tr></tr></table>
 
 ### config_mpls_te_tunnel_path_option
+```
+Configure/Remove a hop in mpls path
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>group_name</td><td>NA for Juniper</tr></td>
 <tr><td>interface</td><td>NA for Juniper</tr></td>
@@ -114,6 +178,12 @@ All operation are from base of config mode (relative option to be added later)</
 <tr><td>hop_type</td><td>Can be loose or strict</tr></td></table>
 
 ### get_routing_engine
+```
+Wait for the routing engine to be up and send back which one is active. Wait a pre-determined time for the RE to come up.
+
+Response: Block
+```
+
 ### get_interface_status
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>interface</td><td>This is the procedure for returning interface status on juniper interface. </tr></td></table>
@@ -136,14 +206,30 @@ All operation are from base of config mode (relative option to be added later)</
 <tr><td>interface</td><tr></tr></table>
 
 ### show_mpls_te_tunnels_detail
+```
+Show info about LSP
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>name</td><td>Tunnel name</tr></td></table>
 
 ### show_mpls_lsp_ingress_terse
+```
+Show info about LSP
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>name</td><td>Tunnel name</tr></td></table>
 
 ### switch_master
+```
+Switch the master routing engine
+
+Returns:
+0 - Failure
+1 - Success
+```
+
 ### show_route
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>network_address</td><tr></tr></table>
@@ -249,10 +335,18 @@ multicast-scope      Multicast scope to match
   upto                 Mask falls between two prefix lengths</tr></td></table>
 
 ### activate_lsp
+```
+bla
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>lsp_name</td><tr></tr></table>
 
 ### deactivate_lsp
+```
+bla
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>lsp_name</td><tr></tr></table>
 
@@ -267,6 +361,10 @@ multicast-scope      Multicast scope to match
   ingress              Display LSPs originating at this router</tr></td></table>
 
 ### show_mpls_te_tunnels
+```
+Show info about LSP
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>name</td><td>Tunnel name</tr></td>
 <tr><td>detail</td><td>Use "yes" to display detailed output
@@ -392,6 +490,10 @@ Use 0 if you are not calling the procedure from the global configuration CLI con
 <tr><td>logical_systems</td><tr></tr></table>
 
 ### set_groups
+```
+set and delete groups
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>in_context</td><td>command needs to be entered in "configuration" mode. 
 Use 0 if you are not calling the procedure from the global configuration CLI context, 1 otherwise.</tr></td>
@@ -457,12 +559,20 @@ Use 0 if you are not calling the procedure from the global configuration CLI con
 </tr></td></table>
 
 ### send_login
+```
+Quick call for Juniper devices through the Acme NOC
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>session</td><tr></tr>
 <tr><td>userid</td><tr></tr>
 <tr><td>password</td><tr></tr></table>
 
 ### set_service_filter
+```
+Creating and applying various filters both SGOS and PPCOS. For the VPLS service (macro names starting with VPLS) an extra "VPLS_flood_macro" will be applied at the end. This requires a valid vrf name input.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>macro_name</td><tr></tr>
 <tr><td>unit_number</td><tr></tr>
@@ -484,6 +594,10 @@ Use 0 if you are not calling the procedure from the global configuration CLI con
 <tr><td>level</td><tr></tr></table>
 
 ### set_terminal
+```
+Confiure the terminal window for timestamp format, screen width
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>screen_length</td><td>Defines the Number of line to display before triggering 'more' event</tr></td></table>
 
@@ -644,6 +758,13 @@ This is significance only with iterations field</tr></td></table>
 <tr><td>service_id</td><tr></tr></table>
 
 ### whats_my_re
+```
+For this session return the re# (0 or 1). Also return the 'other re #'
+Use 'show version invoke-on other-routing-engine' which contains "re0" or "re1" at the top of the output.
+If 0, this re must be 1
+If 1, this re must be 0
+```
+
 159 response maps in project
 ## Response Map File: show_vpls_connection_instance1.ffrm
 ## Response Map File: show_database-replication_summary.ffrm

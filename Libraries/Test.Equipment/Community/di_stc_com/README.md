@@ -11,6 +11,10 @@ Class: Community
 Spirent TestCenter QuickCalls for traffic management, capture controls, and 802.11 wifi operations
 Video at: https://youtu.be/Jt9g0owf0Qg
 ### associateIeee80211clientprofile
+```
+Associate an 802.11 client profile with an emulated device
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>emulatedDeviceName</td><td>Name of the emulated device to associate 802.11 client profile</tr></td>
 <tr><td>ieee80211clientprofileName</td><td>Name of the 802.11 client profile to associate</tr></td></table>
@@ -24,11 +28,19 @@ Example: file:/C:/stc.pcap</tr></td>
 <tr><td>delay</td><td>Amount of time to capture data</tr></td></table>
 
 ### configureTrafficProfile
+```
+This is used to set the load for a traffic stream
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>portIndex</td><td>Applies any changes that you made to configuration settings. This changes generator profile settings. Returns generator information.</tr></td>
 <tr><td>loadPortBasedPercent</td><td>This is the fixed load percentage based on negotiated line rate. For example, 30% load on 1GE line rate is 300Mb/s</tr></td></table>
 
 ### configureIeee80211clientprofile
+```
+Configure any property of an 802.11 client profile
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>Name</td><td>Name of the IEEE 802.11 profile to configure</tr></td>
 <tr><td>AMPDUOption</td><tr></tr>
@@ -94,6 +106,10 @@ Example: file:/C:/stc.pcap</tr></td>
 <tr><td>TtlsPhaseTwoAuthentication</td><tr></tr></table>
 
 ### configureIeee80211phyMimoMode
+```
+Configure 802.11 MIMO mode of a physical wifi port
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>portName</td><td>Name of the wifi port to configure</tr></td>
 <tr><td>mimoMode</td><td>Possible Values:
@@ -102,6 +118,10 @@ SU_MIMO | Single-User MIMO
 MU_MIMO | Multi-User MIMO</tr></td></table>
 
 ### createIeee80211clientprofile
+```
+Create a 802.11 client profile with default values
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>Name</td><td>Name of the IEEE 802.11 profile to create (recommended to use a unique name)</tr></td></table>
 
@@ -110,6 +130,12 @@ MU_MIMO | Multi-User MIMO</tr></td></table>
 <tr><td>delaySec</td><td>Delay in seconds between checks</tr></td></table>
 
 ### getBasicDeviceInfo
+```
+This will return basic port info used to for L2/L3 traffic
+
+Return: MAC, IP, and GW
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>port</td><td>Valid port index
 Example: 1</tr></td>
@@ -117,17 +143,33 @@ Example: 1</tr></td>
 Example: 1</tr></td></table>
 
 ### getBasicPortTxRxCounters
+```
+Returns the Tx/Rx Frame/Bit counters for the specified port
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>port</td><td>This is the STC port value that can be captured from getPorts QC.
 
 Example: Port //2/9</tr></td></table>
 
 ### getIeee80211clientprofile
+```
+Show all the properties of a given 802.11 client profile
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>Name</td><td>Name of the IEEE 802.11 profile to display</tr></td></table>
 
 ### getPorts
+```
+Returns a list of provisioned ports
+```
+
 ### pcapCapture
+```
+Capture PCAP and examine PCAP using other tools like wireshark
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>portList</td><td>Enter a valid portList value -e.g. 1</tr></td>
 <tr><td>captureDelaySec</td><td>Enter time in seconds for how long to capture data</tr></td>
@@ -136,11 +178,26 @@ Example: Port //2/9</tr></td></table>
 Example: file:/C:/Users/MBARFI~1/AppData/Local/Temp/stc.pcap</tr></td></table>
 
 ### sanityCheckTraffic
+```
+This will check if traffic is running, out-of-order packets, duplicates, and dropped packets
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>sanityCheckDelaySec</td><td>This is a short delay bfeore checking traffic to give system enough time to intialize</tr></td></table>
 
 ### setStandardTrafficResults
+```
+Set your common traffic results you want the traffic generator to capture. This should be standard for most of your tests.
+
+List includes:
+DetailedStreamResults, BasicTrafficResults, and PortResults
+```
+
 ### startArpClearCounters
+```
+This will allow users to intiate ARP request and clear counters before starting traffic
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>startArp</td><td>Starts ARP/ND packets for the specified ports and returns the ARP/ND state.
 
@@ -150,6 +207,10 @@ True or False (1|0)</tr></td>
 True or False (1|0)</tr></td></table>
 
 ### startTraffic
+```
+Start traffic generator and run optional sanity check to look for dead streams, out-of-order and duplicate packets. Also, set traffic exection time in seconds.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>sanityCheck</td><td>Sanity check the traffic streams for common errors
 
@@ -157,14 +218,30 @@ true or false (1|0)</tr></td>
 <tr><td>trafficDurationSec</td><td>Set traffic duration in seconds.</tr></td></table>
 
 ### stopTraffic
+```
+Stop traffic - no return value
+```
+
 ## Quickcall Library: sqlite_quickcall_library.fftc
 ### QC library for SQLite
 QC library for SQLite
 ### sanityCheckL2
+```
+This is a quick sanity check to ensure that you don't get psuedo pass results after transmitting traffic.
+```
+
 ## Quickcall Library: stc_quickcall_library.fftc
 ### STC TCL QC library
 STC TCL QC library
 ### apiSaveResultCommand
+```
+Use this procedure to save STC results into a SQLite DB file. This file can be queried for analysis purposes. SQL queries are more efficient at data mining versus other techniques.
+
+Also, this converts the results to the Results Reporter schema so you can use Results Reporter to help you query data results.
+
+Note: must run generator before saving a results file.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>databaseConnectionStringFilePath</td><td>Filepath to use for the output file. By default the filename will have the date and time as part of its name, like this example: C:/stcResults
 
@@ -193,6 +270,12 @@ disabled = 0</tr></td>
 C:\\Program Files (x86)\\Spirent Communications\\Spirent TestCenter 4.49\\Spirent TestCenter Application</tr></td></table>
 
 ### stcApiReturnValues
+```
+This procedure will help standardize API return values for STC. By returning a structured response it should make it easier for testers to apply analysis rules to STC API return values.
+
+Note: open the "structure" view to query return values. This is a robust method of utilizing structured data.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>stcApiReturnValue</td><td>STC returns a structured tcl array response after executing APIs. This procedure converts that to XML to make iTest analysis easier.
 
@@ -203,6 +286,10 @@ Example array response(stc::perform generatorStart): -parent system1 -Name {Star
 <tr><td>subscribedResults</td><td>List of results required to analyze traffic - e.g. DetailedStreamResults</tr></td></table>
 
 ### sanityCheckTraffic
+```
+This will check if traffic is running, out-of-order packets, duplicates, and dropped packets
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>sanityCheckDelaySec</td><td>This is a short delay bfeore checking traffic to give system enough time to intialize</tr></td></table>
 
@@ -237,6 +324,10 @@ Example: file:/C:/stc.pcap</tr></td>
 <tr><td>channelPower</td><td>Power of the channel, larger the number, higher will be the attenuation</tr></td></table>
 
 ### modifyMIMO
+```
+This procedure modifies MIMO type based on Parameter
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>wifiPort</td><td>Port where the MIMO configuration need to be modified</tr></td>
 <tr><td>mimoType</td><td>MIMO type to be modified, it will have following values
@@ -280,6 +371,11 @@ ChannelBandWidth80Mhz</tr></td></table>
 <tr><td>wifiPort</td><td>Wifi Port of STC </tr></td></table>
 
 ### setSMAattenuation
+```
+This Procedure will the channel Attenuation, since it might be called multiple time for setting multiple attenaution on different SMA's, 
+stc::apply need to used by calling test case
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>smaPort</td><td>smaPort 
 

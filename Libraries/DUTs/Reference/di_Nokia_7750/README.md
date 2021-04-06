@@ -8,16 +8,31 @@ Class: Reference
 1 quickcall library in project
 ## Quickcall Library: nokia_7750_ssh_base_quickcall_library.fftc
 ### Ping
+```
+Ping specified IP.
+Returns JSON string: 
+\tpacket_loss - percentage of packets lost
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>ip_address</td><td>IP Address to ping</tr></td></table>
 
 ### ConfigureInterfaceMtu
+```
+Configure the MTU on a given port
+
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>interface</td><td>Name of port to modify</tr></td>
 <tr><td>new_mtu</td><td>Size of MTU to configure
 </tr></td></table>
 
 ### ConfigureInterfaceLldp
+```
+Configure an LLDP on an interface 
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>interface</td><td>Port number to modify
 example 2/2/1</tr></td>

@@ -7,6 +7,13 @@ Class: Reference
 1 quickcall library in project
 ## Quickcall Library: linux_cli_quickcalls.fftc
 ### Ping
+```
+Ping 
+
+Returns a JSON block response
+
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>target</td><td>IP Address or URL to ping</tr></td>
 <tr><td>count</td><td>Number of times to ping</tr></td></table>

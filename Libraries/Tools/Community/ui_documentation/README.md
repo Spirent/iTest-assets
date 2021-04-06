@@ -31,29 +31,57 @@ uriDocumentationList - If specified and file exists, only the projects listed in
 includeResponseMaps - If true, inlude a list of response maps along with heading and description.
 
 ### getProjectList
+```
+Return a list of project URI's within the current workspace
+```
+
 ### getUriList
+```
+Return a list of test case URI's within a given project URI
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>uriProject</td><td>URI of project</tr></td></table>
 
 ### getLibList
+```
+Get list of QuickCall Libraries and Procedure Libraries from given list of test case URI's
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>uriProject</td><td>URI of project</tr></td>
 <tr><td>uriList</td><td>List of file URI's for files within the project</tr></td></table>
 
 ### createFiles
+```
+Create HTML and MD files
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>uriPath</td><td>URI to project</tr></td></table>
 
 ### writeLibrariesFound
+```
+Build a separate list of QuickCall and Procedure libraries
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>uriPath</td><td>URI to project</tr></td></table>
 
 ### writeInfo
+```
+Append to HTML and MD: procedure names, descriptions and arguments
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>uriPath</td><td>URI to project</tr></td>
 <tr><td>uriList</td><td>List of library URI's </tr></td></table>
 
 ### writeRMInfo
+```
+Append to HTML and MD: procedure names, descriptions and arguments
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>uriPath</td><td>URI to project</tr></td>
 <tr><td>uriList</td><td>List of response map URI's </tr></td></table>

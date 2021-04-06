@@ -9,6 +9,11 @@ Class: Community
 ## Quickcall Library: huawei_base.fftc
 ### Huawei CLI Base
 ### login
+```
+Login with the credentials for the device. Because these credentials may be different for each device, this QuickCall should be replicated for each device QuickCall library.
+Also, enter the configuration mode and trun off alarm and event output. 
+```
+
 ### show_slot
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>slot</td><td>SlotID</tr></td></table>

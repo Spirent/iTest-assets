@@ -12,6 +12,18 @@ https://www.youtube.com/watch?v=0VzVSUqnW5o
 ### TestRail QuickCalls
 QuickCalls used to for TestRail, especially useful for updating test results. Tested on hosted platform
 ### addResultToTest
+```
+Adds a test result to a test
+
+The ID of the test status. The built-in system statuses have the following IDs:
+1\tPassed
+2\tBlocked
+3\tUntested (not allowed when adding a result)
+4\tRetest
+5\tFailed
+
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>apiUserName</td><td>API authentication user</tr></td>
 <tr><td>apiUserPassword</td><td>API authentication password</tr></td>
@@ -31,6 +43,18 @@ stepResults=eval(stepResults)</tr></td>
 <tr><td>fullReportUrl</td><td>The URL where the full report can be reviewed. This requires a custom result called "Full Report" (type URL) with a System Name of "fullreport" to have been created and applied to the test's template</tr></td></table>
 
 ### addTestCase
+```
+Adds a test result to a test
+
+The ID of the test status. The built-in system statuses have the following IDs:
+1\tPassed
+2\tBlocked
+3\tUntested (not allowed when adding a result)
+4\tRetest
+5\tFailed
+
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>apiUserName</td><td>API authentication user</tr></td>
 <tr><td>apiUserPassword</td><td>API authentication password</tr></td>
@@ -39,6 +63,10 @@ stepResults=eval(stepResults)</tr></td>
 <tr><td>templateId</td><td>default 2 is a test-step modelled test case</tr></td></table>
 
 ### addTestRunToPlan
+```
+Adds a new test runs to a test plan
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>apiUserName</td><td>API authentication user</tr></td>
 <tr><td>apiUserPassword</td><td>API authentication password</tr></td>
@@ -48,6 +76,10 @@ stepResults=eval(stepResults)</tr></td>
 <tr><td>description</td><td>The description of the test run to create</tr></td></table>
 
 ### getCaseId
+```
+Finds test case by name
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>apiUserName</td><td>API authentication user</tr></td>
 <tr><td>apiUserPassword</td><td>API authentication password</tr></td>
@@ -55,6 +87,10 @@ stepResults=eval(stepResults)</tr></td>
 <tr><td>projectId</td><td>Id of project where test plan resides</tr></td></table>
 
 ### getSectionId
+```
+Finds test case by name
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>apiUserName</td><td>API authentication user</tr></td>
 <tr><td>apiUserPassword</td><td>API authentication password</tr></td>
@@ -62,6 +98,10 @@ stepResults=eval(stepResults)</tr></td>
 <tr><td>projectId</td><td>Id of project where section resides</tr></td></table>
 
 ### getPlanId
+```
+Finds test plan by name
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>apiUserName</td><td>API authentication user</tr></td>
 <tr><td>apiUserPassword</td><td>API authentication password</tr></td>
@@ -70,6 +110,10 @@ stepResults=eval(stepResults)</tr></td>
 <tr><td>onlyActive</td><td>Search only for active plans</tr></td></table>
 
 ### getProjectId
+```
+Finds project by name
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>apiUserName</td><td>API authentication user</tr></td>
 <tr><td>apiUserPassword</td><td>API authentication password</tr></td>
@@ -77,6 +121,10 @@ stepResults=eval(stepResults)</tr></td>
 <tr><td>onlyActive</td><td>Search only for active projects</tr></td></table>
 
 ### getTestIds
+```
+Shows tests in a run
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>apiUserName</td><td>API authentication user</tr></td>
 <tr><td>apiUserPassword</td><td>API authentication password</tr></td>

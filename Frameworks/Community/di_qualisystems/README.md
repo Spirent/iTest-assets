@@ -7,20 +7,37 @@ Class: Community
 1 quickcall library in project
 ## Quickcall Library: quali_lib.fftc
 ### activate_reservation
+```
+Activates an existing reservation. The topology was created in the create_reservation command and a reservation id must have been returned. The function returns 1 for success and 0 for failure. The command will not end the reservation in case of failure.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>reservationId</td><td>The id of the reservation returned by the create_reservation command</tr></td></table>
 
 ### connect_route
+```
+The function returns 0 for failure or 1 for success. 
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>reservationId</td><td>The id of the reservation returned by the create_reservation command</tr></td></table>
 
 ### connect_route_old
+```
+The function returns 0 for failure or 1 for success. 
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>reservationId</td><td>The id of the reservation returned by the create_reservation command</tr></td>
 <tr><td>routes</td><td>Route to be connected (space separated values)
 E.g. "{TG/IXIA/XM12_02:11/15 Ciena_3930-11:9} {Ciena_3930-11:11 PE12:ge-1/3/1}"</tr></td></table>
 
 ### create_reservation
+```
+Creates an immediate reservation, adds resources and creates the routes (similar to adding topology). Returns 0 for failure and reservation id for success. (reservation id example: '91d65fec-aa8e-46a6-a754-ec7ff29fbd4e')
+This function will not activate the resources (create the L1 mappings) until the activate_reservation function is called.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>reservationName</td><td>The name/description of the reservation. Note that multiple reservations with the same name can be added in RM. The difference is the reservation id.</tr></td>
 <tr><td>reservationDuration</td><td>Duration in minutes of the reservation</tr></td>
@@ -33,6 +50,11 @@ Example 1. "{TG/IXIA/XM12_02:11/15 Ciena_3930-11:9} {Ciena_3930-11:11 PE12:ge-1/
 Example 2 with dual media ports "{TG/Spirent/STC_01:4/1/copper Ciena_3960-14:1/copper}"</tr></td></table>
 
 ### create_reservation_with_topology
+```
+Creates an immediate reservation, adds resources and creates the routes (similar to adding topology). Returns 0 for failure and reservation id for success. (reservation id example: '91d65fec-aa8e-46a6-a754-ec7ff29fbd4e')
+This function will not activate the resources (create the L1 mappings) until the activate_reservation function is called.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>reservationName</td><td>The name/description of the reservation. Note that multiple reservations with the same name can be added in RM. The difference is the reservation id.</tr></td>
 <tr><td>reservationDuration</td><td>Duration in minutes of the reservation</tr></td>
@@ -40,6 +62,10 @@ Example 2 with dual media ports "{TG/Spirent/STC_01:4/1/copper Ciena_3960-14:1/c
 <tr><td>topologyFullPath</td><td>The full path of the topology which you want to load. This has been previously built in the RM GUI.</tr></td></table>
 
 ### database_login
+```
+Login to the QualiSystems Database using API commands. These credentials are taken from the global parameter file.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>user</td><td>The user must be present in the RM DB with access to the desired domain</tr></td>
 <tr><td>password</td><tr></tr>
@@ -47,21 +73,38 @@ Example 2 with dual media ports "{TG/Spirent/STC_01:4/1/copper Ciena_3960-14:1/c
 
 ### database_logoff
 ### disconnect_route
+```
+The function returns 0 for failure or 1 for success. 
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>reservationId</td><td>The id of the reservation returned by the create_reservation command</tr></td></table>
 
 ### disconnect_route_old
+```
+The function returns 0 for failure or 1 for success. 
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>reservationId</td><td>The id of the reservation returned by the create_reservation command</tr></td>
 <tr><td>routes</td><td>Route to be disconnected (space separated values)
 E.g. "{TG/IXIA/XM12_02:11/15 Ciena_3930-11:9} {Ciena_3930-11:11 PE12:ge-1/3/1}"</tr></td></table>
 
 ### end_reservation
+```
+Creates an immediate reservation, adds resources and creates the routes (similar to adding topology). Returns 0 for failure and reservation id for success. (reservation id example: '91d65fec-aa8e-46a6-a754-ec7ff29fbd4e')
+This function will not activate the resources (create the L1 mappings) until the activate_reservation function is called.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>reservationId</td><td>The reservation id returned in the create_reservation command.</tr></td></table>
 
 ### get_reservation_by_topology
 ### get_resource_ip
+```
+The function returns 0 for failure or the ip address for success. 
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>resourceId</td><td>The resource id it has the same format as in the "create_reservation" command / "routes" parameter. However only the "parent" resource is specified
 Examples: 

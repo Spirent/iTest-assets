@@ -164,6 +164,10 @@ Examples:
 <tr><td>profile_name</td><tr></tr></table>
 
 ### getProfileArgs
+```
+Get values from a CSV format spreadsheet and return a string of argument name/value pairs.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>profile_name</td><td>Profile name to select a row of data.</tr></td></table>
 

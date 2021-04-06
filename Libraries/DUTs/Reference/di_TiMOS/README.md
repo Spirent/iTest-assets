@@ -7,12 +7,26 @@ Class: Reference
 1 quickcall library in project
 ## Quickcall Library: SSH_ref_ALU_quickcall_library.fftc
 ### GetFirmwareVersion
+```
+Returns a JSON string: 
+\tversion
+\tmodel
+```
+
 ### ConfigureMtu
+```
+Change the MTU on an interface
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>interface</td><td>Interface to modify</tr></td>
 <tr><td>mtu</td><td>New value for MTU </tr></td></table>
 
 ### AddVlanToPort
+```
+Add a VLAN and epipe to a port
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>interface</td><td>The interface for VLAN</tr></td>
 <tr><td>epipe</td><td>Customer service epipe ID</tr></td>
@@ -20,10 +34,30 @@ Class: Reference
 <tr><td>vlan</td><td>The VLAN for interface</tr></td></table>
 
 ### GetPortInfo
+```
+Get info from the show port command 
+Returns a block JSON string:
+\tadmin_state
+\toper_state
+\tmtu_size
+\tduplex
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>interface</td><tr></tr></table>
 
 ### GetServiceInfo
+```
+Get info about a service from the show service id table.
+Returns a block JSON string:
+\tidentifier_list - List of all services and ports
+\ttype_list - List of service types
+\tadmin_mtu_list - List of configured MTU sizes
+\toper_mtu_list - List of operational MTU sizes
+\tadmin_state_list - List of configured states
+\toper_state_list - List of operational states
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>service_id</td><td>Id number of service to get info on
 ex: 555</tr></td></table>
@@ -52,7 +86,21 @@ ex. 555</tr></td>
 ex.: 20</tr></td></table>
 
 ### GetHostname
+```
+Returns block JSON string: 
+\thostname
+
+```
+
 ### GetPowerSupplyInfo
+```
+Get info on chassis power supplies.
+Returns a block JSON string:
+\tnum_power_supplies - number of power supplies available
+\toverall_status - "true" if all power supplies are up, "false" otherwise
+
+```
+
 5 response maps in project
 ## Response Map File: show_service_id_base.ffrm
 ## Response Map File: show_system_information.ffrm

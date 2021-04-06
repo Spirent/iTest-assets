@@ -28,6 +28,10 @@ it is not possible to add or modify the delay of any link within the network map
 1 quickcall library in project
 ## Quickcall Library: sne_quickcall.fftc
 ### UploadMapFile
+```
+Uploads a map file.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>mapFile</td><td>Path to mapFile on local disk.</tr></td>
 <tr><td>userToken</td><td>“userToken” (optional) - Specifies a valid user account name for multi-user mode.
@@ -38,6 +42,10 @@ curl -X GET "http://192.168.1.100/api/maps/{mapId}/{port}?userToken={userToken}"
 -H "accept: application/json"</tr></td></table>
 
 ### StartMap
+```
+Starts executing a loaded map.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>mapId</td><td>“mapId”(required) - The sne map name or id to modify.</tr></td>
 <tr><td>userToken</td><td>“userToken” (optional) - Specifies a valid user account name for multi-user mode.
@@ -48,6 +56,10 @@ curl -X GET "http://192.168.1.100/api/maps/{mapId}/{port}?userToken={userToken}"
 -H "accept: application/json"</tr></td></table>
 
 ### StopMap
+```
+Stops executing a running map but does not unload it from the sne.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>mapId</td><td>“mapId”(required) - The sne map name or id to modify.</tr></td>
 <tr><td>userToken</td><td>“userToken” (optional) - Specifies a valid user account name for multi-user mode.
@@ -58,6 +70,10 @@ curl -X GET "http://192.168.1.100/api/maps/{mapId}/{port}?userToken={userToken}"
 -H "accept: application/json"</tr></td></table>
 
 ### UnloadMapFile
+```
+Unloads a stopped map from the $session.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>mapId</td><td>“mapId”(required) - The sne map name or id to modify.</tr></td>
 <tr><td>userToken</td><td>“userToken” (optional) - Specifies a valid user account name for multi-user mode.
@@ -68,7 +84,15 @@ curl -X GET "http://192.168.1.100/api/maps/{mapId}/{port}?userToken={userToken}"
 -H "accept: application/json"</tr></td></table>
 
 ### GetAllMaps
+```
+Retrieves information about all loaded maps.
+```
+
 ### GetMapByMapId
+```
+Retrives information about a specific loaded map.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>mapId</td><td>“mapId”(required) - The sne map name or id to modify.</tr></td>
 <tr><td>userToken</td><td>“userToken” (optional) - Specifies a valid user account name for multi-user mode.
@@ -79,6 +103,10 @@ curl -X GET "http://192.168.1.100/api/maps/{mapId}/{port}?userToken={userToken}"
 -H "accept: application/json"</tr></td></table>
 
 ### GetAllImpairments
+```
+Retrives information about all impairments in loaded map.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>mapId</td><td>“mapId”(required) - The sne map name or id to modify.</tr></td>
 <tr><td>userToken</td><td>“userToken” (optional) - Specifies a valid user account name for multi-user mode.
@@ -89,6 +117,10 @@ curl -X GET "http://192.168.1.100/api/maps/{mapId}/{port}?userToken={userToken}"
 -H "accept: application/json"</tr></td></table>
 
 ### SetImpairmentEnableStatus
+```
+Updates the enabled status of an impairment.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>mapId</td><td>“mapId”(required) - The sne map name or id to modify.</tr></td>
 <tr><td>impId</td><td>“impId” - The impairment name or id.</tr></td>
@@ -101,6 +133,10 @@ curl -X GET "http://192.168.1.100/api/maps/{mapId}/{port}?userToken={userToken}"
 -H "accept: application/json"</tr></td></table>
 
 ### GetDelaySettings
+```
+Retrieves the current settings of the delay impairment.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>mapId</td><td>“mapId”(required) - The sne map name or id to modify.</tr></td>
 <tr><td>impId</td><td>“impId” - The impairment name or id.</tr></td>
@@ -112,6 +148,10 @@ curl -X GET "http://192.168.1.100/api/maps/{mapId}/{port}?userToken={userToken}"
 -H "accept: application/json"</tr></td></table>
 
 ### SetDelaySettings
+```
+Updates the current settings of the Delay impairment.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>mapId</td><td>“mapId”(required) - The sne map name or id to modify.</tr></td>
 <tr><td>impId</td><td>“impId” - The impairment name or id.</tr></td>
@@ -257,6 +297,10 @@ Valid values:
 true or false</tr></td></table>
 
 ### GetJitterSettings
+```
+Retrieves the current settings of the Jitter impairment.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>mapId</td><td>“mapId”(required) - The sne map name or id to modify.</tr></td>
 <tr><td>impId</td><td>“impId” - The impairment name or id.</tr></td>
@@ -268,6 +312,10 @@ curl -X GET "http://192.168.1.100/api/maps/{mapId}/{port}?userToken={userToken}"
 -H "accept: application/json"</tr></td></table>
 
 ### SetJitterSettings
+```
+Updates the current settings of the Jitter impairment.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>mapId</td><td>“mapId”(required) - The sne map name or id to modify.</tr></td>
 <tr><td>impId</td><td>“impId” - The impairment name or id.</tr></td>
@@ -290,6 +338,10 @@ Valid values:
 true or false</tr></td></table>
 
 ### GetPktDropSettings
+```
+Retrieves the current settings of the Packet Drop impairment.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>mapId</td><td>“mapId”(required) - The sne map name or id to modify.</tr></td>
 <tr><td>impId</td><td>“impId” - The impairment name or id.</tr></td>
@@ -301,6 +353,10 @@ curl -X GET "http://192.168.1.100/api/maps/{mapId}/{port}?userToken={userToken}"
 -H "accept: application/json"</tr></td></table>
 
 ### SetPktDropSettings
+```
+Updates the current settings of the Packet Drop impairment.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>mapId</td><td>“mapId”(required) - The sne map name or id to modify.</tr></td>
 <tr><td>impId</td><td>“impId” - The impairment name or id.</tr></td>
@@ -360,6 +416,10 @@ Valid values:
 </tr></td></table>
 
 ### GetBWThrottleSettings
+```
+Retrieves the current settings of the Bandwidth Throttle impairment.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>mapId</td><td>“mapId”(required) - The sne map name or id to modify.</tr></td>
 <tr><td>impId</td><td>“impId” - The impairment name or id.</tr></td>
@@ -371,6 +431,10 @@ curl -X GET "http://192.168.1.100/api/maps/{mapId}/{port}?userToken={userToken}"
 -H "accept: application/json"</tr></td></table>
 
 ### SetBWThrottleSettings
+```
+Updates the current settings of the Bandwidth Throttle impairment.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>mapId</td><td>“mapId”(required) - The sne map name or id to modify.</tr></td>
 <tr><td>impId</td><td>“impId” - The impairment name or id.</tr></td>
@@ -433,6 +497,10 @@ minBandwidth to 25000 bytes</tr></td>
 <tr><td>durationRange</td><tr></tr></table>
 
 ### GetPktDupSettings
+```
+Retrieves the current settings of the Packet Duplication impairment
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>mapId</td><td>“mapId”(required) - The sne map name or id to modify.</tr></td>
 <tr><td>impId</td><td>“impId” - The impairment name or id.</tr></td>
@@ -444,6 +512,10 @@ curl -X GET "http://192.168.1.100/api/maps/{mapId}/{port}?userToken={userToken}"
 -H "accept: application/json"</tr></td></table>
 
 ### SetPktDupSettings
+```
+Updates the current settings of the Packet Duplication impairment.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>mapId</td><td>“mapId”(required) - The sne map name or id to modify.</tr></td>
 <tr><td>impId</td><td>“impId” - The impairment name or id.</tr></td>
@@ -492,6 +564,10 @@ Valid values:
 0 to 15800704</tr></td></table>
 
 ### GetEthFragSettings
+```
+Retrieves the current settings of the Ethernet Fragmentation impairment.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>mapId</td><td>“mapId”(required) - The sne map name or id to modify.</tr></td>
 <tr><td>impId</td><td>“impId” - The impairment name or id.</tr></td>
@@ -503,6 +579,10 @@ curl -X GET "http://192.168.1.100/api/maps/{mapId}/{port}?userToken={userToken}"
 -H "accept: application/json"</tr></td></table>
 
 ### SetEthFragSettings
+```
+Updates the current settings of the Ethernet Fragmentation impairment.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>mapId</td><td>“mapId”(required) - The sne map name or id to modify.</tr></td>
 <tr><td>impId</td><td>“impId” - The impairment name or id.</tr></td>
@@ -524,6 +604,10 @@ Valid values:
 true or false</tr></td></table>
 
 ### GetPktReorderSettings
+```
+Retrieves the current settings of the Packet Reorder impairment.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>mapId</td><td>“mapId”(required) - The sne map name or id to modify.</tr></td>
 <tr><td>impId</td><td>“impId” - The impairment name or id.</tr></td>
@@ -535,6 +619,10 @@ curl -X GET "http://192.168.1.100/api/maps/{mapId}/{port}?userToken={userToken}"
 -H "accept: application/json"</tr></td></table>
 
 ### SetPktReorderSettings
+```
+Updates the current settings of the Packet Reorder impairment.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>mapId</td><td>“mapId”(required) - The sne map name or id to modify.</tr></td>
 <tr><td>impId</td><td>“impId” - The impairment name or id.</tr></td>
@@ -584,6 +672,10 @@ Valid values:
 MinDisplacement to 500</tr></td></table>
 
 ### GetBitErrorSettings
+```
+Retrieves the current settings of the Bit Error impairment.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>mapId</td><td>“mapId”(required) - The sne map name or id to modify.</tr></td>
 <tr><td>impId</td><td>“impId” - The impairment name or id.</tr></td>
@@ -595,6 +687,10 @@ curl -X GET "http://192.168.1.100/api/maps/{mapId}/{port}?userToken={userToken}"
 -H "accept: application/json"</tr></td></table>
 
 ### SetBitErrorSettings
+```
+Updates the current settings of the Bit Error impairment.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>mapId</td><td>“mapId”(required) - The sne map name or id to modify.</tr></td>
 <tr><td>impId</td><td>“impId” - The impairment name or id.</tr></td>
@@ -622,6 +718,10 @@ Valida values:
 1 to 100,000,000</tr></td></table>
 
 ### GetPktCntFilterSettings
+```
+Retrieves the current settings of the Packet Counting Filter.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>mapId</td><td>“mapId”(required) - The sne map name or id to modify.</tr></td>
 <tr><td>impId</td><td>“impId” - The impairment name or id.</tr></td>
@@ -633,6 +733,10 @@ curl -X GET "http://192.168.1.100/api/maps/{mapId}/{port}?userToken={userToken}"
 -H "accept: application/json"</tr></td></table>
 
 ### SetPktCntFilterSettings
+```
+Updates the current settings of the Packet Counting Filter.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>mapId</td><td>“mapId”(required) - The sne map name or id to modify.</tr></td>
 <tr><td>impId</td><td>“impId” - The impairment name or id.</tr></td>
@@ -668,6 +772,10 @@ Valid values:
 1 to 100</tr></td></table>
 
 ### GetTrafficGeneratorSettings
+```
+Retrieves the current settings of the Packet Counting Filter.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>mapId</td><td>“mapId”(required) - The sne map name or id to modify.</tr></td>
 <tr><td>impId</td><td>“impId” - The impairment name or id.</tr></td>
@@ -679,6 +787,10 @@ curl -X GET "http://192.168.1.100/api/maps/{mapId}/{port}?userToken={userToken}"
 -H "accept: application/json"</tr></td></table>
 
 ### SetTrafficGeneratorSettings
+```
+Updates the current settings of the Traffic Generator.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>mapId</td><td>“mapId”(required) - The sne map name or id to modify.</tr></td>
 <tr><td>impId</td><td>“impId” - The impairment name or id.</tr></td>
@@ -746,6 +858,10 @@ Valid values:
 0.01 to 360000.00</tr></td></table>
 
 ### SetPortLinkStatusUp
+```
+Sets the link status to up for a port.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>mapId</td><td>“mapId”(required) - The sne map name or id to modify.</tr></td>
 <tr><td>port</td><td>“port” - The physical port number.
@@ -759,6 +875,10 @@ curl -X GET "http://192.168.1.100/api/maps/{mapId}/{port}?userToken={userToken}"
 -H "accept: application/json"</tr></td></table>
 
 ### SetPortLinkStatusDown
+```
+Sets the link status to Down for a port.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>mapId</td><td>“mapId”(required) - The sne map name or id to modify.</tr></td>
 <tr><td>port</td><td>“port” - The physical port number.
@@ -773,6 +893,10 @@ curl -X GET "http://192.168.1.100/api/maps/{mapId}/{port}?userToken={userToken}"
 -H "accept: application/json"</tr></td></table>
 
 ### GetPortLinkStatus
+```
+Retrieves the link status of a port.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>mapId</td><td>“mapId”(required) - The sne map name or id to modify.</tr></td>
 <tr><td>port</td><td>“port” - The physical port number.
@@ -787,7 +911,15 @@ curl -X GET "http://192.168.1.100/api/maps/{mapId}/{port}?userToken={userToken}"
 -H "accept: application/json"</tr></td></table>
 
 ### GetInfoAllLoadedCaptureReplayFiles
+```
+Retrieves information about all loaded capture replay files.
+```
+
 ### UploadCaptureReplayFile
+```
+Uploads a capture replay file.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>pcapFileFullPath</td><td>Full path of pcap file:
 
@@ -795,10 +927,18 @@ Example:
 C:\\Users\\tester\\AppData\\Local\\Temp\\test.pcap</tr></td></table>
 
 ### DownloadCaptureReplayFile
+```
+Downloads a capture replay file.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>pcapFile</td><td>“pcapFile” - The name of the pcap file to be downloaded.</tr></td></table>
 
 ### DeleteUploadedCaptureReplayFile
+```
+Deletes an uploaded capture replay file.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>pcapFilename</td><td>“pcapFilename” - The name of the pcap file to be deleted.
 
@@ -807,3 +947,6 @@ Example:
 test.pcap</tr></td></table>
 
 ### GetSysBuildVersion
+```
+Retrieves the system software version information.
+```

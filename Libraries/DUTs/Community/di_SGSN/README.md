@@ -7,22 +7,52 @@ Class: Community
 1 quickcall library in project
 ## Quickcall Library: SGSN_ssh_quickcall_library.fftc
 ### clearSubscriberInfo
+```
+Clear the subcriber info for the specified IMSI
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>IMSI</td><td>The IMSI of the UE to clear</tr></td></table>
 
 ### getPdpContextActivation
+```
+Return information about the subscriber from the SGSN for PDP context activation
+
+Return: Block
+
+
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>imsi</td><td>The imsi of the specified UE</tr></td></table>
 
 ### getSubscriberInfo
+```
+Return information about the subscriber from the SGSN
+
+Return: Block
+
+
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>imsi</td><td>The imsi of the specified UE</tr></td></table>
 
 ### showSGSNServiceName
+```
+show sgsn-service name $name (e.g. sgsn_svc)
+
+return: RAUTimer: 0(invalid), >0(valid)
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>name</td><tr></tr></table>
 
 ### setRAUTimer
+```
+config RAU Timer(T3312) in SGSN
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>RauTimer</td><tr></tr></table>
 

@@ -12,6 +12,10 @@ Class: Community
 <tr><td>config_file_name</td><td>Local file name of the configuration.</tr></td></table>
 
 ### VerifyOSPF
+```
+Verify that all OPSF interfaces have at least one OSPF neighbor established
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>ospf_interfaces</td><td>The interfaces to verify OSPF neighbor establishment. Default 'all' verifies neighbor establishment on all OSPF interfaces.</tr></td></table>
 
@@ -44,23 +48,39 @@ Class: Community
 <tr><td>software</td><td>List of name value pairs, for example "system nxos.7.0.3.I4.5.bin epld n9000-epld.6.1.2.I3.3a.img"</tr></td></table>
 
 ### get_bgp_neighbor_state
+```
+Get a list of the bgp neighbors of the specified type that are in the specified state.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>neighbor</td><tr></tr>
 <tr><td>cmd_suffix</td><tr></tr></table>
 
 ### get_ospf_neighbor_state
+```
+Get a list of the bgp neighbors of the specified type that are in the specified state.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>neighbor</td><td>IP address of the OSPF neighbor</tr></td>
 <tr><td>interface</td><td>Interface name where neighbor should appear</tr></td>
 <tr><td>cmd_suffix</td><td>Optional command suffix to append to the ospf neighbor command, vrf for example</tr></td></table>
 
 ### get_ospfv3_neighbor_state
+```
+Get a list of the bgp neighbors of the specified type that are in the specified state.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>neighbor</td><tr></tr>
 <tr><td>cmd_suffix</td><tr></tr>
 <tr><td>interface</td><tr></tr></table>
 
 ### get_vpc_status
+```
+Get a list of the bgp neighbors of the specified type that are in the specified state.
+```
+
 ### get_route
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>route</td><tr></tr>

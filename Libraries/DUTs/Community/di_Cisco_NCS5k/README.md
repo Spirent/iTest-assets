@@ -19,6 +19,10 @@ Class: Community
 <tr><td>as_number</td><td>BGP local AS number</tr></td></table>
 
 ### show_install
+```
+This procedure is extracting information about the current IOS version present on the DUT
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>active</td><td>Values:
 - null - default, parameter is not used in execution
@@ -47,6 +51,10 @@ verbose   Show summary, component and file information for each package</tr></td
 </tr></td></table>
 
 ### show_version
+```
+Get router show version
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>extra_arg</td><td>- Can be:
 brief
@@ -60,6 +68,11 @@ brief
 all</tr></td></table>
 
 ### clear_line
+```
+Use this command do to a standard "show run" or use $output_modifier to add the "|" character and modify the output.
+
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>vty_line_num</td><tr></tr></table>
 
@@ -124,6 +137,11 @@ give the np for which you want to see the port map</tr></td>
 <tr><td>loc</td><tr></tr></table>
 
 ### admin_reload_interactive_cli
+```
+Use this command do to a standard "show run" or use $output_modifier to add the "|" character and modify the output.
+
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>loc</td><tr></tr></table>
 

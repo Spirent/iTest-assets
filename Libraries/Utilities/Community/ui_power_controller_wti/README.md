@@ -24,6 +24,10 @@ Class: Community
 <tr><td>portNumber</td><tr></tr></table>
 
 ### getPortState
+```
+Returns "ON" or "OFF"
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>portNumber</td><tr></tr></table>
 

@@ -9,7 +9,15 @@ Class: Community
 ### Common Dialog Boxes
 Common dialogs used to prompt for a user response.
 ### init
+```
+This must be called first, in order to load the required resources.
+```
+
 ### askCheckbox
+```
+Display a dialog with checkboxes. Return either a list of checked choices or a list of binary values.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>choices</td><td>List of space-delimited choices
 
@@ -34,6 +42,10 @@ For example, if there are three checkboxes and all three are checked, the respon
 >0 = limit the number of checkbox columns to this number </tr></td></table>
 
 ### askEntry
+```
+Prompt the user to enter a value.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>hint</td><td>Label on the left side of the entry box</tr></td>
 <tr><td>font</td><td>Dialog font</tr></td>
@@ -46,6 +58,10 @@ For example, if there are three checkboxes and all three are checked, the respon
 0=show text</tr></td></table>
 
 ### askInfo
+```
+Prompt the user to enter one or more values. Return a table response (legacy use) or a JSON response.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>params</td><td>List of <itemName> <caption> <defaultValue> <hideText>
 
@@ -69,6 +85,10 @@ NOTES:
 1=return a JSON response</tr></td></table>
 
 ### askRadio
+```
+Display a dialog with radio buttons. 
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>choices</td><td>List of space-delimited choices</tr></td>
 <tr><td>font</td><td>Dialog font</tr></td>
@@ -79,6 +99,10 @@ NOTES:
 </tr></td></table>
 
 ### askList
+```
+Pick from a list of options. 
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>choices</td><td>List of space-delimited choices</tr></td>
 <tr><td>font</td><td>Dialog font</tr></td>
@@ -91,6 +115,11 @@ NOTES:
 <tr><td>selectmode</td><td>single | multiple</tr></td></table>
 
 ### askYesNo
+```
+Prompt for yes/no. More options than yesnoMsg.
+You can specify the font, a timeout and a default answer upon timeout.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>default</td><td>Message or question to ask</tr></td>
 <tr><td>question</td><td>Question. Default: ""</tr></td>
@@ -99,23 +128,48 @@ NOTES:
 <tr><td>font</td><td>Dialog font</tr></td></table>
 
 ### errorMsg
+```
+Display a simple error message.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>message</td><td>Message to display</tr></td>
 <tr><td>title</td><td>Dialog window title</tr></td></table>
 
 ### infoMsg
+```
+Display a simple information message.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>message</td><td>Message to display</tr></td>
 <tr><td>title</td><td>Dialog window title</tr></td></table>
 
 ### okMsg
+```
+Display a simple OK message.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>message</td><td>Message to display</tr></td>
 <tr><td>title</td><td>Dialog window title</tr></td></table>
 
 ### openFile
+```
+Prompt user to select a file for reading.
+```
+
 ### saveFile
+```
+Prompt user to select a file for writing.
+```
+
 ### showMsg
+```
+Display a message. More options than errorMsg, infoMsg, okMsg and warning Msg.
+You can specify the font, and a timeout.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>message</td><td>Message to display</tr></td>
 <tr><td>icon</td><td>Icon to display with message: error | info | question | warning
@@ -127,11 +181,19 @@ Default: none</tr></td>
 </tr></td></table>
 
 ### warningMsg
+```
+Display a warning message.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>message</td><td>Message to display</tr></td>
 <tr><td>title</td><td>Dialog window title</tr></td></table>
 
 ### yesnoMsg
+```
+Prompt for yes/no.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>message</td><td>Message or question to ask</tr></td>
 <tr><td>title</td><td>Dialog window title</tr></td></table>

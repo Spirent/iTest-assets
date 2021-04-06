@@ -29,6 +29,10 @@ Default value is 1 (for yes). This corresponds with current behavior.</tr></td><
 Default value is 1 (for yes). This corresponds with current behavior.</tr></td></table>
 
 ### send_login
+```
+Quick call for Juniper devices through the Acme NOC
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>session</td><tr></tr>
 <tr><td>userid</td><tr></tr>
@@ -48,17 +52,31 @@ Default value is 1 (for yes). This corresponds with current behavior.</tr></td><
 ### config_ers
 ### delete_cfm_service
 ### config_ethernet_port
+```
+This is a local procedure
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>session</td><tr></tr>
 <tr><td>uni_port</td><tr></tr>
 <tr><td>speed</td><tr></tr></table>
 
 ### config_gig_ethernet_port
+```
+This is a local procedure
+session Id must be specified
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>session</td><td>The session must be specified for local procedures</tr></td>
 <tr><td>uni_port</td><tr></tr></table>
 
 ### config_evc
+```
+This is a local procedure
+
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>session</td><tr></tr>
 <tr><td>evc_name</td><tr></tr>
@@ -66,6 +84,12 @@ Default value is 1 (for yes). This corresponds with current behavior.</tr></td><
 <tr><td>s_tag</td><tr></tr></table>
 
 ### config_evc_map
+```
+This is a local procedure
+session id is required
+This procedure is part of building the Port-based Service where the S-tag is associated with the port
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>session</td><td>session id is required for local procedures</tr></td>
 <tr><td>map_name</td><tr></tr>
@@ -74,6 +98,10 @@ Default value is 1 (for yes). This corresponds with current behavior.</tr></td><
 <tr><td>cos</td><tr></tr></table>
 
 ### config_vlan_evc_map
+```
+This procedure is part of building VLAN-based Service where the S-tag on an EVC  is associated with the cd-vlan on frames from the Ethernet (UNI - customer) port
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>map_name</td><tr></tr>
 <tr><td>evc_name</td><tr></tr>
@@ -91,6 +119,11 @@ Default value is 1 (for yes). This corresponds with current behavior.</tr></td><
 <tr><td>map_name</td><tr></tr></table>
 
 ### config_nv-838
+```
+For command "show evc-map" -
+Changed step event for Repeat Step "OnRepeatStepMaxCountExceeded" to Abort Test
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>session</td><tr></tr>
 <tr><td>evc_name</td><tr></tr>
@@ -183,6 +216,10 @@ Default value is 1 (for yes). This corresponds with current behavior.</tr></td><
 </tr></td></table>
 
 ### ethernet_ping
+```
+This does an ethernet ping.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>md</td><td>The MD of the source, e.g vpls:280029-4.</tr></td>
 <tr><td>ma</td><td>The source MA of the MEP, e.g. serv.
@@ -200,6 +237,10 @@ Default value is 1 (for yes). This corresponds with current behavior.</tr></td><
 <tr><td>verbose</td><td>If you want verbose output (1) or not (0).  Default is no.</tr></td></table>
 
 ### cfm_delete_domain
+```
+This does an ethernet ping.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>md</td><tr></tr>
 <tr><td>ma</td><tr></tr></table>
@@ -267,6 +308,12 @@ Default value is 1 (for yes). This corresponds with current behavior.</tr></td><
 ## Quickcall Library: adtran_ta5K_qc.fftc
 ### Quickcall library for Adtran TA5000
 ### cleanup
+```
+Delete the efm bonding group.
+Remove the evc
+Leave the management interface in place
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>nte_key</td><td>The primary key into the configuration data</tr></td></table>
 
@@ -297,6 +344,12 @@ Default value is 1 (for yes). This corresponds with current behavior.</tr></td><
 Possible values are yes, no.</tr></td></table>
 
 ### config_evc
+```
+This local procedure creates the evc, sets the s-tag, efm_group, and gigabit_ethernet port. There are required arguments.
+If the vlan argument is 0 this is EWS and the ce-vlan is not configured (match command).
+If the argument is non-0 it is ERS and the command is issued.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>session</td><tr></tr>
 <tr><td>evc_name</td><tr></tr>
@@ -305,6 +358,15 @@ Possible values are yes, no.</tr></td></table>
 <tr><td>gig_port</td><tr></tr></table>
 
 ### config_efm_link
+```
+EFM - Ethernet in the First Mile
+SHDSL - Symmetric High-speed Digital Subscriber Line 
+
+The upstream and downstream rates are intended to be the rates that should be guaranteed to the customer.  For example, if an 8 MB service is being sold to the customer, the upstream and downstream rates should be provisioned to be 8 MB.  If the group rate falls below this value due to (1) SHDSL pairs dropping or (2) SHDSL pairs not training to a high-enough rate, the TA5000 will declare a bandwidth alarm, indicating the provisioned EFM group bandwidth is not being provided.
+
+
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>session</td><tr></tr>
 <tr><td>shelf</td><tr></tr>
@@ -315,6 +377,10 @@ Possible values are yes, no.</tr></td></table>
 <tr><td>active_links_min</td><td>The Minimum Links command, is used to set the group alarm threshold for the SHDSL pairs in the EFM bonding group and should be set to equal the number of pairs configured for the service.  The minimum_links variable is equivalent to the number of links in the bonding group</tr></td></table>
 
 ### config_inband_mgmt
+```
+This information is pushed to the NetVanta 838
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>session</td><tr></tr>
 <tr><td>group_name</td><tr></tr>
@@ -382,6 +448,10 @@ Possible values are yes, no.</tr></td></table>
 <tr><td>skip</td><td>At times it is desirable to leave the existing configuration alone. When yes this procedure issues a message and returns.</tr></td></table>
 
 ### evc_status
+```
+Check for RUNNING. If found return 1, otherwise 0
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>evc_name</td><tr></tr></table>
 
@@ -396,7 +466,19 @@ Possible values are yes, no.</tr></td></table>
 <tr><td>port</td><tr></tr></table>
 
 ### get_active_nni
+```
+Use the show redundancy command to check the Current State. 
+Possible values are Active or Standby
+
+
+```
+
 ### login
+```
+Login detects if the Acme NOC prompt is displayed. If so, login to the NOC proceeds, followed by telnet to the device and login.
+If not, login to the device.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>userid</td><tr></tr>
 <tr><td>password</td><tr></tr>
@@ -417,6 +499,10 @@ Possible values are yes, no.</tr></td></table>
 <tr><td>password</td><tr></tr></table>
 
 ### send_login
+```
+Quick call for Juniper devices through the Acme NOC
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>session</td><tr></tr>
 <tr><td>userid</td><tr></tr>

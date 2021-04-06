@@ -9,9 +9,30 @@ Class: Community
 ### Cisco SNMP QC library
 Use this for common SNMP procedures
 ### getInterfaceStates
+```
+This will the interface states on the system for a quick status check
+```
+
 ## Quickcall Library: cisco_telnet_quickcall_library.fftc
 ### Cisco 7200 QC library
 ### login
+```
+Automatically login to cisco device - privileged mode
+
+Return value = prompt respose
+e.g.
+
+Bad login:
+Password Status: % Login invalid
+Enable Password Status: % Login invalid
+
+or
+
+Good login:
+Password Status:
+Enable Password Status:
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>username</td><td>Valid username</tr></td>
 <tr><td>password</td><td>valid password</tr></td>
@@ -19,6 +40,10 @@ Use this for common SNMP procedures
 
 ### getVersion
 ### checkCounters
+```
+This procedure is used to clear counters for Ethernet interface.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>ifc</td><td>Enter a valid interface value.
 
@@ -27,20 +52,36 @@ e.g. - fastEthernet 6/0</tr></td>
 Acceptable values: 0|1</tr></td></table>
 
 ### saveRunningConfigTftp
+```
+Save running config to TFTP server
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>tftpServerIp</td><td>Valid IP address</tr></td>
 <tr><td>filename</td><td>Valid config file name</tr></td></table>
 
 ### restoreRunningConfigTftp
+```
+Restore running config to TFTP server
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>tftpServerIp</td><td>Valid IP address</tr></td>
 <tr><td>filename</td><td>Valid config file name</tr></td></table>
 
 ### graphProcesses
+```
+This is intended to run as a background process throughout the entire test. By default we capture stats every 30 seconds.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>delaySec</td><td>Number of seconds to wait before checking process info.</tr></td></table>
 
 ### queryIfcStates
+```
+This procedure will query all the interface states and return a summary view of the system.
+```
+
 ### showVersion2
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>fwVersion</td><td>Expected FW version</tr></td></table>

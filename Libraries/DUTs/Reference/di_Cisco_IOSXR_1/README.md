@@ -8,6 +8,14 @@ Class: Reference
 ## Quickcall Library: cisco_IOSXR_ssh.fftc
 ### admin_shut_no_shut_group
 ### add_interface_to_isis
+```
+add the specified interface to isis
+
+return value:
+1 - success
+0 - failure
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>interface</td><td>The interface to add to isis</tr></td></table>
 
@@ -44,6 +52,21 @@ e.g. conf t
 <tr><td>interface_id_list</td><tr></tr></table>
 
 ### change_isis_metric
+```
+This quick call will change the isis metric of an interface on an router. 
+
+config t
+router isis 1 
+interface bundle-ether 95
+address-family ipv4 unicast 
+metric 10
+address-family ipv6 unicast
+metric 10
+commit
+end
+
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>isis_proc_id</td><td>ISIS process id, for google, it is default at 1</tr></td>
 <tr><td>interface_name</td><td>This is the interface on which the ISIS metric is being changed. </tr></td>
@@ -66,6 +89,10 @@ e.g. conf t
 <tr><td>interface</td><td>Name of interface as it appears on router</tr></td></table>
 
 ### check_tunnel_interface_accounting
+```
+This quick call will take a tunnel interface number as an argument and return IPv4 and IPv6 pkt out counters for that tunnel
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>tunnel_name</td><tr></tr></table>
 
@@ -186,6 +213,14 @@ BVI              Bridge-Group Virtual Interface
 <tr><td>target</td><tr></tr></table>
 
 ### clear_logs
+```
+clear the router logs
+
+return:
+0 - not successful
+1 - successful
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>ip_ver</td><tr></tr>
 <tr><td>target</td><td>  autorp     Clear PIM autorp information
@@ -206,11 +241,23 @@ BVI              Bridge-Group Virtual Interface
 
 ### commit_replace
 ### commit_with_rollback
+```
+This procedure will commit the changes and save the rollback point in a global variable called GC_rollback as well as return the value to the calling procedure.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>rollback</td><td>0 - do not save the rollback in the global variable
 1 - save the rollback in the global variable</tr></td></table>
 
 ### compare_time
+```
+Compare the router time with the iTest timestamp and show any differences
+
+Response:
+
+block response with zero being no difference in the value; otherwise the difference between iTest and the router is shown (iTest - router)
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>timestamp</td><td>timestamp to compare against router - otherwise use iTest timestamp</tr></td></table>
 
@@ -491,6 +538,10 @@ E.g. "BLUE RED green"</tr></td>
 <tr><td>stay_in_context</td><td>Use 1 to remain in the current configuration context.</tr></td></table>
 
 ### config_mpls_te_tunnel_auto_bw
+```
+If you omit all arguments related to auto-bw configuration submode, this QC will issue just "auto-bw" or "no auto-bw" , depending on the "unconfig" argument.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>interface</td><td>E.g. tunnel-te1
 </tr></td>
@@ -514,6 +565,10 @@ Use any value together with unconfig 1 to remove</tr></td>
 <tr><td>stay_in_context</td><td>Use 1 to remain in the current configuration context.</tr></td></table>
 
 ### config_mpls_te_tunnel_frr
+```
+Configure/Remove a path-option for an MPLS TE Tunnel
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>group_name</td><td>Use this argument to specify a configuration group, e.g. "GOOGLE-BACKBONE-MPLS"</tr></td>
 <tr><td>interface</td><td>Interface name and number , e.g.:
@@ -531,6 +586,10 @@ bandwidth
 <tr><td>remove_configuration</td><td>Remove configuration if this parameter is set to yes</tr></td></table>
 
 ### config_mpls_te_tunnel_path_option
+```
+Configure/Remove a path-option for an MPLS TE Tunnel
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>group_name</td><td>NA on Cisco</tr></td>
 <tr><td>interface</td><td>Group interface name / tunnel interface number</tr></td>
@@ -554,6 +613,10 @@ bandwidth
 <tr><td>hop_type</td><td>NA on Cisco</tr></td></table>
 
 ### config_mpls_te_tunnel_prio
+```
+If you omit all arguments related to auto-bw configuration submode, this QC will issue just "auto-bw" or "no auto-bw" , depending on the "unconfig" argument.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>interface</td><td>E.g. tunnel-te1</tr></td>
 <tr><td>group</td><td>Use this argument to enter group configuration. If you don't need this or you already are in the desired group configuration context ($in_context=1) you can omit this.</tr></td>
@@ -565,6 +628,10 @@ E.g.: "5 5"</tr></td>
 <tr><td>commit_with_label</td><td>1 - Will commit generating a label; the label will be a global variable; GC_$session</tr></td></table>
 
 ### config_mpls_te_tunnel_sigbw
+```
+Configures signalled bandwidth for a tunnel 
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>interface</td><td>E.g. tunnel-te1</tr></td>
 <tr><td>group</td><td>Use this argument to enter group configuration. If you don't need this or you already are in the desired group configuration context ($in_context=1) you can omit this.</tr></td>
@@ -576,6 +643,10 @@ E.g.: "5 5"</tr></td>
 <tr><td>commit_with_label</td><td>1 - Will commit generating a label; the label will be a global variable; GC_$session</tr></td></table>
 
 ### config_mpls_te_tunnel_autoroute
+```
+Configures signalled bandwidth for a tunnel 
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>interface</td><td>E.g. tunnel-te1</tr></td>
 <tr><td>group</td><td>Use this argument to enter group configuration. If you don't need this or you already are in the desired group configuration context ($in_context=1) you can omit this.</tr></td>
@@ -783,6 +854,10 @@ E.g. "8 1 16 2"</tr></td>
 <tr><td>wipe</td><td>Use any value aside from "null" to remove the SRLG configuration.</tr></td></table>
 
 ### config_syslog
+```
+This procedure configures syslog on the router
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>syslog_svr_list</td><td>List of IP addresses of syslog server(s)</tr></td>
 <tr><td>vrf_name</td><td>Name of the VRF used to reach the syslog servers (Example: Management)</tr></td>
@@ -838,6 +913,10 @@ Example: 10</tr></td>
 <tr><td>path_option_explicit_name</td><td>Example: Name of the explicit-path</tr></td></table>
 
 ### configure_bgp
+```
+Quickcall used to configure a BGP peer.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>as_number</td><td>  <1-65535>           2-byte AS number
   <1-65535>.          4-byte AS number in asdot (X.Y) format - first half (X)
@@ -895,6 +974,10 @@ Examle: multipath</tr></td>
 
 ### copy_run_to_golden
 ### create_route_policy
+```
+Quickcall used to configure a BGP peer.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>route_policy</td><td>Specify the policy name.</tr></td>
 <tr><td>local_pref</td><td>Specify the value for set local preference</tr></td>
@@ -972,6 +1055,10 @@ address-family ipv6 unicast</tr></td>
 ### configure_vrf_management
 ### create_group_isis_test
 ### create_lc_soft_failure
+```
+Create a soft failure by reloading the specified location
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>location</td><td>This is the location to be reloaded: ie. 0/0/CPU0</tr></td>
 <tr><td>activeRP</td><td>0 - This is not the active RP
@@ -1003,10 +1090,20 @@ e.g. "type performance input vidmon-rtp"</tr></td></table>
 </tr></td></table>
 
 ### get_bgp_neighbors
+```
+Get a list of the bgp neighbors of the specified type that are in the specified state.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>type</td><td>ipv4 or ipv6</tr></td></table>
 
 ### get_bgp_paths
+```
+Gets the bgp scale and returns the number of active paths and total paths
+
+Response: block
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>type</td><td>Valid values:
 
@@ -1015,48 +1112,105 @@ IPv6 Unicast
 Total      (default)</tr></td></table>
 
 ### get_bgp_process_info
+```
+Return specific information about the bgp process
+```
+
 ### get_bgp_process_info_raw
+```
+Return raw information about the bgp process
+```
+
 ### get_bgp_process_performance_stats
+```
+return raw information about the performance stats for bgp
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>type</td><td>Valid values:
 ipv4
 ipv6</tr></td></table>
 
 ### get_bgp_table_info
+```
+Look at the bgp table and return information
+
+Return:
+block
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>type</td><td>ipv4 or ipv6</tr></td>
 <tr><td>ipAddress</td><td>ip address</tr></td></table>
 
 ### get_bundle_interfaces
+```
+Get the list of interfaces belonging to this bundle
+
+Returns:
+A table of the interfaces and the corresponding states
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>bundle</td><td>The bundle for which to retrieve the list of interfaces</tr></td></table>
 
 ### get_cef_tables
+```
+Get the cef tables for the specified ip
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>ipAddress</td><td>The ip address for which to find cef tables</tr></td></table>
 
 ### get_connected_interface_list
 ### get_explicit_paths
+```
+This is a procedure which returns configured explicit paths on the router. 
+
+```
+
 ### get_interface_error_counter
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>interface</td><td>provide the interface to run the command
 </tr></td></table>
 
 ### get_interface_info
+```
+Returns information about an interface. Uses 30 second rates for return data.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>type</td><td>The type of the interface</tr></td>
 <tr><td>interface</td><td>the name of the interface</tr></td></table>
 
 ### get_isis_interface
+```
+Get isis information about the interface
+
+return:
+block values
+
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>interface</td><td>The interface to get the ISIS information</tr></td></table>
 
 ### get_neighbor_group
+```
+Returns the name of the neighbor group
+
+Return: block
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>router_bgp</td><td>router bgp number</tr></td>
 <tr><td>ip_address</td><td>ip address of the group</tr></td></table>
 
 ### get_route
+```
+Get the route for the specified address.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>ipAddress</td><td>The ip address for which to find the specified route.</tr></td></table>
 
@@ -1067,11 +1221,22 @@ ipv6</tr></td></table>
 <tr><td>node_id</td><tr></tr></table>
 
 ### get_routing_table_info
+```
+Get info from the routing table
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>type</td><td>ipv4 or ipv6</tr></td>
 <tr><td>ipAddress</td><td>ip address</tr></td></table>
 
 ### get_software
+```
+get a list of all installed software
+
+return value:
+list of software
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>type</td><td>commit or active</tr></td>
 <tr><td>xrtype</td><td>xrtype is cxr or exr. With exr dont use summary, with cxr use summary option
@@ -1082,12 +1247,31 @@ exr
 </tr></td></table>
 
 ### get_label_traffic
+```
+For the specified label, return the traffic information
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>label</td><td>The numeric value of the label</tr></td></table>
 
 ### get_mpls_snapshot
+```
+Get MPLS snapshot information and send this back to the calling procedure for storage or comparison.
+
+Return value:
+Output from commands
+```
+
 ### get_mpls__traffic-eng_auto-tunnel_backup
 ### get_tunnels_summary
+```
+Get summary information for tunnels
+
+Returns:
+ 
+block
+```
+
 ### get_cpu_utilization
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>location</td><td>Optional
@@ -1111,17 +1295,36 @@ show log last 10</tr></td></table>
 <tr><td>interface_id_list</td><tr></tr></table>
 
 ### is_multipath_configured
+```
+See if multipath is configured for this neighbor group
+
+Return:
+0 - not configured
+1- configured
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>router_bgp</td><td>The router bgp number</tr></td>
 <tr><td>neighbor_group</td><td>The name of the neighbor group</tr></td></table>
 
 ### load_golden_configuration
 ### load_from_disk0
+```
+This procedure will get the file as argument from disk0 and load it in the config mode and commit it. 
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>file_name</td><tr></tr>
 <tr><td>replace</td><td>Adds the option to commit replace instead of commit</tr></td></table>
 
 ### mpls_te_reoptimize
+```
+Reoptimize LSPs
+
+Return:
+Always returns 1
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>all</td><tr></tr>
 <tr><td>tunnel_id</td><tr></tr></table>
@@ -1132,6 +1335,13 @@ show log last 10</tr></td></table>
 <tr><td>tunnel_id</td><tr></tr></table>
 
 ### mpls_te_resetup
+```
+Reoptimize LSPs
+
+Return:
+Always returns 1
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>tunnel_name</td><tr></tr></table>
 
@@ -1186,6 +1396,12 @@ Example: "tunnel-te 1037" will execute:
 <tr><td>groupName</td><tr></tr></table>
 
 ### remove_interface_from_bundle
+```
+Remove the specified interface. Update the ip address parameters if the values are passed to the quickcall.
+
+Return 1: success 0:falure
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>interface</td><td>The interface to remove</tr></td>
 <tr><td>bundle</td><td>The bundle from which to remove the interface</tr></td>
@@ -1193,12 +1409,33 @@ Example: "tunnel-te 1037" will execute:
 <tr><td>ipv6</td><td>ipv6 address</tr></td></table>
 
 ### return_tunnel_information
+```
+Return specific information about the tunnel
+
+Response:
+Block response
+
+
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>name</td><td>tunnel name</tr></td>
 <tr><td>detail</td><td>0 - non-detailed format\t
 1 - detailed format</tr></td></table>
 
 ### rollback_config
+```
+This procedure can do a rollback by to:
+- a specified lanbel_id inputed by the user
+- a specified SNo in the history
+- a specified rollbak reference
+
+Usage:
+rollback_config -last 10
+rollback_config -label_id 123456
+rollback_config -label_id 123456 -label_id_incr 1
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>label_id</td><td>Label id to use for rollback</tr></td>
 <tr><td>last</td><td>Specified how many commits back to rollback to.
@@ -1258,6 +1495,10 @@ bundle - no_id  to remove the interface from the bundles
 <tr><td>length</td><td>The terminal length</tr></td></table>
 
 ### set_terminal_width
+```
+Sets the terminal width to the value specified (default 512)
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>width</td><td>The terminal width</tr></td></table>
 
@@ -1452,6 +1693,34 @@ ipv6</tr></td>
 \t- any - detail keyword will be used</tr></td></table>
 
 ### show_config
+```
+MPLS Forwarding information
+
+
+RP/0/RSP0/CPU0:bath#show mpls forwarding ?
+  debug           Include debug information(cisco-support)
+  detail          Detailed information
+  exact-route     Display exact path for source/dest addr pair
+  hardware        Read from hardware
+  interface       Match outgoing interface
+  label-security  Display label security information
+  labels          Match label values
+  location        Specify a location
+  lsm-id          p2mp mldp LSM ID database
+  no-counters     Skip displaying counters(cisco-support)
+  p2mp            p2mp lsps only
+  prefix          Match destination prefix and mask
+  private         Include private information(cisco-support)
+  rpf             Display label RPF info
+  summary         Summarized information
+  tunnels         Tunnel(s) at head
+  vrf             Show entries for a VPN Routing/Forwarding instance
+  |               Output Modifiers
+  <cr>
+RP/0/RSP0/CPU0:bath#show mpls forwarding
+
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>commit</td><td>Detailed information
 - null - this argument will not be used in CLI command 
@@ -1504,6 +1773,34 @@ include <value></tr></td></table>
   list     List commits stored in the commit database (up to 100)</tr></td></table>
 
 ### show_clock
+```
+MPLS Forwarding information
+
+
+RP/0/RSP0/CPU0:bath#show mpls forwarding ?
+  debug           Include debug information(cisco-support)
+  detail          Detailed information
+  exact-route     Display exact path for source/dest addr pair
+  hardware        Read from hardware
+  interface       Match outgoing interface
+  label-security  Display label security information
+  labels          Match label values
+  location        Specify a location
+  lsm-id          p2mp mldp LSM ID database
+  no-counters     Skip displaying counters(cisco-support)
+  p2mp            p2mp lsps only
+  prefix          Match destination prefix and mask
+  private         Include private information(cisco-support)
+  rpf             Display label RPF info
+  summary         Summarized information
+  tunnels         Tunnel(s) at head
+  vrf             Show entries for a VPN Routing/Forwarding instance
+  |               Output Modifiers
+  <cr>
+RP/0/RSP0/CPU0:bath#show mpls forwarding
+
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>commit</td><td>Detailed information
 - null - this argument will not be used in CLI command 
@@ -1520,6 +1817,10 @@ include <value></tr></td></table>
 <tr><td>interface</td><tr></tr></table>
 
 ### show_install
+```
+This procedure is extracting information about the current IOS version present on the DUT
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>active</td><td>Values:
 - null - default, parameter is not used in execution
@@ -1550,6 +1851,12 @@ Shows summary information about the IOS version</tr></td></table>
 <tr><td>rates</td><td>Use anything except "null" to activate</tr></td></table>
 
 ### show_interface_tunnels_accounting
+```
+Return value: CSV Table
+
+Protocol, Pkts In, Pkts Out 
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>tunnel</td><td>Number of tunnel to check</tr></td></table>
 
@@ -1605,6 +1912,34 @@ Ex: 0/2/CPU0</tr></td></table>
  - traffic</tr></td></table>
 
 ### show_logging
+```
+MPLS Forwarding information
+
+
+RP/0/RSP0/CPU0:bath#show mpls forwarding ?
+  debug           Include debug information(cisco-support)
+  detail          Detailed information
+  exact-route     Display exact path for source/dest addr pair
+  hardware        Read from hardware
+  interface       Match outgoing interface
+  label-security  Display label security information
+  labels          Match label values
+  location        Specify a location
+  lsm-id          p2mp mldp LSM ID database
+  no-counters     Skip displaying counters(cisco-support)
+  p2mp            p2mp lsps only
+  prefix          Match destination prefix and mask
+  private         Include private information(cisco-support)
+  rpf             Display label RPF info
+  summary         Summarized information
+  tunnels         Tunnel(s) at head
+  vrf             Show entries for a VPN Routing/Forwarding instance
+  |               Output Modifiers
+  <cr>
+RP/0/RSP0/CPU0:bath#show mpls forwarding
+
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>include</td><td>Detailed information
 - null - this argument will not be used in CLI command 
@@ -2146,6 +2481,12 @@ E.g.: "slow oid"
 <tr><td>brief</td><td>Set to anything but "null" and "brief" wil be added to the command.</tr></td></table>
 
 ### shutdown_slot
+```
+eXR shut is from admin mode 
+# admin 
+(admin)# hw-module location 0/RP1 shutdown 
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>slot_location</td><td>slot to reload
 </tr></td>
@@ -2156,6 +2497,15 @@ E.g.: "slow oid"
 <tr><td>ifh</td><tr></tr></table>
 
 ### up_down_interface
+```
+Take interface up or down
+
+return value:
+1 - success
+0 - failure
+
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>status</td><td>up or down</tr></td>
 <tr><td>interface</td><td>the interface name</tr></td>
@@ -2164,15 +2514,37 @@ E.g.: "slow oid"
 1 - save the rollback</tr></td></table>
 
 ### verifyBGPNeighborStatus
+```
+Verify that all BGP neighbors are in the specified state
+
+Return value:
+1- all neighbors in specified state
+0 - all neighbors not in specified state
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>state</td><td>Active or Idle</tr></td>
 <tr><td>neighborPattern</td><td>Pattern to match for neighbor interfaces</tr></td></table>
 
 ### verifyCardsInState
+```
+Check to see if all cards are in the state specified
+
+Return:
+0 - cards are not in the correct state
+1 - cards are in the correct state
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>state</td><td>Card state to verify</tr></td></table>
 
 ### verify_global_group_status
+```
+This quick call returns the status of the apply-group for a specific group. 
+
+Return: block
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>group_name</td><td>This is the name of the group that we're getting the status for. </tr></td></table>
 
@@ -2372,6 +2744,10 @@ the command will look like this: r#show isis database  google_D9.*</tr></td>
 <tr><td>include_filter</td><tr></tr></table>
 
 ### clear_buffered_logs
+```
+Clears only the buffered logs. The preexisting QC clear_logs also clears counters.
+```
+
 ### show_run_explicit-path
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>name</td><tr></tr></table>
@@ -2419,6 +2795,10 @@ show isis ipv6 route 2001:11:255:255::9/128</tr></td>
 <tr><td>chn_load_np</td><td>show operational HardwareModuleNP NodeTable NOde/NodeName/Rack=0;Slot=3;Instance=CPU0 NPTable NP/NPName=*****np3******chn-load xml</tr></td></table>
 
 ### config_cef_lb_fields
+```
+Configures signalled bandwidth for a tunnel 
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>unconfig</td><td>yes -to unconfigure particular thign
 </tr></td>
@@ -2745,6 +3125,10 @@ WORD    Unix commandline option string , maximum length 20</tr></td></table>
 <tr><td>extra_arg</td><tr></tr></table>
 
 ### show_commit
+```
+This procedure is extracting information about the current IOS version present on the DUT
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>diff</td><td>-yes -to see the configuration changes 
 </tr></td></table>
@@ -3081,6 +3465,15 @@ s
 <tr><td>output_modifier</td><tr></tr></table>
 
 ### show_run_inheritance
+```
+Use to do show run. 
+You can use the extra_arg to create commands such as "show run ssh timeout inheritance detail".
+You can set detail and/or inheritance to a value different than "null" to use them:
+
+e.g. show run ssh timeout inheritance detail : -inheritance yes -detail yes -extra_arg "ssh timeout" 
+
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>inheritance</td><td>Set to a value different than "null" to add the inheritance keyword to the command
 </tr></td>
@@ -3092,6 +3485,10 @@ e.g. show run ssh timeout inheritance detail : -inheritance yes -detail yes -ext
 <tr><td>output_filter</td><td>Use to add | include something. Variable should take values like "include something".</tr></td></table>
 
 ### show_run_router_static_inheritance
+```
+Used to do "show run router static inheritance". The "inheritance" keyword is optional (so you can use the same qc for show run router static) and should be initialized with any value different than "null" to use.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>inheritance</td><td>Give a value other than null to add the "inheritance" keyword to the command.</tr></td>
 <tr><td>detail</td><td>Use this variable to add "detail" to the command.
@@ -3099,6 +3496,13 @@ Give a non "null" value to use.
 e.g. show run router static detail; -detail Yes</tr></td></table>
 
 ### config_group_logging
+```
+Use to configure logging inside a configuration group or in the configure terminal configuration context. Command defaults to "logging console critical" which is the default setting for most Cisco devices.
+The "no" keyword can also be used.
+If the variable "group_name" is not null, the configuration will be done at group configuration context level. The value of this argument must be the same with the name of the group you want to configure.
+If the variable "group_name" is kept null (default), the configuration will be done at global configuration mode configuration context level.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>destination</td><td>Use to define the logging destination for this command: (severity levels displayed are the default)
 Console logging
@@ -3137,6 +3541,11 @@ Appears during debugging only</tr></td>
 <tr><td>no</td><td>Use to negate the command. Any value different than "null" will initialize this variable. Avoid the value "yes" (action antet will read: -no yes)</tr></td></table>
 
 ### show_run
+```
+Use this command do to a standard "show run" or use $output_modifier to add the "|" character and modify the output.
+
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>output_modifier</td><td>Used to build the entire command after the "|" symbol. Output_modifier will take values such as "include router" or "begin router" or "section router"
   begin    Begin with the line that matches
@@ -3148,12 +3557,37 @@ Some platforms may also include "section" or other output filter options.</tr></
 <tr><td>extension</td><tr></tr></table>
 
 ### debug
+```
+Use to run the debug command with a filter. For safety reasons, this quick call will do nothing if the filter is set to "all" as that can overload the router/switch CPU. 
+This quick call uses a debug_timer which you can set. After this timer runs out, the quick call will do an implicit undebug all in order to make sure the debugging is not kept on by accident.
+
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>debug_filter</td><td>Use this argument to filter the debug operation
 </tr></td>
 <tr><td>debug_timer</td><td>Use to set the ammount of time in seconds to keep debugging before issuing the "undebug all" command. This argument will default to 3 seconds.</tr></td></table>
 
 ### config_group_ssh
+```
+Use this QC to configure SSH. Can also negate if the "no" argument is given a value different than "null".
+
+first_op takes client/server/timeout
+
+second_op can be used to choose from the options given for each first option (first_op)
+
+third_op can be used to finish constructing the command if additional options are needed
+
+group_name can be given a value different than none to apply the SSH configuration on the respective group
+
+e.g. ssh server ipv4 access-list only_admin: -first_op server -second_op ipv4 -third_op "access-list only_admin"
+
+e.g. ssh server ipv4 access-list only_admin: -first_op server -second_op ipv4 -third_op "access-list only_admin" -group_name SYSTEM-ALL 
+       - will apply the configuration in the (config-GRP)# configuration context for the SYSTEM-ALL configuration group.
+
+e.g. Shortest possible command: ssh server: -first_op server
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>first_op</td><td>First option for SSH configuration:
 
@@ -3200,6 +3634,14 @@ ssh server ipv4 access-list only_admin: -third_op "access-list only_admin"
 <tr><td>no</td><td>Give value different than "null" to negate the command.</tr></td></table>
 
 ### exclude_item
+```
+Use this QC to do exclude-item "item". The "item_to_exclude" variable will keep the value of "item". This variable is mandatory but will default to null.
+If the default is used, this QC will not issue any commands.
+Give a value different than "null" to the "no" variable to negate this command.
+Use "additional_context" to enter a more specific configuration context for the purpose of issuing the exclude-item command.
+
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>item_to_exclude</td><td>Items to be excluded</tr></td>
 <tr><td>process_id</td><tr></tr>
@@ -3226,6 +3668,26 @@ RP/0/RP0/CPU0:asr9k-2(config-static)#end
 <tr><td>apply_group</td><td>Defines apply-group</tr></td></table>
 
 ### show_configuration
+```
+Use this QC to build the show configuration "option" "option" command like so:
+
+e.g. show configuration failed rollback inheritance -option_1 failed
+                                                                                 -option_2 "rollback inheritance"
+
+option_1 defaults to null and is required. If option_1 is left with it's default value, the QC will not issue a command.
+
+option_2 has no default and is optional, allowing the construction of commands like:
+
+RP/0/RSP0/CPU0:google_D9_tb3#show configuration lock ?
+  |     Output Modifiers
+  <cr>
+
+The output_filter variable should hold values such as "include interface" or "begin bgp".
+e.g. show configuration lock | include router - option_1 lock
+                                                                       - option_2 (leave at default, not used)
+                                                                       - output_filter "include router"
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>option_1</td><td>RP/0/RSP0/CPU0:google_D9_tb3#show configuration ?
   backup          System configuration backup information(cisco-support)
@@ -3249,6 +3711,13 @@ e.g. show configuration lock | include router - option_1 lock
                                                                        - output_filter "include router"</tr></td></table>
 
 ### disable_group_logging
+```
+Use to configure logging inside a configuration group or in the configure terminal configuration context. Command defaults to "logging console critical" which is the default setting for most Cisco devices.
+The "no" keyword can also be used.
+If the variable "group_name" is not null, the configuration will be done at group configuration context level. The value of this argument must be the same with the name of the group you want to configure.
+If the variable "group_name" is kept null (default), the configuration will be done at global configuration mode configuration context level.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>destination</td><td>Use to define the logging destination for this command: (severity levels displayed are the default)
 Console logging
@@ -3325,18 +3794,30 @@ give the np for which you want to see the port map</tr></td>
 <tr><td>location</td><tr></tr></table>
 
 ### load_from_harddisk
+```
+This procedure will get the file as argument from disk0 and load it in the config mode and commit it. 
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>file_name</td><tr></tr>
 <tr><td>mpls_static</td><td>send "yes" if mpls static config should be verified</tr></td>
 <tr><td>replace</td><td>Adds the option to commit replace instead of commit</tr></td></table>
 
 ### load_from_harddisk_return
+```
+This procedure will get the file as argument from disk0 and load it in the config mode and commit it. 
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>file_name</td><tr></tr>
 <tr><td>mpls_static</td><td>send "yes" if mpls static config should be verified</tr></td>
 <tr><td>replace</td><td>Adds the option to commit replace instead of commit</tr></td></table>
 
 ### sh_run_mpls_static
+```
+This procedure will get the file as argument from disk0 and load it in the config mode and commit it. 
+```
+
 ### show_ethernet_oam
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>option1</td><td>use one of the following:
@@ -3364,6 +3845,15 @@ RP/0/RP0/CPU0:asr9k-3#show ethernet oam configuration ?
 <tr><td>extra_arg</td><td>send summary</tr></td></table>
 
 ### admin_config
+```
+Use to do show run. 
+You can use the extra_arg to create commands such as "show run ssh timeout inheritance detail".
+You can set detail and/or inheritance to a value different than "null" to use them:
+
+e.g. show run ssh timeout inheritance detail : -inheritance yes -detail yes -extra_arg "ssh timeout" 
+
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>configure</td><td>send yes</tr></td>
 <tr><td>power_priority</td><tr></tr>
@@ -3395,6 +3885,11 @@ RP/0/RP0/CPU0:asr9k-3#show ethernet oam configuration ?
 <tr><td>admin</td><tr></tr></table>
 
 ### show_users
+```
+Use this command do to a standard "show run" or use $output_modifier to add the "|" character and modify the output.
+
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>output_modifier</td><td>Used to build the entire command after the "|" symbol. Output_modifier will take values such as "include router" or "begin router" or "section router"
   begin    Begin with the line that matches
@@ -3405,6 +3900,11 @@ RP/0/RP0/CPU0:asr9k-3#show ethernet oam configuration ?
 Some platforms may also include "section" or other output filter options.</tr></td></table>
 
 ### clear_line
+```
+Use this command do to a standard "show run" or use $output_modifier to add the "|" character and modify the output.
+
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>vty_line_num</td><tr></tr></table>
 
@@ -3417,7 +3917,17 @@ Some platforms may also include "section" or other output filter options.</tr></
 <tr><td>admin</td><tr></tr></table>
 
 ### redundancy_switchover_interactive_cli
+```
+Use this command do to a standard "show run" or use $output_modifier to add the "|" character and modify the output.
+
+```
+
 ### admin_reload_interactive_cli
+```
+Use this command do to a standard "show run" or use $output_modifier to add the "|" character and modify the output.
+
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>loc</td><tr></tr></table>
 
@@ -3458,12 +3968,33 @@ Some platforms may also include "section" or other output filter options.</tr></
 
 ## Quickcall Library: IOS_XR_SSH_quickcall_library.fftc
 ### AddInterfaceToIsis
+```
+add the specified interface to isis
+Rerturns block JSON response:
+success - true on successful config change, false otherwise
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>interface</td><td>The interface to add to isis</tr></td>
 <tr><td>group_name</td><td>Name of existing ISIS group </tr></td>
 <tr><td>isis_proc_id</td><td>ISIS process ID to add interface to</tr></td></table>
 
 ### ChangeIsisMetric
+```
+This quick call will change the isis metric of an interface on an router. 
+
+config t
+router isis 1 
+interface bundle-ether 95
+address-family ipv4 unicast 
+metric 10
+address-family ipv6 unicast
+metric 10
+commit
+end
+
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>isis_proc_id</td><td>ISIS process id</tr></td>
 <tr><td>interface_name</td><td>This is the interface on which the ISIS metric is being changed. </tr></td>
@@ -3471,16 +4002,32 @@ Some platforms may also include "section" or other output filter options.</tr></
 <tr><td>metric_value</td><td>Value to set the interface metric to</tr></td></table>
 
 ### ClearInterfaceArpCache
+```
+Clear the ARP cache on a Cisco IOS XR device.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>interface</td><td>Name of interface to clear ARP on</tr></td></table>
 
 ### ClearInterfaceCounters
+```
+Clear interface counters for one interface or all
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>interface</td><td>Name of interface to clear counters on. 
 NOTE: If not given, will clear counters on all interfaces.</tr></td></table>
 
 ### ClearMplsForwardingCounters
+```
+Clear global MPLS forwarding counters
+```
+
 ### ClearRsvpCounters
+```
+Clear RSVP forwarding counters for a specific type
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>target</td><td>Type of RSVP counters to clear. Options include:
 authentication
@@ -3492,10 +4039,18 @@ oor
 prefix-filtering</tr></td></table>
 
 ### ClearPbrCounters
+```
+Clear PBR counters on a specific interface
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>interface</td><td>Interface to be cleared</tr></td></table>
 
 ### ConfigureClassMap
+```
+Add or remove class-map in the global config
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>class_map_name</td><td>Enter class map name you want to use. Valid examples:
 inet-classifier-af1
@@ -3509,6 +4064,10 @@ vlan <vlan_value>
 </tr></td></table>
 
 ### ConfigureExplicitPaths
+```
+Add or remove explicit path to global config
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>path_name</td><td>user given name for path</tr></td>
 <tr><td>unconfigure</td><td>Values:
@@ -3539,6 +4098,10 @@ Config resulted will be:
 <tr><td>ip_ver</td><td>ipv4 or ipv6</tr></td></table>
 
 ### ConfigureGroupInterface
+```
+Add, edit or remove an interface group
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>group_name</td><td>Name of interface group to modify</tr></td>
 <tr><td>record_route</td><td>Values:
@@ -3652,11 +4215,19 @@ Example: 10</tr></td>
 <tr><td>metric</td><td>Set the metric. Eg: 12</tr></td></table>
 
 ### ConfigureIsis
+```
+Configure or remove ISIS routing
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>process_id</td><td>Defines the process ID (Eg: 1)</tr></td>
 <tr><td>apply_group_remove</td><td>Remove group from apply-group</tr></td></table>
 
 ### ConfigureLldp
+```
+Configure or remove LLDP in the global config
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>holdtime</td><td>Cofigure the holdtime</tr></td>
 <tr><td>unconfigure</td><td>Options:
@@ -3664,6 +4235,10 @@ all - removes LLDP from global config
 holdtime - removes holdtime, leaves LLDP enabled</tr></td></table>
 
 ### ConfigureMplsTunnelFrr
+```
+Configure/Remove a path-option for an MPLS TE Tunnel
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>group_name</td><td>Use this argument to specify a configuration group, e.g. "GOOGLE-BACKBONE-MPLS"
 Leave as "none" to not confiugre a group name</tr></td>
@@ -3682,6 +4257,10 @@ bandwidth
 <tr><td>remove_configuration</td><td>Remove FRR configuration if this parameter is set to yes</tr></td></table>
 
 ### ConfigureRsvp
+```
+Configure RSVP in the global config
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>apply_group</td><td>Configuration group name you wish to apply to the interface. 
 Use the value "wipe" to remove all apply groups from the interface.
@@ -3691,6 +4270,10 @@ Use the value "remove <apply-group-names>" to remove a list of apply groups from
 Use the value "append <apply-group-names>" to append a list of apply groups to the interface.</tr></td></table>
 
 ### ConfigureServicePolicy
+```
+Add or remove a service policy in the global config
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>apply_order</td><td>Defines the apply order. Options:
 pbr qos
@@ -3699,6 +4282,10 @@ qos pbr</tr></td>
 -all</tr></td></table>
 
 ### CreateRoutePolicy
+```
+Quickcall used to configure a BGP peer.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>route_policy</td><td>Name of policy to create or delete</tr></td>
 <tr><td>local_pref</td><td>Specify the value for set local preference</tr></td>
@@ -3706,12 +4293,20 @@ qos pbr</tr></td>
 <tr><td>delete_route_policy</td><td>Change to "yes" to delete route policy named by $route_policy</tr></td></table>
 
 ### ConfigureInterfaceAcl
+```
+Add or remove an ACL from an interface
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>interface</td><td>Name of interface to modify</tr></td>
 <tr><td>acl_name_add</td><td>Name of ACL to add</tr></td>
 <tr><td>acl_name_remove</td><td>Name of acl to remove</tr></td></table>
 
 ### ConfigureInterfaceIP
+```
+Configure or remove an IPv4 address on an interface. 
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>ipv4_address</td><td>If given, will configure IPv4 address on the interface. If left as defualt, will remove the IPv4 address from the interface. 
 </tr></td>
@@ -3724,33 +4319,67 @@ Length of v6 prefix to apply to the interface. </tr></td>
 <tr><td>interface</td><td>Name of interface to alter</tr></td></table>
 
 ### ConfigureInterfaceMTU
+```
+Configure MTU size on an interface
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>interface</td><td>Name of the interface to alter.</tr></td>
 <tr><td>new_mtu</td><td>New MTU size to apply.</tr></td></table>
 
 ### CreateAcl
+```
+Create an Access Control List on the global config
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>acl_name</td><td>Name to give to newly created ACL</tr></td>
 <tr><td>deny_string</td><td>String to be placed on the 'deny' line of the ACL. Example "tcp any any eq www log"</tr></td>
 <tr><td>permit_string</td><td>String to be placed on the 'permit' line of the ACL. Example "ipv4 any any"</tr></td></table>
 
 ### ConfigureHostname
+```
+Change the hostname 
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>hostname</td><td>New value for the hostname</tr></td></table>
 
 ### EnterConfigMode
+```
+Enter config mode on an IOS XR device. Mainly to be used by other quick calls.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>interface</td><td>Optional. Interface to configure. </tr></td></table>
 
 ### ExitConfigMode
+```
+Commit changes and exit config mode. Used mainly by other quick calls.
+```
+
 ### GetArpTable
+```
+Returns the complete response to 'show arp'
+```
+
 ### GetApplyGroupList
+```
+Returns a list of apply-groups
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>include</td><td>Type of groups to include in list. 
 Options: all|global|non-global
 </tr></td></table>
 
 ### GetBgpPaths
+```
+Gets the bgp scale and returns the number of active paths and total paths
+
+Response: block JSON string
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>type</td><td>Type of BGP paths to get
 Valid values:
@@ -3760,56 +4389,132 @@ IPv6 Unicast
 Total      (default)</tr></td></table>
 
 ### GetBgpInfo
+```
+Get info from BGP table
+
+Return:
+block JSON string
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>type</td><td>ipv4 or ipv6</tr></td>
 <tr><td>ipAddress</td><td>ip address</tr></td></table>
 
 ### GetBundleInterfaces
+```
+Get the list of interfaces belonging to this bundle
+
+Returns:
+A table of the interfaces and the corresponding states
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>bundle</td><td>The bundle for which to retrieve the list of interfaces</tr></td></table>
 
 ### GetCefTables
+```
+Get the cef tables for the specified ip
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>ipAddress</td><td>The ip address for which to find cef tables</tr></td></table>
 
 ### GetExplicitPaths
+```
+Returns configured explicit paths on the router. 
+
+```
+
 ### GetInterfaceErrorCounts
+```
+Get all error counters on a specified interface. Returns a block JSON response'
+
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>interface</td><td>provide the interface to run the command
 </tr></td></table>
 
 ### GetInterfaceInfo
+```
+Returns information about an interface. Uses 30 second rates for return data. Returns a block JSON string.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>interface</td><td>the name of the interface</tr></td></table>
 
 ### GetLabelTraffic
+```
+For the specified label, return the traffic information. Returns a block JSON string.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>label</td><td>The numeric value of the label</tr></td></table>
 
 ### GetMplsTunnelsSummary
+```
+Get summary information for tunnels
+
+Returns:
+ 
+block
+```
+
 ### GetCpuUsageTable
+```
+Returns entire output of 'show process cpu' command
+```
+
 ### GetInterfaceCounters
+```
+Get interface coutners shown in the 'show interface detail' command.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>interface</td><td>Name of interface to get counter info from</tr></td></table>
 
 ### GetNdTable
+```
+Returns the entire response to 'show ipv6 neighbors'
+```
+
 ### Ping
+```
+Ping an IPv4 or IPv6 address.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>ip_address</td><td>IPv4 or IPv6 address to ping. </tr></td></table>
 
 ### RemoveApplyGroup
+```
+Remove apply group from global config
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>groupName</td><td>Name of apply-group to remove </tr></td></table>
 
 ### RemoveGroup
+```
+remove an interface group
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>groupName</td><td>Name of group to remove</tr></td></table>
 
 ### RemoveAcl
+```
+Remove an ACL from the global config
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>acl_name</td><td>Name of ACL to remove</tr></td></table>
 
 ### RestartProcess
+```
+Restart a process
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>process</td><td>Job ID <0-4294967295> or name of process to restart</tr></td></table>
 

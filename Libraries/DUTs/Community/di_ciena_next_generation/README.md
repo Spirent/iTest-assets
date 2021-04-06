@@ -63,6 +63,11 @@ Class: Community
 <tr><td>log_report</td><tr></tr></table>
 
 ### cfm_link_trace_mac_hop
+```
+Send seed link-trace action and store MAC address data.
+Utilize the store data to perform link-trace action to each hop within the service.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>service_id</td><td>Handle constructed for MD and MA</tr></td>
 <tr><td>md</td><tr></tr>
@@ -72,6 +77,11 @@ Class: Community
 <tr><td>log_report</td><tr></tr></table>
 
 ### cfm_link_trace_mac_mep
+```
+Send seed link-trace action and store MAC address data.
+Utilize the store data to perform link-trace action to all remote MEP's within the service.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>service_id</td><td>Handle constructed for MD and MA</tr></td>
 <tr><td>destination_mep_id</td><tr></tr>
@@ -100,6 +110,10 @@ Class: Community
 <tr><td>log_report</td><tr></tr></table>
 
 ### change_ccm_interval
+```
+Utilized by the cfm_defect test process
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>service_id</td><tr></tr>
 <tr><td>md</td><tr></tr>
@@ -108,6 +122,10 @@ Class: Community
 <tr><td>alt_syntax</td><tr></tr></table>
 
 ### check_cfm_service_status
+```
+Foreach valid service query for service errors. If error(s) are present,wait 15 seconds and repeat step up to 6 times. If count is exceeded flag set, return value is adjusted accordingly.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>service_id</td><td>cmf service name comstructed from ${md}$ma</tr></td>
 <tr><td>md</td><td>Maintance Domain key</tr></td>
@@ -129,11 +147,19 @@ Class: Community
 <tr><td>uni_port</td><tr></tr></table>
 
 ### cleanup_dba_ss_ppcos
+```
+This procedure sets the port queue settings back to the base defaults. This includes the shaper-rate, scheduler algorithm, scheduler weights, and cir, cbs,, and eir settings for queues 5-7
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>port</td><td>The uni port to configure</tr></td>
 <tr><td>port_speed</td><td>This is used for the eir setting</tr></td></table>
 
 ### clear_pm_stats
+```
+Clear traffic profiling, traffic queues, and port stats for the specified ports in the input port list
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>port_list</td><td>The list of (one or more) ports to clear</tr></td>
 <tr><td>sp_id</td><tr></tr></table>
@@ -143,6 +169,10 @@ Class: Community
 <tr><td>port</td><tr></tr></table>
 
 ### clear_stats
+```
+Clear traffic profiling, traffic queues, and port stats for the specified ports in the input port list
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>port_list</td><td>The list of (one or more) ports to clear</tr></td>
 <tr><td>sp_id</td><tr></tr></table>
@@ -157,6 +187,10 @@ Class: Community
 <tr><td>instance_cnt</td><tr></tr></table>
 
 ### create_cfm_service
+```
+Utilized by CFM Y1731 test instance
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>ccm_interval</td><td>ccm service interval as defined in the cfm_config.csv</tr></td>
 <tr><td>ma</td><td>MA_name defind in cfm_config.csv
@@ -291,6 +325,10 @@ constructed from: $service_name:$service_number-${level}"</tr></td>
 <tr><td>port</td><tr></tr></table>
 
 ### get_mac
+```
+Use 'port show port port#' to display the MAC, then return the value
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>port_no</td><td>Port number for which to show the mac</tr></td></table>
 
@@ -304,6 +342,10 @@ constructed from: $service_name:$service_number-${level}"</tr></td>
 
 ### get_port_base_mac
 ### get_port_speed
+```
+Use "port show port <port number>" to retrieve the 
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>port</td><td>Get the configured port speed for this port</tr></td></table>
 
@@ -340,6 +382,14 @@ constructed from: $service_name:$service_number-${level}"</tr></td>
 <tr><td>ciena_nte</td><tr></tr></table>
 
 ### login
+```
+Check the prompt to determine if login is through a hop-off server (Acme NOC).
+A block procedure which returns the promptname.
+Then call appropriate login procedure, send_login(),  noc_login()
+Checks the prompt for success, or other.
+Other prompts include username: or Username
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>userid</td><td>User name for login</tr></td>
 <tr><td>password</td><td>User password for login</tr></td>
@@ -401,6 +451,11 @@ constructed from: $service_name:$service_number-${level}"</tr></td>
 <tr><td>virtual_switch</td><tr></tr></table>
 
 ### send_login
+```
+Quick call for Juniper devices through the Acme NOC
+A block procdure which returns the promptname. This is checked by the caller to determine success/fail.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>session</td><tr></tr>
 <tr><td>userid</td><tr></tr>
@@ -439,6 +494,10 @@ constructed from: $service_name:$service_number-${level}"</tr></td>
 <tr><td>ma</td><tr></tr></table>
 
 ### toggle_cfm_global_state
+```
+Globally enable or disable a cfm service
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>global_state</td><tr></tr></table>
 
@@ -449,6 +508,10 @@ constructed from: $service_name:$service_number-${level}"</tr></td>
 <tr><td>mepid</td><td>MEP id to operate upon</tr></td></table>
 
 ### verify_cfm_service_fault
+```
+Foreach valid service query for service errors. If error(s) are present,wait 15 seconds and repeat step up to 6 times. If count is exceeded flag set, return value is adjusted accordingly.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>service_id</td><tr></tr>
 <tr><td>md</td><td>Maintance Domain key</tr></td>
@@ -484,6 +547,10 @@ constructed from: $service_name:$service_number-${level}"</tr></td>
 <tr><td>vs_name</td><td>A value from global 'CIENA_VS_DB' for current instance</tr></td></table>
 
 ### check_cfm_global_state
+```
+Globally enable or disable a cfm service
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>session</td><tr></tr>
 <tr><td>global_state</td><tr></tr></table>

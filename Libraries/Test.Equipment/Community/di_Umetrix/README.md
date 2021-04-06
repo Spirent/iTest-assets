@@ -11,14 +11,47 @@ Class: Community
 ### Spirent Umetrix Video Library
 Umetrix Video Version 4.2.1.4
 ### GetSystemStatus
+```
+
+Gets current system status.
+```
+
 ### GetSystemVersion
+```
+
+Gets system version.
+```
+
 ### GetSysCurrentMethodology
+```
+
+Gets the currently set methodology.
+```
+
 ### SetSysCurrentMethodology
+```
+
+Sets current methodology.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>name</td><td>The proper methodologies to set are "GED", "FULL_REFERENCE", "NON_REFERENCE", "NON_REFERENCE_REALTIME", "NON_REFERENCE_4k", and "NON_REFERENCE_REALTIME_4K". No other methodology is supported through this API</tr></td></table>
 
 ### GetDevices
+```
+
+Get Devices status
+```
+
 ### GetLogs
+```
+
+The command will retrieve all log files from the specified date and later.
+
+The command will return the contents of "logs.zip"  file in UTF-8 format.
+
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>inTime</td><td>
 (Optional) Specify the Date and Time for the logs to be retrieved.
@@ -27,7 +60,15 @@ Format for the time should be “MM/DD/YYYY HH:MM:SS”
 Note also that the HH::MM:SS is in 24hour clock and is also optional.</tr></td></table>
 
 ### GetNonReferenceSettings
+```
+Retrieve Non Reference parameters
+```
+
 ### SetNonReferenceConfigSettings
+```
+Set the respective Non Reference parameters
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>nrBuffering</td><td>Non-Reference Buffering</tr></td>
 <tr><td>nrLive</td><td>Non-Reference Real-Time Mode</tr></td>
@@ -69,7 +110,15 @@ true/false
 Default - true</tr></td></table>
 
 ### GetGEDSettings
+```
+Retrieve GED parameters
+```
+
 ### SetGEDConfigSettings
+```
+Set the respective GED parameters
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>maxAvSync</td><td>
 Maximum AV Sync Thresholds (milliseconds)
@@ -110,7 +159,15 @@ Valid values:
 true/false</tr></td></table>
 
 ### GetFRSettings
+```
+Retrieve FR parameters
+```
+
 ### SetFRConfigSettings
+```
+Set the respective FR parameters
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>notifyWhenProcessingIsCompleted</td><td>
 Valid values:
@@ -118,6 +175,11 @@ Valid values:
 true/false</tr></td></table>
 
 ### GetListOfSessions
+```
+
+Get list of sessions.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>methodologyId</td><td>
 Methodology ID (String - UUID)</tr></td>
@@ -131,6 +193,11 @@ Valid values;
 true/false</tr></td></table>
 
 ### GetSession
+```
+
+Get Session
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>methodologyId</td><td>
 Methodology ID (String - UUID)
@@ -143,6 +210,11 @@ Session ID (String - UUID)
 The UUID for the session can be retrieved with a call to "GetListOfSessions".</tr></td></table>
 
 ### StartSession
+```
+
+Start (Create) Session
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>methodologyId</td><td>
 Methodology ID (String - UUID)
@@ -162,6 +234,11 @@ Valid values:
 true/false</tr></td></table>
 
 ### StopSession
+```
+
+Stop session
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>methodologyId</td><td>
 Methodology ID (String - UUID)
@@ -169,6 +246,11 @@ Methodology ID (String - UUID)
 The UUID for the Methodology can be trieved with a call to "GetListOfMethodologies".</tr></td></table>
 
 ### CancelSessionProcessing
+```
+
+Cancel session processing
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>methodologyId</td><td>
 Methodology ID (String - UUID)
@@ -180,6 +262,11 @@ Session ID (String - UUID)
 The UUID for the session can be retrieved with a call to "GetListOfSessions".</tr></td></table>
 
 ### GetSessionKPIs
+```
+
+Get Session KPIs
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>methodologyId</td><td>
 Methodology ID (String - UUID)
@@ -187,6 +274,11 @@ Methodology ID (String - UUID)
 The UUID for the Methodology can be trieved with a call to "GetListOfMethodologies".</tr></td></table>
 
 ### ProcessUnprocessedSessions
+```
+
+Process Unprocessed Sessions
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>methodologyId</td><td>
 Methodology ID (String - UUID)
@@ -202,6 +294,11 @@ Format Example:
 The UUID for the session can be retrieved with a call to "GetListOfSessions".</tr></td></table>
 
 ### GetSessionReport
+```
+
+Get Session Report
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>methodologyId</td><td>
 Methodology ID (String - UUID)
@@ -213,6 +310,11 @@ Example:
 C:/Users/Inti/Documents/umetrix/2021-03-10-231647</tr></td></table>
 
 ### CreateSessionReport
+```
+
+Create Session Report
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>methodologyId</td><td>
 Methodology ID (String - UUID)
@@ -228,6 +330,11 @@ Example:
 C:/Users/Inti/Documents/umetrix/2021-03-10-231647</tr></td></table>
 
 ### ImportSession
+```
+
+Import Session
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>methodologyId</td><td>
 Methodology ID (String - UUID)
@@ -238,6 +345,11 @@ The UUID for the Methodology can be trieved with a call to "GetListOfMethodologi
 Path of the folder containing a session or sessions to be imported</tr></td></table>
 
 ### DeleteSession
+```
+
+Permanently delete a session
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>methodologyId</td><td>
 Methodology ID (String - UUID)
@@ -252,6 +364,11 @@ Example:
 The UUID for the session can be retrieved with a call to "GetListOfSessions".</tr></td></table>
 
 ### RemoveAllSessions
+```
+
+Remove a list of sessions
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>methodologyId</td><td>
 Methodology ID (String - UUID)
@@ -267,6 +384,11 @@ Example:
 The UUID for the session can be retrieved with a call to "GetListOfSessions".</tr></td></table>
 
 ### ImportVideo
+```
+
+Import Video
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>methodologyId</td><td>
 Methodology ID (String - UUID)
@@ -278,6 +400,11 @@ Example:
 "C:/folder1/file1","C:/folder2/file2","C:/folder3/file3"</tr></td></table>
 
 ### MarkAsProcessed
+```
+
+Mark Session as Processed
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>methodologyId</td><td>
 Methodology ID (String - UUID)
@@ -289,6 +416,11 @@ Session ID (String - UUID)
 The UUID for the session can be retrieved with a call to "GetListOfSessions".</tr></td></table>
 
 ### MarkAsUnprocessed
+```
+
+Mark Session as Unprocessed
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>methodologyId</td><td>
 Methodology ID (String - UUID)
@@ -300,6 +432,11 @@ Session ID (String - UUID)
 The UUID for the session can be retrieved with a call to "GetListOfSessions".</tr></td></table>
 
 ### SetAsSelectedSession
+```
+
+Sets the provided session as the selected session
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>methodologyId</td><td>
 Methodology ID (String - UUID)
@@ -311,6 +448,11 @@ Session ID (String - UUID)
 The UUID for the session can be retrieved with a call to "GetListOfSessions".</tr></td></table>
 
 ### SetSessionBufferingWindow
+```
+
+Updates the currently selected session with the provided buffering window.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>methodologyId</td><td>
 Methodology ID (String - UUID)
@@ -322,6 +464,10 @@ Buffering Window Profile Name</tr></td>
 Channel index (1 or 2)</tr></td></table>
 
 ### UploadVideo
+```
+Upload a video(avi/mp4) and import into a new session
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>methodologyId</td><td>
 Methodology ID (String - UUID)
@@ -331,6 +477,11 @@ The UUID for the Methodology can be trieved with a call to "GetListOfMethodologi
 Path of the folder containing a video to be uploaded.</tr></td></table>
 
 ### ImportVideoGED
+```
+
+Import Video for GED Methodology. Only wmv files allowed.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>methodologyId</td><td>
 Methodology ID (String - UUID)
@@ -352,6 +503,11 @@ Default - 5
 </tr></td></table>
 
 ### SetFRReferenceFile
+```
+
+Set the reference file for Full Reference Video after importing the video.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>methodologyId</td><td>
 Methodology ID (String - UUID)
@@ -371,8 +527,23 @@ Default - 0</tr></td>
 Reference Movie file.</tr></td></table>
 
 ### GetListOfMethodologies
+```
+
+List methodologies
+```
+
 ### GetCurrActivationCode
+```
+
+Gets current activation code.
+```
+
 ### SetCurrActivationCode
+```
+
+Sets current activation code.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>methodologyId</td><td>
 Methodology ID (String - UUID)
@@ -403,6 +574,11 @@ Valid values:
 true/false</tr></td></table>
 
 ### ListChannelsInformation
+```
+
+List channels information.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>methodologyId</td><td>
 Methodology ID (String - UUID)
@@ -410,6 +586,11 @@ Methodology ID (String - UUID)
 The UUID for the Methodology can be trieved with a call to "GetListOfMethodologies".</tr></td></table>
 
 ### EnableChannel
+```
+
+Enable channel
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>methodologyId</td><td>
 Methodology ID (String - UUID)
@@ -431,6 +612,11 @@ Name of the audio device (String)
 Default - Disabled</tr></td></table>
 
 ### DisableChannel
+```
+
+Disable channel
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>methodologyId</td><td>
 Methodology ID (String - UUID)
@@ -444,6 +630,11 @@ The UUID for the Methodology can be trieved with a call to "GetListOfMethodologi
 Default - 0</tr></td></table>
 
 ### ConfigureChannel
+```
+
+Configure channel.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>methodologyId</td><td>
 Methodology ID (String - UUID)
@@ -503,6 +694,11 @@ Reference Movie (String)
 Movie must be 24 fps, 30 fps or 60 fps.</tr></td></table>
 
 ### SetChannelBufferWinProfile
+```
+
+Set channel's buffering window profile.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>methodologyId</td><td>
 Methodology ID (String - UUID)
@@ -526,6 +722,11 @@ Width - Buffer Area Location (Pixels)</tr></td>
 Height - Buffer Area Location (Pixels)</tr></td></table>
 
 ### SetChannelRegionOfInterest
+```
+
+Set channel's Region of Interest (X, Y, Height and Width) once the channel is enabled
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>methodologyId</td><td>
 Methodology ID (String - UUID)
@@ -547,6 +748,11 @@ Width - Buffer Area Location (Pixels)</tr></td>
 Height - Buffer Area Location (Pixels)</tr></td></table>
 
 ### IsChannelReady
+```
+
+Is Channel Ready
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>methodologyId</td><td>
 Methodology ID (String - UUID)
@@ -554,6 +760,11 @@ Methodology ID (String - UUID)
 The UUID for the Methodology can be trieved with a call to "GetListOfMethodologies".</tr></td></table>
 
 ### ListBufferingWindowProfiles
+```
+
+List buffering window profiles.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>methodologyId</td><td>
 Methodology ID (String - UUID)
@@ -561,6 +772,11 @@ Methodology ID (String - UUID)
 The UUID for the Methodology can be trieved with a call to "GetListOfMethodologies".</tr></td></table>
 
 ### AddBufferingWindowProfiles
+```
+
+Add buffering window profile.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>methodologyId</td><td>
 Methodology ID (String - UUID)
@@ -582,6 +798,11 @@ Width - Buffer Area Location (Pixels)</tr></td>
 Height - Buffer Area Location (Pixels)</tr></td></table>
 
 ### UpdateBufferingWindowProfiles
+```
+
+Update buffering windo profile.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>methodologyId</td><td>
 Methodology ID (String - UUID)
@@ -606,6 +827,11 @@ Width - Buffer Area Location (Pixels)</tr></td>
 Height - Buffer Area Location (Pixels)</tr></td></table>
 
 ### DeleteBufferingWindowProfiles
+```
+
+Delete buffering window profile.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>methodologyId</td><td>
 Methodology ID (String - UUID)
@@ -625,6 +851,10 @@ Remote functionality includes:
 • starting/stopping a capture session
 • performing post-processing on a session
 ### ConfigureChannel
+```
+Sets up a channel configuration for recording. This step is required for all enabled channels before starting a capture.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>IPAddress</td><td>IP Address of the Umetrix Video host.</tr></td>
 <tr><td>Port</td><td>Umetrix Video TCP Port number.</tr></td>
@@ -636,22 +866,38 @@ Remote functionality includes:
 If specified, indicates this is Video Chat</tr></td></table>
 
 ### GetChannelConfiguration
+```
+Sets up a channel configuration for recording. This step is required for all enabled channels before starting a capture.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>IPAddress</td><td>IP Address of the Umetrix Video host.</tr></td>
 <tr><td>Port</td><td>Umetrix Video TCP Port number.</tr></td>
 <tr><td>index</td><td>Channel Index</tr></td></table>
 
 ### StartCaptureAutoreport
+```
+Enable real-time reporting of capture status.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>IPAddress</td><td>IP Address of the Umetrix Video host.</tr></td>
 <tr><td>Port</td><td>Umetrix Video TCP Port number.</tr></td></table>
 
 ### StopCaptureAutoreport
+```
+Disables real-time reporting of capture status.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>IPAddress</td><td>IP Address of the Umetrix Video host.</tr></td>
 <tr><td>Port</td><td>Umetrix Video TCP Port number.</tr></td></table>
 
 ### StartCaptureFixed
+```
+Starts a capture of defined fixed duration.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>IPAddress</td><td>IP Address of the Umetrix Video host.</tr></td>
 <tr><td>Port</td><td>Umetrix Video TCP Port number.</tr></td>
@@ -659,22 +905,38 @@ If specified, indicates this is Video Chat</tr></td></table>
 <tr><td>DurationInSeconds</td><tr></tr></table>
 
 ### StopCapture
+```
+Stops any capture currently running. This can be called to preemptively stop a capture of fixed duration, but does not need to be. If it is called to stop a capture session of fixed duration, then the session description provided in this call will override that provided in the START CAPTURE FIXED command.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>IPAddress</td><td>IP Address of the Umetrix Video host.</tr></td>
 <tr><td>Port</td><td>Umetrix Video TCP Port number.</tr></td>
 <tr><td>SessionDescription</td><td>A description for the capture session as a whole.</tr></td></table>
 
 ### StartProcessAutoreport
+```
+Enables real-time reporting of processing status.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>IPAddress</td><td>IP Address of the Umetrix Video host.</tr></td>
 <tr><td>Port</td><td>Umetrix Video TCP Port number.</tr></td></table>
 
 ### StopProcessAutoreport
+```
+Disables real-time reporting of processing status.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>IPAddress</td><td>IP Address of the Umetrix Video host.</tr></td>
 <tr><td>Port</td><td>Umetrix Video TCP Port number.</tr></td></table>
 
 ### StartProcess
+```
+Executes post processing on the referenced channel in a session.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>IPAddress</td><td>IP Address of the Umetrix Video host.</tr></td>
 <tr><td>Port</td><td>Umetrix Video TCP Port number.</tr></td>
@@ -685,11 +947,19 @@ C:\\Users\\chromatic_user\\AppData\\Local\\ Metrico Wireless\\Chromatic\\capture
 <tr><td>ChannelIndex</td><td>Channel Index</tr></td></table>
 
 ### CancelProcess
+```
+Cancels any currently running post-processing tasks.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>IPAddress</td><td>IP Address of the Umetrix Video host.</tr></td>
 <tr><td>Port</td><td>Umetrix Video TCP Port number.</tr></td></table>
 
 ### AutoProcess
+```
+Configures a channel and performs a fixed duration capture on the selected channel index for the supplied capture length in seconds. After capture completes, data captured video is automatically post- processed.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>IPAddress</td><td>IP Address of the Umetrix Video host.</tr></td>
 <tr><td>Port</td><td>Umetrix Video TCP Port number.</tr></td>
@@ -703,6 +973,10 @@ C:\\Users\\chromatic_user\\AppData\\Local\\ Metrico Wireless\\Chromatic\\capture
 <tr><td>CaptureLength</td><tr></tr></table>
 
 ### CreateReport
+```
+Create a Umetrix Video Excel report from the Capture in CaptureFolderPath.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>IPAddress</td><td>IP Address of the Umetrix Video host.</tr></td>
 <tr><td>Port</td><td>Umetrix Video TCP Port number.</tr></td>
@@ -712,32 +986,56 @@ C:\\Users\\chromatic_user\\AppData\\Local\\ Metrico Wireless\\Chromatic\\capture
 <tr><td>ReportFileName</td><tr></tr></table>
 
 ### GetUTCTimeStamp
+```
+Returns a string representing the Umetrix Video system’s current UTC time. String format is: “yyyy/MM/dd HH:mm:ss.fff”
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>IPAddress</td><td>IP Address of the Umetrix Video host.</tr></td>
 <tr><td>Port</td><td>Umetrix Video TCP Port number.</tr></td></table>
 
 ### TimeSYNCInternet
+```
+Attempts to synchronize the test PC clock to the Audio Server using internet time synchronization.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>IPAddress</td><td>IP Address of the Umetrix Video host.</tr></td>
 <tr><td>Port</td><td>Umetrix Video TCP Port number.</tr></td></table>
 
 ### TimeSYNCGps
+```
+Attempts to synchronize the test PC clock to the Audio Server using GPS time synchronization.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>IPAddress</td><td>IP Address of the Umetrix Video host.</tr></td>
 <tr><td>Port</td><td>Umetrix Video TCP Port number.</tr></td></table>
 
 ### Version
+```
+Returns the version of the currently running Umetrix Video application.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>IPAddress</td><td>IP Address of the Umetrix Video host.</tr></td>
 <tr><td>Port</td><td>Umetrix Video TCP Port number.</tr></td></table>
 
 ### GetDiskInfo
+```
+Returns the value in bytes on the main system hard drive for the corresponding infoType requested.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>IPAddress</td><td>IP Address of the Umetrix Video host.</tr></td>
 <tr><td>Port</td><td>Umetrix Video TCP Port number.</tr></td>
 <tr><td>infoType</td><td>Either ‘total’ or ‘free’ to represent the information needed.</tr></td></table>
 
 ### Archive
+```
+Create a ZIP archive of captures and move them to a designated location.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>IPAddress</td><td>IP Address of the Umetrix Video host.</tr></td>
 <tr><td>Port</td><td>Umetrix Video TCP Port number.</tr></td>
@@ -745,11 +1043,19 @@ C:\\Users\\chromatic_user\\AppData\\Local\\ Metrico Wireless\\Chromatic\\capture
 <tr><td>CapturePath</td><td>One or more file paths pointing to Umetrix Video captures.</tr></td></table>
 
 ### Restart
+```
+Restarts the Umetrix Video application.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>IPAddress</td><td>IP Address of the Umetrix Video host.</tr></td>
 <tr><td>Port</td><td>Umetrix Video TCP Port number.</tr></td></table>
 
 ### SetGEDCircle
+```
+This sets the number of circles to be used for testing. By default, 5 circles will be used for each channel. 4 circles cannot be used for a 60fps configuration.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>IPAddress</td><td>IP Address of the Umetrix Video host.</tr></td>
 <tr><td>Port</td><td>Umetrix Video TCP Port number.</tr></td>
@@ -757,18 +1063,30 @@ C:\\Users\\chromatic_user\\AppData\\Local\\ Metrico Wireless\\Chromatic\\capture
 <tr><td>CircleCount</td><td>Number of circles to be used for the test.</tr></td></table>
 
 ### SetAVSYNCOffset
+```
+Updates the AVSYNC value in settings. This offset value is used in the calculation of AV sync.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>IPAddress</td><td>IP Address of the Umetrix Video host.</tr></td>
 <tr><td>Port</td><td>Umetrix Video TCP Port number.</tr></td>
 <tr><td>OffsetValue</td><td>A description for the AVSYNC as a whole.</tr></td></table>
 
 ### SetAUTOProcessing
+```
+By setting the value to true, the session will be automatically processed after the capture of session is complete.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>IPAddress</td><td>IP Address of the Umetrix Video host.</tr></td>
 <tr><td>Port</td><td>Umetrix Video TCP Port number.</tr></td>
 <tr><td>AutoProcessValue</td><td>Value to be set for the sessions to be processed.</tr></td></table>
 
 ### GetAUTOProcessingStatus
+```
+Get the current setting for AUTO PROCESSING.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>IPAddress</td><td>IP Address of the Umetrix Video host.</tr></td>
 <tr><td>Port</td><td>Umetrix Video TCP Port number.</tr></td></table>

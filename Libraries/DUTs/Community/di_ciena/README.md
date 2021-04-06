@@ -116,6 +116,10 @@ Class: Community
 <tr><td>log_report</td><tr></tr></table>
 
 ### ciena_login
+```
+Quick call for Juniper devices through the Acme NOC
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>IP</td><td>The IP address of the device to telne to</tr></td></table>
 
@@ -261,6 +265,12 @@ Some configuration needs to be done only first time
 
 ### get_version
 ### login
+```
+Check the prompt to determine if login is through a hop-off server (Acme NOC).
+Then call appropriate login procedure.
+References the global LOGIN_SUCCESSFUL created and set by send_login.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>userid</td><tr></tr>
 <tr><td>password</td><tr></tr>
@@ -287,6 +297,11 @@ Some configuration needs to be done only first time
 <tr><td>ccm_priority</td><tr></tr></table>
 
 ### send_login
+```
+Quick call for Juniper devices through the Acme NOC
+Creates and sets the global variable LOGIN_SUCCESSFUL. This is passed out of login() via write action
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>session</td><tr></tr>
 <tr><td>userid</td><tr></tr>
@@ -375,6 +390,11 @@ Some configuration needs to be done only first time
 <tr><td>log_report</td><tr></tr></table>
 
 ### cfm_link_trace_mac_hop
+```
+Send seed link-trace action and store MAC address data.
+Utilize the store data to perform link-trace action to each hop within the service.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>service_id</td><tr></tr>
 <tr><td>md</td><tr></tr>
@@ -384,6 +404,11 @@ Some configuration needs to be done only first time
 <tr><td>log_report</td><tr></tr></table>
 
 ### cfm_link_trace_mac_mep
+```
+Send seed link-trace action and store MAC address data.
+Utilize the store data to perform link-trace action to all remote MEP's within the service.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>service_id</td><tr></tr>
 <tr><td>md</td><tr></tr>
@@ -404,6 +429,11 @@ Some configuration needs to be done only first time
 <tr><td>log_report</td><tr></tr></table>
 
 ### cfm_lmm_mac_mep
+```
+Send link-trace to remote MEP and store all device cfm MAC addresses.
+Utilize the store data to perform loopback message action to all remote MEP's within the service.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>service_id</td><tr></tr>
 <tr><td>md</td><tr></tr>
@@ -442,11 +472,19 @@ Some configuration needs to be done only first time
 <tr><td>alt_syntax</td><tr></tr></table>
 
 ### check_cfm_global_state
+```
+Globally enable or disable a cfm service
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>session</td><tr></tr>
 <tr><td>global_state</td><tr></tr></table>
 
 ### check_cfm_service_status
+```
+Foreach valid service query for service errors. If error(s) are present,wait 15 seconds and repeat step up to 6 times. If count is exceeded flag set, return value is adjusted accordingly.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>service_id</td><td>cmf service name comstructed from ${md}$ma</tr></td>
 <tr><td>md</td><td>Maintance Domain key</tr></td>
@@ -469,6 +507,10 @@ Some configuration needs to be done only first time
 <tr><td>results_uri</td><tr></tr></table>
 
 ### cleanup_dba_ss_ppcos
+```
+This procedure sets the port queue settings back to the base defaults. This includes the shaper-rate, scheduler algorithm, scheduler weights, and cir, cbs,, and eir settings for queues 5-7
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>port</td><td>The uni port to configure</tr></td>
 <tr><td>port_speed</td><td>This is used for the eir setting</tr></td></table>
@@ -478,6 +520,10 @@ Some configuration needs to be done only first time
 <tr><td>port</td><tr></tr></table>
 
 ### clear_stats
+```
+Clear traffic profiling, traffic queues, and port stats for the specified ports in the input port list
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>port_list</td><td>The list of (one or more) ports to clear</tr></td></table>
 
@@ -781,6 +827,10 @@ constructed from: $service_name:$service_number-${level}"</tr></td>
 <tr><td>CIR</td><tr></tr></table>
 
 ### get_mac
+```
+Use 'port show port port#' to display the MAC, then return the value
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>port_no</td><td>Port number for which to show the mac</tr></td></table>
 
@@ -794,14 +844,26 @@ constructed from: $service_name:$service_number-${level}"</tr></td>
 <tr><td>port</td><tr></tr></table>
 
 ### get_interface_mac
+```
+Return the hardware address from 'show interface <interface>
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>interface</td><td>Get the mac associated with this interface and return</tr></td></table>
 
 ### get_peer_mac
+```
+Show the given interface configuration and return the associated MAC
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>interface</td><td>Get the mac associated with this interface and return</tr></td></table>
 
 ### get_port_speed
+```
+Use "port show port <port number>" to retrieve the 
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>port</td><td>Get the configured port speed for this port</tr></td></table>
 
@@ -810,10 +872,20 @@ constructed from: $service_name:$service_number-${level}"</tr></td>
 <tr><td>port</td><tr></tr></table>
 
 ### get_port_vlan_info
+```
+Will be utilized with the Multihome process. An
+d is called after the standard service process has been performed.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>port</td><tr></tr></table>
 
 ### get_queue_stats
+```
+Gets results of "traffic-services queuing egress-port-queue-group show port $port statistics"
+Assigns stats to global array NTE_Q(nte_key,queue_num)
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>port</td><td>The port to show the queue stats</tr></td>
 <tr><td>nte_key</td><td>The identifier to use in referencing the stat</tr></td></table>
@@ -843,6 +915,14 @@ constructed from: $service_name:$service_number-${level}"</tr></td>
 <tr><td>ciena_nte</td><tr></tr></table>
 
 ### login
+```
+Check the prompt to determine if login is through a hop-off server (Acme NOC).
+A block procedure which returns the promptname.
+Then call appropriate login procedure, send_login(),  noc_login()
+Checks the prompt for success, or other.
+Other prompts include username: or Username
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>userid</td><td>User name for login</tr></td>
 <tr><td>password</td><td>User password for login</tr></td>
@@ -897,6 +977,11 @@ constructed from: $service_name:$service_number-${level}"</tr></td>
 <tr><td>ccm_priority</td><tr></tr></table>
 
 ### remove_svlan_port
+```
+Will be utilized with the Multihome process. An
+d is called after the standard service process has been performed.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>svlan</td><tr></tr>
 <tr><td>nni_port</td><tr></tr></table>
@@ -935,6 +1020,11 @@ constructed from: $service_name:$service_number-${level}"</tr></td>
 <tr><td>virtual_switch</td><tr></tr></table>
 
 ### send_login
+```
+Quick call for Juniper devices through the Acme NOC
+A block procdure which returns the promptname. This is checked by the caller to determine success/fail.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>session</td><tr></tr>
 <tr><td>userid</td><tr></tr>
@@ -990,6 +1080,10 @@ constructed from: $service_name:$service_number-${level}"</tr></td>
 <tr><td>ma</td><tr></tr></table>
 
 ### toggle_cfm_global_state
+```
+Globally enable or disable a cfm service
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>global_state</td><tr></tr></table>
 
@@ -1000,6 +1094,10 @@ constructed from: $service_name:$service_number-${level}"</tr></td>
 <tr><td>mepid</td><td>MEP id to operate upon</tr></td></table>
 
 ### verify_cfm_service_fault
+```
+Foreach valid service query for service errors. If error(s) are present,wait 15 seconds and repeat step up to 6 times. If count is exceeded flag set, return value is adjusted accordingly.
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>service_id</td><tr></tr>
 <tr><td>md</td><td>Maintance Domain key</tr></td>

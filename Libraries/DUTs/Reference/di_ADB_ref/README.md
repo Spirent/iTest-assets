@@ -41,11 +41,29 @@ Class: Reference
 </tr></td></table>
 
 ### GetDevices
+```
+Returns lists of device IDs and models
+```
+
 ### GetLog
+```
+Returns the entire 'logcat' log from an ADB device
+
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>deviceId</td><td>ID of device to poll for log</tr></td></table>
 
 ### GetMobileConnectivityInfo
+```
+Retruns the following status strings: 
+Service State:
+\tConnected, No Service, Emergency Only, Power Off
+Data State:
+\tUnknown, Disconnected, Connecting, Connected, Suspended
+
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>device_id</td><td>ID number of device given by command 'adb devices'
 </tr></td></table>

@@ -7,6 +7,12 @@ Class: Community
 1 quickcall library in project
 ## Quickcall Library: Cyberflood_REST.fftc
 ### Login
+```
+Login.
+Returns a JSON string:
+\tstatus - status of login attempt
+```
+
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>UserInfo</td><tr></tr></table>
 
