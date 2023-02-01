@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<testCase version="7.3.2.0">
+<testCase version="9.2.0.202211170131">
     <general>
         <documentation>HTTP Throughput Example</documentation>
         <notes>simple HTTP Throughput test</notes>
@@ -7,12 +7,13 @@
         <language>Python</language>
     </general>
     <execution>
-        <parameters version="7.3.2.0">
+        <parameters version="9.2.0.202211170131">
             <parameters escape="true">
                 <parameters xmlns:pt="http://www.fnfr.com/schemas/parameterTree">
                     <baseUrl pt:description="base URL of the controller">https://ac-cf-controller.spirenteng.com</baseUrl>
                     <bandwidth pt:datatype="INTEGER" pt:description="bandwidth in Kbps">200000</bandwidth>
                     <duration pt:description="time in steady state">30</duration>
+                    <cyberFloodPwd pt:datatype="SECRET" pt:mask="true"/>
                 </parameters>
             </parameters>
         </parameters>
@@ -35,7 +36,7 @@
                                     <authentication transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.AuthenticationProperties" acceptAllCertificates="true" acceptAllCertificates.inherit="false"/>
                                 </sessionProperties>
                                 <sessionClass type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
-                                <sessionVersion type="com.fnfr.documents.PropertyString">7.3.0</sessionVersion>
+                                <sessionVersion type="com.fnfr.documents.PropertyString">9.2.0</sessionVersion>
                             </applicationProperties>
                         </item>
                     </nestedSteps>
@@ -48,7 +49,7 @@
                     <nestedSteps>
                         <item guid="3bf5354c-04c9-483a-bea9-83978523f148" action="Authentication" session="t1" context="SessionStateConsole" normalOffset="40.419" estimatedStepExecutionTime="3.184">
                             <command>
-                                <body>-email apt-cf-user@spirent.com -password *******</body>
+                                <body>-email apt-cf-user@spirent.com -password ************************</body>
                             </command>
                             <postProcessing>
                                 <analysisRules>
@@ -63,12 +64,13 @@
                                                 <storageLocation>xtoken</storageLocation>
                                                 <responseValue type="com.fnfr.documents.PropertyBoolean">false</responseValue>
                                                 <variable type="com.fnfr.documents.PropertyBoolean">true</variable>
+                                                <secret type="com.fnfr.documents.PropertyBoolean">false</secret>
                                             </ruleProperties>
                                         </processorInfo>
                                     </item>
                                 </analysisRules>
                             </postProcessing>
-                            <applicationProperties type="com.fnfr.itest.platform2.shared.documents.ntaf.NtafTransferableDocumentObject" action="Authentication" subharness="http://spirent.com/CustomizedSessions/tools/CyberFlood/harness/main" harness="http://spirent.com/CustomizedSessions/tools/CyberFlood/harness/main" harnessName="Spirent Custom Tool" email="apt-cf-user@spirent.com" email.inherit="false" email.sub="false" password.masked="true" password="SrqvrrOjrgE=" password.inherit="false" password.sub="false"/>
+                            <applicationProperties type="com.fnfr.itest.platform2.shared.documents.ntaf.NtafTransferableDocumentObject" action="Authentication" subharness="http://spirent.com/CustomizedSessions/tools/CyberFlood/harness/main" harness="http://spirent.com/CustomizedSessions/tools/CyberFlood/harness/main" harnessName="Spirent Custom Tool" email="apt-cf-user@spirent.com" email.inherit="false" email.sub="false" password.masked="false" password="[param(&apos;cyberFloodPwd&apos;)]" password.inherit="false" password.sub="false"/>
                         </item>
                     </nestedSteps>
                     <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
@@ -95,6 +97,7 @@
                                                 <storageLocation>testId</storageLocation>
                                                 <responseValue type="com.fnfr.documents.PropertyBoolean">false</responseValue>
                                                 <variable type="com.fnfr.documents.PropertyBoolean">true</variable>
+                                                <secret type="com.fnfr.documents.PropertyBoolean">false</secret>
                                             </ruleProperties>
                                         </processorInfo>
                                     </item>
@@ -125,6 +128,7 @@
                                         <processorInfo ruleType="message">
                                             <ruleProperties type="com.fnfr.svt.execution.builtin.processors.MessageProcessorPropertyGroup" severity="Information">
                                                 <message>Bandwidth currently set to {value} Kbps</message>
+                                                <tag sub="false" defaultValue=""/>
                                             </ruleProperties>
                                         </processorInfo>
                                     </item>
@@ -147,6 +151,7 @@
                                         <processorInfo ruleType="message">
                                             <ruleProperties type="com.fnfr.svt.execution.builtin.processors.MessageProcessorPropertyGroup" severity="Information">
                                                 <message>Setting bandwidth to {value} Kbps</message>
+                                                <tag sub="false" defaultValue=""/>
                                             </ruleProperties>
                                         </processorInfo>
                                     </item>
@@ -179,6 +184,7 @@
                                                 <storageLocation>testRunId</storageLocation>
                                                 <responseValue type="com.fnfr.documents.PropertyBoolean">false</responseValue>
                                                 <variable type="com.fnfr.documents.PropertyBoolean">true</variable>
+                                                <secret type="com.fnfr.documents.PropertyBoolean">false</secret>
                                             </ruleProperties>
                                         </processorInfo>
                                     </item>
@@ -238,6 +244,7 @@
                                                 <storageLocation>runId</storageLocation>
                                                 <responseValue type="com.fnfr.documents.PropertyBoolean">false</responseValue>
                                                 <variable type="com.fnfr.documents.PropertyBoolean">true</variable>
+                                                <secret type="com.fnfr.documents.PropertyBoolean">false</secret>
                                             </ruleProperties>
                                         </processorInfo>
                                     </item>
@@ -366,6 +373,7 @@
                                                 <processorInfo ruleType="message">
                                                     <ruleProperties type="com.fnfr.svt.execution.builtin.processors.MessageProcessorPropertyGroup" severity="Information">
                                                         <message>    Attempted Txns: {value}</message>
+                                                        <tag sub="false" defaultValue=""/>
                                                     </ruleProperties>
                                                 </processorInfo>
                                             </item>
@@ -378,6 +386,7 @@
                                                 <processorInfo ruleType="message">
                                                     <ruleProperties type="com.fnfr.svt.execution.builtin.processors.MessageProcessorPropertyGroup" severity="Information">
                                                         <message>    Successful Txns: {value}</message>
+                                                        <tag sub="false" defaultValue=""/>
                                                     </ruleProperties>
                                                 </processorInfo>
                                             </item>
@@ -390,6 +399,7 @@
                                                 <processorInfo ruleType="message">
                                                     <ruleProperties type="com.fnfr.svt.execution.builtin.processors.MessageProcessorPropertyGroup" severity="Information">
                                                         <message>    Unsuccessful Txns: {value}</message>
+                                                        <tag sub="false" defaultValue=""/>
                                                     </ruleProperties>
                                                 </processorInfo>
                                             </item>
@@ -443,6 +453,7 @@
                                         <processorInfo ruleType="message">
                                             <ruleProperties type="com.fnfr.svt.execution.builtin.processors.MessageProcessorPropertyGroup" severity="Information">
                                                 <message>Test reached {value} percent completion</message>
+                                                <tag sub="false" defaultValue=""/>
                                             </ruleProperties>
                                         </processorInfo>
                                     </item>
@@ -455,6 +466,7 @@
                                         <processorInfo ruleType="message">
                                             <ruleProperties type="com.fnfr.svt.execution.builtin.processors.MessageProcessorPropertyGroup" severity="Information">
                                                 <message>    Grade: {value}</message>
+                                                <tag sub="false" defaultValue=""/>
                                             </ruleProperties>
                                         </processorInfo>
                                     </item>
@@ -467,6 +479,7 @@
                                         <processorInfo ruleType="message">
                                             <ruleProperties type="com.fnfr.svt.execution.builtin.processors.MessageProcessorPropertyGroup" severity="Information">
                                                 <message>    Score: {value}</message>
+                                                <tag sub="false" defaultValue=""/>
                                             </ruleProperties>
                                         </processorInfo>
                                     </item>
@@ -479,6 +492,7 @@
                                         <processorInfo ruleType="message">
                                             <ruleProperties type="com.fnfr.svt.execution.builtin.processors.MessageProcessorPropertyGroup" severity="Information">
                                                 <message>    Executed: {value}</message>
+                                                <tag sub="false" defaultValue=""/>
                                             </ruleProperties>
                                         </processorInfo>
                                     </item>
@@ -491,6 +505,7 @@
                                         <processorInfo ruleType="message">
                                             <ruleProperties type="com.fnfr.svt.execution.builtin.processors.MessageProcessorPropertyGroup" severity="Information">
                                                 <message>    Passed: {value}</message>
+                                                <tag sub="false" defaultValue=""/>
                                             </ruleProperties>
                                         </processorInfo>
                                     </item>
@@ -503,6 +518,7 @@
                                         <processorInfo ruleType="message">
                                             <ruleProperties type="com.fnfr.svt.execution.builtin.processors.MessageProcessorPropertyGroup" severity="Information">
                                                 <message>    Failed: {value}</message>
+                                                <tag sub="false" defaultValue=""/>
                                             </ruleProperties>
                                         </processorInfo>
                                     </item>
