@@ -1,0 +1,174 @@
+<?xml version="1.0" ?><ResponseMap version="6.0.0.18638fa">
+    <notes>Display the queue stats for the given port. 
+Note that Port_Queue_Group == Port </notes>
+    <headline>Show per-queue stats for the given port</headline>
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="command">
+                <command>
+                    <body>traffic-services queuing egress-port-queue-group show port 5  statistics</body>
+                </command>
+            </action>
+            <responseBody>
++------------------------------------- QUEUE GROUP STATISTICS -------------------------------------+
+|--------------------------------------------------------------------------------------------------|
+|                                                                                                  |
+| Port Queue Group: 5                                                                              |
+|                                                                                                  |
+| Q ID |     Dropped Bytes    |     Dropped Pkts     |   Transmitted Bytes  |   Transmitted Pkts   |
+|------+----------------------+----------------------+----------------------+----------------------|
+|    0 |                    0 |                    0 |                 2417 |                   23 |
+|    1 |                    0 |                    0 |              3907840 |                 3820 |
+|    2 |                    0 |                    0 |                    0 |                    0 |
+|    3 |                    0 |                    0 |              8015360 |                 7835 |
+|    4 |              4249752 |                 4134 |            112144128 |               109722 |
+|    5 |              1345788 |                 1311 |            317747456 |               310604 |
+|    6 |                    0 |                    0 |                    0 |                    0 |
+|    7 |                    0 |                    0 |                    0 |                    0 |
+|------+----------------------+----------------------+----------------------+----------------------|
++--------------------------------------------------------------------------------------------------+
+
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;isEmpty&gt;false&lt;/isEmpty&gt;
+    &lt;promptName&gt;normal&lt;/promptName&gt;
+    &lt;echo&gt;traffic-services queuing egress-port-queue-group show port 5  statistics&lt;/echo&gt;
+    &lt;prompt&gt;3930-17-iTest&amp;gt; &lt;/prompt&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="isEmpty">
+                    <queryFormatString>.//isEmpty</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.5</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="colon_auto1">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>\\| Port Queue Group:\\s+</regex>
+                            <start>0</start>
+                            <end>20</end>
+                        </item>
+                        <item name="Port">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>20</start>
+                            <end>21</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+\\|</regex>
+                            <start>21</start>
+                            <end>100</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>| Port Queue Group: 5                                                                              |</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+            </regexMaps>
+        </item>
+        <item type="com.fnfr.svt.mapping.table.TabularMapperProperties">
+            <tabularMaps>
+                <item name="table1">
+                    <additionalBannerLineCount>1</additionalBannerLineCount>
+                    <banner>\\| Q ID \\|\\s+Dropped Bytes\\s+\\|\\s+Dropped Pkts\\s+\\|\\s+Transmitted Bytes\\s+\\|\\s+Transmitted Pkts\\s+\\|\\s*</banner>
+                    <footer>\\|------\\+----------------------\\+----------------------\\+----------------------\\+----------------------\\|\\s*</footer>
+                    <bannerStructure>Regex</bannerStructure>
+                    <footerStructure>Regex</footerStructure>
+                    <minOccurences>0</minOccurences>
+                    <columns>
+                        <item name="x__Q_ID">
+                            <width>5</width>
+                            <lastFullCell/>
+                            <showInStructuredData>false</showInStructuredData>
+                            <addAllQuery>false</addAllQuery>
+                        </item>
+                        <item name="Q_ID">
+                            <isKey>true</isKey>
+                            <width>2</width>
+                            <lastFullCell/>
+                        </item>
+                        <item name="x_">
+                            <lastFullCell/>
+                            <showInStructuredData>false</showInStructuredData>
+                            <addAllQuery>false</addAllQuery>
+                        </item>
+                        <item name="Dropped_Bytes">
+                            <width>21</width>
+                            <lastFullCell/>
+                        </item>
+                        <item name="x_1">
+                            <width>2</width>
+                            <lastFullCell/>
+                            <showInStructuredData>false</showInStructuredData>
+                            <addAllQuery>false</addAllQuery>
+                        </item>
+                        <item name="Dropped_Pkts">
+                            <width>21</width>
+                            <lastFullCell/>
+                        </item>
+                        <item name="x_2">
+                            <width>2</width>
+                            <lastFullCell/>
+                            <showInStructuredData>false</showInStructuredData>
+                            <addAllQuery>false</addAllQuery>
+                        </item>
+                        <item name="Transmitted_Bytes">
+                            <width>21</width>
+                            <lastFullCell/>
+                        </item>
+                        <item name="x_3">
+                            <width>2</width>
+                            <lastFullCell/>
+                            <showInStructuredData>false</showInStructuredData>
+                            <addAllQuery>false</addAllQuery>
+                        </item>
+                        <item name="Transmitted_Pkts">
+                            <width>21</width>
+                            <lastFullCell/>
+                        </item>
+                        <item name="x_4">
+                            <width>999</width>
+                            <lastFullCell/>
+                            <showInStructuredData>false</showInStructuredData>
+                            <addAllQuery>false</addAllQuery>
+                        </item>
+                    </columns>
+                    <ignoreBlankLines>false</ignoreBlankLines>
+                    <autoUpdateNames>false</autoUpdateNames>
+                </item>
+            </tabularMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="traffic-services queuing egress-port-queue-group show port * statistics">
+        <application>
+            <item>com.fnfr.svt.applications.cmd</item>
+            <item>com.fnfr.svt.applications.ssh</item>
+            <item>com.fnfr.svt.applications.telnet</item>
+        </application>
+    </applicabilityProperties>
+</ResponseMap>

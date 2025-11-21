@@ -1,0 +1,2523 @@
+<?xml version="1.0"?>
+<testCase version="8.0.0.201908290812">
+    <general>
+        <notes>Spirent TestCenter QuickCalls for traffic management, capture controls, and 802.11 wifi operations
+Video at: https://youtu.be/Jt9g0owf0Qg</notes>
+        <sessionClass includeTestCase="true" sessionType="project://di_stc_com/session_profiles/Spirent_TestCenter_REST_ref_session_profile.ffsp"/>
+    </general>
+    <procedures>
+        <item name="main">
+            <steps>
+                <item guid="b9ac5723-98f7-4c70-adbb-7a183f45b700" action="comment" useFieldsInCommand="false">
+                    <command>
+                        <body>QC Library</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+        </item>
+        <item name="associateIeee80211clientprofile" isPublic="true">
+            <steps>
+                <item guid="3bde009b-82a1-4c17-9858-823c2cec6da3" action="GetObjects" session="$session">
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>fn:count(//ObjectList)</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$value == 1.0</expression>
+                                        <actionsWhenFalse>
+                                            <item actionId="Eval">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                    <statement>set fullResponse ERROR</statement>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message>Failed to find a single object emulateddevice handle called $emulatedDeviceName</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="SkipRemainingRules">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                        </actionsWhenFalse>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>ObjectList()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>emulateddevice</storageLocation>
+                                        <responseValue type="com.fnfr.documents.PropertyBoolean">false</responseValue>
+                                        <variable type="com.fnfr.documents.PropertyBoolean">true</variable>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.itest.platform2.shared.documents.ntaf.NtafTransferableDocumentObject" action="GetObjects" subharness="http://spirent.com/NTAF/harness/STC/commands/Sequencer/Config" harness="http://spirent.com/NTAF/harness/STC/commands/Sequencer/Main" harnessName="http://spirent.com/NTAF/harness/iTest/BaseCommands/Main" ClassName="emulatedDevice" ClassName.inherit="false" Condition="name = &apos;$emulatedDeviceName&apos; " Condition.inherit="false"/>
+                </item>
+                <item guid="a22b361f-6731-4a3c-835a-acc624a1de40" action="GetObjects" session="$session">
+                    <command>
+                        <body>-ClassName ieee80211clientconfig -RelationType ParentChild -Direction CHILD -Condition foobar</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>fn:count(//ObjectList)</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$value == 1.0</expression>
+                                        <actionsWhenFalse>
+                                            <item actionId="Eval">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                    <statement>set fullResponse ERROR</statement>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message>Failed to find a single object ieee80211clientconfig handle</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="SkipRemainingRules">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                        </actionsWhenFalse>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>ObjectList()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>ieee80211clientconfig</storageLocation>
+                                        <responseValue type="com.fnfr.documents.PropertyBoolean">false</responseValue>
+                                        <variable type="com.fnfr.documents.PropertyBoolean">true</variable>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.itest.platform2.shared.documents.ntaf.NtafTransferableDocumentObject" action="GetObjects" subharness="http://spirent.com/NTAF/harness/STC/commands/Sequencer/Config" harness="http://spirent.com/NTAF/harness/STC/commands/Sequencer/Main" harnessName="http://spirent.com/NTAF/harness/iTest/BaseCommands/Main" ClassName="ieee80211clientconfig" ClassName.inherit="false" Direction="CHILD" Direction.inherit="false" Condition="foobar" Condition.inherit="false">
+                        <RootList inherit="false" parameter="RootList">
+                            <item inherit="false">$emulateddevice</item>
+                        </RootList>
+                    </applicationProperties>
+                </item>
+                <item guid="5ded5c84-b1eb-497a-aa58-ea8552d92758" action="GetObjects" session="$session">
+                    <command>
+                        <body>-ClassName ieee80211clientprofile -RelationType ParentChild -Direction DESTINATION -Condition &quot;name = &apos;$ieee80211clientprofileName&apos; &quot;</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>fn:count(//ObjectList)</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$value == 1.0</expression>
+                                        <actionsWhenFalse>
+                                            <item actionId="Eval">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                    <statement>set fullResponse ERROR</statement>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message>Failed to find a single object ieee80211clientprofile handle called $ieee80211clientprofileName</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="SkipRemainingRules">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                        </actionsWhenFalse>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>ObjectList()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>ieee80211clientprofile</storageLocation>
+                                        <responseValue type="com.fnfr.documents.PropertyBoolean">false</responseValue>
+                                        <variable type="com.fnfr.documents.PropertyBoolean">true</variable>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.itest.platform2.shared.documents.ntaf.NtafTransferableDocumentObject" action="GetObjects" subharness="http://spirent.com/NTAF/harness/STC/commands/Sequencer/Config" harness="http://spirent.com/NTAF/harness/STC/commands/Sequencer/Main" harnessName="http://spirent.com/NTAF/harness/iTest/BaseCommands/Main" ClassName="ieee80211clientprofile" ClassName.inherit="false" Condition="name = &apos;$ieee80211clientprofileName&apos; " Condition.inherit="false"/>
+                </item>
+                <item guid="7dec3386-75e4-4179-9390-c5d0cbfcd86f" action="ConfigProperties" session="$session">
+                    <postProcessing>
+                        <storeResponseAt>fullResponse</storeResponseAt>
+                        <storeResponseText>true</storeResponseText>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.itest.platform2.shared.documents.ntaf.NtafTransferableDocumentObject" action="ConfigProperties" subharness="http://spirent.com/NTAF/harness/STC/commands/NonSequencer/Other/Other" harness="http://spirent.com/NTAF/harness/STC/commands/NonSequencer/Main" harnessName="http://spirent.com/NTAF/harness/iTest/BaseCommands/Main" ObjectList="$ieee80211clientconfig" ObjectList.inherit="false" PropertyList="affiliatedueclientprofile-Targets $ieee80211clientprofile" PropertyList.inherit="false"/>
+                </item>
+                <item guid="656c81a6-710e-4952-b1dd-fa1d971d4e1a" action="return">
+                    <command>
+                        <body>$fullResponse</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <multilineDescription>Associate an 802.11 client profile with an emulated device</multilineDescription>
+            <arguments>
+                <item name="emulatedDeviceName">
+                    <description>Name of the emulated device to associate 802.11 client profile</description>
+                    <defaultValue>Device 1</defaultValue>
+                </item>
+                <item name="ieee80211clientprofileName">
+                    <description>Name of the 802.11 client profile to associate</description>
+                    <defaultValue>Default Client Profile</defaultValue>
+                </item>
+            </arguments>
+        </item>
+        <item name="capturePortPcap" isPublic="true">
+            <description>Capture ports frames and save in PCAP</description>
+            <steps>
+                <item guid="b1393174-d413-40d1-9267-5392ffd446dc" action="startCapture" session="$session" normalOffset="36.522" estimatedStepExecutionTime="2.451">
+                    <command>
+                        <body>$port</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <emulation>
+                        <behavior>
+                            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;success map:endcol=&quot;4&quot; map:line=&quot;0&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;0&quot;&gt;true&lt;/success&gt;
+&lt;/structure&gt;
+</structuredData>
+                            <aliases>
+                                <item name="success">
+                                    <queryFormatString>success</queryFormatString>
+                                </item>
+                            </aliases>
+                        </behavior>
+                    </emulation>
+                </item>
+                <item guid="d35be3b4-3b26-41bb-b612-ea2689dcdaf4" action="sleep">
+                    <command>
+                        <body>$delay</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="40dc09b6-5c72-4a8f-92e1-409638125ba1" action="stopCapture" session="$session" normalOffset="3.26" estimatedStepExecutionTime="1.827">
+                    <command>
+                        <body>$port</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <emulation>
+                        <behavior>
+                            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;success map:endcol=&quot;4&quot; map:line=&quot;0&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;0&quot;&gt;true&lt;/success&gt;
+&lt;/structure&gt;
+</structuredData>
+                            <aliases>
+                                <item name="success">
+                                    <queryFormatString>success</queryFormatString>
+                                </item>
+                            </aliases>
+                        </behavior>
+                    </emulation>
+                </item>
+                <item guid="24215e86-c64d-4288-8b0b-c69b4d9ab449" action="saveCapture" session="$session" normalOffset="16.376" estimatedStepExecutionTime="0.214">
+                    <command>
+                        <body>$port $filePath</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.spirent.itest.applications.stcrest" transferableType="com.spirent.itest.applications.stcrest.properties.SaveCaptureProperties"/>
+                    <emulation>
+                        <behavior>
+                            <response>Capture saved to file:/C:/stc.pcap
+</response>
+                            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;success map:endcol=&quot;4&quot; map:line=&quot;1&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;0&quot;&gt;true&lt;/success&gt;
+&lt;/structure&gt;
+</structuredData>
+                            <aliases>
+                                <item name="success">
+                                    <queryFormatString>success</queryFormatString>
+                                </item>
+                            </aliases>
+                        </behavior>
+                    </emulation>
+                </item>
+            </steps>
+            <arguments>
+                <item name="port">
+                    <description>Port you want to capture data.</description>
+                    <defaultValue>1</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="filePath">
+                    <description>Where do you want to save the data.
+
+Example: file:/C:/stc.pcap</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="delay">
+                    <description>Amount of time to capture data</description>
+                    <defaultValue>5</defaultValue>
+                </item>
+            </arguments>
+        </item>
+        <item name="configureTrafficProfile" isPublic="true">
+            <description>Configure traffic load profile for TG stream</description>
+            <steps>
+                <item guid="e53c99a6-2aba-4efb-a3d2-236e09db2786" action="configureGenerator" session="$session" estimatedStepExecutionTime="0.638">
+                    <command>
+                        <body>$portIndex</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.spirent.itest.applications.stcrest" transferableType="com.spirent.itest.applications.stcrest.properties.ConfigureGeneratorProperties" fixedLoad="$loadPortBasedPercent" fixedLoad.inherit="false" name="Traffic Generator 1" name.inherit="false"/>
+                </item>
+                <item guid="ee5a9003-3c0b-4565-9b6e-0051d839bacb" action="showGenerators" session="$session">
+                    <command>
+                        <body>$portIndex</body>
+                    </command>
+                    <postProcessing>
+                        <storeResponseAt>retVal</storeResponseAt>
+                        <storeResponseText>true</storeResponseText>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="e874d80b-8fc3-4d32-a5e4-7169cac12f20" action="write">
+                    <command>
+                        <body>$retVal</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <author>mbarfield</author>
+            <multilineDescription>This is used to set the load for a traffic stream</multilineDescription>
+            <arguments>
+                <item name="portIndex">
+                    <description>Applies any changes that you made to configuration settings. This changes generator profile settings. Returns generator information.</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="loadPortBasedPercent">
+                    <description>This is the fixed load percentage based on negotiated line rate. For example, 30% load on 1GE line rate is 300Mb/s</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="configureIeee80211clientprofile" isPublic="true">
+            <steps>
+                <item guid="932975df-6d5b-4332-99d3-24d96c2d2e4d" action="GetObjects" session="$session">
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>fn:count(//ObjectList)</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$value == 1.0</expression>
+                                        <actionsWhenFalse>
+                                            <item actionId="Eval">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                    <statement>set fullResponse ERROR</statement>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message>Failed to find a single object ieee80211clientprofile handle called $Name</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="SkipRemainingRules">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                        </actionsWhenFalse>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>ObjectList()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>handle</storageLocation>
+                                        <responseValue type="com.fnfr.documents.PropertyBoolean">false</responseValue>
+                                        <variable type="com.fnfr.documents.PropertyBoolean">true</variable>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.itest.platform2.shared.documents.ntaf.NtafTransferableDocumentObject" action="GetObjects" subharness="http://spirent.com/NTAF/harness/STC/commands/Sequencer/Config" harness="http://spirent.com/NTAF/harness/STC/commands/Sequencer/Main" harnessName="http://spirent.com/NTAF/harness/iTest/BaseCommands/Main" ClassName="ieee80211clientprofile" ClassName.inherit="false" Condition="name = &apos;$Name&apos; " Condition.inherit="false"/>
+                </item>
+                <item guid="203896bf-708f-46ce-9090-4eb8c0f73f00" action="eval" useFieldsInCommand="false">
+                    <command>
+                        <body>set args &quot;AMPDUOption AMSDUOption Active ActiveKey AkaAuthenticationKey AkaMobileSubscriberIdentity AkaOperatorVariantCode AkaRealmName AkaSequenceNumber BSSID ChannelWidth ClientCertificateFilePath ClientCertificationAuthorityFilePath ClientPrivateKeyFilePath ClientProfileName EapAuthenticationType EncryptionType FastAnonymousIdentity FastPassword FastPeerIdentity FastProvisioning FastTransitionBSSID FastTransitionOverDS FastTransitionRoaming GuardInterval HT40MhzSupport IsFastReauthentication Key1 Key1Type Key2 Key2Type Key3 Key3Type Key4 Key4Type KeyFormat LDPCSupport LeapPassword LeapPeerIdentity MaxAMPDUSize MaxAMSDU MaxVhtAMPDUSize MinAMSDUDensity ModulationCodingSchemeType Name PassPhrase PeapAnonymousIdentity PeapClientCertificationAuthorityFilePath PeapForceNewLabel PeapPassword PeapPeerIdentity PeapPhaseTwoAuthentication PeapVersion PeerIdentity ProtocolRate SSID TlsPassword TtlsAnonymousIdentity TtlsClientCertificationAuthorityFilePath TtlsPassword TtlsPeerIdentity TtlsPhaseTwoAuthentication&quot;</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="cc3949f0-1afa-45b9-ba82-a456b8eebc59" action="foreach" useFieldsInCommand="false">
+                    <command>
+                        <body>arg $args</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="0952cfef-95c5-44f9-85e0-227873bc886d" action="if" useFieldsInCommand="false">
+                            <command>
+                                <body>[subst $$arg] != &quot;&quot;</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="c6ede4d8-09b8-41e1-aa79-426afba1c727" action="then" useFieldsInCommand="false">
+                                    <nestedSteps>
+                                        <item guid="ac50f1a8-a65b-40c2-b0a8-3a0cbe983813" action="eval" useFieldsInCommand="false">
+                                            <command>
+                                                <body>lappend propertyList $arg</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                        </item>
+                                        <item guid="b5220985-b4b1-4864-ac29-4c1453d15996" action="eval" useFieldsInCommand="false">
+                                            <command>
+                                                <body>lappend propertyList [subst $$arg]</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="f2e871b9-0541-4305-8b8f-7a3299465ffc" action="ConfigProperties" session="$session">
+                    <applicationProperties type="com.fnfr.itest.platform2.shared.documents.ntaf.NtafTransferableDocumentObject" action="ConfigProperties" subharness="http://spirent.com/NTAF/harness/STC/commands/NonSequencer/Other/Other" harness="http://spirent.com/NTAF/harness/STC/commands/NonSequencer/Main" harnessName="http://spirent.com/NTAF/harness/iTest/BaseCommands/Main" ObjectList="$handle" ObjectList.inherit="false" PropertyList="$propertyList" PropertyList.inherit="false"/>
+                </item>
+                <item guid="16d94aaa-dae2-4458-a0ff-916ea63a920f" action="performApply" session="$session">
+                    <applicationProperties type="com.fnfr.itest.platform2.shared.documents.ntaf.NtafTransferableDocumentObject" action="performApply" subharness="http://spirent.com/NTAF/harness/iTest/BaseCommands/Main" harness="http://spirent.com/NTAF/harness/iTest/BaseCommands/Main" harnessName="http://spirent.com/NTAF/harness/iTest/BaseCommands/Main"/>
+                </item>
+                <item guid="9cfb67b9-abbc-4abf-971c-963f2e82663a" action="performGet" session="$session">
+                    <postProcessing>
+                        <storeResponseAt>fullResponse</storeResponseAt>
+                        <storeResponseText>true</storeResponseText>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.itest.platform2.shared.documents.ntaf.NtafTransferableDocumentObject" action="performGet" subharness="http://spirent.com/NTAF/harness/iTest/BaseCommands/Main" harness="http://spirent.com/NTAF/harness/iTest/BaseCommands/Main" harnessName="http://spirent.com/NTAF/harness/iTest/BaseCommands/Main" handle="$handle" handle.inherit="false"/>
+                </item>
+                <item guid="6b11c40d-b251-44bd-b69a-184463f88abe" action="return">
+                    <command>
+                        <body>$fullResponse</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <multilineDescription>Configure any property of an 802.11 client profile</multilineDescription>
+            <arguments>
+                <item name="Name">
+                    <description>Name of the IEEE 802.11 profile to configure</description>
+                    <defaultValue>Default Client Profile</defaultValue>
+                </item>
+                <item name="AMPDUOption"/>
+                <item name="AMSDUOption"/>
+                <item name="Active"/>
+                <item name="ActiveKey"/>
+                <item name="AkaAuthenticationKey"/>
+                <item name="AkaMobileSubscriberIdentity"/>
+                <item name="AkaOperatorVariantCode"/>
+                <item name="AkaRealmName"/>
+                <item name="AkaSequenceNumber"/>
+                <item name="BSSID"/>
+                <item name="ChannelWidth"/>
+                <item name="ClientCertificateFilePath"/>
+                <item name="ClientCertificationAuthorityFilePath"/>
+                <item name="ClientPrivateKeyFilePath"/>
+                <item name="ClientProfileName"/>
+                <item name="EapAuthenticationType"/>
+                <item name="EncryptionType"/>
+                <item name="FastAnonymousIdentity"/>
+                <item name="FastPassword"/>
+                <item name="FastPeerIdentity"/>
+                <item name="FastProvisioning"/>
+                <item name="FastTransitionBSSID"/>
+                <item name="FastTransitionOverDS"/>
+                <item name="FastTransitionRoaming"/>
+                <item name="GuardInterval"/>
+                <item name="HT40MhzSupport"/>
+                <item name="IsFastReauthentication"/>
+                <item name="Key1"/>
+                <item name="Key1Type"/>
+                <item name="Key2"/>
+                <item name="Key2Type"/>
+                <item name="Key3"/>
+                <item name="Key3Type"/>
+                <item name="Key4"/>
+                <item name="Key4Type"/>
+                <item name="KeyFormat"/>
+                <item name="LDPCSupport"/>
+                <item name="LeapPassword"/>
+                <item name="LeapPeerIdentity"/>
+                <item name="MaxAMPDUSize"/>
+                <item name="MaxAMSDU"/>
+                <item name="MaxVhtAMPDUSize"/>
+                <item name="MinAMSDUDensity"/>
+                <item name="ModulationCodingSchemeType"/>
+                <item name="PassPhrase"/>
+                <item name="PeapAnonymousIdentity"/>
+                <item name="PeapClientCertificationAuthorityFilePath"/>
+                <item name="PeapForceNewLabel"/>
+                <item name="PeapPassword"/>
+                <item name="PeapPeerIdentity"/>
+                <item name="PeapPhaseTwoAuthentication"/>
+                <item name="PeapVersion"/>
+                <item name="PeerIdentity"/>
+                <item name="ProtocolRate"/>
+                <item name="SSID"/>
+                <item name="TlsPassword"/>
+                <item name="TtlsAnonymousIdentity"/>
+                <item name="TtlsClientCertificationAuthorityFilePath"/>
+                <item name="TtlsPassword"/>
+                <item name="TtlsPeerIdentity"/>
+                <item name="TtlsPhaseTwoAuthentication"/>
+            </arguments>
+        </item>
+        <item name="configureIeee80211phyMimoMode" isPublic="true">
+            <steps>
+                <item guid="c73a6212-97d7-4def-8393-70c2adece17f" action="GetObjects" session="$session">
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>fn:count(//ObjectList)</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$value == 1.0</expression>
+                                        <actionsWhenFalse>
+                                            <item actionId="Eval">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                    <statement>set fullResponse ERROR</statement>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message>Failed to find a single object port handle called $portName</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="SkipRemainingRules">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                        </actionsWhenFalse>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>ObjectList()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>port</storageLocation>
+                                        <responseValue type="com.fnfr.documents.PropertyBoolean">false</responseValue>
+                                        <variable type="com.fnfr.documents.PropertyBoolean">true</variable>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.itest.platform2.shared.documents.ntaf.NtafTransferableDocumentObject" action="GetObjects" subharness="http://spirent.com/NTAF/harness/STC/commands/Sequencer/Config" harness="http://spirent.com/NTAF/harness/STC/commands/Sequencer/Main" harnessName="http://spirent.com/NTAF/harness/iTest/BaseCommands/Main" ClassName="port" ClassName.inherit="false" Condition="name = &apos;$portName&apos; " Condition.inherit="false"/>
+                </item>
+                <item guid="69311fce-c7a7-4344-9e74-233ccda6fe71" action="GetObjects" session="$session">
+                    <command>
+                        <body>-ClassName ieee80211phy -RelationType ParentChild -Direction CHILD -Condition foobar</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>fn:count(//ObjectList)</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$value == 1.0</expression>
+                                        <actionsWhenFalse>
+                                            <item actionId="Eval">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                    <statement>set fullResponse ERROR</statement>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message>Failed to find a single object ieee80211phy handle</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="SkipRemainingRules">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                        </actionsWhenFalse>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>ObjectList()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>ieee80211phy</storageLocation>
+                                        <responseValue type="com.fnfr.documents.PropertyBoolean">false</responseValue>
+                                        <variable type="com.fnfr.documents.PropertyBoolean">true</variable>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.itest.platform2.shared.documents.ntaf.NtafTransferableDocumentObject" action="GetObjects" subharness="http://spirent.com/NTAF/harness/STC/commands/Sequencer/Config" harness="http://spirent.com/NTAF/harness/STC/commands/Sequencer/Main" harnessName="http://spirent.com/NTAF/harness/iTest/BaseCommands/Main" ClassName="ieee80211phy" ClassName.inherit="false" Direction="CHILD" Direction.inherit="false" Condition="foobar" Condition.inherit="false">
+                        <RootList inherit="false" parameter="RootList">
+                            <item inherit="false">$port</item>
+                        </RootList>
+                    </applicationProperties>
+                </item>
+                <item guid="9684ceff-2b11-443e-9946-3c7a8358de56" action="ConfigProperties" session="$session">
+                    <applicationProperties type="com.fnfr.itest.platform2.shared.documents.ntaf.NtafTransferableDocumentObject" action="ConfigProperties" subharness="http://spirent.com/NTAF/harness/STC/commands/NonSequencer/Other/Other" harness="http://spirent.com/NTAF/harness/STC/commands/NonSequencer/Main" harnessName="http://spirent.com/NTAF/harness/iTest/BaseCommands/Main" ObjectList="$ieee80211phy" ObjectList.inherit="false" PropertyList="MimoMode $mimoMode" PropertyList.inherit="false"/>
+                </item>
+                <item guid="2b28ad63-c6cf-491b-94c2-864b9cfb2d84" action="performApply" session="$session">
+                    <applicationProperties type="com.fnfr.itest.platform2.shared.documents.ntaf.NtafTransferableDocumentObject" action="performApply" subharness="http://spirent.com/NTAF/harness/iTest/BaseCommands/Main" harness="http://spirent.com/NTAF/harness/iTest/BaseCommands/Main" harnessName="http://spirent.com/NTAF/harness/iTest/BaseCommands/Main"/>
+                </item>
+                <item guid="fec3e542-871d-4efb-83b1-28c6da7086bb" action="performGet" session="$session">
+                    <postProcessing>
+                        <storeResponseAt>fullResponse</storeResponseAt>
+                        <storeResponseText>true</storeResponseText>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.itest.platform2.shared.documents.ntaf.NtafTransferableDocumentObject" action="performGet" subharness="http://spirent.com/NTAF/harness/iTest/BaseCommands/Main" harness="http://spirent.com/NTAF/harness/iTest/BaseCommands/Main" harnessName="http://spirent.com/NTAF/harness/iTest/BaseCommands/Main" handle="$ieee80211phy" handle.inherit="false"/>
+                </item>
+                <item guid="85e8a278-b806-4a85-831d-f64d4e898eba" action="return">
+                    <command>
+                        <body>$fullResponse</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <multilineDescription>Configure 802.11 MIMO mode of a physical wifi port</multilineDescription>
+            <arguments>
+                <item name="portName">
+                    <description>Name of the wifi port to configure</description>
+                    <defaultValue>Port //12/1</defaultValue>
+                </item>
+                <item name="mimoMode">
+                    <description>Possible Values:
+Value | Description
+SU_MIMO | Single-User MIMO
+MU_MIMO | Multi-User MIMO</description>
+                    <defaultValue>SU_MIMO</defaultValue>
+                </item>
+            </arguments>
+        </item>
+        <item name="createIeee80211clientprofile" isPublic="true">
+            <steps>
+                <item guid="420f3147-71a6-438d-bdfc-48cab08e1c30" action="performCreate" session="$session" estimatedStepExecutionTime="0.249">
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>fn:count(//handle)</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$value == 1.0</expression>
+                                        <actionsWhenFalse>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message>Failed to create a ieee80211clientprofile called $Name</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="Eval">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                    <statement>set fullResponse ERROR</statement>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="SkipRemainingRules">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                        </actionsWhenFalse>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                        <storeResponseAt>fullResponse</storeResponseAt>
+                        <storeResponseText>true</storeResponseText>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.itest.platform2.shared.documents.ntaf.NtafTransferableDocumentObject" action="performCreate" subharness="http://spirent.com/NTAF/harness/iTest/BaseCommands/Main" harness="http://spirent.com/NTAF/harness/iTest/BaseCommands/Main" harnessName="http://spirent.com/NTAF/harness/iTest/BaseCommands/Main" objectType="ieee80211clientprofile" objectType.inherit="false" objectType.sub="false" under="project1" under.inherit="false" under.sub="false">
+                        <attributes inherit="false">
+                            <item name="Name" name.inherit="false" name.sub="false" value="$Name" value.inherit="false"/>
+                        </attributes>
+                    </applicationProperties>
+                </item>
+                <item guid="feba7d91-9da7-4d4d-b378-27c1634a247c" action="performApply" session="$session">
+                    <applicationProperties type="com.fnfr.itest.platform2.shared.documents.ntaf.NtafTransferableDocumentObject" action="performApply" subharness="http://spirent.com/NTAF/harness/iTest/BaseCommands/Main" harness="http://spirent.com/NTAF/harness/iTest/BaseCommands/Main" harnessName="http://spirent.com/NTAF/harness/iTest/BaseCommands/Main"/>
+                </item>
+                <item guid="051e33d8-b81a-47bc-b0fb-07fc768a97fd" action="return">
+                    <command>
+                        <body>$fullResponse</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <multilineDescription>Create a 802.11 client profile with default values</multilineDescription>
+            <arguments>
+                <item name="Name">
+                    <description>Name of the IEEE 802.11 profile to create (recommended to use a unique name)</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="deadStreamCount" isPublic="true">
+            <description>Return number of streams that are dead</description>
+            <steps>
+                <item guid="46b38c4c-2b47-470d-a139-2e9ae8d25369" action="setStandardTrafficResults" session="$session" useFieldsInCommand="false">
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <emulation>
+                        <behavior>
+                            <responseType>text</responseType>
+                            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;definedIn&gt;project://d_stc/referenceSessionProfile/stc_quickcall_library.fftc&lt;/definedIn&gt;
+&lt;/structure&gt;
+</structuredData>
+                            <aliases>
+                                <item name="definedIn">
+                                    <queryFormatString>.//definedIn</queryFormatString>
+                                    <source>Kernel</source>
+                                </item>
+                            </aliases>
+                            <duration>1.3</duration>
+                        </behavior>
+                    </emulation>
+                </item>
+                <item guid="0a1e4144-ee48-4c27-b260-201fe47ab62a" action="showResults" session="$session" normalOffset="22.457" estimatedStepExecutionTime="0.041">
+                    <command>
+                        <body>DetailedStreamResults &quot;Advanced Sequencing&quot; 1</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>DetailedStreamResults/row/Name_ID</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>streamIds</storageLocation>
+                                        <responseValue type="com.fnfr.documents.PropertyBoolean">false</responseValue>
+                                        <variable type="com.fnfr.documents.PropertyBoolean">true</variable>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                        <storeResponseAt>result1</storeResponseAt>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <emulation>
+                        <behavior>
+                            <response>
+Advanced Sequencing
+Name/ID               Tx Port Name  Rx Port Names  Tx Count (Frames)  Rx Count (Frames)  Dropped Count (Frames)  Dropped Frame Percent  In-order Count (Frames)  Reordered Count (Frames)  Duplicate Count (Frames)  Late Count (Frames)  Dropped Rate (fps)  Dropped Frame Percent Rate  In-order Rate (fps)  Reordered Rate (fps)  Duplicate Rate (fps)  Late Rate (fps)
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+StreamBlock 2/65536   Port //2/9    Port //2/12    12221              11222              0                       0                      11222                    0                         0                         0                    0                   0                           813                  0                     0                     0              
+StreamBlock 1/131072  Port //2/12   Port //2/9     12338              10811              18                      0.166                  10810                    1                         0                         0                    0                   0                           813                  0                     0                     0              
+
+</response>
+                            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;AdvancedSequencing map:endcol=&quot;19&quot; map:line=&quot;1&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;19&quot;/&gt;
+    &lt;DetailedStreamResults map:nodetype=&quot;table&quot;&gt;
+        &lt;row map:nodetype=&quot;row&quot;&gt;
+            &lt;Name_ID map:endcol=&quot;19&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;0&quot;&gt;StreamBlock 2/65536&lt;/Name_ID&gt;
+            &lt;TxPortName map:endcol=&quot;32&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;22&quot;&gt;Port //2/9&lt;/TxPortName&gt;
+            &lt;RxPortNames map:endcol=&quot;47&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;36&quot;&gt;Port //2/12&lt;/RxPortNames&gt;
+            &lt;TxCount_Frames_ map:endcol=&quot;56&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;51&quot;&gt;12221&lt;/TxCount_Frames_&gt;
+            &lt;RxCount_Frames_ map:endcol=&quot;75&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;70&quot;&gt;11222&lt;/RxCount_Frames_&gt;
+            &lt;DroppedCount_Frames_ map:endcol=&quot;90&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;89&quot;&gt;0&lt;/DroppedCount_Frames_&gt;
+            &lt;DroppedFramePercent map:endcol=&quot;114&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;113&quot;&gt;0&lt;/DroppedFramePercent&gt;
+            &lt;In_orderCount_Frames_ map:endcol=&quot;141&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;136&quot;&gt;11222&lt;/In_orderCount_Frames_&gt;
+            &lt;ReorderedCount_Frames_ map:endcol=&quot;162&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;161&quot;&gt;0&lt;/ReorderedCount_Frames_&gt;
+            &lt;DuplicateCount_Frames_ map:endcol=&quot;188&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;187&quot;&gt;0&lt;/DuplicateCount_Frames_&gt;
+            &lt;LateCount_Frames_ map:endcol=&quot;214&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;213&quot;&gt;0&lt;/LateCount_Frames_&gt;
+            &lt;DroppedRate_fps_ map:endcol=&quot;235&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;234&quot;&gt;0&lt;/DroppedRate_fps_&gt;
+            &lt;DroppedFramePercentRate map:endcol=&quot;255&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;254&quot;&gt;0&lt;/DroppedFramePercentRate&gt;
+            &lt;In_orderRate_fps_ map:endcol=&quot;285&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;282&quot;&gt;813&lt;/In_orderRate_fps_&gt;
+            &lt;ReorderedRate_fps_ map:endcol=&quot;304&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;303&quot;&gt;0&lt;/ReorderedRate_fps_&gt;
+            &lt;DuplicateRate_fps_ map:endcol=&quot;326&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;325&quot;&gt;0&lt;/DuplicateRate_fps_&gt;
+            &lt;LateRate_fps_ map:endcol=&quot;348&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;347&quot;&gt;0&lt;/LateRate_fps_&gt;
+        &lt;/row&gt;
+        &lt;row map:nodetype=&quot;row&quot;&gt;
+            &lt;Name_ID map:endcol=&quot;20&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;0&quot;&gt;StreamBlock 1/131072&lt;/Name_ID&gt;
+            &lt;TxPortName map:endcol=&quot;33&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;22&quot;&gt;Port //2/12&lt;/TxPortName&gt;
+            &lt;RxPortNames map:endcol=&quot;46&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;36&quot;&gt;Port //2/9&lt;/RxPortNames&gt;
+            &lt;TxCount_Frames_ map:endcol=&quot;56&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;51&quot;&gt;12338&lt;/TxCount_Frames_&gt;
+            &lt;RxCount_Frames_ map:endcol=&quot;75&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;70&quot;&gt;10811&lt;/RxCount_Frames_&gt;
+            &lt;DroppedCount_Frames_ map:endcol=&quot;91&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;89&quot;&gt;18&lt;/DroppedCount_Frames_&gt;
+            &lt;DroppedFramePercent map:endcol=&quot;118&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;113&quot;&gt;0.166&lt;/DroppedFramePercent&gt;
+            &lt;In_orderCount_Frames_ map:endcol=&quot;141&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;136&quot;&gt;10810&lt;/In_orderCount_Frames_&gt;
+            &lt;ReorderedCount_Frames_ map:endcol=&quot;162&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;161&quot;&gt;1&lt;/ReorderedCount_Frames_&gt;
+            &lt;DuplicateCount_Frames_ map:endcol=&quot;188&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;187&quot;&gt;0&lt;/DuplicateCount_Frames_&gt;
+            &lt;LateCount_Frames_ map:endcol=&quot;214&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;213&quot;&gt;0&lt;/LateCount_Frames_&gt;
+            &lt;DroppedRate_fps_ map:endcol=&quot;235&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;234&quot;&gt;0&lt;/DroppedRate_fps_&gt;
+            &lt;DroppedFramePercentRate map:endcol=&quot;255&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;254&quot;&gt;0&lt;/DroppedFramePercentRate&gt;
+            &lt;In_orderRate_fps_ map:endcol=&quot;285&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;282&quot;&gt;813&lt;/In_orderRate_fps_&gt;
+            &lt;ReorderedRate_fps_ map:endcol=&quot;304&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;303&quot;&gt;0&lt;/ReorderedRate_fps_&gt;
+            &lt;DuplicateRate_fps_ map:endcol=&quot;326&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;325&quot;&gt;0&lt;/DuplicateRate_fps_&gt;
+            &lt;LateRate_fps_ map:endcol=&quot;348&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;347&quot;&gt;0&lt;/LateRate_fps_&gt;
+        &lt;/row&gt;
+    &lt;/DetailedStreamResults&gt;
+    &lt;success map:endcol=&quot;4&quot; map:line=&quot;7&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;0&quot;&gt;true&lt;/success&gt;
+&lt;/structure&gt;
+</structuredData>
+                            <aliases>
+                                <item name="Advanced Sequencing">
+                                    <queryFormatString>AdvancedSequencing</queryFormatString>
+                                </item>
+                                <item name="TxPortName">
+                                    <queryFormatString>.//DetailedStreamResults/row[Name_ID = &apos;{0}&apos;]/TxPortName</queryFormatString>
+                                    <arguments>
+                                        <item name="Name_ID">
+                                            <valuesQuery>.//DetailedStreamResults/row/Name_ID</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="RxPortNames">
+                                    <queryFormatString>.//DetailedStreamResults/row[Name_ID = &apos;{0}&apos;]/RxPortNames</queryFormatString>
+                                    <arguments>
+                                        <item name="Name_ID">
+                                            <valuesQuery>.//DetailedStreamResults/row/Name_ID</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="TxCount_Frames_">
+                                    <queryFormatString>.//DetailedStreamResults/row[Name_ID = &apos;{0}&apos;]/TxCount_Frames_</queryFormatString>
+                                    <arguments>
+                                        <item name="Name_ID">
+                                            <valuesQuery>.//DetailedStreamResults/row/Name_ID</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="RxCount_Frames_">
+                                    <queryFormatString>.//DetailedStreamResults/row[Name_ID = &apos;{0}&apos;]/RxCount_Frames_</queryFormatString>
+                                    <arguments>
+                                        <item name="Name_ID">
+                                            <valuesQuery>.//DetailedStreamResults/row/Name_ID</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="DroppedCount_Frames_">
+                                    <queryFormatString>.//DetailedStreamResults/row[Name_ID = &apos;{0}&apos;]/DroppedCount_Frames_</queryFormatString>
+                                    <arguments>
+                                        <item name="Name_ID">
+                                            <valuesQuery>.//DetailedStreamResults/row/Name_ID</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="DroppedFramePercent">
+                                    <queryFormatString>.//DetailedStreamResults/row[Name_ID = &apos;{0}&apos;]/DroppedFramePercent</queryFormatString>
+                                    <arguments>
+                                        <item name="Name_ID">
+                                            <valuesQuery>.//DetailedStreamResults/row/Name_ID</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="In_orderCount_Frames_">
+                                    <queryFormatString>.//DetailedStreamResults/row[Name_ID = &apos;{0}&apos;]/In_orderCount_Frames_</queryFormatString>
+                                    <arguments>
+                                        <item name="Name_ID">
+                                            <valuesQuery>.//DetailedStreamResults/row/Name_ID</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="ReorderedCount_Frames_">
+                                    <queryFormatString>.//DetailedStreamResults/row[Name_ID = &apos;{0}&apos;]/ReorderedCount_Frames_</queryFormatString>
+                                    <arguments>
+                                        <item name="Name_ID">
+                                            <valuesQuery>.//DetailedStreamResults/row/Name_ID</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="DuplicateCount_Frames_">
+                                    <queryFormatString>.//DetailedStreamResults/row[Name_ID = &apos;{0}&apos;]/DuplicateCount_Frames_</queryFormatString>
+                                    <arguments>
+                                        <item name="Name_ID">
+                                            <valuesQuery>.//DetailedStreamResults/row/Name_ID</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="LateCount_Frames_">
+                                    <queryFormatString>.//DetailedStreamResults/row[Name_ID = &apos;{0}&apos;]/LateCount_Frames_</queryFormatString>
+                                    <arguments>
+                                        <item name="Name_ID">
+                                            <valuesQuery>.//DetailedStreamResults/row/Name_ID</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="DroppedRate_fps_">
+                                    <queryFormatString>.//DetailedStreamResults/row[Name_ID = &apos;{0}&apos;]/DroppedRate_fps_</queryFormatString>
+                                    <arguments>
+                                        <item name="Name_ID">
+                                            <valuesQuery>.//DetailedStreamResults/row/Name_ID</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="DroppedFramePercentRate">
+                                    <queryFormatString>.//DetailedStreamResults/row[Name_ID = &apos;{0}&apos;]/DroppedFramePercentRate</queryFormatString>
+                                    <arguments>
+                                        <item name="Name_ID">
+                                            <valuesQuery>.//DetailedStreamResults/row/Name_ID</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="In_orderRate_fps_">
+                                    <queryFormatString>.//DetailedStreamResults/row[Name_ID = &apos;{0}&apos;]/In_orderRate_fps_</queryFormatString>
+                                    <arguments>
+                                        <item name="Name_ID">
+                                            <valuesQuery>.//DetailedStreamResults/row/Name_ID</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="ReorderedRate_fps_">
+                                    <queryFormatString>.//DetailedStreamResults/row[Name_ID = &apos;{0}&apos;]/ReorderedRate_fps_</queryFormatString>
+                                    <arguments>
+                                        <item name="Name_ID">
+                                            <valuesQuery>.//DetailedStreamResults/row/Name_ID</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="DuplicateRate_fps_">
+                                    <queryFormatString>.//DetailedStreamResults/row[Name_ID = &apos;{0}&apos;]/DuplicateRate_fps_</queryFormatString>
+                                    <arguments>
+                                        <item name="Name_ID">
+                                            <valuesQuery>.//DetailedStreamResults/row/Name_ID</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="LateRate_fps_">
+                                    <queryFormatString>.//DetailedStreamResults/row[Name_ID = &apos;{0}&apos;]/LateRate_fps_</queryFormatString>
+                                    <arguments>
+                                        <item name="Name_ID">
+                                            <valuesQuery>.//DetailedStreamResults/row/Name_ID</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="success">
+                                    <queryFormatString>success</queryFormatString>
+                                </item>
+                            </aliases>
+                            <duration>0.1</duration>
+                        </behavior>
+                    </emulation>
+                </item>
+                <item guid="e62d07bc-2a0c-4393-a28d-27419703e76c" action="sleep">
+                    <command>
+                        <body>$delaySec</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="a76c619f-c48d-4044-b938-b71aaa957151" action="showResults" session="$session" normalOffset="22.457" estimatedStepExecutionTime="0.041">
+                    <command>
+                        <body>DetailedStreamResults &quot;Advanced Sequencing&quot; 1</body>
+                    </command>
+                    <postProcessing>
+                        <storeResponseAt>result2</storeResponseAt>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <emulation>
+                        <behavior>
+                            <response>
+Advanced Sequencing
+Name/ID               Tx Port Name  Rx Port Names  Tx Count (Frames)  Rx Count (Frames)  Dropped Count (Frames)  Dropped Frame Percent  In-order Count (Frames)  Reordered Count (Frames)  Duplicate Count (Frames)  Late Count (Frames)  Dropped Rate (fps)  Dropped Frame Percent Rate  In-order Rate (fps)  Reordered Rate (fps)  Duplicate Rate (fps)  Late Rate (fps)
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+StreamBlock 2/65536   Port //2/9    Port //2/12    12221              11222              0                       0                      11222                    0                         0                         0                    0                   0                           813                  0                     0                     0              
+StreamBlock 1/131072  Port //2/12   Port //2/9     12338              10811              18                      0.166                  10810                    1                         0                         0                    0                   0                           813                  0                     0                     0              
+
+</response>
+                            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;AdvancedSequencing map:endcol=&quot;19&quot; map:line=&quot;1&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;19&quot;/&gt;
+    &lt;DetailedStreamResults map:nodetype=&quot;table&quot;&gt;
+        &lt;row map:nodetype=&quot;row&quot;&gt;
+            &lt;Name_ID map:endcol=&quot;19&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;0&quot;&gt;StreamBlock 2/65536&lt;/Name_ID&gt;
+            &lt;TxPortName map:endcol=&quot;32&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;22&quot;&gt;Port //2/9&lt;/TxPortName&gt;
+            &lt;RxPortNames map:endcol=&quot;47&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;36&quot;&gt;Port //2/12&lt;/RxPortNames&gt;
+            &lt;TxCount_Frames_ map:endcol=&quot;56&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;51&quot;&gt;12221&lt;/TxCount_Frames_&gt;
+            &lt;RxCount_Frames_ map:endcol=&quot;75&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;70&quot;&gt;11222&lt;/RxCount_Frames_&gt;
+            &lt;DroppedCount_Frames_ map:endcol=&quot;90&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;89&quot;&gt;0&lt;/DroppedCount_Frames_&gt;
+            &lt;DroppedFramePercent map:endcol=&quot;114&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;113&quot;&gt;0&lt;/DroppedFramePercent&gt;
+            &lt;In_orderCount_Frames_ map:endcol=&quot;141&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;136&quot;&gt;11222&lt;/In_orderCount_Frames_&gt;
+            &lt;ReorderedCount_Frames_ map:endcol=&quot;162&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;161&quot;&gt;0&lt;/ReorderedCount_Frames_&gt;
+            &lt;DuplicateCount_Frames_ map:endcol=&quot;188&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;187&quot;&gt;0&lt;/DuplicateCount_Frames_&gt;
+            &lt;LateCount_Frames_ map:endcol=&quot;214&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;213&quot;&gt;0&lt;/LateCount_Frames_&gt;
+            &lt;DroppedRate_fps_ map:endcol=&quot;235&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;234&quot;&gt;0&lt;/DroppedRate_fps_&gt;
+            &lt;DroppedFramePercentRate map:endcol=&quot;255&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;254&quot;&gt;0&lt;/DroppedFramePercentRate&gt;
+            &lt;In_orderRate_fps_ map:endcol=&quot;285&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;282&quot;&gt;813&lt;/In_orderRate_fps_&gt;
+            &lt;ReorderedRate_fps_ map:endcol=&quot;304&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;303&quot;&gt;0&lt;/ReorderedRate_fps_&gt;
+            &lt;DuplicateRate_fps_ map:endcol=&quot;326&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;325&quot;&gt;0&lt;/DuplicateRate_fps_&gt;
+            &lt;LateRate_fps_ map:endcol=&quot;348&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;347&quot;&gt;0&lt;/LateRate_fps_&gt;
+        &lt;/row&gt;
+        &lt;row map:nodetype=&quot;row&quot;&gt;
+            &lt;Name_ID map:endcol=&quot;20&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;0&quot;&gt;StreamBlock 1/131072&lt;/Name_ID&gt;
+            &lt;TxPortName map:endcol=&quot;33&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;22&quot;&gt;Port //2/12&lt;/TxPortName&gt;
+            &lt;RxPortNames map:endcol=&quot;46&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;36&quot;&gt;Port //2/9&lt;/RxPortNames&gt;
+            &lt;TxCount_Frames_ map:endcol=&quot;56&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;51&quot;&gt;12338&lt;/TxCount_Frames_&gt;
+            &lt;RxCount_Frames_ map:endcol=&quot;75&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;70&quot;&gt;10811&lt;/RxCount_Frames_&gt;
+            &lt;DroppedCount_Frames_ map:endcol=&quot;91&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;89&quot;&gt;18&lt;/DroppedCount_Frames_&gt;
+            &lt;DroppedFramePercent map:endcol=&quot;118&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;113&quot;&gt;0.166&lt;/DroppedFramePercent&gt;
+            &lt;In_orderCount_Frames_ map:endcol=&quot;141&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;136&quot;&gt;10810&lt;/In_orderCount_Frames_&gt;
+            &lt;ReorderedCount_Frames_ map:endcol=&quot;162&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;161&quot;&gt;1&lt;/ReorderedCount_Frames_&gt;
+            &lt;DuplicateCount_Frames_ map:endcol=&quot;188&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;187&quot;&gt;0&lt;/DuplicateCount_Frames_&gt;
+            &lt;LateCount_Frames_ map:endcol=&quot;214&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;213&quot;&gt;0&lt;/LateCount_Frames_&gt;
+            &lt;DroppedRate_fps_ map:endcol=&quot;235&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;234&quot;&gt;0&lt;/DroppedRate_fps_&gt;
+            &lt;DroppedFramePercentRate map:endcol=&quot;255&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;254&quot;&gt;0&lt;/DroppedFramePercentRate&gt;
+            &lt;In_orderRate_fps_ map:endcol=&quot;285&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;282&quot;&gt;813&lt;/In_orderRate_fps_&gt;
+            &lt;ReorderedRate_fps_ map:endcol=&quot;304&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;303&quot;&gt;0&lt;/ReorderedRate_fps_&gt;
+            &lt;DuplicateRate_fps_ map:endcol=&quot;326&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;325&quot;&gt;0&lt;/DuplicateRate_fps_&gt;
+            &lt;LateRate_fps_ map:endcol=&quot;348&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;347&quot;&gt;0&lt;/LateRate_fps_&gt;
+        &lt;/row&gt;
+    &lt;/DetailedStreamResults&gt;
+    &lt;success map:endcol=&quot;4&quot; map:line=&quot;7&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;0&quot;&gt;true&lt;/success&gt;
+&lt;/structure&gt;
+</structuredData>
+                            <aliases>
+                                <item name="Advanced Sequencing">
+                                    <queryFormatString>AdvancedSequencing</queryFormatString>
+                                </item>
+                                <item name="TxPortName">
+                                    <queryFormatString>.//DetailedStreamResults/row[Name_ID = &apos;{0}&apos;]/TxPortName</queryFormatString>
+                                    <arguments>
+                                        <item name="Name_ID">
+                                            <valuesQuery>.//DetailedStreamResults/row/Name_ID</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="RxPortNames">
+                                    <queryFormatString>.//DetailedStreamResults/row[Name_ID = &apos;{0}&apos;]/RxPortNames</queryFormatString>
+                                    <arguments>
+                                        <item name="Name_ID">
+                                            <valuesQuery>.//DetailedStreamResults/row/Name_ID</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="TxCount_Frames_">
+                                    <queryFormatString>.//DetailedStreamResults/row[Name_ID = &apos;{0}&apos;]/TxCount_Frames_</queryFormatString>
+                                    <arguments>
+                                        <item name="Name_ID">
+                                            <valuesQuery>.//DetailedStreamResults/row/Name_ID</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="RxCount_Frames_">
+                                    <queryFormatString>.//DetailedStreamResults/row[Name_ID = &apos;{0}&apos;]/RxCount_Frames_</queryFormatString>
+                                    <arguments>
+                                        <item name="Name_ID">
+                                            <valuesQuery>.//DetailedStreamResults/row/Name_ID</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="DroppedCount_Frames_">
+                                    <queryFormatString>.//DetailedStreamResults/row[Name_ID = &apos;{0}&apos;]/DroppedCount_Frames_</queryFormatString>
+                                    <arguments>
+                                        <item name="Name_ID">
+                                            <valuesQuery>.//DetailedStreamResults/row/Name_ID</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="DroppedFramePercent">
+                                    <queryFormatString>.//DetailedStreamResults/row[Name_ID = &apos;{0}&apos;]/DroppedFramePercent</queryFormatString>
+                                    <arguments>
+                                        <item name="Name_ID">
+                                            <valuesQuery>.//DetailedStreamResults/row/Name_ID</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="In_orderCount_Frames_">
+                                    <queryFormatString>.//DetailedStreamResults/row[Name_ID = &apos;{0}&apos;]/In_orderCount_Frames_</queryFormatString>
+                                    <arguments>
+                                        <item name="Name_ID">
+                                            <valuesQuery>.//DetailedStreamResults/row/Name_ID</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="ReorderedCount_Frames_">
+                                    <queryFormatString>.//DetailedStreamResults/row[Name_ID = &apos;{0}&apos;]/ReorderedCount_Frames_</queryFormatString>
+                                    <arguments>
+                                        <item name="Name_ID">
+                                            <valuesQuery>.//DetailedStreamResults/row/Name_ID</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="DuplicateCount_Frames_">
+                                    <queryFormatString>.//DetailedStreamResults/row[Name_ID = &apos;{0}&apos;]/DuplicateCount_Frames_</queryFormatString>
+                                    <arguments>
+                                        <item name="Name_ID">
+                                            <valuesQuery>.//DetailedStreamResults/row/Name_ID</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="LateCount_Frames_">
+                                    <queryFormatString>.//DetailedStreamResults/row[Name_ID = &apos;{0}&apos;]/LateCount_Frames_</queryFormatString>
+                                    <arguments>
+                                        <item name="Name_ID">
+                                            <valuesQuery>.//DetailedStreamResults/row/Name_ID</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="DroppedRate_fps_">
+                                    <queryFormatString>.//DetailedStreamResults/row[Name_ID = &apos;{0}&apos;]/DroppedRate_fps_</queryFormatString>
+                                    <arguments>
+                                        <item name="Name_ID">
+                                            <valuesQuery>.//DetailedStreamResults/row/Name_ID</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="DroppedFramePercentRate">
+                                    <queryFormatString>.//DetailedStreamResults/row[Name_ID = &apos;{0}&apos;]/DroppedFramePercentRate</queryFormatString>
+                                    <arguments>
+                                        <item name="Name_ID">
+                                            <valuesQuery>.//DetailedStreamResults/row/Name_ID</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="In_orderRate_fps_">
+                                    <queryFormatString>.//DetailedStreamResults/row[Name_ID = &apos;{0}&apos;]/In_orderRate_fps_</queryFormatString>
+                                    <arguments>
+                                        <item name="Name_ID">
+                                            <valuesQuery>.//DetailedStreamResults/row/Name_ID</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="ReorderedRate_fps_">
+                                    <queryFormatString>.//DetailedStreamResults/row[Name_ID = &apos;{0}&apos;]/ReorderedRate_fps_</queryFormatString>
+                                    <arguments>
+                                        <item name="Name_ID">
+                                            <valuesQuery>.//DetailedStreamResults/row/Name_ID</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="DuplicateRate_fps_">
+                                    <queryFormatString>.//DetailedStreamResults/row[Name_ID = &apos;{0}&apos;]/DuplicateRate_fps_</queryFormatString>
+                                    <arguments>
+                                        <item name="Name_ID">
+                                            <valuesQuery>.//DetailedStreamResults/row/Name_ID</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="LateRate_fps_">
+                                    <queryFormatString>.//DetailedStreamResults/row[Name_ID = &apos;{0}&apos;]/LateRate_fps_</queryFormatString>
+                                    <arguments>
+                                        <item name="Name_ID">
+                                            <valuesQuery>.//DetailedStreamResults/row/Name_ID</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="success">
+                                    <queryFormatString>success</queryFormatString>
+                                </item>
+                            </aliases>
+                            <duration>0.1</duration>
+                        </behavior>
+                    </emulation>
+                </item>
+                <item guid="9965d24b-905b-4a68-a8cc-f2981cb19364" action="eval" useFieldsInCommand="false">
+                    <command>
+                        <body>set deadStreamCount 0</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="d87f7c55-4ffc-4da1-89e5-9d22cb793803" action="foreach" useFieldsInCommand="false">
+                    <command>
+                        <body>streamId $streamIds</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="57e14cb5-a026-4f27-9db5-a0169d1360da" action="comment" useFieldsInCommand="false">
+                            <command>
+                                <body>Compare each stream to see if data is flowing</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="57332d3f-beec-40ed-afa2-c6ab76affe2a" action="if" useFieldsInCommand="false">
+                            <command>
+                                <body>[query result1 &quot;RxCount_Frames_(\\&quot;$streamId\\&quot;)&quot;] == [query result2 &quot;RxCount_Frames_(\\&quot;$streamId\\&quot;)&quot;]</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="63f12c62-ffae-4525-9ad3-62b0b999f17f" action="then" useFieldsInCommand="false">
+                                    <nestedSteps>
+                                        <item guid="9440c0ee-1eb0-4fb6-b06b-d910886e57d6" action="comment" useFieldsInCommand="false">
+                                            <command>
+                                                <body>Dead Stream - packets match</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                        </item>
+                                        <item guid="68c047ee-0177-4f95-bfdd-7311f86fbe51" action="write">
+                                            <command>
+                                                <body>Steam status - $streamId : DEAD\\n</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                        </item>
+                                        <item guid="ee812e8c-a8d5-4b2a-b2ab-9b061d493b10" action="eval" useFieldsInCommand="false">
+                                            <command>
+                                                <body>incr deadStreamCount</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                                <item guid="e31d9656-86b9-4f51-bfba-c1b17c527da3" action="else" useFieldsInCommand="false">
+                                    <nestedSteps>
+                                        <item guid="084ae83b-4ece-4368-8eb3-12befd3cec74" action="comment" useFieldsInCommand="false">
+                                            <command>
+                                                <body>Live Stream - packets don&apos;t match</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                        </item>
+                                        <item guid="780f1457-36d0-4b72-a07d-1dea37b8820a" action="write">
+                                            <command>
+                                                <body>Steam status - $streamId : LIVE\\n</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="e7e04ec7-3ede-4d90-9fb0-3579d8a43768" action="write">
+                    <command>
+                        <body>Total Dead Streams: $deadStreamCount</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <arguments>
+                <item name="delaySec">
+                    <description>Delay in seconds between checks</description>
+                    <defaultValue>5</defaultValue>
+                </item>
+            </arguments>
+        </item>
+        <item name="getBasicDeviceInfo" isPublic="true" isVBlock="true">
+            <description>Return basic device info used for packet analysis</description>
+            <steps>
+                <item guid="8223ff21-3561-4b61-a702-b929971f27d6" action="showDevices" session="$session" normalOffset="546.812" estimatedStepExecutionTime="0.458">
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query sub="true">SourceMacAddress(&apos;$port&apos;, &apos;$portId&apos;)</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>SourceMacAddress</storageLocation>
+                                        <query>SourceMacAddress</query>
+                                        <responseValue type="com.fnfr.documents.PropertyBoolean">true</responseValue>
+                                        <variable type="com.fnfr.documents.PropertyBoolean">true</variable>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query sub="true">IPv4Address(&apos;$port&apos;, &apos;$portId&apos;)</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>IPv4Address</storageLocation>
+                                        <query>IPv4Address</query>
+                                        <responseValue type="com.fnfr.documents.PropertyBoolean">true</responseValue>
+                                        <variable type="com.fnfr.documents.PropertyBoolean">true</variable>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query sub="true">IPv4DefaultGateway(&apos;$port&apos;, &apos;$portId&apos;)</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>IPv4DefaultGateway</storageLocation>
+                                        <query>IPv4DefaultGateway</query>
+                                        <responseValue type="com.fnfr.documents.PropertyBoolean">true</responseValue>
+                                        <variable type="com.fnfr.documents.PropertyBoolean">true</variable>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <author>mbarfield</author>
+            <multilineDescription>This will return basic port info used to for L2/L3 traffic
+
+Return: MAC, IP, and GW</multilineDescription>
+            <arguments>
+                <item name="port">
+                    <description>Valid port index
+Example: 1</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="portId">
+                    <description>Valid port id
+Example: 1</description>
+                    <defaultValue>1</defaultValue>
+                </item>
+            </arguments>
+            <response>{&quot;SourceMacAddress&quot;:&quot;value&quot;,&quot;IPv4Address&quot;:&quot;value&quot;,&quot;IPv4DefaultGateway&quot;:&quot;value&quot;}</response>
+        </item>
+        <item name="getBasicPortTxRxCounters" isPublic="true" isVBlock="true">
+            <description>Return basic Tx/Rx counters for the specified</description>
+            <steps>
+                <item guid="0d12e295-0a44-46ca-a4b1-200a40725879" action="showResults" session="$session">
+                    <command>
+                        <body>BasicTrafficResults</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query sub="true">(.//BasicTrafficResults/row\\[PortName = &apos;$port&apos;\\]/TotalTxCount_Frames_)\\[1\\]</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>totalTxCountFrames</storageLocation>
+                                        <query>totalTxCountFrames</query>
+                                        <responseValue type="com.fnfr.documents.PropertyBoolean">true</responseValue>
+                                        <variable type="com.fnfr.documents.PropertyBoolean">true</variable>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query sub="true">(.//BasicTrafficResults/row\\[PortName = &apos;$port&apos;\\]/TotalRxCount_Frames_)\\[1\\]</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>totalRxCountFrames</storageLocation>
+                                        <query>totalRxCountFrames</query>
+                                        <responseValue type="com.fnfr.documents.PropertyBoolean">true</responseValue>
+                                        <variable type="com.fnfr.documents.PropertyBoolean">true</variable>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query sub="true">TotalTxCount_bits_(\\&quot;$port\\&quot;)</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>totalTxCountBits</storageLocation>
+                                        <query>totalTxCountBits</query>
+                                        <responseValue type="com.fnfr.documents.PropertyBoolean">true</responseValue>
+                                        <variable type="com.fnfr.documents.PropertyBoolean">true</variable>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query sub="true">TotalTxRate_bps_(\\&quot;$port\\&quot;)</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>totalRxCountBits</storageLocation>
+                                        <query>totalRxCountBits</query>
+                                        <responseValue type="com.fnfr.documents.PropertyBoolean">true</responseValue>
+                                        <variable type="com.fnfr.documents.PropertyBoolean">true</variable>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <author>mbarfield</author>
+            <multilineDescription>Returns the Tx/Rx Frame/Bit counters for the specified port</multilineDescription>
+            <arguments>
+                <item name="port">
+                    <description>This is the STC port value that can be captured from getPorts QC.
+
+Example: Port //2/9</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+            <response>{&quot;totalTxCountFrames&quot;:&quot;value&quot;,&quot;totalRxCountFrames&quot;:&quot;value&quot;,&quot;totalTxCountBits&quot;:&quot;value&quot;,&quot;totalRxCountBits&quot;:&quot;value&quot;}</response>
+        </item>
+        <item name="getIeee80211clientprofile" isPublic="true">
+            <steps>
+                <item guid="e590adec-b5ac-422e-b797-1aa02aaed291" action="GetObjects" session="$session">
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>fn:count(//ObjectList)</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$value == 1.0</expression>
+                                        <actionsWhenFalse>
+                                            <item actionId="Eval">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                    <statement>set fullResponse ERROR</statement>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message>Failed to find a single object ieee80211clientprofile handle called $Name</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="SkipRemainingRules">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                        </actionsWhenFalse>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>ObjectList()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>handle</storageLocation>
+                                        <responseValue type="com.fnfr.documents.PropertyBoolean">false</responseValue>
+                                        <variable type="com.fnfr.documents.PropertyBoolean">true</variable>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.itest.platform2.shared.documents.ntaf.NtafTransferableDocumentObject" action="GetObjects" subharness="http://spirent.com/NTAF/harness/STC/commands/Sequencer/Config" harness="http://spirent.com/NTAF/harness/STC/commands/Sequencer/Main" harnessName="http://spirent.com/NTAF/harness/iTest/BaseCommands/Main" ClassName="ieee80211clientprofile" ClassName.inherit="false" Condition="name = &apos;$Name&apos; " Condition.inherit="false"/>
+                </item>
+                <item guid="e5a45627-22d9-4ee6-870f-587ddeb49441" action="performGet" session="$session">
+                    <postProcessing>
+                        <storeResponseAt>fullResponse</storeResponseAt>
+                        <storeResponseText>true</storeResponseText>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.itest.platform2.shared.documents.ntaf.NtafTransferableDocumentObject" action="performGet" subharness="http://spirent.com/NTAF/harness/iTest/BaseCommands/Main" harness="http://spirent.com/NTAF/harness/iTest/BaseCommands/Main" harnessName="http://spirent.com/NTAF/harness/iTest/BaseCommands/Main" handle="$handle" handle.inherit="false"/>
+                </item>
+                <item guid="56f03304-8935-4e9e-aa56-e9c45a5f4ace" action="return">
+                    <command>
+                        <body>$fullResponse</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <multilineDescription>Show all the properties of a given 802.11 client profile</multilineDescription>
+            <arguments>
+                <item name="Name">
+                    <description>Name of the IEEE 802.11 profile to display</description>
+                    <defaultValue>Default Client Profile</defaultValue>
+                </item>
+            </arguments>
+        </item>
+        <item name="getPorts" isPublic="true">
+            <description>Return list of provisioned port values</description>
+            <steps>
+                <item guid="f6d17048-af7c-47c2-bdad-d5ddbe24d59b" action="showPorts" session="$session" normalOffset="36.603" estimatedStepExecutionTime="0.97">
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>ports/row/Name</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>ports</storageLocation>
+                                        <responseValue type="com.fnfr.documents.PropertyBoolean">false</responseValue>
+                                        <variable type="com.fnfr.documents.PropertyBoolean">true</variable>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <emulation>
+                        <behavior>
+                            <response>
+Name         CollisionControl  DataPathMode  MasterSlaveType  MTU   Duplex  MediaType  PortSpeed  AutoNegotiation  FlowControl  Id  Online  LinkStatus  Location             AlternateSpeeds  ForwardErrorCorrection  IgnoreLinkStatus  InternalPpmAdjust  PortSetupMode    TestMode          TransmitClockSource  AutoMdix
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Port //2/9   10                NORMAL        MASTER           1500  FULL    Copper     SPEED_1G   true             false        1   true    UP          //10.108.32.17/2/9   SPEED_UNKNOWN    true                    false             0                  PORTCONFIG_ONLY  NORMAL_OPERATION  INTERNAL             false   
+Port //2/10  10                NORMAL        MASTER           1500  FULL    Copper     SPEED_1G   true             false        2   true    UP          //10.108.32.17/2/10  SPEED_UNKNOWN    true                    false             0                  PORTCONFIG_ONLY  NORMAL_OPERATION  INTERNAL             false   
+
+</response>
+                            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;ports map:nodetype=&quot;table&quot;&gt;
+        &lt;row map:nodetype=&quot;row&quot;&gt;
+            &lt;Name map:endcol=&quot;10&quot; map:line=&quot;3&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;0&quot;&gt;Port //2/9&lt;/Name&gt;
+            &lt;CollisionControl map:endcol=&quot;15&quot; map:line=&quot;3&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;13&quot;&gt;10&lt;/CollisionControl&gt;
+            &lt;DataPathMode map:endcol=&quot;37&quot; map:line=&quot;3&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;31&quot;&gt;NORMAL&lt;/DataPathMode&gt;
+            &lt;MasterSlaveType map:endcol=&quot;51&quot; map:line=&quot;3&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;45&quot;&gt;MASTER&lt;/MasterSlaveType&gt;
+            &lt;MTU map:endcol=&quot;66&quot; map:line=&quot;3&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;62&quot;&gt;1500&lt;/MTU&gt;
+            &lt;Duplex map:endcol=&quot;72&quot; map:line=&quot;3&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;68&quot;&gt;FULL&lt;/Duplex&gt;
+            &lt;MediaType map:endcol=&quot;82&quot; map:line=&quot;3&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;76&quot;&gt;Copper&lt;/MediaType&gt;
+            &lt;PortSpeed map:endcol=&quot;95&quot; map:line=&quot;3&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;87&quot;&gt;SPEED_1G&lt;/PortSpeed&gt;
+            &lt;AutoNegotiation map:endcol=&quot;102&quot; map:line=&quot;3&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;98&quot;&gt;true&lt;/AutoNegotiation&gt;
+            &lt;FlowControl map:endcol=&quot;120&quot; map:line=&quot;3&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;115&quot;&gt;false&lt;/FlowControl&gt;
+            &lt;Id map:endcol=&quot;129&quot; map:line=&quot;3&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;128&quot;&gt;1&lt;/Id&gt;
+            &lt;Online map:endcol=&quot;136&quot; map:line=&quot;3&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;132&quot;&gt;true&lt;/Online&gt;
+            &lt;LinkStatus map:endcol=&quot;142&quot; map:line=&quot;3&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;140&quot;&gt;UP&lt;/LinkStatus&gt;
+            &lt;Location map:endcol=&quot;170&quot; map:line=&quot;3&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;152&quot;&gt;//10.108.32.17/2/9&lt;/Location&gt;
+            &lt;AlternateSpeeds map:endcol=&quot;186&quot; map:line=&quot;3&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;173&quot;&gt;SPEED_UNKNOWN&lt;/AlternateSpeeds&gt;
+            &lt;ForwardErrorCorrection map:endcol=&quot;194&quot; map:line=&quot;3&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;190&quot;&gt;true&lt;/ForwardErrorCorrection&gt;
+            &lt;IgnoreLinkStatus map:endcol=&quot;219&quot; map:line=&quot;3&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;214&quot;&gt;false&lt;/IgnoreLinkStatus&gt;
+            &lt;InternalPpmAdjust map:endcol=&quot;233&quot; map:line=&quot;3&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;232&quot;&gt;0&lt;/InternalPpmAdjust&gt;
+            &lt;PortSetupMode map:endcol=&quot;266&quot; map:line=&quot;3&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;251&quot;&gt;PORTCONFIG_ONLY&lt;/PortSetupMode&gt;
+            &lt;TestMode map:endcol=&quot;284&quot; map:line=&quot;3&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;268&quot;&gt;NORMAL_OPERATION&lt;/TestMode&gt;
+            &lt;TransmitClockSource map:endcol=&quot;294&quot; map:line=&quot;3&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;286&quot;&gt;INTERNAL&lt;/TransmitClockSource&gt;
+            &lt;AutoMdix map:endcol=&quot;312&quot; map:line=&quot;3&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;307&quot;&gt;false&lt;/AutoMdix&gt;
+        &lt;/row&gt;
+        &lt;row map:nodetype=&quot;row&quot;&gt;
+            &lt;Name map:endcol=&quot;11&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;0&quot;&gt;Port //2/10&lt;/Name&gt;
+            &lt;CollisionControl map:endcol=&quot;15&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;13&quot;&gt;10&lt;/CollisionControl&gt;
+            &lt;DataPathMode map:endcol=&quot;37&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;31&quot;&gt;NORMAL&lt;/DataPathMode&gt;
+            &lt;MasterSlaveType map:endcol=&quot;51&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;45&quot;&gt;MASTER&lt;/MasterSlaveType&gt;
+            &lt;MTU map:endcol=&quot;66&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;62&quot;&gt;1500&lt;/MTU&gt;
+            &lt;Duplex map:endcol=&quot;72&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;68&quot;&gt;FULL&lt;/Duplex&gt;
+            &lt;MediaType map:endcol=&quot;82&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;76&quot;&gt;Copper&lt;/MediaType&gt;
+            &lt;PortSpeed map:endcol=&quot;95&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;87&quot;&gt;SPEED_1G&lt;/PortSpeed&gt;
+            &lt;AutoNegotiation map:endcol=&quot;102&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;98&quot;&gt;true&lt;/AutoNegotiation&gt;
+            &lt;FlowControl map:endcol=&quot;120&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;115&quot;&gt;false&lt;/FlowControl&gt;
+            &lt;Id map:endcol=&quot;129&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;128&quot;&gt;2&lt;/Id&gt;
+            &lt;Online map:endcol=&quot;136&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;132&quot;&gt;true&lt;/Online&gt;
+            &lt;LinkStatus map:endcol=&quot;142&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;140&quot;&gt;UP&lt;/LinkStatus&gt;
+            &lt;Location map:endcol=&quot;171&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;152&quot;&gt;//10.108.32.17/2/10&lt;/Location&gt;
+            &lt;AlternateSpeeds map:endcol=&quot;186&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;173&quot;&gt;SPEED_UNKNOWN&lt;/AlternateSpeeds&gt;
+            &lt;ForwardErrorCorrection map:endcol=&quot;194&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;190&quot;&gt;true&lt;/ForwardErrorCorrection&gt;
+            &lt;IgnoreLinkStatus map:endcol=&quot;219&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;214&quot;&gt;false&lt;/IgnoreLinkStatus&gt;
+            &lt;InternalPpmAdjust map:endcol=&quot;233&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;232&quot;&gt;0&lt;/InternalPpmAdjust&gt;
+            &lt;PortSetupMode map:endcol=&quot;266&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;251&quot;&gt;PORTCONFIG_ONLY&lt;/PortSetupMode&gt;
+            &lt;TestMode map:endcol=&quot;284&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;268&quot;&gt;NORMAL_OPERATION&lt;/TestMode&gt;
+            &lt;TransmitClockSource map:endcol=&quot;294&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;286&quot;&gt;INTERNAL&lt;/TransmitClockSource&gt;
+            &lt;AutoMdix map:endcol=&quot;312&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;307&quot;&gt;false&lt;/AutoMdix&gt;
+        &lt;/row&gt;
+    &lt;/ports&gt;
+    &lt;success map:endcol=&quot;4&quot; map:line=&quot;6&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;0&quot;&gt;true&lt;/success&gt;
+&lt;/structure&gt;
+</structuredData>
+                            <aliases>
+                                <item name="isEmpty">
+                                    <queryFormatString>.//isEmpty</queryFormatString>
+                                </item>
+                                <item name="Name">
+                                    <queryFormatString>.//ports/row[Id = &apos;{0}&apos;]/Name</queryFormatString>
+                                    <arguments>
+                                        <item name="Id">
+                                            <valuesQuery>.//ports/row/Id</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="CollisionControl">
+                                    <queryFormatString>.//ports/row[Id = &apos;{0}&apos;]/CollisionControl</queryFormatString>
+                                    <arguments>
+                                        <item name="Id">
+                                            <valuesQuery>.//ports/row/Id</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="DataPathMode">
+                                    <queryFormatString>.//ports/row[Id = &apos;{0}&apos;]/DataPathMode</queryFormatString>
+                                    <arguments>
+                                        <item name="Id">
+                                            <valuesQuery>.//ports/row/Id</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="MasterSlaveType">
+                                    <queryFormatString>.//ports/row[Id = &apos;{0}&apos;]/MasterSlaveType</queryFormatString>
+                                    <arguments>
+                                        <item name="Id">
+                                            <valuesQuery>.//ports/row/Id</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="MTU">
+                                    <queryFormatString>.//ports/row[Id = &apos;{0}&apos;]/MTU</queryFormatString>
+                                    <arguments>
+                                        <item name="Id">
+                                            <valuesQuery>.//ports/row/Id</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="Duplex">
+                                    <queryFormatString>.//ports/row[Id = &apos;{0}&apos;]/Duplex</queryFormatString>
+                                    <arguments>
+                                        <item name="Id">
+                                            <valuesQuery>.//ports/row/Id</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="MediaType">
+                                    <queryFormatString>.//ports/row[Id = &apos;{0}&apos;]/MediaType</queryFormatString>
+                                    <arguments>
+                                        <item name="Id">
+                                            <valuesQuery>.//ports/row/Id</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="PortSpeed">
+                                    <queryFormatString>.//ports/row[Id = &apos;{0}&apos;]/PortSpeed</queryFormatString>
+                                    <arguments>
+                                        <item name="Id">
+                                            <valuesQuery>.//ports/row/Id</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="AutoNegotiation">
+                                    <queryFormatString>.//ports/row[Id = &apos;{0}&apos;]/AutoNegotiation</queryFormatString>
+                                    <arguments>
+                                        <item name="Id">
+                                            <valuesQuery>.//ports/row/Id</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="FlowControl">
+                                    <queryFormatString>.//ports/row[Id = &apos;{0}&apos;]/FlowControl</queryFormatString>
+                                    <arguments>
+                                        <item name="Id">
+                                            <valuesQuery>.//ports/row/Id</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="Online">
+                                    <queryFormatString>.//ports/row[Id = &apos;{0}&apos;]/Online</queryFormatString>
+                                    <arguments>
+                                        <item name="Id">
+                                            <valuesQuery>.//ports/row/Id</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="LinkStatus">
+                                    <queryFormatString>.//ports/row[Id = &apos;{0}&apos;]/LinkStatus</queryFormatString>
+                                    <arguments>
+                                        <item name="Id">
+                                            <valuesQuery>.//ports/row/Id</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="Location">
+                                    <queryFormatString>.//ports/row[Id = &apos;{0}&apos;]/Location</queryFormatString>
+                                    <arguments>
+                                        <item name="Id">
+                                            <valuesQuery>.//ports/row/Id</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="AlternateSpeeds">
+                                    <queryFormatString>.//ports/row[Id = &apos;{0}&apos;]/AlternateSpeeds</queryFormatString>
+                                    <arguments>
+                                        <item name="Id">
+                                            <valuesQuery>.//ports/row/Id</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="ForwardErrorCorrection">
+                                    <queryFormatString>.//ports/row[Id = &apos;{0}&apos;]/ForwardErrorCorrection</queryFormatString>
+                                    <arguments>
+                                        <item name="Id">
+                                            <valuesQuery>.//ports/row/Id</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="IgnoreLinkStatus">
+                                    <queryFormatString>.//ports/row[Id = &apos;{0}&apos;]/IgnoreLinkStatus</queryFormatString>
+                                    <arguments>
+                                        <item name="Id">
+                                            <valuesQuery>.//ports/row/Id</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="InternalPpmAdjust">
+                                    <queryFormatString>.//ports/row[Id = &apos;{0}&apos;]/InternalPpmAdjust</queryFormatString>
+                                    <arguments>
+                                        <item name="Id">
+                                            <valuesQuery>.//ports/row/Id</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="PortSetupMode">
+                                    <queryFormatString>.//ports/row[Id = &apos;{0}&apos;]/PortSetupMode</queryFormatString>
+                                    <arguments>
+                                        <item name="Id">
+                                            <valuesQuery>.//ports/row/Id</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="TestMode">
+                                    <queryFormatString>.//ports/row[Id = &apos;{0}&apos;]/TestMode</queryFormatString>
+                                    <arguments>
+                                        <item name="Id">
+                                            <valuesQuery>.//ports/row/Id</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="TransmitClockSource">
+                                    <queryFormatString>.//ports/row[Id = &apos;{0}&apos;]/TransmitClockSource</queryFormatString>
+                                    <arguments>
+                                        <item name="Id">
+                                            <valuesQuery>.//ports/row/Id</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="AutoMdix">
+                                    <queryFormatString>.//ports/row[Id = &apos;{0}&apos;]/AutoMdix</queryFormatString>
+                                    <arguments>
+                                        <item name="Id">
+                                            <valuesQuery>.//ports/row/Id</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="success">
+                                    <queryFormatString>success</queryFormatString>
+                                </item>
+                            </aliases>
+                        </behavior>
+                    </emulation>
+                </item>
+                <item guid="1d79e8fb-6e1c-4ea5-aace-d7c0d02f2d65" action="write">
+                    <command>
+                        <body>$ports</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <author>mbarfield</author>
+            <multilineDescription>Returns a list of provisioned ports</multilineDescription>
+        </item>
+        <item name="pcapCapture" isPublic="true">
+            <description>capturePcap</description>
+            <steps>
+                <item guid="d52d64ec-d8cf-45fe-a0d5-ebecfa04268f" action="startCapture" session="$session" normalOffset="26.929" estimatedStepExecutionTime="2.31">
+                    <command>
+                        <body>$portList</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="998023c3-759a-4b81-b677-a8f9082f565d" action="sleep">
+                    <command>
+                        <body>$captureDelaySec</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="a250eeef-151d-4b98-8f02-f8c49a17f888" action="stopCapture" session="$session" normalOffset="6.579" estimatedStepExecutionTime="1.966">
+                    <command>
+                        <body>$portList</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="92cbca28-3979-4232-b39e-bbced6c0cea9" action="saveCapture" session="$session" estimatedStepExecutionTime="3.065">
+                    <command>
+                        <body>$portList $filepath</body>
+                    </command>
+                    <postProcessing>
+                        <storeResponseAt>retVal</storeResponseAt>
+                        <storeResponseText>true</storeResponseText>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.spirent.itest.applications.stcrest" transferableType="com.spirent.itest.applications.stcrest.properties.SaveCaptureProperties"/>
+                </item>
+                <item guid="81d95ac5-c244-4abb-bea5-1ae2fbb37459" action="write">
+                    <command>
+                        <body>$retVal</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <author>mbarfield</author>
+            <multilineDescription>Capture PCAP and examine PCAP using other tools like wireshark</multilineDescription>
+            <arguments>
+                <item name="portList">
+                    <description>Enter a valid portList value -e.g. 1</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="captureDelaySec">
+                    <description>Enter time in seconds for how long to capture data</description>
+                    <defaultValue>2</defaultValue>
+                </item>
+                <item name="filepath">
+                    <description>Enter a valid file path to save the data.
+
+Example: file:/C:/Users/MBARFI~1/AppData/Local/Temp/stc.pcap</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="sanityCheckTraffic" isPublic="true">
+            <description>This procedure will make sure that traffic is running and meets minimal conditions before moving forward</description>
+            <steps>
+                <item guid="183fd281-dbb0-477e-be76-438569d8c5e3" action="eval" useFieldsInCommand="false">
+                    <command>
+                        <body>puts &quot;Sanity check traffic to ensure data is running normal!&quot;</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="regex">
+                                    <extractorProperties type="com.fnfr.svt.mapping.regex.extractors.RegexExtractorPropertyGroup">
+                                        <regex>.*</regex>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="message">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.MessageProcessorPropertyGroup" severity="Information">
+                                        <message>Verify that traffic is running and check for common problems</message>
+                                        <tag sub="false" defaultValue=""/>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="a9588931-2eeb-413c-a811-0cdb172c3546" action="setStandardTrafficResults" session="$session" useFieldsInCommand="false">
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <emulation>
+                        <behavior>
+                            <responseType>text</responseType>
+                            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;definedIn&gt;project://d_stc/referenceSessionProfile/stc_quickcall_library.fftc&lt;/definedIn&gt;
+&lt;/structure&gt;
+</structuredData>
+                            <aliases>
+                                <item name="definedIn">
+                                    <queryFormatString>.//definedIn</queryFormatString>
+                                    <source>Kernel</source>
+                                </item>
+                            </aliases>
+                            <duration>1.3</duration>
+                        </behavior>
+                    </emulation>
+                </item>
+                <item guid="ceccf67f-8040-4533-816f-9ae472b16f2b" action="sleep">
+                    <command>
+                        <body>$sanityCheckDelaySec</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="481c360e-41c5-4216-b185-7bb9ba3ce2bb" action="eval" useFieldsInCommand="false">
+                    <command>
+                        <body>set sanityCheckStatus PASS</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="1aafb23f-1349-4b28-b365-6e069b85882d" action="showResults" session="$session" normalOffset="22.457" estimatedStepExecutionTime="0.041">
+                    <command>
+                        <body>DetailedStreamResults &quot;Advanced Sequencing&quot; 1</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>.//TxCount_Frames_</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$value &gt; 0</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="PassTestIfNotAlreadyFailed">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="OK">
+                                                    <message>Verify that Tx count is greater than 0; actual: &quot;$value&quot;</message>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenTrue>
+                                        <actionsWhenFalse>
+                                            <item actionId="FailTest">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message>Verify that Tx count is greater than 0; actual: &quot;$value&quot;</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="Eval">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                    <statement>set sanityCheckStatus FAIL</statement>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenFalse>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>.//DroppedCount_Frames_</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$value eq &quot;0&quot;</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="PassTestIfNotAlreadyFailed">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="OK">
+                                                    <message>Verify that frames are not dropped; expected: 0, actual: &quot;$value&quot;</message>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenTrue>
+                                        <actionsWhenFalse>
+                                            <item actionId="FailTest">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message>Verify that frames are not dropped; expected: 0, actual: &quot;$value&quot;</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="Eval">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                    <statement>set sanityCheckStatus FAIL</statement>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenFalse>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>.//ReorderedCount_Frames_</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$value eq &quot;0&quot;</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="PassTestIfNotAlreadyFailed">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="OK">
+                                                    <message>Verify reordered count is 0; actual count: &quot;$value&quot;</message>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenTrue>
+                                        <actionsWhenFalse>
+                                            <item actionId="FailTest">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message>Verify reordered count is 0; actual count: &quot;$value&quot;</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="Eval">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                    <statement>set sanityCheckStatus FAIL</statement>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenFalse>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>.//DuplicateCount_Frames_</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$value eq &quot;0&quot;</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="PassTestIfNotAlreadyFailed">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="OK">
+                                                    <message>Verify that duplicate count is 0; actual count: &quot;$value&quot;</message>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenTrue>
+                                        <actionsWhenFalse>
+                                            <item actionId="FailTest">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message>Verify that duplicate count is 0; actual count: &quot;$value&quot;</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="Eval">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                    <statement>set sanityCheckStatus FAIL</statement>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenFalse>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>.//RxCount_Frames_</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$value &gt; 0</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="PassTestIfNotAlreadyFailed">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="OK">
+                                                    <message>Verify stream Rx count is greater than 0, actual count: $value</message>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenTrue>
+                                        <actionsWhenFalse>
+                                            <item actionId="FailTest">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message>Verify stream Rx count is greater than 0, actual count: $value</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="Eval">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                    <statement>set sanityCheckStatus FAIL</statement>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenFalse>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <emulation>
+                        <behavior>
+                            <response>
+Advanced Sequencing
+Name/ID               Tx Port Name  Rx Port Names  Tx Count (Frames)  Rx Count (Frames)  Dropped Count (Frames)  Dropped Frame Percent  In-order Count (Frames)  Reordered Count (Frames)  Duplicate Count (Frames)  Late Count (Frames)  Dropped Rate (fps)  Dropped Frame Percent Rate  In-order Rate (fps)  Reordered Rate (fps)  Duplicate Rate (fps)  Late Rate (fps)
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+StreamBlock 2/65536   Port //2/9    Port //2/12    12221              11222              0                       0                      11222                    0                         0                         0                    0                   0                           813                  0                     0                     0              
+StreamBlock 1/131072  Port //2/12   Port //2/9     12338              10811              18                      0.166                  10810                    1                         0                         0                    0                   0                           813                  0                     0                     0              
+
+</response>
+                            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;AdvancedSequencing map:endcol=&quot;19&quot; map:line=&quot;1&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;19&quot;/&gt;
+    &lt;DetailedStreamResults map:nodetype=&quot;table&quot;&gt;
+        &lt;row map:nodetype=&quot;row&quot;&gt;
+            &lt;Name_ID map:endcol=&quot;19&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;0&quot;&gt;StreamBlock 2/65536&lt;/Name_ID&gt;
+            &lt;TxPortName map:endcol=&quot;32&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;22&quot;&gt;Port //2/9&lt;/TxPortName&gt;
+            &lt;RxPortNames map:endcol=&quot;47&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;36&quot;&gt;Port //2/12&lt;/RxPortNames&gt;
+            &lt;TxCount_Frames_ map:endcol=&quot;56&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;51&quot;&gt;12221&lt;/TxCount_Frames_&gt;
+            &lt;RxCount_Frames_ map:endcol=&quot;75&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;70&quot;&gt;11222&lt;/RxCount_Frames_&gt;
+            &lt;DroppedCount_Frames_ map:endcol=&quot;90&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;89&quot;&gt;0&lt;/DroppedCount_Frames_&gt;
+            &lt;DroppedFramePercent map:endcol=&quot;114&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;113&quot;&gt;0&lt;/DroppedFramePercent&gt;
+            &lt;In_orderCount_Frames_ map:endcol=&quot;141&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;136&quot;&gt;11222&lt;/In_orderCount_Frames_&gt;
+            &lt;ReorderedCount_Frames_ map:endcol=&quot;162&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;161&quot;&gt;0&lt;/ReorderedCount_Frames_&gt;
+            &lt;DuplicateCount_Frames_ map:endcol=&quot;188&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;187&quot;&gt;0&lt;/DuplicateCount_Frames_&gt;
+            &lt;LateCount_Frames_ map:endcol=&quot;214&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;213&quot;&gt;0&lt;/LateCount_Frames_&gt;
+            &lt;DroppedRate_fps_ map:endcol=&quot;235&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;234&quot;&gt;0&lt;/DroppedRate_fps_&gt;
+            &lt;DroppedFramePercentRate map:endcol=&quot;255&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;254&quot;&gt;0&lt;/DroppedFramePercentRate&gt;
+            &lt;In_orderRate_fps_ map:endcol=&quot;285&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;282&quot;&gt;813&lt;/In_orderRate_fps_&gt;
+            &lt;ReorderedRate_fps_ map:endcol=&quot;304&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;303&quot;&gt;0&lt;/ReorderedRate_fps_&gt;
+            &lt;DuplicateRate_fps_ map:endcol=&quot;326&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;325&quot;&gt;0&lt;/DuplicateRate_fps_&gt;
+            &lt;LateRate_fps_ map:endcol=&quot;348&quot; map:line=&quot;4&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;347&quot;&gt;0&lt;/LateRate_fps_&gt;
+        &lt;/row&gt;
+        &lt;row map:nodetype=&quot;row&quot;&gt;
+            &lt;Name_ID map:endcol=&quot;20&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;0&quot;&gt;StreamBlock 1/131072&lt;/Name_ID&gt;
+            &lt;TxPortName map:endcol=&quot;33&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;22&quot;&gt;Port //2/12&lt;/TxPortName&gt;
+            &lt;RxPortNames map:endcol=&quot;46&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;36&quot;&gt;Port //2/9&lt;/RxPortNames&gt;
+            &lt;TxCount_Frames_ map:endcol=&quot;56&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;51&quot;&gt;12338&lt;/TxCount_Frames_&gt;
+            &lt;RxCount_Frames_ map:endcol=&quot;75&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;70&quot;&gt;10811&lt;/RxCount_Frames_&gt;
+            &lt;DroppedCount_Frames_ map:endcol=&quot;91&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;89&quot;&gt;18&lt;/DroppedCount_Frames_&gt;
+            &lt;DroppedFramePercent map:endcol=&quot;118&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;113&quot;&gt;0.166&lt;/DroppedFramePercent&gt;
+            &lt;In_orderCount_Frames_ map:endcol=&quot;141&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;136&quot;&gt;10810&lt;/In_orderCount_Frames_&gt;
+            &lt;ReorderedCount_Frames_ map:endcol=&quot;162&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;161&quot;&gt;1&lt;/ReorderedCount_Frames_&gt;
+            &lt;DuplicateCount_Frames_ map:endcol=&quot;188&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;187&quot;&gt;0&lt;/DuplicateCount_Frames_&gt;
+            &lt;LateCount_Frames_ map:endcol=&quot;214&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;213&quot;&gt;0&lt;/LateCount_Frames_&gt;
+            &lt;DroppedRate_fps_ map:endcol=&quot;235&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;234&quot;&gt;0&lt;/DroppedRate_fps_&gt;
+            &lt;DroppedFramePercentRate map:endcol=&quot;255&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;254&quot;&gt;0&lt;/DroppedFramePercentRate&gt;
+            &lt;In_orderRate_fps_ map:endcol=&quot;285&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;282&quot;&gt;813&lt;/In_orderRate_fps_&gt;
+            &lt;ReorderedRate_fps_ map:endcol=&quot;304&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;303&quot;&gt;0&lt;/ReorderedRate_fps_&gt;
+            &lt;DuplicateRate_fps_ map:endcol=&quot;326&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;325&quot;&gt;0&lt;/DuplicateRate_fps_&gt;
+            &lt;LateRate_fps_ map:endcol=&quot;348&quot; map:line=&quot;5&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;347&quot;&gt;0&lt;/LateRate_fps_&gt;
+        &lt;/row&gt;
+    &lt;/DetailedStreamResults&gt;
+    &lt;success map:endcol=&quot;4&quot; map:line=&quot;7&quot; map:nodetype=&quot;token&quot; map:startcol=&quot;0&quot;&gt;true&lt;/success&gt;
+&lt;/structure&gt;
+</structuredData>
+                            <aliases>
+                                <item name="Advanced Sequencing">
+                                    <queryFormatString>AdvancedSequencing</queryFormatString>
+                                </item>
+                                <item name="TxPortName">
+                                    <queryFormatString>.//DetailedStreamResults/row[Name_ID = &apos;{0}&apos;]/TxPortName</queryFormatString>
+                                    <arguments>
+                                        <item name="Name_ID">
+                                            <valuesQuery>.//DetailedStreamResults/row/Name_ID</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="RxPortNames">
+                                    <queryFormatString>.//DetailedStreamResults/row[Name_ID = &apos;{0}&apos;]/RxPortNames</queryFormatString>
+                                    <arguments>
+                                        <item name="Name_ID">
+                                            <valuesQuery>.//DetailedStreamResults/row/Name_ID</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="TxCount_Frames_">
+                                    <queryFormatString>.//DetailedStreamResults/row[Name_ID = &apos;{0}&apos;]/TxCount_Frames_</queryFormatString>
+                                    <arguments>
+                                        <item name="Name_ID">
+                                            <valuesQuery>.//DetailedStreamResults/row/Name_ID</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="RxCount_Frames_">
+                                    <queryFormatString>.//DetailedStreamResults/row[Name_ID = &apos;{0}&apos;]/RxCount_Frames_</queryFormatString>
+                                    <arguments>
+                                        <item name="Name_ID">
+                                            <valuesQuery>.//DetailedStreamResults/row/Name_ID</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="DroppedCount_Frames_">
+                                    <queryFormatString>.//DetailedStreamResults/row[Name_ID = &apos;{0}&apos;]/DroppedCount_Frames_</queryFormatString>
+                                    <arguments>
+                                        <item name="Name_ID">
+                                            <valuesQuery>.//DetailedStreamResults/row/Name_ID</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="DroppedFramePercent">
+                                    <queryFormatString>.//DetailedStreamResults/row[Name_ID = &apos;{0}&apos;]/DroppedFramePercent</queryFormatString>
+                                    <arguments>
+                                        <item name="Name_ID">
+                                            <valuesQuery>.//DetailedStreamResults/row/Name_ID</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="In_orderCount_Frames_">
+                                    <queryFormatString>.//DetailedStreamResults/row[Name_ID = &apos;{0}&apos;]/In_orderCount_Frames_</queryFormatString>
+                                    <arguments>
+                                        <item name="Name_ID">
+                                            <valuesQuery>.//DetailedStreamResults/row/Name_ID</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="ReorderedCount_Frames_">
+                                    <queryFormatString>.//DetailedStreamResults/row[Name_ID = &apos;{0}&apos;]/ReorderedCount_Frames_</queryFormatString>
+                                    <arguments>
+                                        <item name="Name_ID">
+                                            <valuesQuery>.//DetailedStreamResults/row/Name_ID</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="DuplicateCount_Frames_">
+                                    <queryFormatString>.//DetailedStreamResults/row[Name_ID = &apos;{0}&apos;]/DuplicateCount_Frames_</queryFormatString>
+                                    <arguments>
+                                        <item name="Name_ID">
+                                            <valuesQuery>.//DetailedStreamResults/row/Name_ID</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="LateCount_Frames_">
+                                    <queryFormatString>.//DetailedStreamResults/row[Name_ID = &apos;{0}&apos;]/LateCount_Frames_</queryFormatString>
+                                    <arguments>
+                                        <item name="Name_ID">
+                                            <valuesQuery>.//DetailedStreamResults/row/Name_ID</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="DroppedRate_fps_">
+                                    <queryFormatString>.//DetailedStreamResults/row[Name_ID = &apos;{0}&apos;]/DroppedRate_fps_</queryFormatString>
+                                    <arguments>
+                                        <item name="Name_ID">
+                                            <valuesQuery>.//DetailedStreamResults/row/Name_ID</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="DroppedFramePercentRate">
+                                    <queryFormatString>.//DetailedStreamResults/row[Name_ID = &apos;{0}&apos;]/DroppedFramePercentRate</queryFormatString>
+                                    <arguments>
+                                        <item name="Name_ID">
+                                            <valuesQuery>.//DetailedStreamResults/row/Name_ID</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="In_orderRate_fps_">
+                                    <queryFormatString>.//DetailedStreamResults/row[Name_ID = &apos;{0}&apos;]/In_orderRate_fps_</queryFormatString>
+                                    <arguments>
+                                        <item name="Name_ID">
+                                            <valuesQuery>.//DetailedStreamResults/row/Name_ID</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="ReorderedRate_fps_">
+                                    <queryFormatString>.//DetailedStreamResults/row[Name_ID = &apos;{0}&apos;]/ReorderedRate_fps_</queryFormatString>
+                                    <arguments>
+                                        <item name="Name_ID">
+                                            <valuesQuery>.//DetailedStreamResults/row/Name_ID</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="DuplicateRate_fps_">
+                                    <queryFormatString>.//DetailedStreamResults/row[Name_ID = &apos;{0}&apos;]/DuplicateRate_fps_</queryFormatString>
+                                    <arguments>
+                                        <item name="Name_ID">
+                                            <valuesQuery>.//DetailedStreamResults/row/Name_ID</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="LateRate_fps_">
+                                    <queryFormatString>.//DetailedStreamResults/row[Name_ID = &apos;{0}&apos;]/LateRate_fps_</queryFormatString>
+                                    <arguments>
+                                        <item name="Name_ID">
+                                            <valuesQuery>.//DetailedStreamResults/row/Name_ID</valuesQuery>
+                                            <interpretAs>SampleValues</interpretAs>
+                                        </item>
+                                    </arguments>
+                                </item>
+                                <item name="success">
+                                    <queryFormatString>success</queryFormatString>
+                                </item>
+                            </aliases>
+                            <duration>0.1</duration>
+                        </behavior>
+                    </emulation>
+                </item>
+                <item guid="075851c2-90bb-46ed-bfb2-4d5f2c4341c4" action="write">
+                    <command>
+                        <body>Sanity Check Status: $sanityCheckStatus</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <multilineDescription>This will check if traffic is running, out-of-order packets, duplicates, and dropped packets</multilineDescription>
+            <arguments>
+                <item name="sanityCheckDelaySec">
+                    <description>This is a short delay bfeore checking traffic to give system enough time to intialize</description>
+                    <defaultValue>5</defaultValue>
+                </item>
+            </arguments>
+        </item>
+        <item name="setStandardTrafficResults" isPublic="true">
+            <description>Set the different traffic results you want to capture</description>
+            <steps>
+                <item guid="c9b3b153-bc5f-477a-ac39-0cef82537cab" action="subscribeView" session="$session">
+                    <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.spirent.itest.applications.stcrest" transferableType="com.spirent.itest.applications.stcrest.properties.ResultViewProperties">
+                        <ResultViewtype inherit="false" transferableToolId="com.spirent.itest.applications.stcrest">
+                            <memberClasses>
+                                <item>com.spirent.itest.applications.stcrest.properties.ResultViewProperties$ResultEntry</item>
+                            </memberClasses>
+                            <item transferableToolId="com.spirent.itest.applications.stcrest" transferableType="com.spirent.itest.applications.stcrest.properties.ResultViewProperties$ResultEntry" resultView="DetailedStreamResults" resultView.inherit="false"/>
+                            <item transferableToolId="com.spirent.itest.applications.stcrest" transferableType="com.spirent.itest.applications.stcrest.properties.ResultViewProperties$ResultEntry" resultView="BasicTrafficResults" resultView.inherit="false"/>
+                            <item transferableToolId="com.spirent.itest.applications.stcrest" transferableType="com.spirent.itest.applications.stcrest.properties.ResultViewProperties$ResultEntry" resultView="PortResults" resultView.inherit="false"/>
+                        </ResultViewtype>
+                    </applicationProperties>
+                </item>
+            </steps>
+            <author>mbarfield</author>
+            <multilineDescription>Set your common traffic results you want the traffic generator to capture. This should be standard for most of your tests.
+
+List includes:
+DetailedStreamResults, BasicTrafficResults, and PortResults</multilineDescription>
+        </item>
+        <item name="startArpClearCounters" isPublic="true" isVBlock="true">
+            <description>Init traffic system by arp and clear counters</description>
+            <steps>
+                <item guid="213fddc3-d3c2-43a8-9981-f6d29cf8cc5e" action="if" useFieldsInCommand="false">
+                    <command>
+                        <body>$startArp</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="4e06cd77-41a5-4c57-9a6b-81a388e67201" action="then" useFieldsInCommand="false">
+                            <nestedSteps>
+                                <item guid="03c27bcc-0bf6-4fe4-bec6-013cdda14e8c" action="startArpNd" session="$session" normalOffset="23.257" estimatedStepExecutionTime="2.825">
+                                    <postProcessing>
+                                        <analysisRules>
+                                            <item>
+                                                <extractorInfo extractorType="regex">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.regex.extractors.RegexExtractorPropertyGroup" useLineMode="true">
+                                                        <regex>^.*$</regex>
+                                                        <extractionGroupIndex>0</extractionGroupIndex>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="store">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                        <storageLocation>arpResponse</storageLocation>
+                                                        <query>arpResponse</query>
+                                                        <responseValue type="com.fnfr.documents.PropertyBoolean">true</responseValue>
+                                                        <variable type="com.fnfr.documents.PropertyBoolean">true</variable>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                        </analysisRules>
+                                    </postProcessing>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="1accd08c-22ad-4bb0-8ee7-5075eb8d5e5e" action="if" useFieldsInCommand="false">
+                    <command>
+                        <body>$clearResults</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="cbba8b78-14d0-44a9-9e85-58784d700676" action="then" useFieldsInCommand="false">
+                            <nestedSteps>
+                                <item guid="5c2b5d8b-8522-4a6a-af48-194ed871fe01" action="clearResults" session="$session">
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <author>mbarfield</author>
+            <multilineDescription>This will allow users to intiate ARP request and clear counters before starting traffic</multilineDescription>
+            <arguments>
+                <item name="startArp">
+                    <description>Starts ARP/ND packets for the specified ports and returns the ARP/ND state.
+
+True or False (1|0)</description>
+                    <defaultValue>1</defaultValue>
+                </item>
+                <item name="clearResults">
+                    <description>Clear all counters
+
+True or False (1|0)</description>
+                    <defaultValue>1</defaultValue>
+                </item>
+            </arguments>
+            <response>{&quot;arpResponse&quot;:&quot;value&quot;}</response>
+        </item>
+        <item name="startTraffic" isPublic="true">
+            <description>Start traffic and run optional sanity check</description>
+            <steps>
+                <item guid="41dd65ca-8ae4-4933-ab3f-061e6331d923" action="startGenerator" session="$session" normalOffset="12.095" estimatedStepExecutionTime="1.354">
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="cd2d1ddb-9775-4f24-9bff-18e539810271" action="comment" useFieldsInCommand="false">
+                    <command>
+                        <body>Sanity check traffic if enabled</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="d29887a7-3763-40f1-835c-7f2d89356d2e" action="if" useFieldsInCommand="false">
+                    <command>
+                        <body>$sanityCheck</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="9912bbfa-a421-4112-bae3-dc85dd9e1258" action="then" useFieldsInCommand="false">
+                            <nestedSteps>
+                                <item guid="bf1aa990-2a41-4592-a99c-17531d8de965" action="sanityCheckTraffic" session="$session" useFieldsInCommand="false">
+                                    <postProcessing>
+                                        <storeResponseAt>retVal</storeResponseAt>
+                                    </postProcessing>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="4cd0b10b-2be5-42e5-b145-b4d739cc1286" action="else" useFieldsInCommand="false">
+                            <nestedSteps>
+                                <item guid="9cc45ba2-7c50-4338-a647-ed13b49388fb" action="comment" useFieldsInCommand="false">
+                                    <command>
+                                        <body>Set return val to N/A</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                                <item guid="6a79d19a-a015-4bd8-8da0-6c69feda10bc" action="eval" useFieldsInCommand="false">
+                                    <command>
+                                        <body>set retVal &quot;Sanity Check Status: N/A&quot;</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="ecab9e27-dd34-4657-9988-d10d685f31ef" action="sleep">
+                    <command>
+                        <body>$trafficDurationSec</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="a82b45a9-8370-4063-b295-b4a178f023d4" action="write">
+                    <command>
+                        <body>$retVal</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <author>mbarfield</author>
+            <multilineDescription>Start traffic generator and run optional sanity check to look for dead streams, out-of-order and duplicate packets. Also, set traffic exection time in seconds.</multilineDescription>
+            <arguments>
+                <item name="sanityCheck">
+                    <description>Sanity check the traffic streams for common errors
+
+true or false (1|0)</description>
+                    <defaultValue>1</defaultValue>
+                </item>
+                <item name="trafficDurationSec">
+                    <description>Set traffic duration in seconds.</description>
+                    <defaultValue>30</defaultValue>
+                </item>
+            </arguments>
+        </item>
+        <item name="stopTraffic" isPublic="true">
+            <description>Stop traffic</description>
+            <steps>
+                <item guid="112606eb-bfc5-46e5-ae42-b9eab438bf57" action="stopGenerator" session="$session" normalOffset="12.095" estimatedStepExecutionTime="1.354">
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <author>mbarfield</author>
+            <multilineDescription>Stop traffic - no return value</multilineDescription>
+        </item>
+    </procedures>
+</testCase>

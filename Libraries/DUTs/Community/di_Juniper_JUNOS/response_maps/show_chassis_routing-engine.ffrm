@@ -1,0 +1,144 @@
+<?xml version="1.0" ?><ResponseMap version="5.1.0.77511">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="command">
+                <command>
+                    <body>show chassis routing-engine</body>
+                </command>
+            </action>
+            <responseBody>Routing Engine status:
+  Slot 0:
+    Current state                  Master
+    Election priority              Master (default)
+    Temperature                 45 degrees C / 113 degrees F
+    CPU temperature             49 degrees C / 120 degrees F
+    DRAM                      3584 MB (3584 MB installed)
+    Memory utilization          42 percent
+    CPU utilization:
+      User                       7 percent
+      Background                 0 percent
+      Kernel                     6 percent
+      Interrupt                  1 percent
+      Idle                      86 percent
+    Model                          RE-S-2000
+    Serial ID                      9009046048
+    Start time                     2015-05-17 02:48:14 UTC
+    Uptime                         19 days, 19 hours, 40 minutes, 11 seconds
+    Last reboot reason             0x1:power cycle/failure 
+    Load averages:                 1 minute   5 minute  15 minute
+                                       0.28       0.31       0.32
+Routing Engine status:
+  Slot 1:
+    Current state                  Backup
+    Election priority              Backup (default)
+    Temperature                 44 degrees C / 111 degrees F
+    CPU temperature             53 degrees C / 127 degrees F
+    DRAM                      3584 MB (4096 MB installed)
+    Memory utilization          22 percent
+    CPU utilization:
+      User                       0 percent
+      Background                 0 percent
+      Kernel                     0 percent
+      Interrupt                  0 percent
+      Idle                     100 percent
+    Model                          RE-S-2000
+    Serial ID                      9009017348
+    Start time                     2015-05-17 02:48:14 UTC
+    Uptime                         19 days, 19 hours, 40 minutes, 13 seconds
+    Last reboot reason             0x1:power cycle/failure 
+    Load averages:                 1 minute   5 minute  15 minute
+                                       0.02       0.02       0.00
+
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;prompt&gt;itest@google_D4&amp;gt; &lt;/prompt&gt;
+    &lt;echo&gt;show chassis routing-engine &lt;/echo&gt;
+    &lt;promptName&gt;unpriv_prompt&lt;/promptName&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.1</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="RE_Status">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Routing Engine status:\\s+Slot\\s+</regex>
+                            <start>0</start>
+                            <end>30</end>
+                        </item>
+                        <item name="Slot">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <key>true</key>
+                            <start>30</start>
+                            <end>31</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>:\\s+Current state\\s+</regex>
+                            <start>31</start>
+                            <end>68</end>
+                        </item>
+                        <item name="Current_state">
+                            <regex>[^0-9\\r\\n]+</regex>
+                            <named>true</named>
+                            <start>68</start>
+                            <end>74</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>\\s+Election priority\\s+</regex>
+                            <start>74</start>
+                            <end>110</end>
+                        </item>
+                        <item name="Election_priority">
+                            <regex>[^0-9\\r\\n]+</regex>
+                            <named>true</named>
+                            <start>110</start>
+                            <end>126</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>Routing Engine status:
+  Slot 0:
+    Current state                  Master
+    Election priority              Master (default)</sampleMatch>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="sh* chassis routing-engine*"/>
+</ResponseMap>

@@ -1,0 +1,340 @@
+<?xml version="1.0" ?><ResponseMap version="6.0.0.18638fa">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="command">
+                <command>
+                    <body>show chassis fpc detail</body>
+                </command>
+            </action>
+            <responseBody>May 13 13:06:34 
+Slot 0 information:
+  State                                 Online    
+  Temperature                        34
+  Total CPU DRAM                   1024 MB
+  Total RLDRAM                      256 MB
+  Total DDR DRAM                   4096 MB
+  Start time:                           2016-04-20 14:45:10 EDT
+  Uptime:                               22 days, 22 hours, 21 minutes, 24 seconds
+  Max Power Consumption             335 Watts
+Slot 1 information:
+  State                                 Online    
+  Temperature                        34
+  Total CPU DRAM                   1024 MB
+  Total RLDRAM                      256 MB
+  Total DDR DRAM                   4096 MB
+  Start time:                           2016-04-20 14:45:22 EDT
+  Uptime:                               22 days, 22 hours, 21 minutes, 12 seconds
+  Max Power Consumption             330 Watts
+Slot 3 information:
+  State                                 Online    
+  Temperature                        35
+  Total CPU DRAM                   2048 MB
+  Total RLDRAM                     1036 MB
+  Total DDR DRAM                   6656 MB
+  Start time:                           2016-04-20 14:45:29 EDT
+  Uptime:                               22 days, 22 hours, 21 minutes, 5 seconds
+  Max Power Consumption             500 Watts
+Slot 4 information:
+  State                                 Online    
+  Temperature                        36
+  Total CPU DRAM                   2048 MB
+  Total RLDRAM                     1036 MB
+  Total DDR DRAM                   6656 MB
+  Start time:                           2016-04-20 14:45:33 EDT
+  Uptime:                               22 days, 22 hours, 21 minutes, 1 second
+  Max Power Consumption             500 Watts
+Slot 5 information:
+  State                                 Online    
+  Temperature                        38
+  Total CPU DRAM                   2048 MB
+  Total RLDRAM                     1324 MB
+  Total DDR DRAM                   5120 MB
+  Start time:                           2016-04-20 14:45:40 EDT
+  Uptime:                               22 days, 22 hours, 20 minutes, 54 seconds
+  Max Power Consumption             440 Watts
+
+{master}
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;prompt&gt;automation@PE54&amp;gt; &lt;/prompt&gt;
+    &lt;echo&gt;show chassis fpc detail&lt;/echo&gt;
+    &lt;promptName&gt;normal&lt;/promptName&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+            </aliases>
+            <duration>2.8</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.table.TabularMapperProperties"/>
+        <item type="com.fnfr.svt.mapping.block.documents.BlockMapperProperties">
+            <BlockMaps name="container"/>
+        </item>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="pattern1">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Slot\\s+</regex>
+                            <start>0</start>
+                            <end>5</end>
+                        </item>
+                        <item name="Slot">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <key>true</key>
+                            <start>5</start>
+                            <end>6</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+information:\\s+State\\s+</regex>
+                            <start>6</start>
+                            <end>60</end>
+                        </item>
+                        <item name="State">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>60</start>
+                            <end>66</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>\\s+Temperature\\s+</regex>
+                            <start>66</start>
+                            <end>108</end>
+                        </item>
+                        <item name="Temperature">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>108</start>
+                            <end>110</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor3">
+                            <regex>\\s+Total CPU DRAM\\s+</regex>
+                            <start>110</start>
+                            <end>146</end>
+                        </item>
+                        <item name="Total_CPU_DRAM">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>146</start>
+                            <end>150</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor4">
+                            <regex>\\s+MB\\s+Total RLDRAM\\s+</regex>
+                            <start>150</start>
+                            <end>190</end>
+                        </item>
+                        <item name="Total_RLDRAM">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>190</start>
+                            <end>193</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor5">
+                            <regex>\\s+MB\\s+Total DDR DRAM\\s+</regex>
+                            <start>193</start>
+                            <end>232</end>
+                        </item>
+                        <item name="Total_DDR_DRAM">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>232</start>
+                            <end>236</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor6">
+                            <regex>\\s+MB\\s+Start time:\\s+</regex>
+                            <start>236</start>
+                            <end>280</end>
+                        </item>
+                        <item name="Start_time">
+                            <regex>[^\\r\\n]+</regex>
+                            <named>true</named>
+                            <start>280</start>
+                            <end>299</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name=".{19}">exactly 19 of any character</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor7">
+                            <regex>\\s+EDT\\s+Uptime:\\s+</regex>
+                            <start>299</start>
+                            <end>344</end>
+                        </item>
+                        <item name="Uptime_days">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>344</start>
+                            <end>346</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor8">
+                            <regex>\\s+days,\\s+</regex>
+                            <start>346</start>
+                            <end>353</end>
+                        </item>
+                        <item name="Uptime_hours">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>353</start>
+                            <end>355</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor9">
+                            <regex>\\s+hours,\\s+</regex>
+                            <start>355</start>
+                            <end>363</end>
+                        </item>
+                        <item name="Uptime_minutes">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>363</start>
+                            <end>365</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor10">
+                            <regex>\\s+minutes,\\s+</regex>
+                            <start>365</start>
+                            <end>375</end>
+                        </item>
+                        <item name="Uptime_seconds">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>375</start>
+                            <end>377</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor11">
+                            <regex>\\s+seconds\\s+Max Power Consumption\\s+</regex>
+                            <start>377</start>
+                            <end>422</end>
+                        </item>
+                        <item name="Watts">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>422</start>
+                            <end>425</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor12">
+                            <regex>\\s+Watts</regex>
+                            <start>425</start>
+                            <end>431</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>Slot 0 information:
+  State                                 Online    
+  Temperature                        34
+  Total CPU DRAM                   1024 MB
+  Total RLDRAM                      256 MB
+  Total DDR DRAM                   4096 MB
+  Start time:                           2016-04-20 14:45:10 EDT
+  Uptime:                               22 days, 22 hours, 21 minutes, 24 seconds
+  Max Power Consumption             335 Watts</sampleMatch>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="show chassis fpc detail" matchType="CaseInsensitive" priority="45">
+        <application>
+            <item>com.fnfr.svt.applications.cmd</item>
+            <item>com.fnfr.svt.applications.ssh</item>
+            <item>com.fnfr.svt.applications.telnet</item>
+        </application>
+    </applicabilityProperties>
+</ResponseMap>

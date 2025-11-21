@@ -1,0 +1,113 @@
+<?xml version="1.0" ?><ResponseMap version="5.4.0.4f90e5a">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="readFile"/>
+            <responseBody> Non Access Stratum (NAS) (19 bytes)
+       NAS_MSG_SECURITY_HDR_INTEGRITY_PROTECTED_CIPHERED(0x2)
+         MAC = 0x8088dfef 
+         NAS Count = 0x2
+  EPS Mobility Management
+    Protocol Discriminator
+       EPS MOBILITY MANAGEMENT MESSAGES(0x7)
+    Security Header Type
+       NAS_MSG_SECURITY_HDR_PLAIN_NAS_MSG(0x0)
+    Message Type
+       EMM INFORMATION(0x61)
+    Universal Time
+         Oct 24 17:44:04 2016
+         TimeZone Difference (in 15 minutes steps):-16
+    Daylight savings time
+       DAYLIGHT SAVINGS_TIME : 
+         +1 hour adjustment for DST</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;isEmpty&gt;false&lt;/isEmpty&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="isEmpty">
+                    <queryFormatString>.//isEmpty</queryFormatString>
+                </item>
+            </aliases>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="EMM_MSG">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Message Type\\s+EMM INFORMATION\\(0x61\\)\\s+Universal Time\\s+</regex>
+                            <start>0</start>
+                            <end>70</end>
+                        </item>
+                        <item name="Date">
+                            <regex>[^\\r\\n]+</regex>
+                            <named>true</named>
+                            <start>70</start>
+                            <end>90</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+TimeZone Difference \\(in\\s+\\d+\\s+minutes steps\\):</regex>
+                            <start>90</start>
+                            <end>142</end>
+                        </item>
+                        <item name="TimeZone_Difference">
+                            <regex>([-+]?\\d+\\.?\\d*([eE][-+]?\\d+)?)</regex>
+                            <named>true</named>
+                            <start>142</start>
+                            <end>145</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>Message Type
+       EMM INFORMATION(0x61)
+    Universal Time
+         Oct 24 17:44:04 2016
+         TimeZone Difference (in 15 minutes steps):-16</sampleMatch>
+                    <maintainConsistency>false</maintainConsistency>
+                </item>
+                <item name="DST">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>\\s+Daylight savings time\\s+DAYLIGHT SAVINGS_TIME :\\s+</regex>
+                            <start>0</start>
+                            <end>67</end>
+                        </item>
+                        <item name="isDST">
+                            <regex>[^\\r\\n]+</regex>
+                            <named>true</named>
+                            <start>67</start>
+                            <end>93</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>    Daylight savings time
+       DAYLIGHT SAVINGS_TIME : 
+         +1 hour adjustment for DST</sampleMatch>
+                    <optional>true</optional>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="monitor subscriber"/>
+    <aliases>
+        <item name="DaylightSavings">
+            <description>if DST is enabled, return value greater than zero</description>
+            <queryFormatString>count(//isDST)</queryFormatString>
+        </item>
+    </aliases>
+</ResponseMap>

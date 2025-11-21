@@ -1,0 +1,157 @@
+<?xml version="1.0"?>
+<testCase version="7.1.0.201804110601">
+    <general>
+        <sessionClass includeTestCase="true" sessionType="Elasticsearch_Rest_Base.ffsp"/>
+        <language>Python</language>
+    </general>
+    <procedures>
+        <item name="main">
+            <steps>
+                <item guid="9f0d6200-d8c7-42c8-8321-d0e433a90161" action="comment">
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+        </item>
+        <item name="AddDocument" isPublic="true" isVBlock="true">
+            <description>Add Document</description>
+            <steps>
+                <item guid="1f65ca6e-bac3-4ad4-9514-4270fcf17cd0" action="eval">
+                    <command>
+                        <body>import json</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="aa1aed79-e4dc-42a3-802b-2e50dafe9506" action="eval">
+                    <command>
+                        <body>jsondata = json.dumps(data)</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="8e102541-3164-429a-9155-15267745f38f" action="POST" session="[session]" estimatedStepExecutionTime="4.72">
+                    <command>
+                        <body>[index]/[type]</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>boolean(mapped/Json/error)</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>value != True</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="Eval">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                    <statement>status = &quot;ok&quot;</statement>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="SkipRemainingRules">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                        </actionsWhenTrue>
+                                        <actionsWhenFalse>
+                                            <item actionId="Eval">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                    <statement>status = &quot;error&quot;</statement>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenFalse>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>mapped/Json/error</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>error_type</storageLocation>
+                                        <query>error_type</query>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>mapped/Json/error/reason</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>error_message</storageLocation>
+                                        <query>error_message</query>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" httpMethod="POST" httpMethod.inherit="false" message="[data]" message.inherit="false" action="[index]/[type]" action.inherit="false">
+                        <authentication transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.AuthenticationProperties" authenticationType="Basic" authenticationType.inherit="false" user="api" user.inherit="false" password.masked="true" password="HaDjawjKg2M=" password.inherit="false" acceptAllCertificates="true" acceptAllCertificates.inherit="false"/>
+                    </applicationProperties>
+                </item>
+                <item guid="67124a28-2ebe-4400-9fcf-971d0ef6c1a3" action="eval">
+                    <command>
+                        <body>print(status)</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="regex">
+                                    <extractorProperties type="com.fnfr.svt.mapping.regex.extractors.RegexExtractorPropertyGroup" useLineMode="true">
+                                        <regex>[^\\r\\n]+</regex>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>var1</storageLocation>
+                                        <query>status</query>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <multilineDescription>Add a JSON document to an existing Elasticsearch index.
+
+Returns a JSON block response:
+
+status: &quot;ok&quot; if document added succesfully, &quot;error&quot; otherwise
+error_type: &quot;none&quot; if no error, otherwise, type of error returned by ES API
+error_message: &quot;none&quot; if no error, otherwise, error message returned by ES API</multilineDescription>
+            <arguments>
+                <item name="elastic_user">
+                    <description>Username for Elasticsearch API</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="elastic_password">
+                    <description>Password for Elasticsearch API</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="index">
+                    <description>Name of index to add documents to</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="type">
+                    <description>Document type (as defined in Elastic index)</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="data">
+                    <description>Python dict of </description>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+            <response>{&quot;status&quot;:&quot;value&quot;,&quot;error_type&quot;:&quot;none&quot;,&quot;error_message&quot;:&quot;none&quot;}</response>
+        </item>
+    </procedures>
+</testCase>

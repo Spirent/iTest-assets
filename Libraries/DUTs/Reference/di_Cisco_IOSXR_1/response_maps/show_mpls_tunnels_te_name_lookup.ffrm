@@ -1,0 +1,262 @@
+<?xml version="1.0"?>
+<ResponseMap version="6.0.0.18638fa">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="show_mpls_te_tunnels">
+                <command>
+                    <body>-name $normal_tunnel_name -name_lookup &quot;yes&quot;</body>
+                </command>
+            </action>
+            <responseBody>
+
+LSP Tunnel jun1.svs.net 4870 [1627] is signalled, Signaling State: up
+  Tunnel Name: J1-to-J2-1 Tunnel Role: Mid
+  InLabel: Bundle-Ether2, 58512
+  OutLabel: Bundle-Ether3, 79183
+  Signalling Info:
+    Src jun1.svs.net Dst jun2.svs.net, Tun ID 4870, Tun Inst 1627, Ext ID jun1.svs.net
+    Router-IDs: upstream   jun1.svs.net
+                local      asr9k2.svs.net
+                downstream asr9k3.svs.net
+    Bandwidth: 150455 kbps (CT0) Priority:  5  5 DSTE-class: no match
+    Soft Preemption: None
+    SRLGs: not collected
+    Path Info:
+      Incoming Address: asr9k2.be2.svs.net
+      Incoming:
+      Explicit Route:
+        Strict, asr9k2.be2.svs.net
+        Strict, asr9k3.be3.svs.net
+        Strict, jun2.ae4.svs.net
+
+      Outgoing:
+        Explicit Route:
+          Strict, asr9k3.be3.svs.net
+          Strict, jun2.ae4.svs.net
+
+      Record Route:
+        IPv4 jun1.ae2.svs.net, flags 0x0
+      Tspec: avg rate=150455 kbits, burst=18806986 bytes, peak rate=IEEE_INFINITY
+      Session Attributes: Local Prot: Set, Node Prot: Set, BW Prot: Not Set
+                          Soft Preemption Desired: Not Set
+    Resv Info:
+      Record Route:
+        IPv4 asr9k3.svs.net, flags 0x21 (Node-ID, Protection: available)
+        Label 79183, flags 0x1
+        IPv4 asr9k3.be3.svs.net, flags 0x1 (Protection: available)
+        Label 79183, flags 0x1
+        IPv4 jun2.svs.net, flags 0x20 (Node-ID)
+        IPv4 jun2.ae4.svs.net, flags 0x0
+        Label 3, flags 0x1
+      Fspec: avg rate=150455 kbits, burst=18806986 bytes, peak rate=IEEE_INFINITY
+Displayed 0 (of 5) heads, 1 (of 65943) midpoints, 0 (of 3) tails
+Displayed 0 up, 0 down, 0 recovering, 0 recovered heads
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;isEmpty&gt;false&lt;/isEmpty&gt;
+    &lt;definedIn&gt;project://d_Cisco_IOSXR_main/session_profiles/cisco_IOSXR_ssh_quickcall_library.fftc&lt;/definedIn&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="isEmpty">
+                    <queryFormatString>.//isEmpty</queryFormatString>
+                </item>
+                <item name="definedIn">
+                    <queryFormatString>.//definedIn</queryFormatString>
+                    <source>Kernel</source>
+                </item>
+            </aliases>
+            <duration>4.7</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="pattern1">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>LSP Tunnel\\s+</regex>
+                            <start>0</start>
+                            <end>11</end>
+                        </item>
+                        <item name="tunnel_id">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>11</start>
+                            <end>12</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+</regex>
+                            <start>12</start>
+                            <end>13</end>
+                        </item>
+                        <item name="LSP_Tunnel">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>13</start>
+                            <end>17</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>\\s+\\[</regex>
+                            <start>17</start>
+                            <end>19</end>
+                        </item>
+                        <item name="signalled">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>19</start>
+                            <end>23</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor3">
+                            <regex>] is signalled, Signaling State:\\s+</regex>
+                            <start>23</start>
+                            <end>56</end>
+                        </item>
+                        <item name="Signaling_State">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>56</start>
+                            <end>57</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>LSP Tunnel * 4870 [1627] is signalled, Signaling State: *</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+                <item name="pattern2">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>\\s+Src\\s+</regex>
+                            <start>0</start>
+                            <end>7</end>
+                        </item>
+                        <item name="tunnel_source">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>7</start>
+                            <end>8</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+Dst\\s+</regex>
+                            <start>8</start>
+                            <end>13</end>
+                        </item>
+                        <item name="tunnel_destination">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>13</start>
+                            <end>14</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name=".{1}">exactly 1 of any character</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>, Tun ID\\s+</regex>
+                            <start>14</start>
+                            <end>23</end>
+                        </item>
+                        <item name="Tun_ID">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>23</start>
+                            <end>27</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor3">
+                            <regex>, Tun Inst\\s+</regex>
+                            <start>27</start>
+                            <end>38</end>
+                        </item>
+                        <item name="Tun_Inst">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>38</start>
+                            <end>42</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor4">
+                            <regex>, Ext ID jun</regex>
+                            <start>42</start>
+                            <end>54</end>
+                        </item>
+                        <item name="Ext_ID_jun">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>54</start>
+                            <end>55</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor5">
+                            <regex>\\.svs\\.net</regex>
+                            <start>55</start>
+                            <end>63</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>   Src * Dst *, Tun ID 4870, Tun Inst 1627, Ext ID jun1.svs.net</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="show_mpls_te_tunnels" command="*name*name_lookup &quot;yes&quot;"/>
+</ResponseMap>

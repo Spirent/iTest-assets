@@ -1,0 +1,811 @@
+<?xml version="1.0"?>
+<testCase version="5.3.0.338ed32">
+    <general>
+        <sessionClass includeTestCase="true" sessionType="velocity_RestAPI.ffsp"/>
+    </general>
+    <procedures>
+        <item name="main">
+            <steps>
+                <item guid="e446e639-a0ab-42af-9fcc-31e51124cda7" action="comment">
+                    <command>
+                        <body>Quickcall Library</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+        </item>
+        <item name="activateReservation" isPublic="true">
+            <steps>
+                <item guid="6979f017-306c-4a0a-a298-5223ebeb5469" action="getTopologyId" session="$session">
+                    <command>
+                        <body>-topologyName $topologyName</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="regex">
+                                    <extractorProperties type="com.fnfr.svt.mapping.regex.extractors.RegexExtractorPropertyGroup">
+                                        <regex>.+</regex>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>topologyId</storageLocation>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="b2011c69-04e9-42f0-8acf-b64f9f62779b" action="POST" session="$session" estimatedStepExecutionTime="2.093">
+                    <command>
+                        <body>/ilo/api/reservation/v1/reservation</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="regex">
+                                    <extractorProperties type="com.fnfr.svt.mapping.regex.extractors.RegexExtractorPropertyGroup">
+                                        <regex>.+</regex>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>1</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="AppendToProcedureResponse">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.AppendResponsePropertyGroup">
+                                                    <content sub="true">$value</content>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenTrue>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" action="/ilo/api/reservation/v1/reservation" action.inherit="false" rawresponse="true" rawresponse.inherit="false">
+                        <message inherit="false">{
+&quot;duration&quot; : $duration,
+&quot;topologyId&quot; : &quot;$topologyId&quot;,
+&quot;name&quot; : &quot;$reservationName&quot;
+}</message>
+                        <authentication transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.AuthenticationProperties" authenticationType="Secure" authenticationType.inherit="false" user="$username" user.inherit="false" password.masked="true" password="CNDluA9EJ23wammPrSnywg==" password.inherit="false" acceptAllCertificates="true" acceptAllCertificates.inherit="false"/>
+                    </applicationProperties>
+                </item>
+            </steps>
+            <multilineDescription>This quickcall is used to activate an ILO reservation.</multilineDescription>
+            <arguments>
+                <item name="topologyName">
+                    <description>name of the toplogy</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="username">
+                    <defaultValue>$username</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="password">
+                    <defaultValue>$password</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="reservationName">
+                    <description>name of the reservation</description>
+                    <defaultValue>lab</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="duration">
+                    <description>1 hour default</description>
+                    <defaultValue>3600</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="releaseReservation" isPublic="true">
+            <steps>
+                <item guid="976b3f2b-4e2a-4e9c-9d88-bc1403af0783" action="POST" session="$session" normalOffset="196.615" estimatedStepExecutionTime="0.154">
+                    <command>
+                        <body>/ilo/api/reservation/v1/reservation/$id/action?type=cancel</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="regex">
+                                    <extractorProperties type="com.fnfr.svt.mapping.regex.extractors.RegexExtractorPropertyGroup">
+                                        <regex>.+</regex>
+                                        <declareNoMatchIssue>false</declareNoMatchIssue>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>1</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="AppendToProcedureResponse">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.AppendResponsePropertyGroup">
+                                                    <content sub="true">$value</content>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenTrue>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" action="/ilo/api/reservation/v1/reservation/$id/action?type=cancel" action.inherit="false">
+                        <authentication transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.AuthenticationProperties" authenticationType="Secure" authenticationType.inherit="false" user="$username" user.inherit="false" password.masked="true" password="CNDluA9EJ23wammPrSnywg==" password.inherit="false" acceptAllCertificates="true" acceptAllCertificates.inherit="false"/>
+                    </applicationProperties>
+                </item>
+            </steps>
+            <multilineDescription>This quickcall is used to deactivate an existing ILO reservation.</multilineDescription>
+            <arguments>
+                <item name="id">
+                    <description>reservation id</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="username">
+                    <defaultValue>$username</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="password">
+                    <defaultValue>$password</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="showTopologies" isPublic="true">
+            <steps>
+                <item guid="07166361-a38a-42f4-bcb5-8d4fbe88556f" action="GET" session="$session" skip="true">
+                    <command>
+                        <body>/ilo/api/topology/v1/topologies</body>
+                    </command>
+                    <postProcessing>
+                        <storeResponseAt>retVal</storeResponseAt>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" action="/ilo/api/topology/v1/topologies" action.inherit="false">
+                        <authentication transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.AuthenticationProperties" authenticationType="Secure" authenticationType.inherit="false" user="$username" user.inherit="false" password.masked="true" password="CNDluA9EJ23wammPrSnywg==" password.inherit="false" keyStoreFile.inherit="false" passphrase.masked="true" passphrase="CaK+mWSFs84=" passphrase.inherit="false" acceptAllCertificates="true" acceptAllCertificates.inherit="false"/>
+                    </applicationProperties>
+                </item>
+                <item guid="a30b7f82-f57b-481f-9c1d-95e42f427823" action="GET" session="$session">
+                    <command>
+                        <body>/velocity/api/topology/v3/topologies?limit=200</body>
+                    </command>
+                    <postProcessing>
+                        <storeResponseAt>retVal</storeResponseAt>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" action="/velocity/api/topology/v3/topologies?limit=200" action.inherit="false">
+                        <authentication transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.AuthenticationProperties" authenticationType="Secure" authenticationType.inherit="false" user="$username" user.inherit="false" password.masked="true" password="CNDluA9EJ23wammPrSnywg==" password.inherit="false" keyStoreFile.inherit="false" passphrase.masked="true" passphrase="CaK+mWSFs84=" passphrase.inherit="false" acceptAllCertificates="true" acceptAllCertificates.inherit="false"/>
+                    </applicationProperties>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="0ce33274-9599-4efa-809b-0edb27e13db9" action="for">
+                    <command>
+                        <body>{set i 1} {$i &lt;= [query retVal mapped/Json/count]} {incr i}</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="7c0609c6-95b5-4421-ba19-ae4e138e7151" action="comment">
+                            <command>
+                                <body>Print out the name and id of the topology</body>
+                            </command>
+                            <postProcessing>
+                                <analysisRules>
+                                    <item>
+                                        <extractorInfo extractorType="none">
+                                            <extractorProperties type="com.fnfr.svt.documents.EmptyExtractorPropertyGroup"/>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="assert">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                <expression>1</expression>
+                                                <actionsWhenTrue>
+                                                    <item actionId="AppendToProcedureResponse">
+                                                        <actionProperties type="com.fnfr.svt.execution.builtin.actions.AppendResponsePropertyGroup">
+                                                            <content sub="true">[query retVal //item\\[$i\\]/name] ,[query retVal //item\\[$i\\]/id]\\n </content>
+                                                        </actionProperties>
+                                                    </item>
+                                                    <item actionId="PassTestIfNotAlreadyFailed">
+                                                        <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                    </item>
+                                                </actionsWhenTrue>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                </analysisRules>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <arguments>
+                <item name="username">
+                    <defaultValue>$username</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="password">
+                    <defaultValue>$password</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="showDevices" isPublic="true">
+            <steps>
+                <item guid="c49f6a6d-f5ca-4c66-bcf4-b0c1765bdadc" action="GET" session="$session">
+                    <command>
+                        <body>/velocity/api/inventory/v3/devices?limit=200</body>
+                    </command>
+                    <postProcessing>
+                        <storeResponseAt>retVal</storeResponseAt>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" action="/velocity/api/inventory/v3/devices?limit=200" action.inherit="false">
+                        <authentication transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.AuthenticationProperties" authenticationType="Secure" authenticationType.inherit="false" user="$username" user.inherit="false" password.masked="true" password="CNDluA9EJ23wammPrSnywg==" password.inherit="false" keyStoreFile.inherit="false" passphrase.masked="true" passphrase="CaK+mWSFs84=" passphrase.inherit="false" acceptAllCertificates="true" acceptAllCertificates.inherit="false"/>
+                    </applicationProperties>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="a50a1056-72ca-478a-a824-97b3843f2661" action="for">
+                    <command>
+                        <body>{set i 1} {$i &lt;= [query retVal mapped/Json/count]} {incr i}</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="37929f9a-46e0-4d9f-a363-c990963f7fbf" action="comment">
+                            <command>
+                                <body>Print out the name and id of the topology</body>
+                            </command>
+                            <postProcessing>
+                                <analysisRules>
+                                    <item>
+                                        <extractorInfo extractorType="none">
+                                            <extractorProperties type="com.fnfr.svt.documents.EmptyExtractorPropertyGroup"/>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="assert">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                <expression>1</expression>
+                                                <actionsWhenTrue>
+                                                    <item actionId="AppendToProcedureResponse">
+                                                        <actionProperties type="com.fnfr.svt.execution.builtin.actions.AppendResponsePropertyGroup">
+                                                            <content sub="true">[query retVal //item\\[$i\\]/name] ,[query retVal //item\\[$i\\]/id]\\n </content>
+                                                        </actionProperties>
+                                                    </item>
+                                                    <item actionId="PassTestIfNotAlreadyFailed">
+                                                        <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                    </item>
+                                                </actionsWhenTrue>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                </analysisRules>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <arguments>
+                <item name="username">
+                    <defaultValue>$username</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="password">
+                    <defaultValue>$password</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="showReservations" isPublic="true">
+            <steps>
+                <item guid="b5c4e2b4-2698-48d3-a41d-134e21e06579" action="GET" session="$session">
+                    <command>
+                        <body>/velocity/api/reservation/v3/reservations?limit=200</body>
+                    </command>
+                    <postProcessing>
+                        <storeResponseAt>retVal</storeResponseAt>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" action="/velocity/api/reservation/v3/reservations?limit=200" action.inherit="false">
+                        <authentication transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.AuthenticationProperties" authenticationType="Secure" authenticationType.inherit="false" user="$username" user.inherit="false" password.masked="true" password="CNDluA9EJ23wammPrSnywg==" password.inherit="false" keyStoreFile.inherit="false" passphrase.masked="true" passphrase="CaK+mWSFs84=" passphrase.inherit="false" acceptAllCertificates="true" acceptAllCertificates.inherit="false"/>
+                    </applicationProperties>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="8f780f30-9d25-4366-8fdf-a57ed1d82184" action="for">
+                    <command>
+                        <body>{set i 1} {$i &lt;= [query retVal mapped/Json/count]} {incr i}</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="430b15af-62fa-4470-9b8c-508c162eb8a1" action="comment">
+                            <command>
+                                <body>Print out the name and id of the topology</body>
+                            </command>
+                            <postProcessing>
+                                <analysisRules>
+                                    <item>
+                                        <extractorInfo extractorType="none">
+                                            <extractorProperties type="com.fnfr.svt.documents.EmptyExtractorPropertyGroup"/>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="assert">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                <expression>1</expression>
+                                                <actionsWhenTrue>
+                                                    <item actionId="AppendToProcedureResponse">
+                                                        <actionProperties type="com.fnfr.svt.execution.builtin.actions.AppendResponsePropertyGroup">
+                                                            <content sub="true">[query retVal //item\\[$i\\]/name] ,[query retVal //item\\[$i\\]/id]\\n </content>
+                                                        </actionProperties>
+                                                    </item>
+                                                    <item actionId="PassTestIfNotAlreadyFailed">
+                                                        <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                    </item>
+                                                </actionsWhenTrue>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                </analysisRules>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <arguments>
+                <item name="username">
+                    <defaultValue>$username</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="password">
+                    <defaultValue>$password</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="getTopologyId" isPublic="true">
+            <description>This procedure returns the id of the topology</description>
+            <steps>
+                <item guid="7253464f-0c71-4200-b2a4-637270fec6ec" action="showTopologies" session="$session">
+                    <command>
+                        <body>-password $username -username $password</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query sub="true">value_by_name(&quot;$topologyName&quot;)</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>1</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="AppendToProcedureResponse">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.AppendResponsePropertyGroup">
+                                                    <content sub="true">$value</content>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenTrue>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <multilineDescription>This procedure returns the id of the topology </multilineDescription>
+            <arguments>
+                <item name="topologyName">
+                    <description>The name of the topology to be reserved</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="username">
+                    <defaultValue>$username</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="password">
+                    <defaultValue>$password</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="getReservationId" isPublic="true">
+            <description>This procedure returns the id of the topology</description>
+            <steps>
+                <item guid="b3c3096e-2286-4ff1-9dc5-9248acb1be2f" action="GET" session="$session">
+                    <command>
+                        <body>/ilo/api/util/v1/time</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>mapped/Json/time</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>currentTime</storageLocation>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" action="/ilo/api/util/v1/time" action.inherit="false">
+                        <authentication transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.AuthenticationProperties" authenticationType="Secure" authenticationType.inherit="false" user="$username" user.inherit="false" password.masked="true" password="CNDluA9EJ23wammPrSnywg==" password.inherit="false" acceptAllCertificates="true" acceptAllCertificates.inherit="false"/>
+                    </applicationProperties>
+                </item>
+                <item guid="4b70b5f3-ea71-46b6-bc1f-054ea0f3ba3b" action="eval">
+                    <command>
+                        <body>set checkTime [expr $currentTime - $timePeriod]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="2cdd5b29-6f7f-464a-a804-cfdd1a0a0a0e" action="GET" session="$session">
+                    <command>
+                        <body>/ilo/api/reservation/v1/reservations?searchString=$reservationName&amp;startAfter=$checkTime</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>mapped/Json/reservations/item/id</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>1</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="AppendToProcedureResponse">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.AppendResponsePropertyGroup">
+                                                    <content sub="true">$value</content>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenTrue>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" action="/ilo/api/reservation/v1/reservations?searchString=$reservationName&amp;startAfter=$checkTime" action.inherit="false">
+                        <authentication transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.AuthenticationProperties" authenticationType="Secure" authenticationType.inherit="false" user="$username" user.inherit="false" password.masked="true" password="CNDluA9EJ23wammPrSnywg==" password.inherit="false" acceptAllCertificates="true" acceptAllCertificates.inherit="false"/>
+                    </applicationProperties>
+                </item>
+            </steps>
+            <multilineDescription>This procedure returns the id of the topology </multilineDescription>
+            <arguments>
+                <item name="reservationName">
+                    <description>The name of the reservation to get the ID</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="timePeriod">
+                    <description>By default, check reservations made in the last 3 hours</description>
+                    <defaultValue>10500</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="username">
+                    <defaultValue>$username</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="password">
+                    <defaultValue>$password</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="isReservationActive" isPublic="true">
+            <steps>
+                <item guid="2dc37d45-6e53-4305-97fa-51a1a937ab19" action="GET" session="$session">
+                    <command>
+                        <body>/ilo/api/reservation/v1/reservation/$reservationId</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup" declareNoMatchIssue="false">
+                                        <query>mapped/Json/status</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>1</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="AppendToProcedureResponse">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.AppendResponsePropertyGroup">
+                                                    <content sub="true">$value</content>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenTrue>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" action="/ilo/api/reservation/v1/reservation/$reservationId" action.inherit="false">
+                        <authentication transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.AuthenticationProperties" authenticationType="Secure" authenticationType.inherit="false" user="$username" user.inherit="false" password.masked="true" password="CNDluA9EJ23wammPrSnywg==" password.inherit="false" acceptAllCertificates="true" acceptAllCertificates.inherit="false"/>
+                    </applicationProperties>
+                </item>
+            </steps>
+            <arguments>
+                <item name="reservationId">
+                    <description>The id of the reservation</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="username">
+                    <defaultValue>$username</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="password">
+                    <defaultValue>$password</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="lockTopology" isPublic="true">
+            <steps>
+                <item guid="09e80a67-a5f6-4542-b9ec-c65cf9442637" action="POST" session="$session">
+                    <command>
+                        <body>/ilo/api/topology/v1/topology/$topologyId/lock</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup" declareNoMatchIssue="false">
+                                        <query>mapped/Json/expires</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>1</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="AppendToProcedureResponse">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.AppendResponsePropertyGroup">
+                                                    <content sub="true">$value</content>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenTrue>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" action="/ilo/api/topology/v1/topology/$topologyId/lock" action.inherit="false">
+                        <authentication transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.AuthenticationProperties" authenticationType="Secure" authenticationType.inherit="false" user="$username" user.inherit="false" password.masked="true" password="CNDluA9EJ23wammPrSnywg==" password.inherit="false"/>
+                    </applicationProperties>
+                </item>
+            </steps>
+            <arguments>
+                <item name="topologyId">
+                    <description>The id of the topology</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="username">
+                    <defaultValue>$username</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="password">
+                    <defaultValue>$password</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="unlockTopology" isPublic="true">
+            <steps>
+                <item guid="23e53ad2-7e62-4f39-891c-c785f4038e42" action="DELETE" session="$session">
+                    <command>
+                        <body>/ilo/api/topology/v1/topology/$topologyId/lock</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" action="/ilo/api/topology/v1/topology/$topologyId/lock" action.inherit="false">
+                        <authentication transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.AuthenticationProperties" authenticationType="Secure" authenticationType.inherit="false" user="$username" user.inherit="false" password.masked="true" password="CNDluA9EJ23wammPrSnywg==" password.inherit="false"/>
+                    </applicationProperties>
+                </item>
+            </steps>
+            <arguments>
+                <item name="topologyId">
+                    <description>The id of the topology</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="username">
+                    <defaultValue>$username</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="password">
+                    <defaultValue>$password</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="modifyTopology" isPublic="true">
+            <steps>
+                <item guid="4687cdbd-c0fd-4601-ba03-6027d3ba75ed" action="getTopologyId" session="$session">
+                    <command>
+                        <body>-topologyName $topologyName</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="regex">
+                                    <extractorProperties type="com.fnfr.svt.mapping.regex.extractors.RegexExtractorPropertyGroup">
+                                        <regex>.+</regex>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>topologyId</storageLocation>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="81ca9ebe-cb64-4a42-9e32-e30ccaa7ca11" action="lockTopology" session="$session">
+                    <command>
+                        <body>-topologyId $topologyId</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="fdf05e92-e821-4562-a5ea-6398ddd20930" action="GET" session="$session">
+                    <command>
+                        <body>/ilo/api/topology/v1/topology/$topologyId</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" action="/ilo/api/topology/v1/topology/$topologyId" action.inherit="false" includeHttpHeaders.inherit="false" includeHttpStatusLine.inherit="false">
+                        <httpHeader inherit="false" transferableToolId="com.fnfr.itest.applications.webservices.restful">
+                            <memberClasses>
+                                <item>com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry</item>
+                            </memberClasses>
+                            <item transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry" header="Content-Type" header.inherit="false" value="application/tbml" value.inherit="false"/>
+                        </httpHeader>
+                    </applicationProperties>
+                </item>
+                <item guid="a908a992-7114-4e40-8f66-f720d77a9328" action="PUT" session="$session">
+                    <command>
+                        <body>/ilo/api/topology/v1/topology/$topologyId</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" message="$fileInfo" message.inherit="false" action="/ilo/api/topology/v1/topology/$topologyId" action.inherit="false">
+                        <authentication transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.AuthenticationProperties" authenticationType="Secure" authenticationType.inherit="false" user="$username" user.inherit="false" password.masked="true" password="CNDluA9EJ23wammPrSnywg==" password.inherit="false" acceptAllCertificates="true" acceptAllCertificates.inherit="false"/>
+                        <httpHeader inherit="false" transferableToolId="com.fnfr.itest.applications.webservices.restful">
+                            <memberClasses>
+                                <item>com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry</item>
+                            </memberClasses>
+                            <item transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.HTTPHeaderEntry" header="Content-Type" header.inherit="false" value="application/tbml" value.inherit="false"/>
+                        </httpHeader>
+                    </applicationProperties>
+                </item>
+                <item guid="324a68d1-2e96-4622-bacc-1b1bb2d0a705" action="comment">
+                    <command>
+                        <body>The topology is now locked for editing</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="46cb0bbe-bee1-41be-b4e7-ba93eb0c6cc3" action="unlockTopology" session="$session">
+                            <command>
+                                <body>-topologyId $topologyId</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <multilineDescription>This quickcall is used to activate an ILO reservation.</multilineDescription>
+            <arguments>
+                <item name="topologyName">
+                    <description>name of the toplogy</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="fileInfo">
+                    <description>This is the tbml-formatted information to write to the topology.</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="username">
+                    <defaultValue>$username</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="password">
+                    <defaultValue>$password</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="activateReservation_old" isPublic="true">
+            <steps>
+                <item guid="60232537-779b-4fc7-afd1-93b1fdfe3135" action="POST" session="$session" normalOffset="131.98" estimatedStepExecutionTime="4.013">
+                    <command>
+                        <body>/ilo/api/0/tm/activate_topology?id=$id&amp;duration=$duration</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="regex">
+                                    <extractorProperties type="com.fnfr.svt.mapping.regex.extractors.RegexExtractorPropertyGroup">
+                                        <regex>.+</regex>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>1</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="AppendToProcedureResponse">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.AppendResponsePropertyGroup">
+                                                    <content sub="true">$value</content>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenTrue>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" action="/ilo/api/0/tm/activate_topology?id=$id&amp;duration=$duration" action.inherit="false">
+                        <authentication transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.AuthenticationProperties" authenticationType="Secure" authenticationType.inherit="false" user="admin" user.inherit="false" password.masked="true" password="iRyLc4KQj80=" password.inherit="false" acceptAllCertificates="true" acceptAllCertificates.inherit="false"/>
+                    </applicationProperties>
+                </item>
+            </steps>
+            <arguments>
+                <item name="id">
+                    <description>topology id</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="duration">
+                    <description>1 hour default</description>
+                    <defaultValue>3600</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="releaseReservation_old" isPublic="true">
+            <steps>
+                <item guid="eed17464-ac7a-4ad3-b371-baa3f8dff121" action="POST" session="$session" normalOffset="196.615" estimatedStepExecutionTime="0.154">
+                    <command>
+                        <body>/ilo/api/0/reservations/end?id=$id</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="regex">
+                                    <extractorProperties type="com.fnfr.svt.mapping.regex.extractors.RegexExtractorPropertyGroup">
+                                        <regex>.+</regex>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>1</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="AppendToProcedureResponse">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.AppendResponsePropertyGroup">
+                                                    <content sub="true">$value</content>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenTrue>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.adapter.automation.tools.common.documents.TransferableDocumentObject" transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.restful.RESTfulInvokeProperties" action="/ilo/api/0/reservations/end?id=$id" action.inherit="false">
+                        <authentication transferableToolId="com.fnfr.itest.applications.webservices.restful" transferableType="com.fnfr.itest.applications.webservices.properties.AuthenticationProperties" acceptAllCertificates="true" acceptAllCertificates.inherit="false"/>
+                    </applicationProperties>
+                </item>
+            </steps>
+            <arguments>
+                <item name="id">
+                    <description>reservation id</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+    </procedures>
+</testCase>

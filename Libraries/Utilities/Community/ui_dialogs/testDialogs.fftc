@@ -1,0 +1,319 @@
+<?xml version="1.0"?>
+<testCase version="5.4.1.be355a6">
+    <procedures>
+        <item name="main">
+            <steps>
+                <item guid="f959019f-3743-4fd9-b367-1e5070d56abc" action="comment">
+                    <command>
+                        <body>simple message dialogs</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="ec6acf0e-56ed-46a6-abc7-cc382cdad4f3" action="call">
+                            <command>
+                                <body>common_dialogs.fftc#errorMsg -message &quot;This is a error message&quot;</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="dd057770-a9e4-4ac3-8329-cba35da1d160" action="call">
+                            <command>
+                                <body>common_dialogs.fftc#infoMsg -message &quot;This is a information message&quot;</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="83ac5c85-f5f5-4eb2-ada3-acbeaacefbc7" action="call">
+                            <command>
+                                <body>common_dialogs.fftc#warningMsg -message &quot;This is a warning message&quot;</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="e68c4d4f-4937-427c-8b37-59208e5ed911" action="call">
+                            <command>
+                                <body>common_dialogs.fftc#yesnoMsg -message &quot;This is a yes/no message&quot;</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="552e04ef-29e2-4dbe-b7d7-6f16beaca241" action="comment">
+                    <command>
+                        <body>more versatile message dialog</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="3dbc9274-2d17-4e74-9bc4-f2f71dfb4bf0" action="call">
+                            <command>
+                                <body>common_dialogs.fftc#showMsg -message &quot;This is a showMsg.\\nIt allows for extended options.&quot; -icon info -timeout 0</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="15f6cdfe-5526-4dcb-9157-e4229be0e064" action="call">
+                            <command>
+                                <body>common_dialogs.fftc#showMsg -message &quot;This is a showMsg.\\nIt can be used top popup a warning\\n that automatically closes.&quot; -icon warning -timeout 5</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="480fd513-8f4a-4f39-8742-5fd66e1d61c6" action="comment">
+                    <command>
+                        <body>multiple text entry boxes</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="00069883-b4c7-4f8a-8b1b-52ccea0c892e" action="comment">
+                            <command>
+                                <body>Return a table (legacy use) - must create a response map or parse the response</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="aec67942-6cdf-4818-a3e4-0ec3ef7863a8" action="call">
+                                    <command>
+                                        <body>common_dialogs.fftc#askInfo -params {{firstName &quot;First Name&quot; &quot;John&quot;} {lastName &quot;Last Name&quot; &quot;Doe&quot;}} -hint &quot;This will return a table response&quot;</body>
+                                    </command>
+                                    <postProcessing>
+                                        <storeResponseAt>response</storeResponseAt>
+                                        <storeResponseText>true</storeResponseText>
+                                    </postProcessing>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="0c6c14a6-d764-41b6-9d93-bc9f750ba14e" action="foreach">
+                                    <command>
+                                        <body>line [split $response \\n]</body>
+                                    </command>
+                                    <nestedSteps>
+                                        <item guid="a2e94ce5-141c-4416-897c-31614bcef45c" action="eval">
+                                            <command>
+                                                <body>set itemName [lindex [split $line :] 0]</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                        <item guid="76a19997-116d-4621-b7f4-9a304b9a779a" action="eval">
+                                            <command>
+                                                <body>set itemValue [lindex [split $line :] 1]</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                        <item guid="bbe83740-852d-417a-8313-ac21b8c37cdd" action="eval">
+                                            <command>
+                                                <body>set $itemName $itemValue</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="c3187c5f-b38a-4c80-9139-2b19cf822d6d" action="comment">
+                            <command>
+                                <body>Return a JSON response</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="4ebbce82-b416-4471-b402-dd1490758d26" action="call">
+                                    <command>
+                                        <body>common_dialogs.fftc#askInfo -params {{firstName &quot;First Name&quot; &quot;John&quot;} {lastName &quot;Last Name&quot; &quot;Doe&quot;}} -hint &quot;This will return a JSON response&quot; -json 1</body>
+                                    </command>
+                                    <postProcessing>
+                                        <analysisRules>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                        <query>mapped/Json/firstName</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="store">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                        <storageLocation>firstName</storageLocation>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                        <query>mapped/Json/lastName</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="store">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                        <storageLocation>lastName</storageLocation>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                        </analysisRules>
+                                    </postProcessing>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="1793c87c-45d2-4b0a-9f97-e5bda5df03dd" action="comment">
+                            <command>
+                                <body>A different way to populate the arguments</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="d86f87e4-9b62-4709-92f7-d471e895886f" action="eval">
+                                    <command>
+                                        <body>lappend items {item1 &quot;Item 1&quot; woohoo}</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="40aa06f3-0627-404a-b654-986b4ad555f1" action="eval">
+                                    <command>
+                                        <body>lappend items {item2 &quot;Item 2&quot; yipee}</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="4fddcc9f-72a9-4aec-a997-733abecb5ef9" action="call">
+                                    <command>
+                                        <body>common_dialogs.fftc#askInfo -params $items -hint &quot;This is a hint&quot;</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="23e768bd-d197-4726-8632-5464fb733fcf" action="comment">
+                    <command>
+                        <body>askEntry</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="9646c87a-5810-48cd-a1e7-10f8c0efca1c" action="call">
+                            <command>
+                                <body>common_dialogs.fftc#askEntry -hint &quot;Enter value\\rTimeout in 3 seconds!&quot; -width 20 -initvalue &quot;Default value&quot; -timeout 3</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="97bd99d6-202d-44cc-8c54-ca1b15b31039" action="comment">
+                    <command>
+                        <body>radiobutton</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="f2333c5c-476b-4ee6-95c4-6e5415f63ea3" action="call">
+                            <command>
+                                <body>common_dialogs.fftc#askRadio -choices {&quot;Option 1&quot; &quot;Option 2&quot; &quot;Option 3&quot;} -hint &quot;Select one&quot;</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="50887a91-d641-422f-8a1f-d7cd0927a915" action="comment">
+                    <command>
+                        <body>checkbutton</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="295ca923-e571-4365-888a-3e22aa60a0c7" action="call">
+                            <command>
+                                <body>common_dialogs.fftc#askCheckbox -choices {&quot;Option 1&quot; &quot;Option 2&quot; &quot;Option 3&quot;} -checked &quot;1 0 0&quot; -hint &quot;Select One or More&quot; -columns 2</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="8d5899e6-9c73-4673-a003-6cf883094332" action="call">
+                            <command>
+                                <body>common_dialogs.fftc#askCheckbox -choices {&quot;Option 1&quot; &quot;Option 2&quot; &quot;Option 3&quot;} -checked &quot;1 0 0&quot; -hint &quot;Select One or More&quot; -boolean 1 -columns 1</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="6733fee5-4851-4656-a46d-cef5531deaf3" action="comment">
+                    <command>
+                        <body>listbox</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="4dfaac45-e0eb-4a0b-a831-e1d7e237d584" action="call">
+                            <command>
+                                <body>common_dialogs.fftc#askList -choices {&quot;Option 1&quot; &quot;Option 2&quot;} -hint &quot;Pick one&quot;</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="e3cef677-75b9-492c-92a4-eaa6a914dacc" action="call">
+                            <command>
+                                <body>common_dialogs.fftc#askList -choices {&quot;Option 1&quot; &quot;Option 2&quot;} -hint &quot;Pick one or more&quot; -selectmode multiple</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="d2aa63f4-1e8c-4e0a-a1ab-d1919bae0c93" action="comment">
+                    <command>
+                        <body>A more versatile yes/no dialog</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="8fccd526-aa81-4d9d-b573-064f925e0273" action="call">
+                            <command>
+                                <body>common_dialogs.fftc#askYesNo -default N -question &quot;This is a askYesNo dialog.\\rWhat is your answer?\\rTimeout in 3 seconds!&quot; -timeout 3</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="fb9eed0c-ec4c-4dd7-93f4-5ad0446ac8ab" action="comment">
+                    <command>
+                        <body>Open/Save dialogs</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="2933210a-68fa-465e-b63a-bf33b1b3ea50" action="call">
+                            <command>
+                                <body>common_dialogs.fftc#openFile</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="42d63450-e776-485b-8904-1edf2ee3ee7e" action="call">
+                            <command>
+                                <body>common_dialogs.fftc#saveFile</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+        </item>
+    </procedures>
+</testCase>

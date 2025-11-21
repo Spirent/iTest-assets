@@ -1,0 +1,121 @@
+<?xml version="1.0"?>
+<ResponseMap version="6.0.0.18638fa">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="command">
+                <command>
+                    <body>show stacks</body>
+                </command>
+            </action>
+            <responseBody>Minimum process stacks:
+ Free/Size   Name
+ 5464/6000   Inspect Init Msg
+ 2460/3000   allegro libretto init
+ 4168/6000   Update prst
+59208/60000  script background loader
+ 2780/12000  Init
+ 5256/6000   RADIUS INITCONFIG
+ 2136/3000   Rom Random Update Process
+34860/36000  TCP Command
+ 6832/12000  Virtual Exec
+
+Interrupt level stacks:
+Level    Called Unused/Size  Name
+  1       12361   7944/9000  Network interfaces
+  2         935   8568/9000  DMA/Timer Interrupt
+  3           0   9000/9000  PA Management Int Handler
+  4      340681   8640/9000  Console Uart
+  5           0   9000/9000  OIR/Error Interrupt
+  7     2591944   8568/9000  NMI Interrupt Handler
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;prompt&gt;R1#&lt;/prompt&gt;
+    &lt;echo&gt;show stacks&lt;/echo&gt;
+    &lt;promptName&gt;privilaged&lt;/promptName&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.3</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.table.TabularMapperProperties">
+            <tabularMaps>
+                <item name="minProcStacks">
+                    <additionalBannerLineCount>1</additionalBannerLineCount>
+                    <banner>Minimum process stacks:</banner>
+                    <bannerStructure>CaseInsensitive</bannerStructure>
+                    <columnBoundaries>Positional</columnBoundaries>
+                    <columns>
+                        <item name="free">
+                            <width>5</width>
+                            <lastFullCell></lastFullCell>
+                        </item>
+                        <item name="div1">
+                            <lastFullCell></lastFullCell>
+                        </item>
+                        <item name="size">
+                            <width>7</width>
+                            <lastFullCell></lastFullCell>
+                        </item>
+                        <item name="procName">
+                            <isKey>true</isKey>
+                            <width>0</width>
+                            <lastFullCell></lastFullCell>
+                        </item>
+                    </columns>
+                </item>
+                <item name="interuptLevStacks">
+                    <additionalBannerLineCount>1</additionalBannerLineCount>
+                    <banner>Interrupt level stacks:</banner>
+                    <bannerStructure>CaseInsensitive</bannerStructure>
+                    <columnBoundaries>Positional</columnBoundaries>
+                    <columns>
+                        <item name="level">
+                            <width>5</width>
+                            <lastFullCell></lastFullCell>
+                        </item>
+                        <item name="called">
+                            <width>10</width>
+                            <lastFullCell></lastFullCell>
+                        </item>
+                        <item name="unused">
+                            <width>7</width>
+                            <lastFullCell></lastFullCell>
+                        </item>
+                        <item name="div1">
+                            <lastFullCell></lastFullCell>
+                        </item>
+                        <item name="size">
+                            <width>4</width>
+                            <lastFullCell></lastFullCell>
+                        </item>
+                        <item name="intName">
+                            <isKey>true</isKey>
+                            <width>0</width>
+                            <lastFullCell></lastFullCell>
+                        </item>
+                    </columns>
+                </item>
+            </tabularMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="*sh* sta*">
+        <application>
+            <item>com.fnfr.svt.applications.ssh</item>
+            <item>com.fnfr.svt.applications.telnet</item>
+        </application>
+    </applicabilityProperties>
+</ResponseMap>

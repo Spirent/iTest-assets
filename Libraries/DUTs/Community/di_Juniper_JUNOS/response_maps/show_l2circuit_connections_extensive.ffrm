@@ -1,0 +1,346 @@
+<?xml version="1.0" ?><ResponseMap version="6.0.0.18638fa">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="command">
+                <command>
+                    <body>show l2circuit connections extensive</body>
+                </command>
+            </action>
+            <responseBody>Layer-2 Circuit Connections:
+
+Legend for connection status (St)   
+EI -- encapsulation invalid      NP -- interface h/w not present   
+MM -- mtu mismatch               Dn -- down                       
+EM -- encapsulation mismatch     VC-Dn -- Virtual circuit Down    
+CM -- control-word mismatch      Up -- operational                
+VM -- vlan id mismatch\t\t CF -- Call admission control failure
+OL -- no outgoing label          IB -- TDM incompatible bitrate 
+NC -- intf encaps not CCC/TCC    TM -- TDM misconfiguration 
+BK -- Backup Connection          ST -- Standby Connection
+CB -- rcvd cell-bundle size bad  SP -- Static Pseudowire
+LD -- local site signaled down   RS -- remote site standby
+RD -- remote site signaled down  HS -- Hot-standby Connection
+XX -- unknown
+
+Legend for interface status  
+Up -- operational            
+Dn -- down                   
+ Local Switch ge-0/0/4.3409 
+    Interface                 Type  St     Time last up          # Up trans
+    ge-0/0/4.3409(vc 0)       loc   Up     Nov 15 11:15:48 2016           1
+      Local interface: ge-0/0/4.3409, Status: Up, Encapsulation: VLAN
+      Local interface: ge-0/0/0.3309, Status: Up, Encapsulation: VLAN
+    Connection History:
+        Nov 15 11:15:48 2016  status update timer  
+        Nov 15 11:15:48 2016  status update timer  
+        Nov 15 11:15:46 2016  rmt intf up                ge-0/0/0.3309
+        Nov 15 11:15:46 2016  loc intf up                ge-0/0/4.3409
+ Local Switch xe-5/0/0.3609 
+    Interface                 Type  St     Time last up          # Up trans
+    xe-5/0/0.3609(vc 0)       loc   Up     Nov 15 10:59:14 2016           1
+      Local interface: xe-5/0/0.3609, Status: Up, Encapsulation: VLAN
+      Local interface: xe-5/0/3.3906, Status: Up, Encapsulation: VLAN
+    Connection History:
+        Nov 15 10:59:14 2016  rmt intf up                xe-5/0/3.3906
+        Nov 15 10:59:14 2016  loc intf up                xe-5/0/0.3609
+
+{master}
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;isEmpty&gt;false&lt;/isEmpty&gt;
+    &lt;promptName&gt;normal&lt;/promptName&gt;
+    &lt;echo&gt;show l2circuit connections extensive &lt;/echo&gt;
+    &lt;prompt&gt;itest-ap@PE54&amp;gt; &lt;/prompt&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="isEmpty">
+                    <queryFormatString>.//isEmpty</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.1</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.table.TabularMapperProperties">
+            <tabularMaps>
+                <item name="table1">
+                    <banner>    Interface                 Type  St     Time last up          # Up trans</banner>
+                    <footer>      Local interface: *</footer>
+                    <bannerStructure>CaseInsensitive</bannerStructure>
+                    <footerStructure>Wildcard</footerStructure>
+                    <columnBoundaries>Positional</columnBoundaries>
+                    <minOccurences>0</minOccurences>
+                    <columns>
+                        <item name="Interface">
+                            <width>30</width>
+                            <lastFullCell/>
+                            <uid>0b29a9af-c327-46d0-9b6c-1e50399f53e1</uid>
+                        </item>
+                        <item name="Type">
+                            <width>6</width>
+                            <lastFullCell/>
+                            <uid>e904c386-40dd-44f5-9b24-6dfcefa949d0</uid>
+                        </item>
+                        <item name="St">
+                            <width>7</width>
+                            <lastFullCell/>
+                            <uid>f1582f06-5182-4a72-bc1d-d72d9f843866</uid>
+                        </item>
+                        <item name="Time_last_up">
+                            <width>22</width>
+                            <lastFullCell/>
+                            <uid>45941af5-e7bd-416c-bf69-1defb8121376</uid>
+                        </item>
+                        <item name="No_UP_trans">
+                            <width>0</width>
+                            <lastFullCell/>
+                            <uid>9c367672-4f3e-4d98-95f9-242ffd6c2417</uid>
+                        </item>
+                    </columns>
+                </item>
+            </tabularMaps>
+        </item>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="pattern1">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Local interface:\\s+</regex>
+                            <start>0</start>
+                            <end>17</end>
+                        </item>
+                        <item name="Local_interface">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>17</start>
+                            <end>30</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name=".{13}">exactly 13 of any character</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>, Status:\\s+</regex>
+                            <start>30</start>
+                            <end>40</end>
+                        </item>
+                        <item name="Status">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>40</start>
+                            <end>42</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>, Encapsulation:\\s+</regex>
+                            <start>42</start>
+                            <end>59</end>
+                        </item>
+                        <item name="Encapsulation">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>59</start>
+                            <end>63</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>Local interface: ge-0/0/4.3409, Status: Up, Encapsulation: VLAN</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+                <item name="pattern2">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>\\s+</regex>
+                            <start>0</start>
+                            <end>8</end>
+                        </item>
+                        <item name="status_update_timer">
+                            <regex>.{20}</regex>
+                            <named>true</named>
+                            <start>8</start>
+                            <end>28</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+status update timer\\s+</regex>
+                            <start>28</start>
+                            <end>55</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>        Nov 15 11:15:48 2016  status update timer
+     </sampleMatch>
+                    <optional>true</optional>
+                </item>
+                <item name="pattern3">
+                    <groups>
+                        <item name="rmt_intf">
+                            <regex>.{20}</regex>
+                            <named>true</named>
+                            <start>0</start>
+                            <end>20</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor0">
+                            <regex>\\s+rmt intf\\s+</regex>
+                            <start>20</start>
+                            <end>31</end>
+                        </item>
+                        <item name="status">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>31</start>
+                            <end>33</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+</regex>
+                            <start>33</start>
+                            <end>49</end>
+                        </item>
+                        <item name="interface">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <key>true</key>
+                            <start>49</start>
+                            <end>62</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>Nov 15 10:59:14 2016  rmt intf up                xe-5/0/3.3906</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+                <item name="pattern4">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>\\s+</regex>
+                            <start>0</start>
+                            <end>8</end>
+                        </item>
+                        <item name="loc_inft">
+                            <regex>.{20}</regex>
+                            <named>true</named>
+                            <start>8</start>
+                            <end>28</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+loc intf\\s+</regex>
+                            <start>28</start>
+                            <end>39</end>
+                        </item>
+                        <item name="status">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>39</start>
+                            <end>41</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>\\s+</regex>
+                            <start>41</start>
+                            <end>57</end>
+                        </item>
+                        <item name="interface">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <key>true</key>
+                            <start>57</start>
+                            <end>70</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>        Nov 15 10:59:14 2016  loc intf up                xe-5/0/0.3609</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+                <item name="pattern5">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Local Switch\\s+</regex>
+                            <start>0</start>
+                            <end>13</end>
+                        </item>
+                        <item name="Local_Switch">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>13</start>
+                            <end>26</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>Local Switch ge-0/0/4.3409</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="show l2circuit connections extensive">
+        <application>
+            <item>com.fnfr.svt.applications.cmd</item>
+            <item>com.fnfr.svt.applications.ssh</item>
+            <item>com.fnfr.svt.applications.telnet</item>
+        </application>
+    </applicabilityProperties>
+</ResponseMap>

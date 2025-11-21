@@ -1,0 +1,80 @@
+============Steps====================
+Procedure main
+	1 #simple message dialogs
+		useFieldsInCommand="false"
+		1.1 call common_dialogs.fftc#errorMsg -message "This is a error message"
+			useFieldsInCommand="false"
+		1.2 call common_dialogs.fftc#infoMsg -message "This is a information message"
+			useFieldsInCommand="false"
+		1.3 call common_dialogs.fftc#warningMsg -message "This is a warning message"
+			useFieldsInCommand="false"
+		1.4 call common_dialogs.fftc#yesnoMsg -message "This is a yes/no message"
+			useFieldsInCommand="false"
+	2 #more versatile message dialog
+		useFieldsInCommand="false"
+		2.1 call common_dialogs.fftc#showMsg -message "This is a showMsg.\\nIt allows for extended options." -icon info -timeout 0
+			useFieldsInCommand="false"
+		2.2 call common_dialogs.fftc#showMsg -message "This is a showMsg.\\nIt can be used top popup a warning\\n that automatically closes." -icon warning -timeout 5
+			useFieldsInCommand="false"
+	3 #multiple text entry boxes
+		useFieldsInCommand="false"
+		3.1 #Return a table (legacy use) - must create a response map or parse the response
+			useFieldsInCommand="false"
+			3.1.1 call common_dialogs.fftc#askInfo -params {{firstName "First Name" "John"} {lastName "Last Name" "Doe"}} -hint "This will return a table response"
+				useFieldsInCommand="false"
+			3.1.2 foreach line [split $response \\n]
+				useFieldsInCommand="false"
+				3.1.2.1 eval set itemName [lindex [split $line :] 0]
+					useFieldsInCommand="false"
+				3.1.2.2 eval set itemValue [lindex [split $line :] 1]
+					useFieldsInCommand="false"
+				3.1.2.3 eval set $itemName $itemValue
+					useFieldsInCommand="false"
+		3.2 #Return a JSON response
+			useFieldsInCommand="false"
+			3.2.1 call common_dialogs.fftc#askInfo -params {{firstName "First Name" "John"} {lastName "Last Name" "Doe"}} -hint "This will return a JSON response" -json 1
+				analyze
+					query mapped/Json/firstName
+					store firstName
+				analyze
+					query mapped/Json/lastName
+					store lastName
+				useFieldsInCommand="false"
+		3.3 #A different way to populate the arguments
+			useFieldsInCommand="false"
+			3.3.1 eval lappend items {item1 "Item 1" woohoo}
+				useFieldsInCommand="false"
+			3.3.2 eval lappend items {item2 "Item 2" yipee}
+				useFieldsInCommand="false"
+			3.3.3 call common_dialogs.fftc#askInfo -params $items -hint "This is a hint"
+				useFieldsInCommand="false"
+	4 #askEntry
+		useFieldsInCommand="false"
+		4.1 call common_dialogs.fftc#askEntry -hint "Enter value\\rTimeout in 3 seconds!" -width 20 -initvalue "Default value" -timeout 3
+			useFieldsInCommand="false"
+	5 #radiobutton
+		useFieldsInCommand="false"
+		5.1 call common_dialogs.fftc#askRadio -choices {"Option 1" "Option 2" "Option 3"} -hint "Select one"
+			useFieldsInCommand="false"
+	6 #checkbutton
+		useFieldsInCommand="false"
+		6.1 call common_dialogs.fftc#askCheckbox -choices {"Option 1" "Option 2" "Option 3"} -checked "1 0 0" -hint "Select One or More" -columns 2
+			useFieldsInCommand="false"
+		6.2 call common_dialogs.fftc#askCheckbox -choices {"Option 1" "Option 2" "Option 3"} -checked "1 0 0" -hint "Select One or More" -boolean 1 -columns 1
+			useFieldsInCommand="false"
+	7 #listbox
+		useFieldsInCommand="false"
+		7.1 call common_dialogs.fftc#askList -choices {"Option 1" "Option 2"} -hint "Pick one"
+			useFieldsInCommand="false"
+		7.2 call common_dialogs.fftc#askList -choices {"Option 1" "Option 2"} -hint "Pick one or more" -selectmode multiple
+			useFieldsInCommand="false"
+	8 #A more versatile yes/no dialog
+		useFieldsInCommand="false"
+		8.1 call common_dialogs.fftc#askYesNo -default N -question "This is a askYesNo dialog.\\rWhat is your answer?\\rTimeout in 3 seconds!" -timeout 3
+			useFieldsInCommand="false"
+	9 #Open/Save dialogs
+		useFieldsInCommand="false"
+		9.1 call common_dialogs.fftc#openFile
+			useFieldsInCommand="false"
+		9.2 call common_dialogs.fftc#saveFile
+			useFieldsInCommand="false"

@@ -1,0 +1,71 @@
+<?xml version="1.0" ?><ResponseMap version="5.4.0.4f90e5a">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="readFile">
+                <command>
+                    <body>file:/C:/temp/2017_02_21_13_31_3.1_Intra-MME_X2_handover_ECM-connected-Huawei_RAN/Monitor_Subscriber_MMEPP-02.log</body>
+                </command>
+            </action>
+            <responseBody>    Procedure Code :   PATH SWITCH REQUEST (3)
+    Criticality
+      | 00.. .... | Reject (0)
+    PATH SWITCH REQUEST Value : </responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;isEmpty&gt;false&lt;/isEmpty&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="isEmpty">
+                    <queryFormatString>.//isEmpty</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.1</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="pattern1">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Procedure Code :\\s+PATH SWITCH REQUEST \\(</regex>
+                            <start>0</start>
+                            <end>40</end>
+                        </item>
+                        <item name="Procedure_Code_PATH_SWITCH_REQUEST">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>40</start>
+                            <end>41</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\)</regex>
+                            <start>41</start>
+                            <end>42</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>Procedure Code :   PATH SWITCH REQUEST (3)</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="readFile" command="file:/C:/temp/2017_02_21_13_31_3.1_Intra-MME_X2_handover_ECM-connected-Huawei_RAN/Monitor_Subscriber_MMEPP-02.log"/>
+    <aliases>
+        <item name="Procedure_Code">
+            <description>Greater than zero if the message appears in the response</description>
+            <queryFormatString>count(//Procedure_Code_PATH_SWITCH_REQUEST)</queryFormatString>
+        </item>
+    </aliases>
+</ResponseMap>

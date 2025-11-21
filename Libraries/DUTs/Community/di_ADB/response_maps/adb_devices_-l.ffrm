@@ -1,0 +1,165 @@
+<?xml version="1.0" ?><ResponseMap version="5.4.0.47306be">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="command">
+                <command>
+                    <body>adb devices -l</body>
+                </command>
+            </action>
+            <responseBody>List of devices attached 
+0a769b9a               device product:klteuc model:SAMSUNG_SM_G900A device:klteatt
+
+
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;prompt&gt;C:\\\\Android\\\\adt-bundle-windows-x86_64-20140702\\\\sdk\\\\platform-tools&amp;gt;&lt;/prompt&gt;
+    &lt;echo&gt;adb devices -l&lt;/echo&gt;
+    &lt;promptName&gt;defaultPrompt&lt;/promptName&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.2</duration>
+        </item>
+        <item name="sample2">
+            <action actionType="command">
+                <command>
+                    <body>adb devices -l</body>
+                </command>
+            </action>
+            <responseBody>List of devices attached 
+480a831c               device usb:2-1 product:d2vl model:SGH_I747M device:d2can
+
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;isEmpty&gt;false&lt;/isEmpty&gt;
+    &lt;promptName&gt;normal&lt;/promptName&gt;
+    &lt;echo&gt;adb devices -l&lt;/echo&gt;
+    &lt;prompt&gt;spirent@spirent-kvm:~$ &lt;/prompt&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="isEmpty">
+                    <queryFormatString>.//isEmpty</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.1</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="header">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>List of devices attached</regex>
+                            <start>0</start>
+                            <end>24</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>List of devices attached</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+                <item name="deviceDetails">
+                    <groups>
+                        <item name="deviceId">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>0</start>
+                            <end>8</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor0">
+                            <regex>\\s+device\\s*?\\S*?\\s+product:</regex>
+                            <start>8</start>
+                            <end>38</end>
+                        </item>
+                        <item name="product">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>38</start>
+                            <end>44</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+model:</regex>
+                            <start>44</start>
+                            <end>51</end>
+                        </item>
+                        <item name="model">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>51</start>
+                            <end>67</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>\\s+device:</regex>
+                            <start>67</start>
+                            <end>75</end>
+                        </item>
+                        <item name="device">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>75</start>
+                            <end>82</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>0a769b9a               device product:klteuc model:SAMSUNG_SM_G900A device:klteatt</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="adb devices -l"/>
+    <aliases>
+        <item name="numberOfDevices">
+            <queryFormatString>count(//deviceId)</queryFormatString>
+        </item>
+    </aliases>
+</ResponseMap>

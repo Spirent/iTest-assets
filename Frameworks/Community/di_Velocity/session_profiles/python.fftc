@@ -1,0 +1,206 @@
+<?xml version="1.0"?>
+<testCase version="7.1.0.201804110601">
+    <general>
+        <sessionClass includeTestCase="true" sessionType="python.ffsp"/>
+        <language>Python</language>
+    </general>
+    <procedures>
+        <item name="main">
+            <steps>
+                <item guid="fae0ba2c-f302-4e0d-b83a-5847c1ee4ffc" action="comment">
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+        </item>
+        <item name="create_custom_project" isPublic="true">
+            <steps>
+                <item guid="52865018-1658-434d-b7f4-e5159e8b5511" action="comment">
+                    <command>
+                        <body>create zip file with last processed timestamp</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="96acc1cd-aeb3-4c03-a527-f9a9b63f94e7" action="command" session="[session]">
+                            <command>
+                                <body>import zipfile</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="c6993389-435c-4c5b-ac73-ec6561f7e0bc" action="if">
+                            <command>
+                                <body>info(&apos;platform&apos;) == &apos;windows&apos;:</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="a4f5eea9-eb0c-4439-95d2-ae492332675d" action="command" session="[session]">
+                                    <command>
+                                        <body>file = zipfile.ZipFile(&apos;[info(&apos;tempDir&apos;, &apos;uri&apos;).lstrip(&apos;file:/&apos;)]&apos; + &apos;[project]&apos; + &apos;.zip&apos;, &apos;w&apos;)</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="6543d585-5318-4df2-95c4-4ce746826a42" action="else">
+                            <nestedSteps>
+                                <item guid="40bd7391-f192-4c6c-b84f-b3b913ddcad9" action="command" session="[session]">
+                                    <command>
+                                        <body>file = zipfile.ZipFile(&apos;[info(&apos;tempDir&apos;, &apos;uri&apos;).lstrip(&apos;file:&apos;)]&apos; + &apos;[project]&apos; + &apos;.zip&apos;, &apos;w&apos;)</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="c0583fda-7c82-4474-8bd7-f8be6b37fb03" action="command" session="[session]">
+                            <command>
+                                <body>info = zipfile.ZipInfo(&apos;[filename]&apos;)</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="20294d64-0677-4ebb-b921-05870ed42cd8" action="command" session="[session]">
+                            <command>
+                                <body>info.comment = &apos;[comment_and_contents]&apos;</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="f7a0563f-7394-45a2-8c77-e4839a0ed565" action="command" session="[session]">
+                            <command>
+                                <body>file.writestr(info, &apos;[comment_and_contents]&apos;)</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="a26fd146-bbc7-4c3a-a731-5630f2252d5e" action="command" session="[session]">
+                            <command>
+                                <body>file.close()</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <arguments>
+                <item name="project">
+                    <description>contents of file and zipInfo comment information
+</description>
+                </item>
+                <item name="filename">
+                    <description>name of the file to create in the project
+
+</description>
+                </item>
+                <item name="comment_and_contents">
+                    <description>name of the project to create
+</description>
+                </item>
+            </arguments>
+        </item>
+        <item name="get_comments_in_custom_project" isPublic="true">
+            <steps>
+                <item guid="e136f1ca-138a-4a38-9acc-829abb54b989" action="comment">
+                    <command>
+                        <body>inspect the zip file and display </body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="5b246a59-7338-4cc0-9db9-9acc655348d9" action="command" session="[session]">
+                            <command>
+                                <body>import zipfile</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="2836287b-00c5-48f5-8c1c-ee2d5f8c6d69" action="if">
+                            <command>
+                                <body>info(&apos;platform&apos;) == &apos;windows&apos;:</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="ed59b795-2271-4b10-a013-013ef554489b" action="command" session="[session]">
+                                    <command>
+                                        <body>file = zipfile.ZipFile(&apos;[info(&apos;tempDir&apos;, &apos;uri&apos;).lstrip(&apos;file:/&apos;)]&apos; + &apos;[project]&apos; + &apos;.zip&apos;, &apos;r&apos;)</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="0d448e7c-bf5d-423d-8fbb-33dd80aef73a" action="else">
+                            <nestedSteps>
+                                <item guid="3485bb61-c468-46ed-b83d-fe09bd0de72f" action="command" session="[session]">
+                                    <command>
+                                        <body>file = zipfile.ZipFile(&apos;[info(&apos;tempDir&apos;, &apos;uri&apos;).lstrip(&apos;file:&apos;)]&apos; + &apos;[project]&apos; + &apos;.zip&apos;, &apos;r&apos;)</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="3cf08a59-bbe7-4c29-94c3-fbb6a1f4070c" action="command" session="[session]">
+                            <command>
+                                <body>returnDict = dict()</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="b5ccd2b3-5fcc-44b7-ab68-0a3ea8385530" action="command" session="[session]">
+                            <command>
+                                <body>for info in file.infolist():</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="f35b9d1c-a043-4647-958b-ae07ae05538b" action="command" session="[session]">
+                            <command>
+                                <body>  returnDict[info.filename] = info.comment</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="0e788f7b-f573-4c5c-8176-974d2b64d6ed" action="command" session="[session]">
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="5e207819-7138-4745-8494-d80f4f27fed1" action="command" session="[session]">
+                            <command>
+                                <body>file.close()</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="aaea9203-aa5c-442f-8e1e-111d4b7867c8" action="command" session="[session]">
+                            <command>
+                                <body>print(returnDict)</body>
+                            </command>
+                            <postProcessing>
+                                <storeResponseAt>returnDict</storeResponseAt>
+                                <storeResponseText>true</storeResponseText>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="9d56f576-683c-471d-accc-4c22eba9b3f6" action="return">
+                            <command>
+                                <body>[eval(returnDict)]</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <arguments>
+                <item name="project">
+                    <description>contents of file and zipInfo comment information
+</description>
+                </item>
+            </arguments>
+        </item>
+    </procedures>
+</testCase>

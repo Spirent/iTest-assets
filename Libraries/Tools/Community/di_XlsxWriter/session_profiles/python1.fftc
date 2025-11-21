@@ -1,0 +1,141 @@
+<?xml version="1.0"?>
+<testCase version="7.3.4.0">
+    <general>
+        <sessionClass includeTestCase="true" sessionType="python1.ffsp"/>
+        <language>Python</language>
+    </general>
+    <procedures>
+        <item name="main">
+            <steps>
+                <item guid="7ae8063f-529a-4365-b9fd-7bc1872c49ce" action="comment" useFieldsInCommand="false">
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+        </item>
+        <item name="createSpreadSheet" isPublic="true">
+            <steps>
+                <item guid="b68b4381-d684-474a-8a18-ecdf13973ba1" action="command" session="[session]">
+                    <command>
+                        <body>tmpDir = &apos;[info(&apos;tempDir&apos;, &apos;uri&apos;)]&apos;.strip(&apos;file:/&apos;)</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="e6c1ba57-f3a6-49ef-a6e6-e25a31253599" action="command" session="[session]">
+                    <command>
+                        <body>os.chdir(tmpDir)</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="4c11b3db-6c92-45e6-b764-3bdf342f661d" action="command" session="[session]">
+                    <command>
+                        <body>workbook = xlsxwriter.Workbook(&apos;[spreadsheetName]&apos;)</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="841ab15b-067f-465b-ab3e-910c20a27562" action="command" session="[session]" useFieldsInCommand="false">
+                    <command>
+                        <body>cell_format = workbook.add_format()</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <arguments>
+                <item name="spreadsheetName">
+                    <description>name of the spreadsheet / workbook to create, for example: spreadsheet.xlsx</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="createTab" isPublic="true">
+            <steps>
+                <item guid="10e8bcd0-b2a7-45c7-9715-fdeffeab0335" action="command" session="[session]">
+                    <command>
+                        <body>worksheet = workbook.add_worksheet(&apos;[tabName]&apos;)</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <arguments>
+                <item name="tabName">
+                    <description>name of the tab / worksheet</description>
+                </item>
+            </arguments>
+        </item>
+        <item name="finalizeSpreadSheet" isPublic="true">
+            <steps>
+                <item guid="113c5b80-9387-4546-9e31-758ab75f6fc9" action="command" session="[session]" useFieldsInCommand="false">
+                    <command>
+                        <body>workbook.close()</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+        </item>
+        <item name="setCellFormat" isPublic="true">
+            <steps>
+                <item guid="467052a4-15bd-47fb-93a9-0273cd448ce5" action="command" session="[session]">
+                    <command>
+                        <body>cell_format.set_bold(bool(&apos;[bold]&apos;))</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="d65ae934-0d04-43fa-98b6-2b5d64b49ded" action="command" session="[session]" useFieldsInCommand="false">
+                    <command>
+                        <body>cell_format.set_pattern(1)</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="b480f47d-1c24-43d4-8519-e8e5bded3016" action="command" session="[session]">
+                    <command>
+                        <body>cell_format.set_bg_color(&apos;[bg_color]&apos;)</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="5af56b10-1a3f-4f99-969d-1a2923f0b95b" action="command" session="[session]">
+                    <command>
+                        <body>cell_format.set_font_color(&apos;[font_color]&apos;)</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <arguments>
+                <item name="bold">
+                    <description>bold font - True or False</description>
+                    <defaultValue>False</defaultValue>
+                </item>
+                <item name="bg_color">
+                    <description>background color</description>
+                    <defaultValue>white</defaultValue>
+                </item>
+                <item name="font_color">
+                    <description>font color</description>
+                    <defaultValue>black</defaultValue>
+                </item>
+            </arguments>
+        </item>
+        <item name="writeCell" isPublic="true">
+            <steps>
+                <item guid="9787212f-c899-42d4-831a-14032f601d79" action="command" session="[session]">
+                    <command>
+                        <body>worksheet.write([row], [col], &apos;[cellContents]&apos;, cell_format)</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <arguments>
+                <item name="row">
+                    <description>row number</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="col">
+                    <description>column number</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="cellContents">
+                    <description>data to write in the cell</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+    </procedures>
+</testCase>

@@ -1,0 +1,647 @@
+<?xml version="1.0" ?><ResponseMap version="6.0.0.18638fa">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="command">
+                <command>
+                    <body>chassis show mac-address</body>
+                </command>
+            </action>
+            <responseBody>
++-------------- CHASSIS MAC PARTITIONS --------------+
+| Partition        | Base MAC           | Block Size |
++------------------+--------------------+------------+
+| Chassis          | 2c:39:c1:bc:38:00  | 1024       |
++------------------+--------------------+------------+
+| Active Mgmt      | 2c:39:c1:bc:38:01  | 1          |
++------------------+--------------------+------------+
+| iom.dcn1         | 2c:39:c1:bc:38:02  | 1          |
+| iom.dcn2         | 2c:39:c1:bc:38:03  | 1          |
++------------------+--------------------+------------+
+| Remote Mgmt      | 2c:39:c1:bc:38:04  | 1          |
++------------------+--------------------+------------+
+| ctx1.dcn         | 2c:39:c1:bc:38:05  | 1          |
+| ctx2.dcn         | 2c:39:c1:bc:38:06  | 1          |
++------------------+--------------------+------------+
+| PSLM Slot LM1    | 2c:39:c1:bc:38:10  | 96         |
+| PSLM Slot LM2    | 2c:39:c1:bc:38:70  | 96         |
+| PSLM Slot LM3    | 2c:39:c1:bc:38:d0  | 96         |
+| PSLM Slot LM4    | 2c:39:c1:bc:39:30  | 96         |
++------------------+--------------------+------------+
+| MPLS Interfaces  | 2c:39:c1:bc:39:90  | 16         |
++------------------+--------------------+------------+
+| Aggregated Ports | 2c:39:c1:bc:39:a0  | 196        |
+| Benchmark        | 2c:39:c1:bc:3a:64  | 4          |
++------------------+--------------------+------------+
+| Future           | 2c:39:c1:bc:3a:68  | 408        |
++------------------+--------------------+------------+
+
++------------------ PSLM MAC BLOCKS -----------------+
+| Partition        | Base MAC           | Block Size |
++------------------+--------------------+------------+
+| LM1              | 9c:7a:03:4a:68:10  | 8          |
++------------------+--------------------+------------+
+| LM2              | 2c:39:c1:52:51:d8  | 8          |
++------------------+--------------------+------------+
+
++------------------ CTM MAC BLOCKS ------------------+
+| Partition        | Base MAC           | Block Size |
++------------------+--------------------+------------+
+| CTX1.ctm         | 9c:7a:03:54:92:58  | 8          |
++------------------+--------------------+------------+
+
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;prompt&gt;8700-15*&amp;gt; &lt;/prompt&gt;
+    &lt;echo&gt;chassis show mac-address&lt;/echo&gt;
+    &lt;promptName&gt;normal&lt;/promptName&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+            </aliases>
+            <duration>2.5</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="pattern1">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>\\| Chassis\\s+\\|\\s+</regex>
+                            <start>0</start>
+                            <end>21</end>
+                        </item>
+                        <item name="chassis_mac">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>21</start>
+                            <end>38</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+\\|\\s+</regex>
+                            <start>38</start>
+                            <end>42</end>
+                        </item>
+                        <item name="chassis_block_size">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>42</start>
+                            <end>46</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>\\s+\\|</regex>
+                            <start>46</start>
+                            <end>54</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>| Chassis          | 2c:39:c1:bc:38:00  | 1024       |</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+                <item name="pattern2">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>\\| Active Mgmt\\s+\\|\\s+</regex>
+                            <start>0</start>
+                            <end>21</end>
+                        </item>
+                        <item name="active_mgmt_mac">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>21</start>
+                            <end>38</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+\\|\\s+</regex>
+                            <start>38</start>
+                            <end>42</end>
+                        </item>
+                        <item name="active_mgmt_block_size">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>42</start>
+                            <end>43</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>\\s+\\|</regex>
+                            <start>43</start>
+                            <end>54</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>| Active Mgmt      | 2c:39:c1:bc:38:01  | 1          |</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+                <item name="pattern3">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>\\| Remote Mgmt\\s+\\|\\s+</regex>
+                            <start>0</start>
+                            <end>21</end>
+                        </item>
+                        <item name="remote_mac">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>21</start>
+                            <end>38</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+\\|\\s+</regex>
+                            <start>38</start>
+                            <end>42</end>
+                        </item>
+                        <item name="remote_block_size">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>42</start>
+                            <end>43</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>\\s+\\|</regex>
+                            <start>43</start>
+                            <end>54</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>| Remote Mgmt      | 2c:39:c1:bc:38:04  | 1          |</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+                <item name="pattern4">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>\\| MPLS Interfaces\\s+\\|\\s+</regex>
+                            <start>0</start>
+                            <end>21</end>
+                        </item>
+                        <item name="mpls_int_mac">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>21</start>
+                            <end>38</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+\\|\\s+</regex>
+                            <start>38</start>
+                            <end>42</end>
+                        </item>
+                        <item name="mpls_int_block_size">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>42</start>
+                            <end>44</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>\\s+\\|</regex>
+                            <start>44</start>
+                            <end>54</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>| MPLS Interfaces  | 2c:39:c1:bc:39:90  | 16         |</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+                <item name="pattern5">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>\\| Aggregated Ports \\|\\s+</regex>
+                            <start>0</start>
+                            <end>21</end>
+                        </item>
+                        <item name="agg_port_mac">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>21</start>
+                            <end>38</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+\\|\\s+</regex>
+                            <start>38</start>
+                            <end>42</end>
+                        </item>
+                        <item name="agg_port_block_size">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>42</start>
+                            <end>45</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>\\s+\\|</regex>
+                            <start>45</start>
+                            <end>54</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>| Aggregated Ports | 2c:39:c1:bc:39:a0  | 196        |</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+                <item name="pattern6">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>\\| Benchmark\\s+\\|\\s+</regex>
+                            <start>0</start>
+                            <end>21</end>
+                        </item>
+                        <item name="benchmark_mac">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>21</start>
+                            <end>38</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+\\|\\s+</regex>
+                            <start>38</start>
+                            <end>42</end>
+                        </item>
+                        <item name="benchmark_block_size">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>42</start>
+                            <end>43</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>\\s+\\|</regex>
+                            <start>43</start>
+                            <end>54</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>| Benchmark        | 2c:39:c1:bc:3a:64  | 4          |</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+                <item name="pattern7">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>\\| Future\\s+\\|\\s+</regex>
+                            <start>0</start>
+                            <end>21</end>
+                        </item>
+                        <item name="future_mac">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>21</start>
+                            <end>38</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+\\|\\s+</regex>
+                            <start>38</start>
+                            <end>42</end>
+                        </item>
+                        <item name="future_block_size">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>42</start>
+                            <end>45</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>\\s+\\|</regex>
+                            <start>45</start>
+                            <end>54</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>| Future           | 2c:39:c1:bc:3a:68  | 408        |</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+                <item name="iom_dcn_mac_entries">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>\\| iom\\.dcn\\d+\\s+\\|\\s+</regex>
+                            <start>0</start>
+                            <end>21</end>
+                        </item>
+                        <item name="iom_dcn_mac">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>21</start>
+                            <end>38</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+\\|\\s+</regex>
+                            <start>38</start>
+                            <end>42</end>
+                        </item>
+                        <item name="iom_dcn_block_size">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>42</start>
+                            <end>43</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>\\s+\\|</regex>
+                            <start>43</start>
+                            <end>54</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>| iom.dcn1         | 2c:39:c1:bc:38:02  | 1          |</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+                <item name="ctx_dcn_mac_entries">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>\\| ctx\\d+\\.dcn\\s+\\|\\s+</regex>
+                            <start>0</start>
+                            <end>21</end>
+                        </item>
+                        <item name="ctx_dcn_mac">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>21</start>
+                            <end>38</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+\\|\\s+</regex>
+                            <start>38</start>
+                            <end>42</end>
+                        </item>
+                        <item name="ctx_dcn_block_size">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>42</start>
+                            <end>43</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>\\s+\\|</regex>
+                            <start>43</start>
+                            <end>54</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>| ctx1.dcn         | 2c:39:c1:bc:38:05  | 1          |</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+                <item name="pslm_mac_entries">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>\\| PSLM Slot LM\\d+\\s+\\|\\s+</regex>
+                            <start>0</start>
+                            <end>21</end>
+                        </item>
+                        <item name="lm_slot_mac">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>21</start>
+                            <end>38</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+\\|\\s+</regex>
+                            <start>38</start>
+                            <end>42</end>
+                        </item>
+                        <item name="lm_slot_block_size">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>42</start>
+                            <end>44</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>\\s+\\|</regex>
+                            <start>44</start>
+                            <end>54</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>| PSLM Slot LM1    | 2c:39:c1:bc:38:10  | 96         |</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+                <item name="lm_mac_entries">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>\\| LM\\d+\\s+\\|\\s+</regex>
+                            <start>0</start>
+                            <end>21</end>
+                        </item>
+                        <item name="lm_mac">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>21</start>
+                            <end>38</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+\\|\\s+</regex>
+                            <start>38</start>
+                            <end>42</end>
+                        </item>
+                        <item name="lm_block_size">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>42</start>
+                            <end>43</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>\\s+\\|</regex>
+                            <start>43</start>
+                            <end>54</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>| LM1              | 9c:7a:03:4a:68:10  | 8          |</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+                <item name="ctm_mac_entries">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>\\| CTX\\d+\\.ctm\\s+\\|\\s+</regex>
+                            <start>0</start>
+                            <end>21</end>
+                        </item>
+                        <item name="ctm_mac">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>21</start>
+                            <end>38</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+\\|\\s+</regex>
+                            <start>38</start>
+                            <end>42</end>
+                        </item>
+                        <item name="ctm_block_size">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>42</start>
+                            <end>43</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>\\s+\\|</regex>
+                            <start>43</start>
+                            <end>54</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>| CTX1.ctm         | 9c:7a:03:54:92:58  | 8          |</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="chassis show mac-address">
+        <application>
+            <item>com.fnfr.svt.applications.cmd</item>
+            <item>com.fnfr.itest.application.serial</item>
+            <item>com.fnfr.svt.applications.ssh</item>
+            <item>com.fnfr.svt.applications.telnet</item>
+        </application>
+    </applicabilityProperties>
+</ResponseMap>

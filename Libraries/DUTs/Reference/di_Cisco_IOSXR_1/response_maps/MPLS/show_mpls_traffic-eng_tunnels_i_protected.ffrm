@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<ResponseMap version="5.1.0.77511">
+    <sampleDictionary>
+        <item name="sample1">
+            <responseBody>Sat Mar 26 07:20:50.746 EST
+    Protected LSPs: 940
+    Protected S2L Sharing Families: 0
+    Protected S2L: 0
+    Protected i/f: BE3  Protected node: 3.3.3.3
+      Protected Interface SRLGs and admin weight penalties:</responseBody>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="pattern1">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Protected LSPs:\\s+</regex>
+                            <start>0</start>
+                            <end>16</end>
+                        </item>
+                        <item name="protected_LSPs">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>16</start>
+                            <end>19</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>Protected LSPs: 940</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="show_mpls_te_tunnels" command="*Protected*"/>
+</ResponseMap>

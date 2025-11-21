@@ -1,0 +1,155 @@
+<?xml version="1.0"?>
+<ResponseMap version="5.1.0.77511">
+    <sampleDictionary>
+        <item name="sample1">
+            <responseBody>Tue May 24 12:26:50.813 EST
+
+  OPTICS:
+   Rx LOS Fault       : No
+   Tx Fault           : No
+
+  PHY:
+   Tx Align Fault     : No
+   PMA/PMD:
+    Rx LOS Fault      : No
+    Rx PMA link Fault : No
+   WANPHY Mode:
+    SECTION:
+     Los: No, Lof: No
+    LINE:
+     Ais: No, Rdi: Yes
+    PATH:
+     Ais: No, Lop: No
+     Plm: No, Lcd: No
+   PCS:
+    Rx PCS link Fault : No
+    Rx PCS lock Fault : No
+
+  MAC:
+   Rx Local Fault     : No
+   Rx Remote Fault    : Yes
+
+</responseBody>
+        </item>
+        <item name="sample2">
+            <responseBody>Wed Jul 13 08:36:42.203 EDT
+
+  OPTICS:
+   Rx LOS Fault       : No
+   Tx Fault           : No
+
+  PHY:
+   Tx Align Fault     : No
+   PMA/PMD:
+    Rx LOS Fault      : No
+    Rx PMA link Fault : Yes
+   WANPHY Mode:
+    SECTION:
+     Los: No, Lof: Yes
+    LINE:
+     Ais: No, Rdi: No
+    PATH:
+     Ais: No, Lop: No
+     Plm: No, Lcd: No
+   PCS:
+    Rx PCS link Fault : Yes
+    Rx PCS lock Fault : Yes
+
+  MAC:
+   Rx Local Fault     : Yes
+   Rx Remote Fault    : No</responseBody>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="line">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>\\s+LINE:\\s+Ais:\\s+</regex>
+                            <start>0</start>
+                            <end>20</end>
+                        </item>
+                        <item name="line_ais">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>20</start>
+                            <end>22</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>, Rdi:\\s+</regex>
+                            <start>22</start>
+                            <end>29</end>
+                        </item>
+                        <item name="line_rdi">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>29</start>
+                            <end>32</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>    LINE:
+     Ais: No, Rdi: Yes</sampleMatch>
+                </item>
+                <item name="mac">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>\\s+MAC:\\s+Rx Local Fault\\s+:\\s+</regex>
+                            <start>0</start>
+                            <end>31</end>
+                        </item>
+                        <item name="mac_rx_Local_fault">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>31</start>
+                            <end>33</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+Rx Remote Fault\\s+:\\s+</regex>
+                            <start>33</start>
+                            <end>58</end>
+                        </item>
+                        <item name="mac_rx_remote_fault">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>58</start>
+                            <end>61</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>  MAC:
+   Rx Local Fault     : No
+   Rx Remote Fault    : Yes</sampleMatch>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="show_controllers" command="-interface* -int_option xgxs"/>
+</ResponseMap>

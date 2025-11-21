@@ -1,0 +1,121 @@
+<?xml version="1.0" ?><ResponseMap version="6.0.0.18638fa">
+    <sampleDictionary>
+        <item name="sample1">
+            <action>
+                <command>
+                    <body>show configuration interfaces ge-3/0/2 | match unit</body>
+                </command>
+            </action>
+            <responseBody>unit 127 {
+unit 1212 {
+unit 2000 {
+unit 2001 {
+unit 2102 {
+unit 2132 {
+unit 2133 {
+unit 2933 {
+unit 4092 {
+</responseBody>
+        </item>
+        <item name="sample2">
+            <action>
+                <command>
+                    <body>show configuration interfaces ge-3/0/2 | match unit</body>
+                </command>
+            </action>
+            <responseBody>unit 127 {
+unit 1212 {
+unit 2000 {
+unit 2001 {
+unit 2102 {
+unit 2132 {
+unit 2133 {
+inactive: unit 2933 {
+unit 4092 {
+</responseBody>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.table.TabularMapperProperties"/>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="pattern1">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>unit\\s+</regex>
+                            <start>0</start>
+                            <end>5</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="unit">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>5</start>
+                            <end>8</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+\\{</regex>
+                            <start>8</start>
+                            <end>10</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>unit 127 {</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+                <item name="pattern2">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>inactive: unit\\s+</regex>
+                            <start>0</start>
+                            <end>15</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name=".{14}">exactly 14 of any character</item>
+                            </suggestions>
+                        </item>
+                        <item name="inactive_unit">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>15</start>
+                            <end>19</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+\\{</regex>
+                            <start>19</start>
+                            <end>21</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>inactive: unit 2933 {</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties command="show configuration interfaces * | match unit"/>
+</ResponseMap>

@@ -1,0 +1,348 @@
+<?xml version="1.0"?>
+<TestCaseCatalog version="8.0.0.201908290812">
+    <testCaseCatalog>
+        <item name="session_profiles/Cisco_ASR5K_ssh_quickcall_library.fftc">
+            <tcDescriptor version="8.0.0.201908290812">
+                <general>
+                    <sessionClass includeTestCase="true" sessionType="Cisco_ASR5K_ssh.ffsp"/>
+                </general>
+                <procedures>
+                    <item name="clearSubscriberInfo" isPublic="true" isVBlock="true">
+                        <multilineDescription>Clear the subcriber info for the specified IMSI</multilineDescription>
+                        <arguments>
+                            <item name="IMSI">
+                                <description>The IMSI of the UE to clear</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="disableLogging" isPublic="true" isVBlock="true">
+                        <description>Disable debug logging</description>
+                        <author>Malcom Terry</author>
+                        <multilineDescription>Disable logging on the ASR</multilineDescription>
+                        <response>{&quot;success&quot;:&quot;1&quot;}</response>
+                    </item>
+                    <item name="enableLogging" isPublic="true" isVBlock="true">
+                        <description>Enable debug logging</description>
+                        <author>Malcom Terry</author>
+                        <multilineDescription>Enable the ASR logging</multilineDescription>
+                        <arguments>
+                            <item name="captureTime">
+                                <description>The amount of time to capture the logs</description>
+                                <defaultValue>180</defaultValue>
+                            </item>
+                        </arguments>
+                        <response>{&quot;success&quot;:&quot;1&quot;}</response>
+                    </item>
+                    <item name="getSystemTime" isPublic="true" isVBlock="true">
+                        <responseMap>project://di_Cisco_ASR5K/response_maps/JsonBlockToQueries.ffrm</responseMap>
+                        <multilineDescription>Get the system time from the ASR5K in the format: YYYY:MM:DD:hh:mm:ss
+
+Return: JSON Block
+sysTime: either the system time or &quot;invalid&quot;</multilineDescription>
+                        <response>{&quot;sysTime&quot;:&quot;invalid&quot;}</response>
+                    </item>
+                    <item name="getTimestamp" isPublic="true" isVBlock="true">
+                        <description>Get clock value and return timestamp</description>
+                        <author>Malcom Terry</author>
+                        <multilineDescription>Show the clock and return timestamp in YYYY:MM:DD:hh:mm:ss format</multilineDescription>
+                        <response>{&quot;timestamp&quot;:&quot;YYYY:MM:DD:HH:mm:ss&quot;}</response>
+                    </item>
+                    <item name="isSubscriberActive" isPublic="true" isVBlock="true">
+                        <responseMap>project://di_Cisco_ASR5K/response_maps/JsonBlockToQueries.ffrm</responseMap>
+                        <multilineDescription>Based on the IMSI, see if the subscriber is in the active list
+
+Return Values: JSON Block
+
+active: nonzero - active; 0 - not active</multilineDescription>
+                        <arguments>
+                            <item name="IMSI">
+                                <description>The IMSI of the desired subscriber</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                        <response>{&quot;active&quot;:&quot;0&quot;,&quot;IPAddress&quot;:&quot;0&quot;}</response>
+                    </item>
+                    <item name="configure_Monitor_Protocol" isPublic="true" isVBlock="true">
+                        <multilineDescription>Start a monitor protocol session 
+
+NOTE: Monitor Protocol Never returns so this should be started in a thread and signalled by the main test case or a Fake Prompt should be passed to this procedure.
+
+Return Value: JSON Block
+status: 1 - success; 0 - failure</multilineDescription>
+                        <arguments>
+                            <item name="protocol_layers">
+                                <defaultValue>81 82 74 70 29 </defaultValue>
+                            </item>
+                            <item name="fakePrompt">
+                                <description>If passed, iTest will look to terminate the Mon Sub when this text is found</description>
+                            </item>
+                            <item name="captureTime">
+                                <description>The time to capture monSub in seconds</description>
+                                <defaultValue>120</defaultValue>
+                            </item>
+                            <item name="verbosity_level">
+                                <description>The verbosity level to select: iTest will hit theh &quot;+&quot; the specified number of times</description>
+                                <defaultValue>3</defaultValue>
+                            </item>
+                        </arguments>
+                        <response>{&quot;status&quot;:&quot;1&quot;}</response>
+                    </item>
+                    <item name="configure_Monitor_Subscriber" isPublic="true" isVBlock="true">
+                        <responseMap>project://di_Cisco_ASR5K/response_maps/JsonBlockToQueries.ffrm</responseMap>
+                        <multilineDescription>Start a monitor subscriber session 
+
+NOTE: Monitor Subscriber Never returns so this should be started in a thread and signalled by the main test case or a Fake Prompt should be passed to this procedure.
+
+Return Value: JSON Block
+status: 1 - success; 0 - failure</multilineDescription>
+                        <arguments>
+                            <item name="IMEI">
+                                <description>If pased, this procedure will filter on this IMEI</description>
+                            </item>
+                            <item name="IMSI">
+                                <description>If pased, this procedure will filter on this IMSI</description>
+                            </item>
+                            <item name="verbosity_level">
+                                <description>The verbosity level to select: iTest will hit theh &quot;+&quot; the specified number of times</description>
+                                <defaultValue>5</defaultValue>
+                            </item>
+                            <item name="protocol_layers">
+                                <defaultValue>81 82 74 70 29 </defaultValue>
+                            </item>
+                            <item name="fakePrompt">
+                                <description>If passed, iTest will look to terminate the Mon Sub when this text is found</description>
+                            </item>
+                            <item name="captureTime">
+                                <description>The time to capture monSub in seconds</description>
+                                <defaultValue>120</defaultValue>
+                            </item>
+                        </arguments>
+                        <response>{&quot;success&quot;:&quot;1&quot;}</response>
+                    </item>
+                    <item name="signalWaitCleanupLogging" isPublic="true" isVBlock="true">
+                        <multilineDescription>Cleanup logging for a session when the &quot;Cleanup&quot; signal is activated.
+
+This procedure is designed to run in a thread.
+
+Return Value: Block
+success: 0 - failure; 1 - success
+</multilineDescription>
+                        <response>{&quot;success&quot;:&quot;1&quot;}</response>
+                    </item>
+                    <item name="showLogs" isPublic="true">
+                        <description>Show syslog</description>
+                        <author>Malcom Terry</author>
+                        <multilineDescription>Returns the logs since the timestamp value passed.
+
+Return Value:
+List of logs</multilineDescription>
+                        <arguments>
+                            <item name="timestamp">
+                                <description>Get logs since &lt;timestamp&gt;
+
+timestamp format:
+YYYY:MM:DD:hh:mm:ss</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="showSubscriber" isPublic="true" isVBlock="true">
+                        <responseMap>project://di_Cisco_ASR5K/response_maps/JsonBlockToQueries.ffrm</responseMap>
+                        <multilineDescription>Get subscriber information for the specified IMSI</multilineDescription>
+                        <arguments>
+                            <item name="IMSI">
+                                <description>The IMSI values</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="full">
+                                <description>1 - show subscriber full imsi; 0 - show subscriber imsi</description>
+                                <defaultValue>0</defaultValue>
+                            </item>
+                        </arguments>
+                        <response>{&quot;username&quot;:&quot;0&quot;,&quot;ip_address&quot;:&quot;0&quot;,&quot;ip_address2&quot;:&quot;0&quot;}</response>
+                    </item>
+                    <item name="showSubscriberAll" isPublic="true">
+                        <responseMap>project://di_Cisco_ASR5K/response_maps/show_subscriber_imsi.ffrm</responseMap>
+                    </item>
+                    <item name="startCapture" isPublic="true" isVBlock="true">
+                        <responseMap>project://di_Cisco_ASR5K/response_maps/JsonBlockToQueries.ffrm</responseMap>
+                        <multilineDescription>Send a return and capture for the amount of time specified. This procedure will log autonomous messages such as debug logs, monitor subscriber and monitor protocol</multilineDescription>
+                        <arguments>
+                            <item name="captureTime">
+                                <description>Send a return and capture for the amount of time specified. </description>
+                                <defaultValue>180</defaultValue>
+                            </item>
+                            <item name="fakePrompt">
+                                <description>If passed, iTest will look to terminate the capture when this text is found</description>
+                            </item>
+                        </arguments>
+                        <response>{&quot;success&quot;:&quot;1&quot;}</response>
+                    </item>
+                    <item name="showCallControlProfileName" isPublic="true" isVBlock="true">
+                        <responseMap>project://di_Cisco_ASR5K/response_maps/JsonBlockToQueries.ffrm</responseMap>
+                        <multilineDescription>Check if call control profile is set for PTMSI reallocation frequency every RAU in configuration, if not, attempt to set it.
+
+return: frequency: &gt;0(valid), =0(invalid)</multilineDescription>
+                        <arguments>
+                            <item name="cc_profile">
+                                <description>The call control profile to be set</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                        <response>{&quot;frequency&quot;:&quot;0&quot;}</response>
+                    </item>
+                    <item name="setPTMISIReallocateFrequency" isPublic="true">
+                        <multilineDescription>Config PTMSI reallocation frequency.
+
+</multilineDescription>
+                        <arguments>
+                            <item name="freq">
+                                <defaultValue>1</defaultValue>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                        <response>{&quot;frequency&quot;:&quot;0&quot;}</response>
+                    </item>
+                </procedures>
+            </tcDescriptor>
+        </item>
+        <item name="session_profiles/Cisco_ASR5K_telnet_quickcall_library.fftc">
+            <tcDescriptor version="8.0.0.201908290812">
+                <general>
+                    <documentation>Get clock value and convert to timestamp</documentation>
+                    <notes>Get timestamp from ASR5K and convert to format usable for &quot;show logs&quot;.</notes>
+                    <sessionClass includeTestCase="true" sessionType="project://di_Cisco_ASR5K/session_profiles/Cisco_ASR5K_telnet.ffsp"/>
+                </general>
+                <procedures>
+                    <item name="clearSubscriberInfo" isPublic="true" isVBlock="true">
+                        <multilineDescription>Clear the subcriber info for the specified IMSI</multilineDescription>
+                        <arguments>
+                            <item name="IMSI">
+                                <description>The IMSI of the UE to clear</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="disableLogging" isPublic="true" isVBlock="true">
+                        <description>Disable debug logging</description>
+                        <author>Malcom Terry</author>
+                        <multilineDescription>Disable logging on the ASR</multilineDescription>
+                        <response>{&quot;success&quot;:&quot;1&quot;}</response>
+                    </item>
+                    <item name="enableLogging" isPublic="true" isVBlock="true">
+                        <description>Enable debug logging</description>
+                        <author>Malcom Terry</author>
+                        <multilineDescription>Enable the ASR logging</multilineDescription>
+                        <response>{&quot;success&quot;:&quot;1&quot;}</response>
+                    </item>
+                    <item name="getSystemTime" isPublic="true" isVBlock="true">
+                        <multilineDescription>Get the system time from the ASR5K in the format: YYYY:MM:DD:hh:mm:ss
+
+Return: JSON Block
+sysTime: either the system time or &quot;invalid&quot;</multilineDescription>
+                        <response>{&quot;sysTime&quot;:&quot;invalid&quot;}</response>
+                    </item>
+                    <item name="getTimestamp" isPublic="true" isVBlock="true">
+                        <description>Get clock value and return timestamp</description>
+                        <author>Malcom Terry</author>
+                        <multilineDescription>Show the clock and return timestamp in YYYY:MM:DD:hh:mm:ss format</multilineDescription>
+                        <response>{&quot;timestamp&quot;:&quot;YYYY:MM:DD:HH:mm:ss&quot;}</response>
+                    </item>
+                    <item name="Monitor_Protocol" isPublic="true" isVBlock="true">
+                        <multilineDescription>Start a monitor protocol session 
+
+NOTE: Monitor Protocol Never returns so this should be started in a thread and signalled by the main test case or a Fake Prompt should be passed to this procedure.
+
+Return Value: JSON Block
+status: 1 - success; 0 - failure</multilineDescription>
+                        <arguments>
+                            <item name="protocol_layers">
+                                <defaultValue>81 82 74 70 29 </defaultValue>
+                            </item>
+                            <item name="fakePrompt">
+                                <description>If passed, iTest will look to terminate the Mon Sub when this text is found</description>
+                            </item>
+                            <item name="waitForSignal">
+                                <description>The name of the signal to wait for - if specified</description>
+                            </item>
+                        </arguments>
+                        <response>{&quot;status&quot;:&quot;1&quot;}</response>
+                    </item>
+                    <item name="Monitor_Subscriber" isPublic="true" isVBlock="true">
+                        <multilineDescription>Start a monitor subscriber session 
+
+NOTE: Monitor Subscriber Never returns so this should be started in a thread and signalled by the main test case or a Fake Prompt should be passed to this procedure.
+
+Return Value: JSON Block
+status: 1 - success; 0 - failure</multilineDescription>
+                        <arguments>
+                            <item name="IMEI">
+                                <description>If pased, this procedure will filter on this IMEI</description>
+                            </item>
+                            <item name="IMSI">
+                                <description>If pased, this procedure will filter on this IMSI</description>
+                            </item>
+                            <item name="verbosity_level">
+                                <description>The verbosity level to select: iTest will hit theh &quot;+&quot; the specified number of times</description>
+                                <defaultValue>5</defaultValue>
+                            </item>
+                            <item name="protocol_layers">
+                                <defaultValue>81 82 74 70 29 </defaultValue>
+                            </item>
+                            <item name="fakePrompt">
+                                <description>If passed, iTest will look to terminate the Mon Sub when this text is found</description>
+                            </item>
+                            <item name="waitForSignal">
+                                <description>The name of the signal to wait for - if specified</description>
+                            </item>
+                        </arguments>
+                        <response>{&quot;success&quot;:&quot;1&quot;}</response>
+                    </item>
+                    <item name="signalWaitCleanupLogging" isPublic="true" isVBlock="true">
+                        <multilineDescription>Cleanup logging for a session when the &quot;Cleanup&quot; signal is activated.
+
+This procedure is designed to run in a thread.
+
+Return Value: Block
+success: 0 - failure; 1 - success
+</multilineDescription>
+                        <response>{&quot;success&quot;:&quot;1&quot;}</response>
+                    </item>
+                    <item name="showLogs" isPublic="true">
+                        <description>Show syslog</description>
+                        <author>Malcom Terry</author>
+                        <multilineDescription>Returns the logs since the timestamp value passed.
+
+Return Value:
+List of logs</multilineDescription>
+                        <arguments>
+                            <item name="timestamp">
+                                <description>Get logs since &lt;timestamp&gt;
+
+timestamp format:
+YYYY:MM:DD:hh:mm:ss</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="showSubscriber" isPublic="true" isVBlock="true">
+                        <multilineDescription>Get subscriber information for the specified IMSI</multilineDescription>
+                        <arguments>
+                            <item name="IMSI">
+                                <description>The IMSI values</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="full">
+                                <description>1 - show subscriber full imsi; 0 - show subscriber imsi</description>
+                                <defaultValue>0</defaultValue>
+                            </item>
+                        </arguments>
+                        <response>{&quot;username&quot;:&quot;0&quot;,&quot;ip_address&quot;:&quot;0&quot;}</response>
+                    </item>
+                    <item name="showSubscriberAll" isPublic="true"/>
+                </procedures>
+            </tcDescriptor>
+        </item>
+    </testCaseCatalog>
+</TestCaseCatalog>

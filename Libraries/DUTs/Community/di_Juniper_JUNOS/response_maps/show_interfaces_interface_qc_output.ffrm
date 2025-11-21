@@ -1,0 +1,55 @@
+<?xml version="1.0" ?><ResponseMap version="6.0.0.18638fa">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="show_interfaces_interface_match_hardware">
+                <command>
+                    <body>-interface [query /data/GD(SERVICE_INFO) Interface_by_Key(&quot;[lindex $pe_key_list $i]&quot;)]</body>
+                </command>
+            </action>
+            <responseBody>&quot;MAC Address:  00:22:83:37:49:a5&quot;</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;definedIn&gt;project://d_juniper/session_profiles/juniper_qc.fftc&lt;/definedIn&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="definedIn">
+                    <queryFormatString>.//definedIn</queryFormatString>
+                    <source>Kernel</source>
+                </item>
+            </aliases>
+            <duration>0.6</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="Mac_Address">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>&quot;MAC Address:\\s+</regex>
+                            <start>0</start>
+                            <end>15</end>
+                        </item>
+                        <item name="MAC_Address">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>15</start>
+                            <end>33</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>&quot;MAC Address:  00:22:83:37:49:a5&quot;</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="show_interfaces_interface_match_hardware" command="-interface [query /data/GD(SERVICE_INFO) Interface_by_Key(&quot;[lindex $pe_key_list $i]&quot;)]"/>
+</ResponseMap>

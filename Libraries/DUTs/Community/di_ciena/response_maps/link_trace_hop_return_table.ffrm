@@ -1,0 +1,240 @@
+<?xml version="1.0" ?><ResponseMap version="6.0.0.18638fa">
+    <sampleDictionary>
+        <item name="saos-6-13_link_trace_hop_return_table">
+            <action actionType="cfm_link_trace_mac_hop">
+                <command>
+                    <body>-source_mep_id $local_mep_id -destination_mep_id $mep_id -md $md -ma $ma</body>
+                </command>
+            </action>
+            <responseBody>Link trace HOP Cnt: 1
+Link trace HOP Target MAC: null
+Link trace HOP Remote MAC: null
+Link trace HOP Cnt 1 STATUS: NOK
+
+Link trace HOP Cnt: 2
+Link trace HOP Target MAC: null
+Link trace HOP Remote MAC: null
+Link trace HOP Cnt 2 STATUS: NOK
+
+Link trace HOP Overall STATUS: NOK</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;definedIn&gt;project://d_ciena/session_profiles/ciena_saos_qc.fftc&lt;/definedIn&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="definedIn">
+                    <queryFormatString>.//definedIn</queryFormatString>
+                    <source>Kernel</source>
+                </item>
+            </aliases>
+            <duration>33.1</duration>
+        </item>
+        <item name="sample1">
+            <action actionType="cfm_link_trace_mac_mep">
+                <command>
+                    <body>-source_mep_id $local_mep_id -destination_mep_id $mep_id -md $md -ma $ma</body>
+                </command>
+            </action>
+            <responseBody>Local MEP id: 220
+Target Mac Address: 2C:39:C1:21:96:33
+Link trace MAC: OK</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;definedIn&gt;project://d_ciena/session_profiles/ciena_saos_qc.fftc&lt;/definedIn&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="definedIn">
+                    <queryFormatString>.//definedIn</queryFormatString>
+                    <source>Kernel</source>
+                </item>
+            </aliases>
+            <duration>22.5</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="instance_hop_status">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Link trace HOP Cnt\\s+\\d+\\s+STATUS:\\s+</regex>
+                            <start>0</start>
+                            <end>29</end>
+                        </item>
+                        <item name="hop_status">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>29</start>
+                            <end>32</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>Link trace HOP Cnt 1 STATUS: NOK</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+                <item name="completion_status">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Link trace HOP Overall STATUS:\\s+</regex>
+                            <start>0</start>
+                            <end>31</end>
+                        </item>
+                        <item name="overall_status">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>31</start>
+                            <end>34</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>Link trace HOP Overall STATUS: NOK</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+                <item name="Link_trace_HOP_Target_MAC">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Link trace HOP Target MAC:\\s+</regex>
+                            <start>0</start>
+                            <end>27</end>
+                        </item>
+                        <item name="hop_target_mac">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>27</start>
+                            <end>31</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>Link trace HOP Target MAC: null</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+                <item name="Link_trace_HOP_Remote_MAC">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Link trace HOP Remote MAC:\\s+</regex>
+                            <start>0</start>
+                            <end>27</end>
+                        </item>
+                        <item name="hop_remote_mac">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>27</start>
+                            <end>31</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>Link trace HOP Remote MAC: null</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+                <item name="Link_trace_MAC_localMepId">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Local MEP id:\\s+</regex>
+                            <start>0</start>
+                            <end>14</end>
+                        </item>
+                        <item name="Local_MEP_id">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>14</start>
+                            <end>17</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>Local MEP id: 220</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+                <item name="Link_trace_MAC_targetMacAddress">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Target Mac Address:\\s+</regex>
+                            <start>0</start>
+                            <end>20</end>
+                        </item>
+                        <item name="Target_Mac_Address">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>20</start>
+                            <end>37</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>Target Mac Address: 2C:39:C1:21:96:33</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+                <item name="Link_trace_MAC_overallStatus">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Link trace MAC:\\s+</regex>
+                            <start>0</start>
+                            <end>16</end>
+                        </item>
+                        <item name="Link_trace_status">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>16</start>
+                            <end>18</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>Link trace MAC: OK</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+            </regexMaps>
+        </item>
+        <item type="com.fnfr.svt.mapping.table.TabularMapperProperties"/>
+    </mapperProperties>
+    <applicabilityProperties actionType="cfm_link_trace_mac_*" command="-source_mep_id $local_mep_id -destination_mep_id $mep_id -md $md -ma $ma"/>
+</ResponseMap>

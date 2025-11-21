@@ -1,0 +1,104 @@
+<?xml version="1.0"?>
+<ResponseMap version="6.0.0.18638fa">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="command">
+                <command>
+                    <body>show version</body>
+                </command>
+            </action>
+            <responseBody>Hostname: ihop
+Model: j2320
+JUNOS Software Release [10.2R3.10]
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;terminal RequiredForRendering=&quot;true&quot;&gt;
+        &lt;prompt&gt;spirent@ihop&amp;gt; &lt;/prompt&gt;
+        &lt;promptExtraction&gt;LAST_LINE&lt;/promptExtraction&gt;
+        &lt;echo&gt;show version&lt;/echo&gt;
+        &lt;idleTime&gt;0.956&lt;/idleTime&gt;
+        &lt;contentType&gt;text&lt;/contentType&gt;
+        &lt;terminator&gt;SLASH_R_SLASH_N&lt;/terminator&gt;
+    &lt;/terminal&gt;
+&lt;/structure&gt;
+</structuredData>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="version">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Hostname:\\s+</regex>
+                            <start>0</start>
+                            <end>10</end>
+                        </item>
+                        <item name="Hostname">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>10</start>
+                            <end>15</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+Model:\\s+</regex>
+                            <start>15</start>
+                            <end>23</end>
+                        </item>
+                        <item name="Model">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>23</start>
+                            <end>28</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>\\s+JUNOS Software Release \\[</regex>
+                            <start>28</start>
+                            <end>53</end>
+                        </item>
+                        <item name="JUNOS_Software_Release">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>53</start>
+                            <end>62</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name=".{9}">exactly 9 of any character</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor3">
+                            <regex>]</regex>
+                            <start>62</start>
+                            <end>63</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>Hostname: ihop1
+Model: j2320
+JUNOS Software Release [10.2R3.10]</sampleMatch>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="show version">
+        <application>
+            <item>com.fnfr.svt.applications.ssh</item>
+            <item>com.fnfr.svt.applications.telnet</item>
+        </application>
+    </applicabilityProperties>
+</ResponseMap>

@@ -1,0 +1,988 @@
+<?xml version="1.0" ?><ResponseMap version="6.0.0.18638fa">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="command">
+                <command>
+                    <body>chassis show critical-temps</body>
+                </command>
+            </action>
+            <responseBody>
++------ LM CRITICAL TEMPERATURE POWERDOWN LIMITS ------+
++------------------------------------------------------+
+| Powerdown Rule: All temperature sensors on a given   |
+|                 LM (C) exceeds limit                 |
++-----------+-----------+------------+-----------------+
+|           | Critical  |            | Current         |
+| LM        | Limit (C) | Sensor ID  | Temp (C)        |
++-----------+-----------+------------+-----------------+
+| PSLM1     | 70        | PSLM1-T1   | 36              |
+|           | 101       | PSLM1-T2   | 59              |
+|           | 93        | PSLM1-T3   | 44              |
+|           | 85        | PSLM1-T4   | 42              |
+|           | 83        | PSLM1-T5   | 39              |
+|           | 72        | PSLM1-T6   | 31              |
+|           | 88        | PSLM1-T7   | 37              |
+|           | 81        | PSLM1-T8   | 36              |
+|           | 101       | PSLM1-T9   | 37              |
+|           | 79        | PSLM1-T10  | 36              |
+|           | 76        | PSLM1-T11  | 32              |
+|           | 64        | PSLM1-T12  | 23              |
+|           | 69        | PSLM1-T13  | 28              |
+|           | 77        | PSLM1-T14  | 36              |
+|           | 73        | PSLM1-T15  | 33              |
+|           | 78        | PSLM1-T16  | 37              |
+|           | 80        | PSLM1-T17  | 41              |
+|           | 92        | PSLM1-T18  | 50              |
+|           | 89        | PSLM1-T19  | 49              |
+|           | 76        | PSLM1-T20  | 35              |
+|           | 71        | PSLM1-T21  | 31              |
+|           | 75        | PSLM1-T22  | 35              |
++-----------+-----------+------------+-----------------+
+| PSLM2     | 70        | PSLM2-T1   | 34              |
+|           | 101       | PSLM2-T2   | 57              |
+|           | 93        | PSLM2-T3   | 45              |
+|           | 85        | PSLM2-T4   | 41              |
+|           | 83        | PSLM2-T5   | 38              |
+|           | 72        | PSLM2-T6   | 31              |
+|           | 88        | PSLM2-T7   | 36              |
+|           | 81        | PSLM2-T8   | 36              |
+|           | 101       | PSLM2-T9   | 39              |
+|           | 79        | PSLM2-T10  | 36              |
+|           | 76        | PSLM2-T11  | 33              |
+|           | 64        | PSLM2-T12  | 24              |
+|           | 69        | PSLM2-T13  | 29              |
+|           | 77        | PSLM2-T14  | 35              |
+|           | 73        | PSLM2-T15  | 32              |
+|           | 78        | PSLM2-T16  | 36              |
+|           | 80        | PSLM2-T17  | 39              |
+|           | 92        | PSLM2-T18  | 50              |
+|           | 89        | PSLM2-T19  | 49              |
+|           | 76        | PSLM2-T20  | 33              |
+|           | 71        | PSLM2-T21  | 31              |
+|           | 75        | PSLM2-T22  | 34              |
++-----------+-----------+------------+-----------------+
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;prompt&gt;8700-15*&amp;gt; &lt;/prompt&gt;
+    &lt;echo&gt;chassis show critical-temps&lt;/echo&gt;
+    &lt;promptName&gt;normal&lt;/promptName&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+            </aliases>
+            <duration>3.5</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="lm_temp_powerdown_limits">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>\\|\\s+</regex>
+                            <start>0</start>
+                            <end>2</end>
+                        </item>
+                        <item name="pslm_key">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <key>true</key>
+                            <start>2</start>
+                            <end>7</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+\\|\\s+</regex>
+                            <start>7</start>
+                            <end>14</end>
+                        </item>
+                        <item name="t1_limit">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>14</start>
+                            <end>16</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>\\s+\\| PSLM\\d+-T\\d+\\s+\\|\\s+</regex>
+                            <start>16</start>
+                            <end>39</end>
+                        </item>
+                        <item name="t1_current">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>39</start>
+                            <end>41</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor3">
+                            <regex>\\s+\\|\\s+\\|\\s+\\|\\s+</regex>
+                            <start>41</start>
+                            <end>71</end>
+                        </item>
+                        <item name="t2_limit">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>71</start>
+                            <end>74</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor4">
+                            <regex>\\s+\\| PSLM\\d+-T\\d+\\s+\\|\\s+</regex>
+                            <start>74</start>
+                            <end>96</end>
+                        </item>
+                        <item name="t2_current">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>96</start>
+                            <end>98</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor5">
+                            <regex>\\s+\\|\\s+\\|\\s+\\|\\s+</regex>
+                            <start>98</start>
+                            <end>128</end>
+                        </item>
+                        <item name="t3_limit">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>128</start>
+                            <end>130</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor6">
+                            <regex>\\s+\\| PSLM\\d+-T\\d+\\s+\\|\\s+</regex>
+                            <start>130</start>
+                            <end>153</end>
+                        </item>
+                        <item name="t3_current">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>153</start>
+                            <end>155</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor7">
+                            <regex>\\s+\\|\\s+\\|\\s+\\|\\s+</regex>
+                            <start>155</start>
+                            <end>185</end>
+                        </item>
+                        <item name="t4_limit">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>185</start>
+                            <end>187</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor8">
+                            <regex>\\s+\\| PSLM\\d+-T\\d+\\s+\\|\\s+</regex>
+                            <start>187</start>
+                            <end>210</end>
+                        </item>
+                        <item name="t4_current">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>210</start>
+                            <end>212</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor9">
+                            <regex>\\s+\\|\\s+\\|\\s+\\|\\s+</regex>
+                            <start>212</start>
+                            <end>242</end>
+                        </item>
+                        <item name="t5_limit">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>242</start>
+                            <end>244</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor10">
+                            <regex>\\s+\\| PSLM\\d+-T\\d+\\s+\\|\\s+</regex>
+                            <start>244</start>
+                            <end>267</end>
+                        </item>
+                        <item name="t5_current">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>267</start>
+                            <end>269</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor11">
+                            <regex>\\s+\\|\\s+\\|\\s+\\|\\s+</regex>
+                            <start>269</start>
+                            <end>299</end>
+                        </item>
+                        <item name="t6_limit">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>299</start>
+                            <end>301</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor12">
+                            <regex>\\s+\\| PSLM\\d+-T\\d+\\s+\\|\\s+</regex>
+                            <start>301</start>
+                            <end>324</end>
+                        </item>
+                        <item name="t6_current">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>324</start>
+                            <end>326</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor13">
+                            <regex>\\s+\\|\\s+\\|\\s+\\|\\s+</regex>
+                            <start>326</start>
+                            <end>356</end>
+                        </item>
+                        <item name="t7_limit">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>356</start>
+                            <end>358</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor14">
+                            <regex>\\s+\\| PSLM\\d+-T\\d+\\s+\\|\\s+</regex>
+                            <start>358</start>
+                            <end>381</end>
+                        </item>
+                        <item name="t7_current">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>381</start>
+                            <end>383</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor15">
+                            <regex>\\s+\\|\\s+\\|\\s+\\|\\s+</regex>
+                            <start>383</start>
+                            <end>413</end>
+                        </item>
+                        <item name="t8_limit">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>413</start>
+                            <end>415</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor16">
+                            <regex>\\s+\\| PSLM\\d+-T\\d+\\s+\\|\\s+</regex>
+                            <start>415</start>
+                            <end>438</end>
+                        </item>
+                        <item name="t8_current">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>438</start>
+                            <end>440</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor17">
+                            <regex>\\s+\\|\\s+\\|\\s+\\|\\s+</regex>
+                            <start>440</start>
+                            <end>470</end>
+                        </item>
+                        <item name="t9_limit">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>470</start>
+                            <end>473</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor18">
+                            <regex>\\s+\\| PSLM\\d+-T\\d+\\s+\\|\\s+</regex>
+                            <start>473</start>
+                            <end>495</end>
+                        </item>
+                        <item name="t9_current">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>495</start>
+                            <end>497</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor19">
+                            <regex>\\s+\\|\\s+\\|\\s+\\|\\s+</regex>
+                            <start>497</start>
+                            <end>527</end>
+                        </item>
+                        <item name="t10_limit">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>527</start>
+                            <end>529</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor20">
+                            <regex>\\s+\\| PSLM\\d+-T\\d+\\s+\\|\\s+</regex>
+                            <start>529</start>
+                            <end>552</end>
+                        </item>
+                        <item name="t10_current">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>552</start>
+                            <end>554</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor21">
+                            <regex>\\s+\\|\\s+\\|\\s+\\|\\s+</regex>
+                            <start>554</start>
+                            <end>584</end>
+                        </item>
+                        <item name="t11_limit">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>584</start>
+                            <end>586</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor22">
+                            <regex>\\s+\\| PSLM\\d+-T\\d+\\s+\\|\\s+</regex>
+                            <start>586</start>
+                            <end>609</end>
+                        </item>
+                        <item name="t11_current">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>609</start>
+                            <end>611</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor23">
+                            <regex>\\s+\\|\\s+\\|\\s+\\|\\s+</regex>
+                            <start>611</start>
+                            <end>641</end>
+                        </item>
+                        <item name="t12_limit">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>641</start>
+                            <end>643</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor24">
+                            <regex>\\s+\\| PSLM\\d+-T\\d+\\s+\\|\\s+</regex>
+                            <start>643</start>
+                            <end>666</end>
+                        </item>
+                        <item name="t12_current">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>666</start>
+                            <end>668</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor25">
+                            <regex>\\s+\\|\\s+\\|\\s+\\|\\s+</regex>
+                            <start>668</start>
+                            <end>698</end>
+                        </item>
+                        <item name="t13_limit">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>698</start>
+                            <end>700</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor26">
+                            <regex>\\s+\\| PSLM\\d+-T\\d+\\s+\\|\\s+</regex>
+                            <start>700</start>
+                            <end>723</end>
+                        </item>
+                        <item name="t13_current">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>723</start>
+                            <end>725</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor27">
+                            <regex>\\s+\\|\\s+\\|\\s+\\|\\s+</regex>
+                            <start>725</start>
+                            <end>755</end>
+                        </item>
+                        <item name="t14_limit">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>755</start>
+                            <end>757</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor28">
+                            <regex>\\s+\\| PSLM\\d+-T\\d+\\s+\\|\\s+</regex>
+                            <start>757</start>
+                            <end>780</end>
+                        </item>
+                        <item name="t14_current">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>780</start>
+                            <end>782</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor29">
+                            <regex>\\s+\\|\\s+\\|\\s+\\|\\s+</regex>
+                            <start>782</start>
+                            <end>812</end>
+                        </item>
+                        <item name="t15_limit">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>812</start>
+                            <end>814</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor30">
+                            <regex>\\s+\\| PSLM\\d+-T\\d+\\s+\\|\\s+</regex>
+                            <start>814</start>
+                            <end>837</end>
+                        </item>
+                        <item name="t15_current">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>837</start>
+                            <end>839</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor31">
+                            <regex>\\s+\\|\\s+\\|\\s+\\|\\s+</regex>
+                            <start>839</start>
+                            <end>869</end>
+                        </item>
+                        <item name="t16_limit">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>869</start>
+                            <end>871</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor32">
+                            <regex>\\s+\\| PSLM\\d+-T\\d+\\s+\\|\\s+</regex>
+                            <start>871</start>
+                            <end>894</end>
+                        </item>
+                        <item name="t16_current">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>894</start>
+                            <end>896</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor33">
+                            <regex>\\s+\\|\\s+\\|\\s+\\|\\s+</regex>
+                            <start>896</start>
+                            <end>926</end>
+                        </item>
+                        <item name="t17_limit">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>926</start>
+                            <end>928</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor34">
+                            <regex>\\s+\\| PSLM\\d+-T\\d+\\s+\\|\\s+</regex>
+                            <start>928</start>
+                            <end>951</end>
+                        </item>
+                        <item name="t17_current">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>951</start>
+                            <end>953</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor35">
+                            <regex>\\s+\\|\\s+\\|\\s+\\|\\s+</regex>
+                            <start>953</start>
+                            <end>983</end>
+                        </item>
+                        <item name="t18_limit">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>983</start>
+                            <end>985</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor36">
+                            <regex>\\s+\\| PSLM\\d+-T\\d+\\s+\\|\\s+</regex>
+                            <start>985</start>
+                            <end>1008</end>
+                        </item>
+                        <item name="t18_current">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>1008</start>
+                            <end>1010</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor37">
+                            <regex>\\s+\\|\\s+\\|\\s+\\|\\s+</regex>
+                            <start>1010</start>
+                            <end>1040</end>
+                        </item>
+                        <item name="t19_limit">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>1040</start>
+                            <end>1042</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor38">
+                            <regex>\\s+\\| PSLM\\d+-T\\d+\\s+\\|\\s+</regex>
+                            <start>1042</start>
+                            <end>1065</end>
+                        </item>
+                        <item name="t19_current">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>1065</start>
+                            <end>1067</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor39">
+                            <regex>\\s+\\|\\s+\\|\\s+\\|\\s+</regex>
+                            <start>1067</start>
+                            <end>1097</end>
+                        </item>
+                        <item name="t20_limit">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>1097</start>
+                            <end>1099</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor40">
+                            <regex>\\s+\\| PSLM\\d+-T\\d+\\s+\\|\\s+</regex>
+                            <start>1099</start>
+                            <end>1122</end>
+                        </item>
+                        <item name="t20_current">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>1122</start>
+                            <end>1124</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor41">
+                            <regex>\\s+\\|\\s+\\|\\s+\\|\\s+</regex>
+                            <start>1124</start>
+                            <end>1154</end>
+                        </item>
+                        <item name="t21_limit">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>1154</start>
+                            <end>1156</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor42">
+                            <regex>\\s+\\| PSLM\\d+-T\\d+\\s+\\|\\s+</regex>
+                            <start>1156</start>
+                            <end>1179</end>
+                        </item>
+                        <item name="t21_current">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>1179</start>
+                            <end>1181</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor43">
+                            <regex>\\s+\\|\\s+\\|\\s+\\|\\s+</regex>
+                            <start>1181</start>
+                            <end>1211</end>
+                        </item>
+                        <item name="t22_limit">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>1211</start>
+                            <end>1213</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor44">
+                            <regex>\\s+\\| PSLM\\d+-T\\d+\\s+\\|\\s+</regex>
+                            <start>1213</start>
+                            <end>1236</end>
+                        </item>
+                        <item name="t22_current">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>1236</start>
+                            <end>1238</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor45">
+                            <regex>\\s+\\|</regex>
+                            <start>1238</start>
+                            <end>1253</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>| PSLM1     | 70        | PSLM1-T1   | 36              |
+|           | 101       | PSLM1-T2   | 59              |
+|           | 93        | PSLM1-T3   | 44              |
+|           | 85        | PSLM1-T4   | 42              |
+|           | 83        | PSLM1-T5   | 39              |
+|           | 72        | PSLM1-T6   | 31              |
+|           | 88        | PSLM1-T7   | 37              |
+|           | 81        | PSLM1-T8   | 36              |
+|           | 101       | PSLM1-T9   | 37              |
+|           | 79        | PSLM1-T10  | 36              |
+|           | 76        | PSLM1-T11  | 32              |
+|           | 64        | PSLM1-T12  | 23              |
+|           | 69        | PSLM1-T13  | 28              |
+|           | 77        | PSLM1-T14  | 36              |
+|           | 73        | PSLM1-T15  | 33              |
+|           | 78        | PSLM1-T16  | 37              |
+|           | 80        | PSLM1-T17  | 41              |
+|           | 92        | PSLM1-T18  | 50              |
+|           | 89        | PSLM1-T19  | 49              |
+|           | 76        | PSLM1-T20  | 35              |
+|           | 71        | PSLM1-T21  | 31              |
+|           | 75        | PSLM1-T22  | 35              |</sampleMatch>
+                    <optional>true</optional>
+                </item>
+            </regexMaps>
+        </item>
+        <item type="com.fnfr.svt.mapping.table.TabularMapperProperties"/>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="chassis show critical-temps">
+        <application>
+            <item>com.fnfr.svt.applications.cmd</item>
+            <item>com.fnfr.itest.application.serial</item>
+            <item>com.fnfr.svt.applications.ssh</item>
+            <item>com.fnfr.svt.applications.telnet</item>
+        </application>
+    </applicabilityProperties>
+</ResponseMap>

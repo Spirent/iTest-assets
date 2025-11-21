@@ -1,0 +1,960 @@
+<?xml version="1.0"?>
+<testCase version="7.2.0.201812200559">
+    <general>
+        <documentation>Tcl Procedure Library - File and Directory Commands</documentation>
+        <notes>Language: TCL
+Function: File and directory procedures to be called from Python test cases. 
+
+See iTest UsersGuide for &quot;file&quot; commands and &quot;writeFile&quot; documentation. The procedures below attempt to offer similar syntax:
+
+file_copy
+file_delete
+file_exists
+file_isDirectory
+file_isFile
+file_list
+file_mkdir
+file_mkTempDir
+file_mkTempFile
+file_move
+file_pathToUri
+file_rmdir
+file_uriToPath
+writeFile
+
+
+</notes>
+        <owner>Malcom Terry</owner>
+        <isProcedureLibrary>true</isProcedureLibrary>
+    </general>
+    <procedures>
+        <item name="main">
+            <steps>
+                <item guid="d69aa5bc-c056-4c0e-9b91-012564d477ff" action="comment" useFieldsInCommand="false">
+                    <command>
+                        <body>Procedure Library</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+        </item>
+        <item name="file_copy" isPublic="true">
+            <description>Copying files to a destination URI</description>
+            <steps>
+                <item guid="6b6dcbf5-d8ea-46f9-8d30-265ea63c95f0" action="eval" useFieldsInCommand="false">
+                    <command>
+                        <body>set files_copied 0</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="cd9a2c2f-b748-449e-b101-9d68c2a6350b" action="eval" useFieldsInCommand="false">
+                    <command>
+                        <body>set srcURI ${arg[1]}</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="26475138-be60-4aed-80e2-0c264a7d579d" action="eval" useFieldsInCommand="false">
+                    <command>
+                        <body>set dstURI ${arg[2]}</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="50a92c09-1176-4e33-a58e-b6c2438a0f74" action="eval" useFieldsInCommand="false">
+                    <command>
+                        <body>set options &quot;&quot;</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="0672b43f-006b-463f-98ea-9dccd9b99fe1" action="if" useFieldsInCommand="false">
+                    <command>
+                        <body>$y==0 &amp;&amp; $r==0</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="de0855f6-6713-4a22-a739-5c14344b4201" action="then" useFieldsInCommand="false">
+                            <nestedSteps>
+                                <item guid="4083f865-7285-4ba9-ade8-12ac24dd5a02" action="eval" useFieldsInCommand="false">
+                                    <command>
+                                        <body>set files_copied [file copy $srcURI $dstURI]</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="6ef65a6f-b80b-4104-831a-9810edf65b8c" action="elseif" useFieldsInCommand="false">
+                            <command>
+                                <body>$y==1 &amp;&amp; $r==0</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="c8f98fbb-a261-433e-b88f-aa5fb8f6636c" action="eval" useFieldsInCommand="false">
+                                    <command>
+                                        <body>set files_copied [file copy -y $srcURI $dstURI]</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="2b024ecf-d33a-4abc-a08f-624b3d0e0afd" action="elseif" useFieldsInCommand="false">
+                            <command>
+                                <body>$y==0 &amp;&amp; $r==1</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="86b7e8f3-e013-46e8-b1a2-75fed1a1db29" action="eval" useFieldsInCommand="false">
+                                    <command>
+                                        <body>set files_copied [file copy -r $srcURI $dstURI]</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="85882e1a-405e-4739-b6e4-48af17c65d79" action="elseif" useFieldsInCommand="false">
+                            <command>
+                                <body>$y==1 &amp;&amp; $r==1</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="15140a82-c7f2-43b5-b598-05c28fd5b1dd" action="eval" useFieldsInCommand="false">
+                                    <command>
+                                        <body>set files_copied [file copy -y -r $srcURI $dstURI]</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="bb95d0af-cc46-490c-ab42-2dd7eeab3aeb" action="return">
+                    <command>
+                        <body>$files_copied</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <author>Malcom Terry</author>
+            <multilineDescription>Copies files from the specified source directory or file URI to the
+specified destination. Creates destination directories as needed.
+
+Syntax:
+call file_copy [-r] [-y] sourceURI destinationURI
+
+Returns:
+number of files copied
+
+Limitations:
+-r must have a value of 0 or 1
+-y must have a value of 0 or 1</multilineDescription>
+            <arguments>
+                <item name="y">
+                    <description>1=yes-overwrite existing files</description>
+                    <defaultValue>0</defaultValue>
+                </item>
+                <item name="r">
+                    <description>1=recursive</description>
+                    <defaultValue>0</defaultValue>
+                </item>
+            </arguments>
+        </item>
+        <item name="file_delete" isPublic="true">
+            <description>Delete files</description>
+            <steps>
+                <item guid="37b38cfd-df18-4199-820f-23fba8d4989e" action="eval" useFieldsInCommand="false">
+                    <command>
+                        <body>set files_deleted 0</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="29aa2e70-b1ce-432d-b475-73e9704ed07a" action="eval" useFieldsInCommand="false">
+                    <command>
+                        <body>set URI ${arg[1]}</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="7da443b6-133a-494c-92ea-632216fd15f9" action="if" useFieldsInCommand="false">
+                    <command>
+                        <body>$r==0</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="21f8757e-afc3-43ae-a8fd-bea885eefc76" action="then" useFieldsInCommand="false">
+                            <nestedSteps>
+                                <item guid="c82f7f93-8ab1-4a5e-a04e-501eb78bc1ef" action="eval" useFieldsInCommand="false">
+                                    <command>
+                                        <body>set files_deleted [file delete $URI]</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="094b3c4d-6200-4e7e-a27f-5a3a8be40c6a" action="else" useFieldsInCommand="false">
+                            <nestedSteps>
+                                <item guid="c81e8c58-922d-479e-9c32-68618854f1e3" action="eval" useFieldsInCommand="false">
+                                    <command>
+                                        <body>set files_deleted [file delete -r $URI]</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="ea412d18-ab2a-44ff-9069-f3ebf8f255fb" action="return">
+                    <command>
+                        <body>$files_deleted</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <author>Malcom Terry</author>
+            <multilineDescription>Syntax:
+call file_delete [-r] URI
+
+Returns:
+Number of files deleted</multilineDescription>
+            <arguments>
+                <item name="r">
+                    <description>1=recursive</description>
+                    <defaultValue>0</defaultValue>
+                </item>
+            </arguments>
+        </item>
+        <item name="file_exists" isPublic="true">
+            <description>Determine whether a file or folder exists</description>
+            <steps>
+                <item guid="6c133c30-1317-4a4b-8c3b-8163486cfed1" action="eval" useFieldsInCommand="false">
+                    <command>
+                        <body>set result 0</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="c6c204de-5783-4701-8979-75bd3bbabea5" action="eval" useFieldsInCommand="false">
+                    <command>
+                        <body>set URI ${arg[1]}</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="effb58bf-522d-485e-9f64-f309348b5bca" action="eval" useFieldsInCommand="false">
+                    <command>
+                        <body>set result [file exists $URI]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="4a3ba621-7671-41e3-abc2-ba14193c9d85" action="return">
+                    <command>
+                        <body>$result</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <author>Malcom Terry</author>
+            <multilineDescription>Syntax:
+call file_exists URI
+
+Returns:
+1 if URI exists, otherwise 0</multilineDescription>
+        </item>
+        <item name="file_isDirectory" isPublic="true">
+            <description>Determine whether a URI</description>
+            <steps>
+                <item guid="b11acd6c-408c-438f-b102-2612fc132480" action="eval" useFieldsInCommand="false">
+                    <command>
+                        <body>set result 0</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="17844e85-89a5-4361-8649-e398c6d7fc89" action="eval" useFieldsInCommand="false">
+                    <command>
+                        <body>set URI ${arg[1]}</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="ef4d3f76-1694-47eb-81a8-5225a409de18" action="eval" useFieldsInCommand="false">
+                    <command>
+                        <body>set result [file isDirectory $URI]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="68e5ad6c-c849-4f73-868e-e232cc9d09c8" action="return">
+                    <command>
+                        <body>$result</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <author>Malcom Terry</author>
+            <multilineDescription>Syntax:
+call file_isDirectory URI
+
+Returns:
+1 if URI exists, otherwise 0</multilineDescription>
+        </item>
+        <item name="file_isFile" isPublic="true">
+            <description>Determine whether a URI represents a</description>
+            <steps>
+                <item guid="3e112372-99ab-4ebc-8881-053fcc8db55a" action="eval" useFieldsInCommand="false">
+                    <command>
+                        <body>set result 0</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="7f51ff96-77ee-42d3-ab42-66a2bfd2d8bd" action="eval" useFieldsInCommand="false">
+                    <command>
+                        <body>set URI ${arg[1]}</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="8a1799d6-6f6c-48a6-b69a-a1c07418c05b" action="eval" useFieldsInCommand="false">
+                    <command>
+                        <body>set result [file isFile $URI]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="515e6a92-c5b4-4953-9e22-a3df2ff3905f" action="return">
+                    <command>
+                        <body>$result</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <author>Malcom Terry</author>
+            <multilineDescription>Syntax:
+call file_isFile URI
+
+Returns:
+1 if URI exists, otherwise 0</multilineDescription>
+        </item>
+        <item name="file_list" isPublic="true">
+            <description>List the files in a URI</description>
+            <steps>
+                <item guid="03ee2be8-db62-4028-b157-48db3533efc1" action="eval" useFieldsInCommand="false">
+                    <command>
+                        <body>set result {}</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="0ace8322-b3f9-4e34-81b6-95c6dba3a8d1" action="eval" useFieldsInCommand="false">
+                    <command>
+                        <body>set URI ${arg[1]}</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="43e91b3b-404d-4835-a421-793b35daf7f1" action="if" useFieldsInCommand="false">
+                    <command>
+                        <body>$r==0 &amp;&amp; $p==0 &amp;&amp; $nolimit==0</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="74a0a39d-63a1-4968-8ea1-c697afc445db" action="then" useFieldsInCommand="false">
+                            <nestedSteps>
+                                <item guid="f08dc586-166f-42d2-99ec-4ff3a11f4eff" action="eval" useFieldsInCommand="false">
+                                    <command>
+                                        <body>set result [file list $URI]</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="6cad8331-ee32-46f4-b186-af2d11bf4c0c" action="elseif" useFieldsInCommand="false">
+                            <command>
+                                <body>$r==0 &amp;&amp; $p==0 &amp;&amp; $nolimit==1</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="0277aa15-f681-4941-a2a3-16047b9e269e" action="eval" useFieldsInCommand="false">
+                                    <command>
+                                        <body>set result [file list -nolimit $URI]</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="c2c87fd9-6162-44fa-8596-3f12f8716bad" action="elseif" useFieldsInCommand="false">
+                            <command>
+                                <body>$r==0 &amp;&amp; $p==1 &amp;&amp; $nolimit==0</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="edd81bc2-4e39-4690-8fe2-5a78088a1579" action="eval" useFieldsInCommand="false">
+                                    <command>
+                                        <body>set result [file list -p $URI]</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="9106fdf3-8fcf-497e-bcbd-69443a91b4bc" action="elseif" useFieldsInCommand="false">
+                            <command>
+                                <body>$r==0 &amp;&amp; $p==1 &amp;&amp; $nolimit==1</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="754f843c-9522-472a-afad-0a412dbbecfd" action="eval" useFieldsInCommand="false">
+                                    <command>
+                                        <body>set result [file list -p -nolimit $URI]</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="7d52d553-0f75-48fd-a0d3-2f9ffc11ef06" action="elseif" useFieldsInCommand="false">
+                            <command>
+                                <body>$r==1 &amp;&amp; $p==0 &amp;&amp; $nolimit==0</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="4652991e-b622-4f16-b525-87f5bbda0eec" action="eval" useFieldsInCommand="false">
+                                    <command>
+                                        <body>set result [file list -r $URI]</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="a205fcbe-4bda-41a6-93f1-692edf0dd940" action="elseif" useFieldsInCommand="false">
+                            <command>
+                                <body>$r==1 &amp;&amp; $p==0 &amp;&amp; $nolimit==1</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="4a8fa8ec-85d5-4a26-809e-258e8a4677a7" action="eval" useFieldsInCommand="false">
+                                    <command>
+                                        <body>set result [file list -r -nolimit $URI]</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="02993ee0-89ec-44f0-befb-1a7755e027a8" action="elseif" useFieldsInCommand="false">
+                            <command>
+                                <body>$r==1 &amp;&amp; $p==1 &amp;&amp; $nolimit==0</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="f058a6ef-9c29-4980-9242-8eb32305c53c" action="eval" useFieldsInCommand="false">
+                                    <command>
+                                        <body>set result [file list -r -p $URI]</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="80e26e5c-c71d-4040-9763-48f19d827b97" action="elseif" useFieldsInCommand="false">
+                            <command>
+                                <body>$r==1 &amp;&amp; $p==1 &amp;&amp; $nolimit==1</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="773b5960-dd94-44e8-b2f4-dc3fb6e2d6d9" action="eval" useFieldsInCommand="false">
+                                    <command>
+                                        <body>set result [file list -r -p -nolimit $URI]</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="e20f1d16-86c0-4d94-9ee2-2a82e9ec3eb9" action="return">
+                    <command>
+                        <body>$result</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <author>Malcom Terry</author>
+            <multilineDescription>Returns the list of files in the specified URI. If the URI does not exist, returns an empty list.
+
+Syntax:
+call file_list [-r] [-p] [-nolimit] URI
+
+Returns: 
+Returns a text list of URIs for all matching files and folders. The list is limited to 5000 files
+(see the -nolimit argument).
+</multilineDescription>
+            <arguments>
+                <item name="r">
+                    <description>1=recursive</description>
+                    <defaultValue>0</defaultValue>
+                </item>
+                <item name="p">
+                    <description>1=return a list of URIs - one per line
+0=return a list of URIs - space-delimited</description>
+                    <defaultValue>0</defaultValue>
+                </item>
+                <item name="nolimit">
+                    <description>0=limit to number of URIs returned to 5000
+1=no limit to number of URIs returned (For a large directory, this can be very
+slow and an out-of-memory error is possible.)</description>
+                    <defaultValue>0</defaultValue>
+                </item>
+            </arguments>
+        </item>
+        <item name="file_mkdir" isPublic="true">
+            <description>Add a directory</description>
+            <steps>
+                <item guid="46818fb4-9083-4cc6-a702-b14eed5c18fd" action="eval" useFieldsInCommand="false">
+                    <command>
+                        <body>set result &quot;&quot;</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="ac2c3e6a-ca23-4317-b4fe-0a4fbdb966be" action="eval" useFieldsInCommand="false">
+                    <command>
+                        <body>set URI ${arg[1]}</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="b17a6865-efe3-4889-bc6b-85660b2499e2" action="eval" useFieldsInCommand="false">
+                    <command>
+                        <body>set result [file mkdir $URI]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <author>Malcom Terry</author>
+            <multilineDescription>Creates the specified directory. If a directory already exists at the specified location, then the
+mkdir command succeeds and has no effect.
+
+Syntax:
+call file_mkdir URI
+
+Returns: nothing</multilineDescription>
+        </item>
+        <item name="file_mkTempDir" isPublic="true">
+            <description>Create a unique temporary</description>
+            <steps>
+                <item guid="6bc19520-976b-4903-8c7a-8299b2129a7b" action="eval" useFieldsInCommand="false">
+                    <command>
+                        <body>set result &quot;&quot;</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="b0321c31-6132-4dcf-9a05-91316d53c167" action="eval" useFieldsInCommand="false">
+                    <command>
+                        <body>set prefix [get {arg[1]} iTestTempDir_]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="e6382f85-ad33-4e9d-b5ec-e89ae6113a4e" action="eval" useFieldsInCommand="false">
+                    <command>
+                        <body>set suffix [get {arg[2]} &quot;&quot;]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="6235e28c-296e-4a2a-b749-d8fb321edf2f" action="if" useFieldsInCommand="false">
+                    <command>
+                        <body>$k</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="3c8610cc-6216-4ece-b688-904e36cd6d33" action="then" useFieldsInCommand="false">
+                            <nestedSteps>
+                                <item guid="a37d4a7b-3389-4a20-9373-2815026ad2e8" action="eval" useFieldsInCommand="false">
+                                    <command>
+                                        <body>set result [file mkTempDir -k $prefix $suffix]</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="bc37a478-849a-48ed-9c28-34dc7768d284" action="else" useFieldsInCommand="false">
+                            <nestedSteps>
+                                <item guid="e86a97e2-1312-4ad4-ab21-c2223b091715" action="eval" useFieldsInCommand="false">
+                                    <command>
+                                        <body>set result [file mkTempDir $prefix $suffix]</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="ac1d1f77-322e-472f-ae76-2bf7733b3a20" action="return">
+                    <command>
+                        <body>$result</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <author>Malcom Terry</author>
+            <multilineDescription>Create a unique temporary directory named iTestTempDir_*, where * is a random number.
+
+By default, the temporary directory and its contents are deleted when the current test case
+execution has completed (or aborted). Use the -k option to keep the directory.
+
+Syntax:
+call file_mkTempDir [-k] [prefix] [suffix]
+
+Returns:
+URI of the temporary directory
+
+</multilineDescription>
+            <arguments>
+                <item name="k">
+                    <description>1=Keep temporary directory after test case execution terminated</description>
+                    <defaultValue>0</defaultValue>
+                </item>
+            </arguments>
+        </item>
+        <item name="file_mkTempFile" isPublic="true">
+            <description>Make Temporary File</description>
+            <steps>
+                <item guid="92864e17-97b9-447f-95fa-270e6ad1af0c" action="eval" useFieldsInCommand="false">
+                    <command>
+                        <body>set result &quot;&quot;</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="c64365fa-dc13-4a03-ac9a-53e26f86a127" action="eval" useFieldsInCommand="false">
+                    <command>
+                        <body>set prefix [get {arg[1]} iTestTempFile_]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="d82a107c-db1f-4b7b-88b5-f9fa11f88361" action="eval" useFieldsInCommand="false">
+                    <command>
+                        <body>set suffix [get {arg[2]} &quot;.tmp&quot;]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="2f7f223d-3467-4136-8243-173b261ca2bf" action="if" useFieldsInCommand="false">
+                    <command>
+                        <body>$k</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="3f95f287-c744-46ad-9484-5898e774efb6" action="then" useFieldsInCommand="false">
+                            <nestedSteps>
+                                <item guid="742c7ea5-9489-423c-9782-4ca6d20bf4e9" action="eval" useFieldsInCommand="false">
+                                    <command>
+                                        <body>set result [file mkTempFile -k $prefix $suffix]</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="3f11b7ad-bdee-4ce7-b325-2fb3bb772262" action="else" useFieldsInCommand="false">
+                            <nestedSteps>
+                                <item guid="2b2674ab-5ff9-4eab-aef1-710c125dcbfb" action="eval" useFieldsInCommand="false">
+                                    <command>
+                                        <body>set result [file mkTempFile $prefix $suffix]</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="6334c0b5-9473-4560-80ef-df80050e8da5" action="return">
+                    <command>
+                        <body>$result</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <author>Malcom Terry</author>
+            <multilineDescription>Create a unique temporary file named iTestTempFile_*, where * is a random number.
+
+By default, the temporary file is deleted when the current test case execution has completed (or
+aborted). Use the -k option to keep the file.
+
+Syntax:
+call file_mkTempFile [-k] [prefix] [suffix]
+
+Returns: URI of the temporary file</multilineDescription>
+            <arguments>
+                <item name="k">
+                    <description>1=Keep temporary file after test case execution terminated</description>
+                    <defaultValue>0</defaultValue>
+                </item>
+            </arguments>
+        </item>
+        <item name="file_move" isPublic="true">
+            <description>Move or rename files to a destination URI</description>
+            <steps>
+                <item guid="16d729b3-18f1-4b69-84a1-73faf3c3e341" action="eval" useFieldsInCommand="false">
+                    <command>
+                        <body>set files_moved 0</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="c4d1aea4-23cc-49b8-a2a8-63c8e02b129b" action="eval" useFieldsInCommand="false">
+                    <command>
+                        <body>set srcURI ${arg[1]}</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="de6f9c6a-199d-4ba6-81fe-cedcfd7d2aaf" action="eval" useFieldsInCommand="false">
+                    <command>
+                        <body>set dstURI ${arg[2]}</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="9319388b-6b7c-4888-ad1f-8343f5cd9600" action="eval" useFieldsInCommand="false">
+                    <command>
+                        <body>set options &quot;&quot;</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="56384e49-19ad-4f85-879a-25024f50935b" action="if" useFieldsInCommand="false">
+                    <command>
+                        <body>$y==0</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="79638e34-0996-4eca-a100-5618e1483e1f" action="then" useFieldsInCommand="false">
+                            <nestedSteps>
+                                <item guid="01522a6a-7099-4e35-9b94-9fed93029f7e" action="eval" useFieldsInCommand="false">
+                                    <command>
+                                        <body>set files_moved [file move $srcURI $dstURI]</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="422bfa56-4cc6-4e5c-aa1c-7fb70287b4a7" action="elseif" useFieldsInCommand="false">
+                            <command>
+                                <body>$y==1</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="f7c3c59c-2477-4826-a6b2-da480c561a53" action="eval" useFieldsInCommand="false">
+                                    <command>
+                                        <body>set files_moved [file move -y $srcURI $dstURI]</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="f46475b1-4134-457a-bbb5-ef7b4748b8ee" action="return">
+                    <command>
+                        <body>$files_moved</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <author>Malcom Terry</author>
+            <multilineDescription>Moves files from the specified source directory or file URI to the
+specified destination. Creates destination directories as needed.
+
+Syntax:
+call file_move [-y] sourceURI destinationURI
+
+Returns:
+Number of files moved (always 0 when empty directories are moved).
+Number is limited to 5000, even if more are moved.
+
+Limitations:
+-y must have a value of 0 or 1</multilineDescription>
+            <arguments>
+                <item name="y">
+                    <description>1=yes-overwrite existing files</description>
+                    <defaultValue>0</defaultValue>
+                </item>
+            </arguments>
+        </item>
+        <item name="file_pathToUri" isPublic="true">
+            <description>Get the URI of a path</description>
+            <steps>
+                <item guid="6cd0e100-5624-4546-a7bd-3085c46e98e6" action="eval" useFieldsInCommand="false">
+                    <command>
+                        <body>set result &quot;&quot;</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="83816ca0-4e6c-4032-aef2-27ff6d0be638" action="eval" useFieldsInCommand="false">
+                    <command>
+                        <body>set path ${arg[1]}</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="c4d7aaa9-2015-4e5e-9803-b7daa99042ad" action="eval" useFieldsInCommand="false">
+                    <command>
+                        <body>set result [file pathToUri $path]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="74cf49eb-4f99-495d-a3bc-ea61dbac85e7" action="return">
+                    <command>
+                        <body>$result</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <author>Malcom Terry</author>
+            <multilineDescription>Syntax: 
+call file_pathToURI &lt;path&gt;
+
+Returns:
+URI
+
+Examples:
+file:/C:/temp
+project://my_project
+</multilineDescription>
+        </item>
+        <item name="file_rmdir" isPublic="true">
+            <description>Delete a directory</description>
+            <steps>
+                <item guid="37175c97-964c-41b4-ad5c-0df2019f8bc7" action="eval" useFieldsInCommand="false">
+                    <command>
+                        <body>set result &quot;&quot;</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="e6c0e460-8952-4b17-8d84-5c2d9586110b" action="eval" useFieldsInCommand="false">
+                    <command>
+                        <body>set URI ${arg[1]}</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="8b95d6e8-c088-4169-bd2d-6010d211d382" action="eval" useFieldsInCommand="false">
+                    <command>
+                        <body>set result [file rmdir $URI]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="645e9b9c-8621-42e4-90b7-0817d6e660d1" action="return">
+                    <command>
+                        <body>$result</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <author>Malcom Terry</author>
+            <multilineDescription>Deletes the specified folder and its contents recursively.
+
+Syntax:
+call file_rmdir URI
+
+Returns: nothing
+</multilineDescription>
+        </item>
+        <item name="file_uriToPath" isPublic="true">
+            <description>Get the path of a URI</description>
+            <steps>
+                <item guid="fcec95b8-43d5-48d0-8cff-ad0001f2cbe7" action="eval" useFieldsInCommand="false">
+                    <command>
+                        <body>set result &quot;&quot;</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="6ebd8196-d90a-43d5-93f5-88bfc5370da5" action="eval" useFieldsInCommand="false">
+                    <command>
+                        <body>set URI ${arg[1]}</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="395c95e6-63dc-4102-9eac-a463da60e0b0" action="eval" useFieldsInCommand="false">
+                    <command>
+                        <body>set result [string map {\\\\ /} [file uriToPath $URI]]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="464e247c-01e0-484e-b3c0-cd8909f40b7e" action="return">
+                    <command>
+                        <body>$result</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <author>Malcom Terry</author>
+            <multilineDescription>Syntax: 
+call file_uriToPath &lt;URI&gt;
+
+Returns:
+path to file or directory
+
+Examples:
+c:\\temp
+C:\\Users\\user1\\workspace\\my_project</multilineDescription>
+        </item>
+        <item name="writeFile" isPublic="true">
+            <description>Write information to a file</description>
+            <steps>
+                <item guid="d37c8226-71af-454e-9d33-dd58f0293f1d" action="eval" useFieldsInCommand="false">
+                    <command>
+                        <body>set result &quot;&quot;</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="d4488a20-b34d-421a-9223-0419b58cea5f" action="eval" useFieldsInCommand="false">
+                    <command>
+                        <body>set URI ${arg[1]}</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="e15d8827-33fb-4f1e-877e-ca2e9925f20e" action="eval" useFieldsInCommand="false">
+                    <command>
+                        <body>set file_contents ${arg[2]}</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="c1aac5ea-529b-4471-8ce5-1a9c8a360a97" action="if" useFieldsInCommand="false">
+                    <command>
+                        <body>[string tolower [string trim $mode]] == &quot;append&quot;</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="4a6df3a9-7561-44b7-b92a-e83fd44531de" action="then" useFieldsInCommand="false">
+                            <nestedSteps>
+                                <item guid="7537c2a2-70ce-4a53-9302-060d4d96b3c3" action="writeFile" useFieldsInCommand="false">
+                                    <command>
+                                        <body>$URI $file_contents</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.execution.builtin.exec.WriteFilePropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="2cc37ecb-0e3a-4d84-af4f-a668a942deed" action="else" useFieldsInCommand="false">
+                            <nestedSteps>
+                                <item guid="40fad02c-a6ec-4af0-ad4f-db7ea60abee7" action="writeFile" useFieldsInCommand="false">
+                                    <command>
+                                        <body>$URI $file_contents</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.execution.builtin.exec.WriteFilePropertyGroup">
+                                        <appendMode>Overwrite</appendMode>
+                                    </applicationProperties>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <author>Malcom Terry</author>
+            <multilineDescription>Syntax: 
+call writeFile -mode &lt;Append|Overwrite&gt; &lt;URI&gt; &lt;file contents&gt;
+
+Returns: nothing
+
+Limitations:
+File type: Text
+Line delimiter: PLATFORM
+Encoding: UTF-8
+
+NOTES:
+1. The writeFile iTest command for Python language may be supported in future versions of iTest.
+</multilineDescription>
+            <arguments>
+                <item name="mode">
+                    <description>Append | Overwrite</description>
+                    <defaultValue>Append</defaultValue>
+                </item>
+            </arguments>
+        </item>
+    </procedures>
+</testCase>

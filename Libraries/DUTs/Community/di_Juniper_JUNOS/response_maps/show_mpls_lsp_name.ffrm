@@ -1,0 +1,75 @@
+<?xml version="1.0" ?><ResponseMap version="5.1.0.77511">
+    <sampleDictionary>
+        <item name="sample1">
+            <action>
+                <command>
+                    <body>show mpls lsp name MX_960_2-9K_LER-0001 detail | find Received</body>
+                </command>
+            </action>
+            <responseBody>Received RRO (ProtectionFlag 1=Available 2=InUse 4=B/W 8=Node 10=SoftPreempt 20=Node-ID):
+          0.0.0.0(flag=0x21 Label=44922) 0.0.0.0(flag=1 Label=44922) 0.0.0.0(flag=0x20 Label=76712) 0.0.0.0(Label=76712) 0.0.0.0(flag=0x20 Label=3) 0.0.0.0(Label=3)
+Total 1 displayed, Up 1, Down 0
+
+Egress LSP: 15466 sessions
+Total 0 displayed, Up 0, Down 0
+
+Transit LSP: 2 sessions
+Total 0 displayed, Up 0, Down 0
+
+</responseBody>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="pattern1">
+                    <groups>
+                        <item name="hop">
+                            <regex>((\\d+\\.)+\\d+)</regex>
+                            <named>true</named>
+                            <start>0</start>
+                            <end>12</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="((\d+\.)+\d+)">one or more of digit and dots</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>0.0.0.0</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+                <item name="pattern2">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Label=</regex>
+                            <start>0</start>
+                            <end>6</end>
+                        </item>
+                        <item name="label">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>6</start>
+                            <end>11</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>Label=44922</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+            </regexMaps>
+        </item>
+        <item type="com.fnfr.svt.mapping.block.documents.BlockMapperProperties">
+            <BlockMaps name="container"/>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="show_mpls_te_tunnels_detail"/>
+</ResponseMap>

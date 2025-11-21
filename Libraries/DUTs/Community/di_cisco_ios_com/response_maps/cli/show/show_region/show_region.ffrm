@@ -1,0 +1,129 @@
+<?xml version="1.0"?>
+<ResponseMap version="6.0.0.18638fa">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="command">
+                <command>
+                    <body>show region</body>
+                </command>
+            </action>
+            <responseBody>Region Manager:
+
+      Start         End     Size(b)  Class  Media  Name
+ 0x0F000000  0x0FFFFFFF    16777216  Iomem  R/W    iomem
+ 0x60000000  0x6EFFFFFF   251658240  Local  R/W    main
+ 0x60008F10  0x6265684F    40163648  IText  R/O    main:text
+ 0x62658000  0x63C0E35F    22766432  IData  R/W    main:data
+ 0x63C0E360  0x64222D9F     6376000  IBss   R/W    main:bss
+ 0x64222DA0  0x65222D9F    16777216  Local  R/W    main:heap
+ 0x65222DF8  0x66222DF7    16777216  Local  R/W    main:heap
+ 0x6E000000  0x6EFFFFFF    16777216  Local  R/W    main:heap
+ 0x7F000000  0x7FFFFFFF    16777216  Iomem  R/W    iomem:(iomem_cwt)
+ 0x80000000  0x8EFFFFFF   251658240  Local  R/W    main:(main_k0)
+ 0xA0000000  0xAEFFFFFF   251658240  Local  R/W    main:(main_k1)
+
+
+Free Region Manager:
+
+      Start         End     Size(b)  Class  Media  Name
+ 0x66222E50  0x6DFFFFA7   131977560  Local  R/W    heap
+
+
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;prompt&gt;R1#&lt;/prompt&gt;
+    &lt;echo&gt;show region&lt;/echo&gt;
+    &lt;promptName&gt;privilaged&lt;/promptName&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.3</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.block.documents.BlockMapperProperties">
+            <BlockMaps name="container">
+                <nodes>
+                    <item type="com.fnfr.svt.mapping.block.documents.ResponseMapNodeContainer" name="container">
+                        <maxOccurences>0</maxOccurences>
+                        <nodes>
+                            <item type="com.fnfr.svt.mapping.block.documents.ResponseMapBlock" name="header">
+                                <lines>
+                                    <item>
+                                        <tokens>
+                                            <item representativeValue="Free" parser="Word" isOptional="true"/>
+                                            <item representativeValue=" " parser="Whitespace" isOptional="true" isVariable="true"/>
+                                            <item representativeValue="Region" parser="Word"/>
+                                            <item representativeValue=" " parser="Whitespace" isVariable="true"/>
+                                            <item representativeValue="Manager" parser="Word"/>
+                                            <item representativeValue=":" parser="Punctuation"/>
+                                        </tokens>
+                                    </item>
+                                    <item/>
+                                    <item>
+                                        <tokens>
+                                            <item representativeValue="      " parser="Whitespace" isVariable="true"/>
+                                            <item representativeValue="Start" parser="Word"/>
+                                            <item representativeValue="         " parser="Whitespace" isVariable="true"/>
+                                            <item representativeValue="End" parser="Word"/>
+                                            <item representativeValue="     " parser="Whitespace" isVariable="true"/>
+                                            <item representativeValue="Size" parser="Word"/>
+                                            <item representativeValue="(" parser="Punctuation"/>
+                                            <item representativeValue="b" parser="Word"/>
+                                            <item representativeValue=")" parser="Punctuation"/>
+                                            <item representativeValue="  " parser="Whitespace" isVariable="true"/>
+                                            <item representativeValue="Class" parser="Word"/>
+                                            <item representativeValue="  " parser="Whitespace" isVariable="true"/>
+                                            <item representativeValue="Media" parser="Word"/>
+                                            <item representativeValue="  " parser="Whitespace" isVariable="true"/>
+                                            <item representativeValue="Name" parser="Word"/>
+                                        </tokens>
+                                    </item>
+                                </lines>
+                            </item>
+                            <item type="com.fnfr.svt.mapping.block.documents.ResponseMapBlock" name="body">
+                                <maxOccurences>0</maxOccurences>
+                                <lines>
+                                    <item>
+                                        <tokens>
+                                            <item representativeValue=" " parser="Whitespace" isVariable="true"/>
+                                            <item name="start" representativeValue="0x0F000000" parser="HexNumber" isVariable="true" isKey="true"/>
+                                            <item representativeValue="  " parser="Whitespace" isVariable="true"/>
+                                            <item name="end" representativeValue="0x0FFFFFFF" parser="HexNumber" isVariable="true"/>
+                                            <item representativeValue="    " parser="Whitespace" isVariable="true"/>
+                                            <item name="sizeBytes" representativeValue="16777216" parser="Number" isVariable="true"/>
+                                            <item representativeValue="  " parser="Whitespace" isVariable="true"/>
+                                            <item name="class" representativeValue="Iomem" parser="Word" isVariable="true"/>
+                                            <item representativeValue="  " parser="Whitespace" isVariable="true"/>
+                                            <item name="media" representativeValue="media" parser="Word" isVariable="true" isWildcard="true"/>
+                                            <item representativeValue="    " parser="Whitespace" isVariable="true"/>
+                                            <item name="regionName" representativeValue="name" parser="Word" isVariable="true" isWildcard="true"/>
+                                        </tokens>
+                                    </item>
+                                </lines>
+                            </item>
+                        </nodes>
+                    </item>
+                </nodes>
+            </BlockMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="*sh* reg*">
+        <application>
+            <item>com.fnfr.svt.applications.ssh</item>
+            <item>com.fnfr.svt.applications.telnet</item>
+        </application>
+    </applicabilityProperties>
+</ResponseMap>

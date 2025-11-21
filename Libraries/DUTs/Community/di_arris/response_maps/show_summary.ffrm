@@ -1,0 +1,485 @@
+<?xml version="1.0" ?><ResponseMap version="6.0.0.18638fa">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="command">
+                <command>
+                    <body>show summary</body>
+                </command>
+            </action>
+            <responseBody>
+General Information for &quot;NOS/128600225672240&quot;
+             Hardware: ARRIS Model NM55 VDSL/ADSL AnnexA Ethernet
+        Serial Number: 128600225672240            Product ID: 1265             
+             Software: ARRIS SOC OS 9.1.5h0d34_1.6              Uptime: 02:19:25:27      
+
+LAN Port ENET (10/100BT-LAN)
+           IP Address: 0.0.0.0                 Netmask: 0.0.0.0    
+          DHCP Server: On                      Leases in use: 0 out of 1       
+                DNS-1: 0.0.0.0                       DNS-2: 0.0.0.0        
+
+WAN Port Unknown encap (vcc0)
+           DSL Status: Up               
+       Network Status: Connected                         NAT: On               
+          DHCP Client: On               
+           IP Address: 0.0.0.0                  Netmask: 0.0.0.0    
+      Default Gateway: 0.0.0.0       
+
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;prompt&gt;NOS/128600225672240/UNLOCKED&amp;gt; &lt;/prompt&gt;
+    &lt;echo&gt;show summary&lt;/echo&gt;
+    &lt;promptName&gt;rg_cli&lt;/promptName&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.2</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="colon_auto1">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>\\s+Hardware:\\s+</regex>
+                            <start>0</start>
+                            <end>23</end>
+                        </item>
+                        <item name="Hardware">
+                            <regex>[^\\r\\n]+</regex>
+                            <named>true</named>
+                            <start>23</start>
+                            <end>65</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>             Hardware: ARRIS Model NM55 VDSL/ADSL AnnexA Ethernet</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+                <item name="colon_auto2">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>\\s+DSL Status:\\s+</regex>
+                            <start>0</start>
+                            <end>23</end>
+                        </item>
+                        <item name="WAN_DSL_Status">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>23</start>
+                            <end>25</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+</regex>
+                            <start>25</start>
+                            <end>40</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>           DSL Status: Up               </sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+                <item name="colon_auto3">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>\\s+DHCP Client:\\s+</regex>
+                            <start>0</start>
+                            <end>23</end>
+                        </item>
+                        <item name="WAN_DHCP_Client">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>23</start>
+                            <end>25</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+</regex>
+                            <start>25</start>
+                            <end>40</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>          DHCP Client: On               </sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+                <item name="colon_auto4">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>\\s+Default Gateway:\\s+</regex>
+                            <start>0</start>
+                            <end>23</end>
+                        </item>
+                        <item name="WAN_Default_Gateway">
+                            <regex>((\\d+\\.)+\\d+)</regex>
+                            <named>true</named>
+                            <start>23</start>
+                            <end>33</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="((\d+\.)+\d+)">one or more of digit and dots</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+</regex>
+                            <start>33</start>
+                            <end>40</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>      Default Gateway: 0.0.0.0       </sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+                <item name="pattern2">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>\\s+Serial Number:\\s+</regex>
+                            <start>0</start>
+                            <end>23</end>
+                        </item>
+                        <item name="Serial_Number">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>23</start>
+                            <end>38</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+Product ID:\\s+</regex>
+                            <start>38</start>
+                            <end>62</end>
+                        </item>
+                        <item name="Product_ID">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>62</start>
+                            <end>66</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>\\s+Software: ARRIS SOC OS\\s+</regex>
+                            <start>66</start>
+                            <end>116</end>
+                        </item>
+                        <item name="Firmware_Version">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>116</start>
+                            <end>130</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor3">
+                            <regex>\\s+Uptime:\\s+</regex>
+                            <start>130</start>
+                            <end>152</end>
+                        </item>
+                        <item name="Uptime">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>152</start>
+                            <end>163</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor4">
+                            <regex>\\s+</regex>
+                            <start>163</start>
+                            <end>169</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>        Serial Number: 128600225672240            Product ID: 1265             
+             Software: ARRIS SOC OS 9.1.5h0d34_1.6              Uptime: 02:19:25:27      </sampleMatch>
+                </item>
+                <item name="pattern3">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>LAN Port ENET \\(</regex>
+                            <start>0</start>
+                            <end>15</end>
+                        </item>
+                        <item name="LAN_Port_ENET">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>15</start>
+                            <end>27</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name=".{12}">exactly 12 of any character</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\)</regex>
+                            <start>27</start>
+                            <end>28</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>LAN Port ENET (10/100BT-LAN)</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+                <item name="pattern5">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>WAN Port Unknown encap \\(</regex>
+                            <start>0</start>
+                            <end>24</end>
+                        </item>
+                        <item name="WAN_Port_encap">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>24</start>
+                            <end>28</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\)</regex>
+                            <start>28</start>
+                            <end>29</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>WAN Port Unknown encap (vcc0)</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+                <item name="pattern6">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>\\s+IP Address:\\s+</regex>
+                            <start>0</start>
+                            <end>23</end>
+                        </item>
+                        <item name="LAN_IP_Address">
+                            <regex>((\\d+\\.)+\\d+)</regex>
+                            <named>true</named>
+                            <start>23</start>
+                            <end>36</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="((\d+\.)+\d+)">one or more of digit and dots</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+Netmask:\\s+</regex>
+                            <start>36</start>
+                            <end>62</end>
+                        </item>
+                        <item name="LAN_Netmask">
+                            <regex>((\\d+\\.)+\\d+)</regex>
+                            <named>true</named>
+                            <start>62</start>
+                            <end>75</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="((\d+\.)+\d+)">one or more of digit and dots</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>\\s+DHCP Server:\\s+</regex>
+                            <start>75</start>
+                            <end>103</end>
+                        </item>
+                        <item name="LAN_DHCP_Server">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>103</start>
+                            <end>105</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor3">
+                            <regex>\\s+Leases in use:\\s+\\d+\\s+out of\\s+\\d+\\s+DNS-\\d+:\\s+</regex>
+                            <start>105</start>
+                            <end>183</end>
+                        </item>
+                        <item name="LAN_DNS_1">
+                            <regex>((\\d+\\.)+\\d+)</regex>
+                            <named>true</named>
+                            <start>183</start>
+                            <end>192</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="((\d+\.)+\d+)">one or more of digit and dots</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor4">
+                            <regex>\\s+DNS-\\d+:\\s+</regex>
+                            <start>192</start>
+                            <end>222</end>
+                        </item>
+                        <item name="LAN_DNS_2">
+                            <regex>((\\d+\\.)+\\d+)</regex>
+                            <named>true</named>
+                            <start>222</start>
+                            <end>231</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="((\d+\.)+\d+)">one or more of digit and dots</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor5">
+                            <regex>\\s+</regex>
+                            <start>231</start>
+                            <end>239</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>           IP Address: 0.0.0.0                 Netmask: 0.0.0.0    
+          DHCP Server: On                      Leases in use: 0 out of 1       
+                DNS-1: 0.0.0.0                       DNS-2: 0.0.0.0        </sampleMatch>
+                </item>
+                <item name="pattern1">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Network Status:\\s+</regex>
+                            <start>0</start>
+                            <end>16</end>
+                        </item>
+                        <item name="WAN_Network_Status">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>16</start>
+                            <end>25</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+NAT:\\s+</regex>
+                            <start>25</start>
+                            <end>55</end>
+                        </item>
+                        <item name="WAN_NAT">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>55</start>
+                            <end>57</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>Network Status: Connected                         NAT: On</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+                <item name="pattern4">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>IP Address:\\s+</regex>
+                            <start>0</start>
+                            <end>12</end>
+                        </item>
+                        <item name="WAN_IP_Address">
+                            <regex>((\\d+\\.)+\\d+)</regex>
+                            <named>true</named>
+                            <start>12</start>
+                            <end>24</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="((\d+\.)+\d+)">one or more of digit and dots</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+Netmask:\\s+</regex>
+                            <start>24</start>
+                            <end>51</end>
+                        </item>
+                        <item name="WAN_Netmask">
+                            <regex>((\\d+\\.)+\\d+)</regex>
+                            <named>true</named>
+                            <start>51</start>
+                            <end>64</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="((\d+\.)+\d+)">one or more of digit and dots</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>IP Address: 0.0.0.0                  Netmask: 0.0.0.0</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="show summary"/>
+</ResponseMap>

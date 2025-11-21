@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+<ResponseMap version="5.1.0.77511">
+    <sampleDictionary>
+        <item name="sample1">
+            <responseBody>Wed Jun  1 11:48:53.812 EST
+TenGigE0/0/0/8:
+  Hello interval:                                           100ms
+  Link monitoring enabled:                                      N
+  Remote loopback enabled:                                      N
+  Mib retrieval enabled:                                        Y
+  Uni-directional link-fault detection enabled:                 N
+  Configured mode:                                         Active
+  Connection timeout:                                           3
+  Symbol period window:                                         0
+  Symbol period low threshold:                                  1
+  Symbol period high threshold:                              None
+  Frame window:                                              1000
+  Frame low threshold:                                          1
+  Frame high threshold:                                      None
+  Frame period window:                                       1000
+  Frame period low threshold:                                   1
+  Frame period high threshold:                               None
+  Frame seconds window:                                     60000
+  Frame seconds low threshold:                                  1
+  Frame seconds high threshold:                              None
+  High threshold action:                                     None
+  Link fault action:                                          Log
+  Dying gasp action:                                          Log
+  Critical event action:                            Error-Disable
+  Discovery timeout action:                                   Log
+  Capabilities conflict action:                               EFD
+  Wiring conflict action:                           Error-Disable
+  Session up action:                                          Log
+  Session down action:                                        EFD
+  Remote loopback action:                                     Log
+  Require remote mode:                                     Active
+  Require remote MIB retrieval:                                 N
+  Require remote loopback support:                              N
+  Require remote link monitoring:                               N
+</responseBody>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="configured_mode">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>\\s+Configured mode:\\s+</regex>
+                            <start>0</start>
+                            <end>59</end>
+                        </item>
+                        <item name="conf_mode">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>59</start>
+                            <end>65</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>  Configured mode:                                         Active</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+                <item name="hello_time">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>\\s+Hello interval:\\s+</regex>
+                            <start>0</start>
+                            <end>60</end>
+                        </item>
+                        <item name="hello_interval">
+                            <regex>[^\\r\\n]+</regex>
+                            <named>true</named>
+                            <start>60</start>
+                            <end>65</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>  Hello interval:                                           100ms</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="show_ethernet_oam" command="-option1 configuration -option2 &quot;interface*&quot;"/>
+</ResponseMap>

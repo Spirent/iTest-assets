@@ -1,0 +1,1870 @@
+<?xml version="1.0"?>
+<testCase version="7.2.0.201812200559">
+    <general>
+        <documentation>Common Dialog Boxes</documentation>
+        <notes>Common dialogs used to prompt for a user response.</notes>
+        <owner>Malcom Terry</owner>
+        <isProcedureLibrary>true</isProcedureLibrary>
+    </general>
+    <procedures>
+        <item name="main">
+            <description>main</description>
+            <steps>
+                <item guid="13158c0e-af5a-4989-b332-cbe2b2ccef4f" action="comment" useFieldsInCommand="false">
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <multilineDescription>main</multilineDescription>
+        </item>
+        <item name="init" isPublic="true">
+            <description>Dialog initialization</description>
+            <steps>
+                <item guid="957f87c3-0bd0-4884-93c8-92763582770b" action="scriptEval" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>package require Tk</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="contains">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                        <searchString>can&apos;t find package Tk</searchString>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$value == 1</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="ExitExecution">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="Warning">
+                                                    <message>Check your iTest settings menu: Window &gt; Preferences &gt; Spirent &gt; Tcl Interpreter</message>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenTrue>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="8c1d8ce4-b483-4388-91b1-0247d85482e5" action="scriptEval" useFieldsInCommand="false">
+                    <command>
+                        <body>wm withdraw .</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="cab2e0a3-b906-4ac0-818d-7f53c9646200" action="comment" useFieldsInCommand="false">
+                    <command>
+                        <body>Support for &quot;package require rc&quot;</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="d88f634c-07a2-428c-b732-3bf6609fd847" action="eval" useFieldsInCommand="false">
+                            <command>
+                                <body>set project [info testCaseProject current]</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="8ed355ba-a571-49d4-b558-a907110c708f" action="eval" useFieldsInCommand="false">
+                            <command>
+                                <body>set script [file uriToPath project://$project/rc.tcl]</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="172abea1-adbc-4f00-addc-ebbc363b8152" action="eval" useFieldsInCommand="false">
+                            <command>
+                                <body>set script [string map {\\\\ /} $script]</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="86b873cb-2ba6-4b4b-a277-09a1ab0ca31b" action="scriptSet" useFieldsInCommand="false">
+                            <command>
+                                <body>script $script</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                        </item>
+                        <item guid="555c4f60-6e9b-433d-8f9b-d3e157bd93c5" action="scriptEval" useFieldsInCommand="false">
+                            <command>
+                                <body>package ifneeded rc 1.0 {source $script}</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <author>Malcom Terry</author>
+            <multilineDescription>This must be called first, in order to load the required resources.</multilineDescription>
+        </item>
+        <item name="askCheckbox" isPublic="true">
+            <description>Dialog - checkboxes</description>
+            <steps>
+                <item guid="447004ea-a7ee-47eb-a01a-3052a265e46e" action="call" useFieldsInCommand="false">
+                    <command>
+                        <body>init</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="17fff1cf-fab3-4914-9266-dd978fd491f9" action="scriptSet" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>iTest 1</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                </item>
+                <item guid="f31ff61c-f40c-47c9-a6db-ce24fd324c33" action="scriptSet" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>opt(-title) $title</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                </item>
+                <item guid="3c13cd8e-c39e-47bb-9252-26252971a8e7" action="scriptSet" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>opt(-font) $font</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                </item>
+                <item guid="579349ee-c8b5-4019-9c3f-7eb399a58081" action="if" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>$choices != &quot;&quot;</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="16433f12-4409-41b2-9500-24ca20d3074a" action="then" useFieldsInCommand="false" skippReporting="false">
+                            <nestedSteps>
+                                <item guid="9a7d6b6c-c123-4d2e-8644-3b4f90374d91" action="scriptSet" useFieldsInCommand="false" skippReporting="false">
+                                    <command>
+                                        <body>opt(-choices) $choices</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="c231b9a7-12c7-465d-92b1-f0aa57740cc8" action="else" useFieldsInCommand="false" skippReporting="false">
+                            <nestedSteps>
+                                <item guid="a3b409db-892a-4aea-aa5c-b8ff97965a39" action="scriptEval" useFieldsInCommand="false" skippReporting="false">
+                                    <command>
+                                        <body>set opt(-choices) &quot;&quot;</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="e90fb4a6-5372-4a56-a7b3-dadcbdd2d7fb" action="if" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>$checked != &quot;&quot;</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="b06d46ea-d939-434a-8240-052f0479ae2a" action="then" useFieldsInCommand="false" skippReporting="false">
+                            <nestedSteps>
+                                <item guid="e1eb0486-987e-4a5a-ab4a-caf8b16da8b4" action="scriptSet" useFieldsInCommand="false" skippReporting="false">
+                                    <command>
+                                        <body>opt(-checked) $checked</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="1ed610dd-6611-4065-a6d6-91bf7cc954d1" action="else" useFieldsInCommand="false" skippReporting="false">
+                            <nestedSteps>
+                                <item guid="c2867989-6db2-4f3b-96e7-b568ea93e369" action="scriptEval" useFieldsInCommand="false" skippReporting="false">
+                                    <command>
+                                        <body>set opt(-checked) &quot;&quot;</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="622d03e4-ab52-4674-973a-5debea4cfab9" action="if" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>$columns != &quot;&quot;</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="e3fe5d75-0cdf-4295-8931-ce06fc6ad07b" action="then" useFieldsInCommand="false" skippReporting="false">
+                            <nestedSteps>
+                                <item guid="b2418de1-cfef-449a-93d4-796316ffb69e" action="scriptSet" useFieldsInCommand="false" skippReporting="false">
+                                    <command>
+                                        <body>opt(-columns) $columns</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="e79e4856-b0e7-4be3-a8a3-f2aab754b186" action="if" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>$hint != &quot;&quot;</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="1e90be61-dc11-45cc-a8b0-0bd73025789b" action="then" useFieldsInCommand="false" skippReporting="false">
+                            <nestedSteps>
+                                <item guid="ee049a8c-bcb2-4dc1-b13a-b02bf9584025" action="scriptSet" useFieldsInCommand="false" skippReporting="false">
+                                    <command>
+                                        <body>opt(-hint) &quot;$hint&quot;</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="4336517b-ec7d-411d-a577-427f1289c1d9" action="else" useFieldsInCommand="false" skippReporting="false">
+                            <nestedSteps>
+                                <item guid="9cd5b357-af0c-48f5-9a3a-a07d66d5f34a" action="scriptEval" useFieldsInCommand="false" skippReporting="false">
+                                    <command>
+                                        <body>set opt(-hint) &quot;&quot;</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="cf934fa2-8c90-4fb6-a5c0-d2abc5e389bf" action="scriptSet" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>opt(-timeout) $timeout</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                </item>
+                <item guid="963ecc0f-1e47-4622-8569-5d314be008d7" action="scriptSet" useFieldsInCommand="false">
+                    <command>
+                        <body>opt(-boolean) $boolean</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                </item>
+                <item guid="44c382e0-a277-4d2d-8531-ad226621b052" action="eval" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>set path [string map {\\\\ /} [file uriToPath project://[info testCaseProject current]/askCheckbox.tcl]]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="cc38b6f5-1fe6-4178-9f56-c1fa883e892c" action="scriptSet" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>path $path</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                </item>
+                <item guid="55cd1dd1-4f2a-438f-a07d-f0b2dab18ed6" action="scriptEval" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>source $path</body>
+                    </command>
+                    <postProcessing>
+                        <storeResponseAt>response</storeResponseAt>
+                        <storeResponseText>true</storeResponseText>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="dfdd210d-81ce-4dfb-9049-2d63d7d189f1" action="eval" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>set response [string trim $response]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="aaafe9fa-f345-47b8-88c9-68d1bbc1182f" action="sleep" skippReporting="false">
+                    <command>
+                        <body>1</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="afd6264a-ee7c-46da-a65e-b6dcc5557ed9" action="return" skippReporting="false">
+                    <command>
+                        <body>$response</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <author>Malcom Terry</author>
+            <multilineDescription>Display a dialog with checkboxes. Return either a list of checked choices or a list of binary values.</multilineDescription>
+            <arguments>
+                <item name="choices">
+                    <description>List of space-delimited choices
+
+Example:
+{&quot;Option 1&quot; &quot;Option 2&quot;}
+&quot;{Option 1} {Option 2} {Option 3}&quot;</description>
+                </item>
+                <item name="font">
+                    <description>Dialog font</description>
+                    <defaultValue>helvetica 10</defaultValue>
+                </item>
+                <item name="checked">
+                    <description>A list of 1&apos;s and 0&apos;s corresponding to the desired initial state of each choice.
+
+Other allowed values: all, none. If check list is shorter than the choices list, the remainder are set to 0&apos;s.</description>
+                </item>
+                <item name="hint">
+                    <description>Label on the left side of the entry box</description>
+                </item>
+                <item name="timeout">
+                    <description>0=forever
+Number of seconds to wait for an entry. </description>
+                    <defaultValue>0</defaultValue>
+                </item>
+                <item name="title">
+                    <description>Dialog window title
+</description>
+                    <defaultValue>iTest</defaultValue>
+                </item>
+                <item name="boolean">
+                    <description>0=return a list of strings corresponding to the text within the -choices.
+Example: If the choices are {Choice 1} {Choice2} and only the first checkbox is checked, then the response will be: {Choice 1}
+
+1=return a list of boolean values instead of the label of each box checked.
+For example, if there are three checkboxes and all three are checked, the response will be: 1 1 1</description>
+                    <defaultValue>0</defaultValue>
+                </item>
+                <item name="columns">
+                    <description>0 = don&apos;t care
+&gt;0 = limit the number of checkbox columns to this number </description>
+                    <defaultValue>0</defaultValue>
+                </item>
+            </arguments>
+        </item>
+        <item name="askEntry" isPublic="true">
+            <description>Dialog - text entry dialog</description>
+            <steps>
+                <item guid="d86e8ccd-53c3-4bc9-9d28-e149d83aec27" action="call" useFieldsInCommand="false">
+                    <command>
+                        <body>init</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="5d89d5fc-c9f2-4297-aedd-509ed3ae8422" action="scriptSet" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>iTest 1</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                </item>
+                <item guid="175455e2-8790-4a81-97cc-1cb1dc87fd2a" action="scriptSet" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>opt(-title) $title</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                </item>
+                <item guid="f4e9cd4d-1b09-469c-93d4-9fc2d4ab6fa4" action="if" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>$initvalue != &quot;&quot;</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="b6f03353-1e21-4197-92fb-b75e3d97b7e4" action="then" useFieldsInCommand="false" skippReporting="false">
+                            <nestedSteps>
+                                <item guid="e3e5b3d0-c7a3-4b7c-8899-1ac1fa0699e5" action="scriptSet" useFieldsInCommand="false" skippReporting="false">
+                                    <command>
+                                        <body>opt(-initvalue) $initvalue</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="b602d4c6-a595-45a0-ab88-c0f89f0dd175" action="else" useFieldsInCommand="false" skippReporting="false">
+                            <nestedSteps>
+                                <item guid="b99a6df2-cc12-4d3e-8d57-e7e523283a23" action="scriptEval" useFieldsInCommand="false" skippReporting="false">
+                                    <command>
+                                        <body>set opt(-initvalue) &quot;&quot;</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="e10765de-83e2-45c9-a9a9-92a2338dd63a" action="if" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>$hint != &quot;&quot;</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="3399eeb4-6598-48a4-a5c6-af162ef5b3c6" action="then" useFieldsInCommand="false" skippReporting="false">
+                            <nestedSteps>
+                                <item guid="4372c0dd-09a5-4795-90fc-1831b2f6ab17" action="scriptSet" useFieldsInCommand="false" skippReporting="false">
+                                    <command>
+                                        <body>opt(-hint) &quot;$hint&quot;</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="bd4b95c3-5df3-4575-b239-06a174f63203" action="else" useFieldsInCommand="false" skippReporting="false">
+                            <nestedSteps>
+                                <item guid="437abb8e-a25e-4874-9733-2bdf3d8d7ff0" action="scriptEval" useFieldsInCommand="false" skippReporting="false">
+                                    <command>
+                                        <body>set opt(-hint) &quot;&quot;</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="eda5ca41-996f-46eb-bc2c-e801cb0c51c8" action="scriptSet" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>opt(-width) $width</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                </item>
+                <item guid="e45a0e9b-2f7e-4de2-9ffc-d3755088ecfa" action="scriptSet" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>opt(-timeout) $timeout</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                </item>
+                <item guid="b101ee8c-c10e-430e-97f0-732f36e9962c" action="scriptSet" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>opt(-font) $font</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                </item>
+                <item guid="b1759c5b-d291-4c7c-b901-55c4d70167e5" action="scriptSet" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>opt(-hidetext) $hidetext</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                </item>
+                <item guid="3c29f295-0de1-45c9-9927-746a1b01aba4" action="eval" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>set path [string map {\\\\ /} [file uriToPath project://[info testCaseProject current]/askEntry.tcl]]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="6fe9d177-b0ce-41a0-9870-e6fbfe6ced4e" action="scriptSet" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>path $path</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                </item>
+                <item guid="5600a06e-ed2e-40fd-b396-65ddfa2a9ac9" action="scriptEval" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>source $path</body>
+                    </command>
+                    <postProcessing>
+                        <storeResponseAt>response</storeResponseAt>
+                        <storeResponseText>true</storeResponseText>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="0a6af188-1d26-41fe-b664-039b4ec84711" action="eval" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>set response [string trim $response]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="1c0a42b2-9c2c-4df8-a479-3ab6f417c156" action="sleep" skippReporting="false">
+                    <command>
+                        <body>1</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="68b94d9e-f602-4974-85fe-30629d8ab87f" action="return" skippReporting="false">
+                    <command>
+                        <body>$response</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <author>Malcom Terry</author>
+            <multilineDescription>Prompt the user to enter a value.</multilineDescription>
+            <arguments>
+                <item name="hint">
+                    <description>Label on the left side of the entry box</description>
+                    <defaultValue>Enter value</defaultValue>
+                </item>
+                <item name="font">
+                    <description>Dialog font</description>
+                    <defaultValue>helvetica 10</defaultValue>
+                </item>
+                <item name="width">
+                    <description>Number of characters in width for the text entry box. </description>
+                    <defaultValue>20</defaultValue>
+                </item>
+                <item name="initvalue">
+                    <description>Initial value of the text entry.</description>
+                </item>
+                <item name="timeout">
+                    <description>Number of seconds to wait for an entry. Default: 0 (forever)</description>
+                    <defaultValue>0</defaultValue>
+                </item>
+                <item name="title">
+                    <description>Dialog window title
+</description>
+                    <defaultValue>iTest</defaultValue>
+                </item>
+                <item name="hidetext">
+                    <description>1=hide text (for passwords, etc.)
+0=show text</description>
+                    <defaultValue>0</defaultValue>
+                </item>
+            </arguments>
+        </item>
+        <item name="askInfo" isPublic="true">
+            <description>Dialog - one or more text entry boxes</description>
+            <steps>
+                <item guid="440f71ac-eb9f-40a7-9fb9-509c26f5b85b" action="call" useFieldsInCommand="false">
+                    <command>
+                        <body>init</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="8307bddb-079a-4bcd-9242-9f4fdb19ca71" action="eval" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>puts $params</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="e49e605c-cc28-421d-a823-d176a24f7025" action="eval" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>set cmdline &quot;&quot;</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="f17add82-4b16-4538-a307-e22cf85940b1" action="eval" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>set entrylist &quot;&quot;</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="f9eec55b-e6a5-4dbc-ba08-ff02f4556ab0" action="foreach" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>item $params </body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="0d6863f2-b3fa-449e-9e9b-82bb24fc787c" action="eval" skip="true" useFieldsInCommand="false" skippReporting="false">
+                            <command>
+                                <body>set opt_caption [string tolower [string map {&quot; &quot; &quot;_&quot;} $caption]]</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="38d565c3-47eb-4b63-a567-1eff5d3c0365" action="eval" useFieldsInCommand="false">
+                            <command>
+                                <body>set itemName [lindex $item 0]</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="ab0414b6-83c7-495e-8442-e6889acaf841" action="eval" useFieldsInCommand="false">
+                            <command>
+                                <body>set caption [lindex $item 1]</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="2f55252a-4fc4-4085-99df-215c14b70c53" action="eval" useFieldsInCommand="false">
+                            <command>
+                                <body>set defaultValue [lindex $item 2]</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="23d44255-9714-48a7-8c58-094175d4b572" action="eval" useFieldsInCommand="false">
+                            <command>
+                                <body>set hidetext [lindex $item 3]</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="62ba8196-b7d8-4aa5-8019-9daecaedd832" action="if" useFieldsInCommand="false">
+                            <command>
+                                <body>$hidetext == &quot;&quot;</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="7ebfbe4b-874f-44e2-8a50-8df8b0a33332" action="then" useFieldsInCommand="false">
+                                    <nestedSteps>
+                                        <item guid="b43aab05-294f-46e4-ad8b-c1c15e2f0a17" action="eval" useFieldsInCommand="false">
+                                            <command>
+                                                <body>set hidetext 0</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="f8fdc7b3-20df-41e3-9968-e6ba40ecbb63" action="eval" useFieldsInCommand="false" skippReporting="false">
+                            <command>
+                                <body>lappend entrylist $itemName</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="3f347452-1b31-44ab-a398-f06ecd25b020" action="eval" useFieldsInCommand="false" skippReporting="false">
+                            <command>
+                                <body>set cmdline &quot;$cmdline set opt(-$itemName) \\&quot;$defaultValue\\&quot;;&quot;</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="630986ed-be0e-4ea6-918f-e19db27f0562" action="eval" useFieldsInCommand="false" skippReporting="false">
+                            <command>
+                                <body>set cmdline &quot;$cmdline set opt(-$itemName\\_caption) \\&quot;$caption\\&quot;;&quot;</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="29fc4cc6-8580-4861-9c12-52d7ff1af836" action="eval" useFieldsInCommand="false" skippReporting="false">
+                            <command>
+                                <body>set cmdline &quot;$cmdline set opt(-$itemName\\_hidetext) $hidetext;&quot;</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="ddcc292c-3b62-496c-9d9b-d0bc1b611ff0" action="eval" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>set cmdline &quot;$cmdline set opt(-hint) \\&quot;$hint\\&quot;;&quot;</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="0dd42d52-8f27-4e2e-a90d-a7d4082ca5a6" action="eval" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>set cmdline &quot;$cmdline set opt(-timeout) $timeout;&quot;</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="e3dde753-3504-48f6-96d6-aaa168d55887" action="eval" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>set cmdline &quot;$cmdline set opt(-width) $width;&quot;</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="110ec91e-d5b4-45d7-b811-6b59dfd6f893" action="eval" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>set cmdline &quot;$cmdline set opt(-entrylist) \\&quot;$entrylist\\&quot;;&quot;</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="83847f6e-3e16-4d4b-ae9f-9fae9eca42b3" action="eval" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>set cmdline &quot;$cmdline set opt(-title) \\&quot;$title\\&quot;;&quot;</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="5eeb6cde-9076-4fa2-9b90-247287387a91" action="eval" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>set cmdline &quot;$cmdline set opt(-font) \\&quot;$font\\&quot;;&quot;</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="86d4a35e-4ba8-4efc-8b19-fb507451bcd0" action="eval" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>set cmdline &quot;$cmdline set opt(-json) $json;&quot;</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="9f5e5147-8078-4e6e-b59b-f48f18554d96" action="scriptSet" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>iTest 1</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                </item>
+                <item guid="be5aaca0-2bec-4f6d-94e0-5ababd39a4b5" action="scriptSet" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>cmdline $cmdline</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                </item>
+                <item guid="f8edcbe8-25cf-4d0f-acb4-fe775466eaa5" action="scriptEval" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>eval $cmdline</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="1b42d2c9-3f1b-49c7-97c8-843fa007014b" action="scriptEval" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>array names opt</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="df7be0ce-e700-475d-99b2-906cb3a31886" action="eval" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>set path [string map {\\\\ /} [file uriToPath project://[info testCaseProject current]/askInfo.tcl]]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="d3e2c893-3de8-4724-9c6e-6df8a95de162" action="scriptSet" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>path $path</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                </item>
+                <item guid="19c1e348-a134-4521-ae92-09fad4447cbd" action="scriptEval" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>source $path</body>
+                    </command>
+                    <postProcessing>
+                        <storeResponseAt>response</storeResponseAt>
+                        <storeResponseText>true</storeResponseText>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="8d93558d-855e-4baa-86c7-8cc8b3040c85" action="eval" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>set response [string trim $response]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="c55444b1-faf5-4e13-abeb-c286af999e29" action="return" skippReporting="false">
+                    <command>
+                        <body>$response</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <author>Malcom Terry</author>
+            <multilineDescription>Prompt the user to enter one or more values. Return a table response (legacy use) or a JSON response.</multilineDescription>
+            <arguments>
+                <item name="params">
+                    <description>List of &lt;itemName&gt; &lt;caption&gt; &lt;defaultValue&gt; &lt;hideText&gt;
+
+This basically creates one or more text entry boxes within the dialog.
+
+Examples:
+askInfo -params &quot;{phoneNumber &quot;Phone Number&quot; &quot;&quot;}&quot;
+askInfo -params &quot;{firstName &quot;First Name&quot; &quot;&quot;} {lastName &quot;Last Name&quot; &quot;&quot;}&quot;
+askInfo -params &quot;{username User &quot;&quot;} {password Password &quot;&quot; 1}&quot;
+
+NOTES:
+1. &lt;itemName&gt; must start with a lower-case letter.
+2. &lt;hideText is 0 or 1&gt; Set to 1 for passwords, etc.</description>
+                </item>
+                <item name="font">
+                    <description>Dialog font</description>
+                    <defaultValue>helvetica 10</defaultValue>
+                </item>
+                <item name="hint">
+                    <description>Label on the left side of the entry box. </description>
+                </item>
+                <item name="width">
+                    <description>Number of characters in width for the text entry box.</description>
+                    <defaultValue>20</defaultValue>
+                </item>
+                <item name="timeout">
+                    <description>Number of seconds to wait for OK button. Default: 0 (forever)</description>
+                    <defaultValue>0</defaultValue>
+                </item>
+                <item name="title">
+                    <description>Dialog window title
+</description>
+                    <defaultValue>iTest</defaultValue>
+                </item>
+                <item name="json">
+                    <description>0=(legacy use) return a table response
+1=return a JSON response</description>
+                    <defaultValue>0</defaultValue>
+                </item>
+            </arguments>
+        </item>
+        <item name="askRadio" isPublic="true">
+            <description>Dialog - radio button selection</description>
+            <steps>
+                <item guid="5cbf41eb-82be-49ba-8de9-c587b0282650" action="call" useFieldsInCommand="false">
+                    <command>
+                        <body>init</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="0b215537-1b49-4d97-812e-d3b2dcf47f7a" action="scriptSet" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>iTest 1</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                </item>
+                <item guid="c6bf65ed-4af8-4641-a331-1cb89abef89b" action="scriptSet" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>opt(-title) $title</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                </item>
+                <item guid="8ec2510a-8966-4449-a408-9a9ec0578f9e" action="scriptSet" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>opt(-font) $font</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                </item>
+                <item guid="82923ee8-fad1-42cd-a1db-b8f22aa633b9" action="if" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>$choices != &quot;&quot;</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="3ddb46a5-5700-4b67-9522-9c14cfcb3125" action="then" useFieldsInCommand="false" skippReporting="false">
+                            <nestedSteps>
+                                <item guid="976b8f57-d334-46fe-a9c1-7bd76b163634" action="scriptSet" useFieldsInCommand="false" skippReporting="false">
+                                    <command>
+                                        <body>opt(-choices) $choices</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="38c4cc34-4231-472c-8f44-30e3a3a30a6e" action="else" useFieldsInCommand="false" skippReporting="false">
+                            <nestedSteps>
+                                <item guid="d1008ee4-525d-4d26-a8e7-894c5bc66dc8" action="scriptEval" useFieldsInCommand="false" skippReporting="false">
+                                    <command>
+                                        <body>set opt(-choices) &quot;&quot;</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="90afaa37-d550-4132-8a9f-ad4aee1cf86c" action="if" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>$initvalue != &quot;&quot;</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="bcaef89d-d70e-46c3-b349-1e1b9f3704d0" action="then" useFieldsInCommand="false" skippReporting="false">
+                            <nestedSteps>
+                                <item guid="47d9107f-ec27-476e-98a6-5f3266db3442" action="scriptSet" useFieldsInCommand="false" skippReporting="false">
+                                    <command>
+                                        <body>opt(-initvalue) $initvalue</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="3762f3be-f147-4a4d-aa25-4e04a040960e" action="else" useFieldsInCommand="false" skippReporting="false">
+                            <nestedSteps>
+                                <item guid="957a0ca7-629e-415d-bb93-9d8e09e0099f" action="scriptEval" useFieldsInCommand="false" skippReporting="false">
+                                    <command>
+                                        <body>set opt(-initvalue) &quot;&quot;</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="1afe3ed0-286b-4d5f-b59d-78c954c5ab2e" action="if" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>$hint != &quot;&quot;</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="8e4980d0-23d6-4fe3-b6ce-e6c5d24012ec" action="then" useFieldsInCommand="false" skippReporting="false">
+                            <nestedSteps>
+                                <item guid="77677c10-3028-41f1-a08f-00adf0347427" action="scriptSet" useFieldsInCommand="false" skippReporting="false">
+                                    <command>
+                                        <body>opt(-hint) &quot;$hint&quot;</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="55e3c4bc-3952-4846-b4e2-89eb7b3c3014" action="else" useFieldsInCommand="false" skippReporting="false">
+                            <nestedSteps>
+                                <item guid="75897c35-9699-46bb-a4e4-3e0e861a425f" action="scriptEval" useFieldsInCommand="false" skippReporting="false">
+                                    <command>
+                                        <body>set opt(-hint) &quot;&quot;</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="95e5ecdf-fb01-4580-9fe9-f720d80ab276" action="scriptSet" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>opt(-timeout) $timeout</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                </item>
+                <item guid="323c584c-2f16-4e8f-82a0-f81326b4ee10" action="eval" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>set path [string map {\\\\ /} [file uriToPath project://[info testCaseProject current]/askRadio.tcl]]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="85081ffd-1975-44ac-bf23-b06c524735a3" action="scriptSet" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>path $path</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                </item>
+                <item guid="cc9be2dc-dd07-44a7-9a89-22915bcb45f4" action="scriptEval" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>source $path</body>
+                    </command>
+                    <postProcessing>
+                        <storeResponseAt>response</storeResponseAt>
+                        <storeResponseText>true</storeResponseText>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="884fbe3f-7b89-424d-b13a-afa110fb1566" action="eval" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>set response [string trim $response]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="d8c82274-2ace-4dc4-a366-8193033a62b7" action="sleep" skippReporting="false">
+                    <command>
+                        <body>1</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="fd0063da-a089-4fcf-890b-4b6203ac1e89" action="return" skippReporting="false">
+                    <command>
+                        <body>$response</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <author>Malcom Terry</author>
+            <multilineDescription>Display a dialog with radio buttons. </multilineDescription>
+            <arguments>
+                <item name="choices">
+                    <description>List of space-delimited choices</description>
+                </item>
+                <item name="font">
+                    <description>Dialog font</description>
+                    <defaultValue>helvetica 10</defaultValue>
+                </item>
+                <item name="initvalue">
+                    <description>Initial value of the text entry. </description>
+                </item>
+                <item name="hint">
+                    <description>Label on the left side of the entry box. </description>
+                    <defaultValue>Enter value</defaultValue>
+                </item>
+                <item name="timeout">
+                    <description>Number of seconds to wait for an entry. 0=(forever)</description>
+                    <defaultValue>0</defaultValue>
+                </item>
+                <item name="title">
+                    <description>Dialog window title
+</description>
+                    <defaultValue>iTest</defaultValue>
+                </item>
+            </arguments>
+        </item>
+        <item name="askList" isPublic="true">
+            <description>Dialog - listbox selection</description>
+            <steps>
+                <item guid="9dcf18ea-25ba-4360-b494-d57b0e1f9757" action="call" useFieldsInCommand="false">
+                    <command>
+                        <body>init</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="c24a6b2c-833c-4c6d-9c77-ccfb6f300972" action="scriptSet" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>iTest 1</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                </item>
+                <item guid="2aa7645e-0aaf-4cb0-8ee1-cce32f7df55d" action="scriptSet" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>opt(-title) $title</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                </item>
+                <item guid="cea1f3f7-ef03-4089-8fdf-8028bff73e7b" action="scriptSet" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>opt(-width) $width</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                </item>
+                <item guid="f0cf4118-632f-4d05-a8af-d2ec81645b73" action="scriptSet" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>opt(-height) $height</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                </item>
+                <item guid="ad4ee4ed-fe35-409d-89d6-374f5bba5507" action="scriptSet" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>opt(-font) $font</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                </item>
+                <item guid="00a1b17d-8bd2-4aab-807a-17a9d1c35dc1" action="if" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>$choices != &quot;&quot;</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="639eb5bc-3211-4c64-b6ff-78b3370f2628" action="then" useFieldsInCommand="false" skippReporting="false">
+                            <nestedSteps>
+                                <item guid="2d5bd913-eb69-451a-8660-1fec7b176d31" action="scriptSet" useFieldsInCommand="false" skippReporting="false">
+                                    <command>
+                                        <body>opt(-choices) $choices</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="c9ae9c12-1eb7-4b03-8e51-5bd22d8b022e" action="else" useFieldsInCommand="false" skippReporting="false">
+                            <nestedSteps>
+                                <item guid="d44a3c5c-d2ac-4eec-a2a7-ba4fd46cd045" action="scriptEval" useFieldsInCommand="false" skippReporting="false">
+                                    <command>
+                                        <body>set opt(-choices) &quot;&quot;</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="241c150c-e674-4af5-b5da-1af8c1c486af" action="if" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>$initvalue != &quot;&quot;</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="a59010b5-16ce-4ad6-b962-cd6e69ef7177" action="then" useFieldsInCommand="false" skippReporting="false">
+                            <nestedSteps>
+                                <item guid="10372829-7a50-41c9-b2c3-3ca7bd3139b2" action="scriptSet" useFieldsInCommand="false" skippReporting="false">
+                                    <command>
+                                        <body>opt(-initvalue) $initvalue</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="36b07450-2701-4d62-9e5c-790af8dcd7b6" action="else" useFieldsInCommand="false" skippReporting="false">
+                            <nestedSteps>
+                                <item guid="d314680c-0e35-4321-90e8-f9b9d2b9af45" action="scriptEval" useFieldsInCommand="false" skippReporting="false">
+                                    <command>
+                                        <body>set opt(-initvalue) &quot;&quot;</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="a4d8ce94-232f-4670-bca8-967271799499" action="if" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>$hint != &quot;&quot;</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="6bc244d1-0131-4b47-98e3-1b648c7bb43f" action="then" useFieldsInCommand="false" skippReporting="false">
+                            <nestedSteps>
+                                <item guid="8fe11285-77b5-4cbd-97fb-59e9cd4ee7e8" action="scriptSet" useFieldsInCommand="false" skippReporting="false">
+                                    <command>
+                                        <body>opt(-hint) &quot;$hint&quot;</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="2a1475e6-72fa-49ae-9c7d-807a0a15624d" action="else" useFieldsInCommand="false" skippReporting="false">
+                            <nestedSteps>
+                                <item guid="5cc15b65-9791-4116-ab69-0c706016ec9d" action="scriptEval" useFieldsInCommand="false" skippReporting="false">
+                                    <command>
+                                        <body>set opt(-hint) &quot;&quot;</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="8889fabe-42a6-4573-9994-00b2e899b611" action="if" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>$selectmode != &quot;&quot;</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="2949b3ae-e1e8-4088-a98c-92191ae9b4a5" action="then" useFieldsInCommand="false" skippReporting="false">
+                            <nestedSteps>
+                                <item guid="8f5b8c66-8aae-4577-abb1-05a905989a17" action="scriptSet" useFieldsInCommand="false" skippReporting="false">
+                                    <command>
+                                        <body>opt(-selectmode) &quot;$selectmode&quot;</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="20dcad04-6d9d-4954-8e70-73f66b3380c4" action="scriptSet" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>opt(-timeout) $timeout</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                </item>
+                <item guid="dad83e52-87d9-4d5c-9fce-293e912b558b" action="eval" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>set path [string map {\\\\ /} [file uriToPath project://[info testCaseProject current]/askList.tcl]]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="e3d8eb00-7837-40b5-b1f2-6a8e05b57650" action="scriptSet" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>path $path</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                </item>
+                <item guid="77890d1e-715f-44ee-bdc0-316fcd1fb6e6" action="scriptEval" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>source $path</body>
+                    </command>
+                    <postProcessing>
+                        <storeResponseAt>response</storeResponseAt>
+                        <storeResponseText>true</storeResponseText>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="f1eb8bbc-1d86-4ab5-92f7-604167710c21" action="eval" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>set response [string trim $response]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="c22f905a-7b23-438e-a927-395d18b3584e" action="sleep" skippReporting="false">
+                    <command>
+                        <body>1</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="455f01cb-d9ff-4c4c-a852-81185dde784e" action="return" skippReporting="false">
+                    <command>
+                        <body>$response</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <author>Malcom Terry</author>
+            <multilineDescription>Pick from a list of options. </multilineDescription>
+            <arguments>
+                <item name="choices">
+                    <description>List of space-delimited choices</description>
+                </item>
+                <item name="font">
+                    <description>Dialog font</description>
+                    <defaultValue>helvetica 10</defaultValue>
+                </item>
+                <item name="initvalue">
+                    <description>Initial value of the text entry. Default: &quot;&quot;</description>
+                </item>
+                <item name="hint">
+                    <description>Label on the left side of the entry box. Default: &quot;Enter value&quot;</description>
+                    <defaultValue>Enter value</defaultValue>
+                </item>
+                <item name="timeout">
+                    <description>Number of seconds to wait for an entry. 0=(forever)</description>
+                    <defaultValue>0</defaultValue>
+                </item>
+                <item name="title">
+                    <description>Dialog window title</description>
+                    <defaultValue>iTest</defaultValue>
+                </item>
+                <item name="width">
+                    <description>Text width </description>
+                    <defaultValue>20</defaultValue>
+                </item>
+                <item name="height">
+                    <description>Number of rows to show</description>
+                    <defaultValue>10</defaultValue>
+                </item>
+                <item name="selectmode">
+                    <description>single | multiple</description>
+                    <defaultValue>single</defaultValue>
+                </item>
+            </arguments>
+        </item>
+        <item name="askYesNo" isPublic="true">
+            <description>Dialog - yes/no selection - Extended options</description>
+            <steps>
+                <item guid="84a73890-a336-4f2e-8740-1271fd80143d" action="call" useFieldsInCommand="false">
+                    <command>
+                        <body>init</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="20306696-3418-47e4-9425-bb43dc1c9605" action="scriptSet" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>iTest 1</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                </item>
+                <item guid="b386aaa4-4107-497a-9d05-a122abe9ed92" action="scriptSet" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>opt(-title) $title</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                </item>
+                <item guid="739f038e-78f1-4e36-a779-8cf900b98935" action="if" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>$default != &quot;&quot;</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="2b91f507-63ed-4a40-b2d5-02b23ffde125" action="then" useFieldsInCommand="false" skippReporting="false">
+                            <nestedSteps>
+                                <item guid="dac580bc-9533-439d-b375-6b614e1eef16" action="scriptSet" useFieldsInCommand="false" skippReporting="false">
+                                    <command>
+                                        <body>opt(-default) $default</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="2e121a64-745d-455e-884d-39a5aa5f016a" action="else" useFieldsInCommand="false" skippReporting="false">
+                            <nestedSteps>
+                                <item guid="d7880ac5-c454-421a-8fbf-b596b9729105" action="scriptEval" useFieldsInCommand="false" skippReporting="false">
+                                    <command>
+                                        <body>set opt(-default) &quot;&quot;</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="8b3f0a2f-0f24-46a2-8b7e-f26cedb13eac" action="if" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>$question != &quot;&quot;</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="628e34f9-52fb-4a96-86ba-1b1483a1181a" action="then" useFieldsInCommand="false" skippReporting="false">
+                            <nestedSteps>
+                                <item guid="fac61735-8658-40a2-b5d9-9a8ffcb0180c" action="scriptSet" useFieldsInCommand="false" skippReporting="false">
+                                    <command>
+                                        <body>opt(-question) &quot;$question&quot;</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="ac2d9e01-2914-44cc-95df-1855e05d426d" action="else" useFieldsInCommand="false" skippReporting="false">
+                            <nestedSteps>
+                                <item guid="d9c810f8-0ed9-44ab-8dd7-179155dcfc0b" action="scriptEval" useFieldsInCommand="false" skippReporting="false">
+                                    <command>
+                                        <body>set opt(-question) &quot;&quot;</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="9fb383f5-29e5-4ac1-83c1-b998b9a36360" action="scriptSet" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>opt(-timeout) $timeout</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                </item>
+                <item guid="98297c93-a947-4a7a-ab1b-efc088ecb9b8" action="scriptSet" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>opt(-font) $font</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                </item>
+                <item guid="0290ac3b-2383-49fd-ac8f-e4e4124a3dac" action="eval" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>set path [string map {\\\\ /} [file uriToPath project://[info testCaseProject current]/askYesNo.tcl]]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="23735bec-f671-4358-a45a-830e6e7cc3e8" action="scriptSet" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>path $path</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                </item>
+                <item guid="93508748-5629-4a17-a37e-e43ff22ca747" action="scriptEval" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>source $path</body>
+                    </command>
+                    <postProcessing>
+                        <storeResponseAt>response</storeResponseAt>
+                        <storeResponseText>true</storeResponseText>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="f662ae06-4bfd-4597-a3a2-08d46bb64364" action="eval" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>set response [string trim $response]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="8f68071c-4c4c-40f8-b727-eef347d1d0d9" action="sleep" skippReporting="false">
+                    <command>
+                        <body>1</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="3b3980cc-6dec-47d7-8fbf-08a4dad354fc" action="return" skippReporting="false">
+                    <command>
+                        <body>$response</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <author>Malcom Terry</author>
+            <multilineDescription>Prompt for yes/no. More options than yesnoMsg.
+You can specify the font, a timeout and a default answer upon timeout.</multilineDescription>
+            <arguments>
+                <item name="default">
+                    <description>Message or question to ask</description>
+                    <defaultValue>Y</defaultValue>
+                </item>
+                <item name="question">
+                    <description>Question. Default: &quot;&quot;</description>
+                </item>
+                <item name="timeout">
+                    <description>Number of seconds to wait for an entry. 0=(forever)</description>
+                    <defaultValue>0</defaultValue>
+                </item>
+                <item name="title">
+                    <description>Dialog window title</description>
+                    <defaultValue>iTest</defaultValue>
+                </item>
+                <item name="font">
+                    <description>Dialog font</description>
+                    <defaultValue>helvetica 10</defaultValue>
+                </item>
+            </arguments>
+        </item>
+        <item name="errorMsg" isPublic="true">
+            <description>Dialog - error message</description>
+            <steps>
+                <item guid="04850247-1328-4530-b529-b6357ad4c134" action="call" useFieldsInCommand="false">
+                    <command>
+                        <body>init</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="310ed135-d6bc-4f2f-849b-53cc7d16d9eb" action="scriptSet" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>message [subst $message]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                </item>
+                <item guid="5061dc79-f965-44e2-8d69-33b0e061c6ec" action="scriptSet" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>title $title</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                </item>
+                <item guid="66efe058-f94f-48bf-84da-057030f32eaf" action="scriptEval" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>package require Tk</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="ae8e5601-1bc2-4bce-aa74-869718505214" action="scriptEval" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>wm withdraw .</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="7c48bb84-c8b8-41ac-b70e-70d298b48ec1" action="scriptEval" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>tk_messageBox -message $message -type ok -icon error -title $title</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <author>Malcom Terry</author>
+            <multilineDescription>Display a simple error message.</multilineDescription>
+            <arguments>
+                <item name="message">
+                    <description>Message to display</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="title">
+                    <description>Dialog window title</description>
+                    <defaultValue>iTest</defaultValue>
+                </item>
+            </arguments>
+        </item>
+        <item name="infoMsg" isPublic="true">
+            <description>Dialog - information message</description>
+            <steps>
+                <item guid="42303aec-6da8-4419-ac5a-3649a32f835d" action="call" useFieldsInCommand="false">
+                    <command>
+                        <body>init</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="4c75bd7e-d682-472f-ad18-217ae8d95a5e" action="scriptSet" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>message [subst $message]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                </item>
+                <item guid="7fec0de6-ffc2-4f28-aae4-14b5a290af43" action="scriptSet" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>title $title</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                </item>
+                <item guid="c64c9809-71ab-4230-94e3-9fbd9cca1ae5" action="scriptEval" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>package require Tk</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="d68c85db-3dfd-4b8d-86f7-50832be1458d" action="scriptEval" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>wm withdraw .</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="6369248c-8fbc-4b90-9a28-7925bf12b109" action="scriptEval" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>tk_messageBox -message $message -type ok -icon info -title $title</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <author>Malcom Terry</author>
+            <multilineDescription>Display a simple information message.</multilineDescription>
+            <arguments>
+                <item name="message">
+                    <description>Message to display</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="title">
+                    <description>Dialog window title</description>
+                    <defaultValue>iTest</defaultValue>
+                </item>
+            </arguments>
+        </item>
+        <item name="okMsg" isPublic="true">
+            <description>Dialog - OK message</description>
+            <steps>
+                <item guid="7488c1f7-644f-4c32-b50c-366422e8f0aa" action="call" useFieldsInCommand="false">
+                    <command>
+                        <body>init</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="090d7846-130c-4c8b-bb9a-9e9ca668d73c" action="scriptSet" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>message [subst $message]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                </item>
+                <item guid="34951d6e-cdd6-41cf-8842-e69cfc50c3b3" action="scriptSet" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>title $title</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                </item>
+                <item guid="5266dfa6-f087-43cf-9796-1bd21c58b7dd" action="scriptEval" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>package require Tk</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="61ae73e7-735d-45ec-ad3f-b80d4ed322ae" action="scriptEval" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>wm withdraw .</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="ad4e2a6c-6900-413a-b398-a9c21c3f58b7" action="scriptEval" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>tk_messageBox -message $message -type ok -icon info -title $title</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <author>Malcom Terry</author>
+            <multilineDescription>Display a simple OK message.</multilineDescription>
+            <arguments>
+                <item name="message">
+                    <description>Message to display</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="title">
+                    <description>Dialog window title</description>
+                    <defaultValue>iTest</defaultValue>
+                </item>
+            </arguments>
+        </item>
+        <item name="openFile" isPublic="true">
+            <description>Dialog - open file</description>
+            <steps>
+                <item guid="b10cf286-a7fa-431c-9b9f-1f5ddb35fdb4" action="scriptSet" useFieldsInCommand="false">
+                    <command>
+                        <body>script [string map {\\\\ /} [file uriToPath project://[info testCaseProject current]/openFile.tcl]]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                </item>
+                <item guid="0b2d850c-1bb4-4e79-963f-73c1af457eb2" action="scriptEval" useFieldsInCommand="false">
+                    <command>
+                        <body>source $script</body>
+                    </command>
+                    <postProcessing>
+                        <storeResponseAt>response</storeResponseAt>
+                        <storeResponseText>true</storeResponseText>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="3f379e23-852d-453a-b4a3-65c5cb9c64f4" action="eval" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>set response [string trim $response]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="76a3c3f7-8677-41de-a01a-e742cbb8c020" action="sleep" skippReporting="false">
+                    <command>
+                        <body>1</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="58d96104-aa0a-4396-8161-b4271beeaab7" action="return" skippReporting="false">
+                    <command>
+                        <body>$response</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <author>Malcom Terry</author>
+            <multilineDescription>Prompt user to select a file for reading.</multilineDescription>
+        </item>
+        <item name="saveFile" isPublic="true">
+            <description>Dialog - save file</description>
+            <steps>
+                <item guid="bca70d1b-e4e1-4a27-8ecf-487b86a3c41a" action="scriptSet" useFieldsInCommand="false">
+                    <command>
+                        <body>script [string map {\\\\ /} [file uriToPath project://[info testCaseProject current]/saveFile.tcl]]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                </item>
+                <item guid="8453848c-40a3-4227-8149-e5869d597f23" action="scriptEval" useFieldsInCommand="false">
+                    <command>
+                        <body>source $script</body>
+                    </command>
+                    <postProcessing>
+                        <storeResponseAt>response</storeResponseAt>
+                        <storeResponseText>true</storeResponseText>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="0ea542b9-4037-49c4-abeb-2bf0818d4ea7" action="eval" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>set response [string trim $response]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="8296079d-2e46-4034-a858-10214a720654" action="sleep" skippReporting="false">
+                    <command>
+                        <body>1</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="25213b24-102c-4e23-888a-b790cc2c3030" action="return" skippReporting="false">
+                    <command>
+                        <body>$response</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <author>Malcom Terry</author>
+            <multilineDescription>Prompt user to select a file for writing.</multilineDescription>
+        </item>
+        <item name="showMsg" isPublic="true">
+            <description>Dialog - show a message with extended options</description>
+            <steps>
+                <item guid="d9e3f0eb-763e-4661-8152-cacef4d825b9" action="call" useFieldsInCommand="false">
+                    <command>
+                        <body>init</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="c6e486d5-9925-4e1e-9c4b-18ef874282d8" action="comment" useFieldsInCommand="false">
+                    <command>
+                        <body>Load the rc package for icon support, etc.</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="4b0ccb71-3e60-4f48-9a40-724ac08e26cd" action="scriptEval" useFieldsInCommand="false">
+                            <command>
+                                <body>package require rc</body>
+                            </command>
+                            <postProcessing>
+                                <analysisRules>
+                                    <item>
+                                        <extractorInfo extractorType="contains">
+                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                                <searchString>can&apos;t find package rc</searchString>
+                                            </extractorProperties>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="assert">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                <expression>$value == 1</expression>
+                                                <actionsWhenTrue>
+                                                    <item actionId="ExitExecution">
+                                                        <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                    </item>
+                                                    <item actionId="DeclareExecutionIssue">
+                                                        <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="Warning">
+                                                            <message>Missing custom package: rc.tcl</message>
+                                                        </actionProperties>
+                                                    </item>
+                                                </actionsWhenTrue>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                </analysisRules>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="e3cfa264-89c5-4463-9ac0-4541fb0162d8" action="scriptSet" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>iTest 1</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                </item>
+                <item guid="56f24b14-9dfa-4acc-8535-939e334268f5" action="scriptSet" useFieldsInCommand="false">
+                    <command>
+                        <body>opt(-msg) $message</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                </item>
+                <item guid="4dc97a30-181d-48ac-acb8-6d7b0830ed30" action="scriptSet" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>opt(-title) $title</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                </item>
+                <item guid="a363a0f6-9e7b-40e8-98dc-1eb18b214c03" action="scriptSet" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>opt(-font) $font</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                </item>
+                <item guid="193b3eb4-e513-4313-8f6b-d935a8ad6f6f" action="scriptSet" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>opt(-icon) $icon</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                </item>
+                <item guid="3c1b179c-cb85-4db8-b74b-ea6f160a7fea" action="scriptSet" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>opt(-timeout) $timeout</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                </item>
+                <item guid="488c7e18-02cd-4282-8871-7a88cb4de118" action="eval" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>set path [string map {\\\\ /} [file uriToPath project://[info testCaseProject current]/showMsg.tcl]]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="01210505-294f-40da-bfca-beb5e0ad9684" action="scriptSet" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>path $path</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                </item>
+                <item guid="f9fc2017-7352-4312-a6b7-adfc9f7c3633" action="scriptEval" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>source $path</body>
+                    </command>
+                    <postProcessing>
+                        <storeResponseAt>response</storeResponseAt>
+                        <storeResponseText>true</storeResponseText>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="a12693d3-7aef-4cb8-84af-ef67aa1a96ef" action="eval" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>set response [string trim $response]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="c31d45da-2b86-4efc-9b52-253325121760" action="sleep" skippReporting="false">
+                    <command>
+                        <body>1</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="df0b868e-564e-4926-a8e3-6ad29c8d91e9" action="return" skippReporting="false">
+                    <command>
+                        <body>$response</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <author>Malcom Terry</author>
+            <multilineDescription>Display a message. More options than errorMsg, infoMsg, okMsg and warning Msg.
+You can specify the font, and a timeout.</multilineDescription>
+            <arguments>
+                <item name="message">
+                    <description>Message to display</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="icon">
+                    <description>Icon to display with message: error | info | question | warning
+
+Default: none</description>
+                </item>
+                <item name="title">
+                    <description>Dialog window title</description>
+                    <defaultValue>iTest</defaultValue>
+                </item>
+                <item name="font">
+                    <description>Font. Default: helvetica 10</description>
+                    <defaultValue>helvetica 10</defaultValue>
+                </item>
+                <item name="timeout">
+                    <description>Number of seconds to wait for an entry. 0=(forever) and wait for user entry.
+</description>
+                    <defaultValue>2</defaultValue>
+                </item>
+            </arguments>
+        </item>
+        <item name="warningMsg" isPublic="true">
+            <description>Dialog - warning message</description>
+            <steps>
+                <item guid="d1079953-700d-4e7c-8298-2e04fa8f5142" action="call" useFieldsInCommand="false">
+                    <command>
+                        <body>init</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="6e2371d2-a518-40f1-8093-aa1d4cdf1d09" action="scriptSet" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>message [subst $message]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                </item>
+                <item guid="4023c7b1-f221-480d-aa77-5a48604c14db" action="scriptSet" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>title $title</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                </item>
+                <item guid="e0fd112d-167f-4340-b925-908206aeeb0a" action="scriptEval" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>package require Tk</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="cc6db7db-a5be-4a86-905d-57052b5d452a" action="scriptEval" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>wm withdraw .</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="e21595d9-1c41-4ccd-9d90-fa5c48f10d46" action="scriptEval" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>tk_messageBox -message $message -type ok -icon warning -title $title</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <author>Malcom Terry</author>
+            <multilineDescription>Display a warning message.</multilineDescription>
+            <arguments>
+                <item name="message">
+                    <description>Message to display</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="title">
+                    <description>Dialog window title</description>
+                    <defaultValue>iTest</defaultValue>
+                </item>
+            </arguments>
+        </item>
+        <item name="yesnoMsg" isPublic="true">
+            <description>Dialog - yes/no selection</description>
+            <steps>
+                <item guid="0249863f-0fec-426a-8228-f376f4245569" action="call" useFieldsInCommand="false">
+                    <command>
+                        <body>init</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="fd3c201a-ab1e-4da7-a6c0-5175aeec731f" action="scriptSet" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>message [subst $message]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                </item>
+                <item guid="bcb3f404-9e3a-4c5a-aff9-c399aa2651ac" action="scriptSet" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>title $title</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties"/>
+                </item>
+                <item guid="c887892b-f473-494d-8ad7-122101d5cbc0" action="scriptEval" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>package require Tk</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="7a34b774-09f1-4de6-9f1d-976f533af5af" action="scriptEval" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>wm withdraw .</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="8a25f1b4-72a2-44c4-8e81-5a36a871d8e5" action="scriptEval" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>set response [tk_messageBox -message $message -type yesno -icon question -title $title]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="f82ef43e-30af-496b-84e6-fd9e46f9db2e" action="scriptGet" useFieldsInCommand="false" skippReporting="false">
+                    <command>
+                        <body>response {$response}</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptGetProperties"/>
+                </item>
+                <item guid="6094bfe6-ac2d-4c99-88c5-8e65737d8c53" action="return" skippReporting="false">
+                    <command>
+                        <body>$response</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <author>Malcom Terry</author>
+            <multilineDescription>Prompt for yes/no.</multilineDescription>
+            <arguments>
+                <item name="message">
+                    <description>Message or question to ask</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="title">
+                    <description>Dialog window title</description>
+                    <defaultValue>iTest</defaultValue>
+                </item>
+            </arguments>
+        </item>
+    </procedures>
+</testCase>

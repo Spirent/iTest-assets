@@ -1,0 +1,99 @@
+<?xml version="1.0"?>
+<ResponseMap version="5.1.0.77511">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="show_hw_module">
+                <command>
+                    <body>-extra_arg &quot;fpd location 0/1/CPU0 &quot;</body>
+                </command>
+            </action>
+            <responseBody>
+===================================== ==========================================
+                                      Existing Field Programmable Devices
+                                      ==========================================
+                                        HW                       Current SW Upg/
+Location     Card Type                Version Type Subtype Inst   Version   Dng?
+============ ======================== ======= ==== ======= ==== =========== ====
+0/1/CPU0     A9K-8X100GE-L-SE           1.0   lc   cbc     0      38.23     No 
+                                              lc   rommon  0       8.40     No 
+                                              lc   fpga2   0       1.76     No 
+                                              lc   fsbl    0       1.78     No 
+                                              lc   lnxfw   0       1.78     No 
+                                              lc   fpga3   0       1.04     No 
+                                              lc   fpga4   0       1.06     No 
+
+0/1/CPU0     A9K-8X100GE-L-SE           0.24  lc   fpga3   1       1.04     No 
+
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;definedIn&gt;project://d_Cisco_IOSXR/session_profiles/cisco_IOSXR_ssh_quickcall_library.fftc&lt;/definedIn&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="definedIn">
+                    <queryFormatString>.//definedIn</queryFormatString>
+                    <source>Kernel</source>
+                </item>
+            </aliases>
+            <duration>2.0</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.table.TabularMapperProperties">
+            <tabularMaps>
+                <item name="table1">
+                    <additionalBannerLineCount>1</additionalBannerLineCount>
+                    <banner>Location\\s+Card Type\\s+Version Type Subtype Inst\\s+Version\\s+Dng\\?\\s*</banner>
+                    <footer>NOTES:</footer>
+                    <bannerStructure>Regex</bannerStructure>
+                    <footerStructure>CaseInsensitive</footerStructure>
+                    <columnBoundaries>Positional</columnBoundaries>
+                    <minOccurences>0</minOccurences>
+                    <columns>
+                        <item name="Location">
+                            <width>13</width>
+                        </item>
+                        <item name="Card_Type">
+                            <width>25</width>
+                        </item>
+                        <item name="hw_version">
+                            <width>7</width>
+                        </item>
+                        <item name="Type">
+                            <width>5</width>
+                        </item>
+                        <item name="Subtype">
+                            <isKey>true</isKey>
+                            <width>13</width>
+                        </item>
+                        <item name="Inst"/>
+                        <item name="current_version">
+                            <width>10</width>
+                        </item>
+                        <item name="upgrade_status">
+                            <width>6</width>
+                        </item>
+                    </columns>
+                    <autoUpdateNames>false</autoUpdateNames>
+                </item>
+            </tabularMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="show_hw_module" command="-extra_arg &quot;fpd location*"/>
+    <responseFilters>
+        <item name="ResponseFilterList1">
+            <pattern>--------------------------------------------------------------------------------</pattern>
+        </item>
+    </responseFilters>
+    <aliases>
+        <item name="to_upgrade_nodes_present">
+            <description>returns true if there are any nodes that require upgrade</description>
+            <queryFormatString>boolean(mapped/Tabular/table1/table/row[upgrade_status != &quot;No&quot;]/Subtype)</queryFormatString>
+        </item>
+        <item name="to_upgrade_fpd_list">
+            <queryFormatString>mapped/Tabular/table1/table/row[upgrade_status != &quot;No&quot;]/Subtype</queryFormatString>
+        </item>
+    </aliases>
+</ResponseMap>

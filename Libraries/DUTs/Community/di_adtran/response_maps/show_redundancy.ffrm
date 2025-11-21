@@ -1,0 +1,208 @@
+<?xml version="1.0" ?><ResponseMap version="6.0.0.18638fa">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="command">
+                <command>
+                    <body>show redundancy 1/a</body>
+                </command>
+            </action>
+            <responseBody>  Failover Permitted:   Yes
+  My Slot:              A
+  Peer Slot:            B
+  Current State:        Active
+  Revertive:            Disabled
+  Revertive Timeout:    15 seconds
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;prompt&gt;TA5000-1&amp;gt;&lt;/prompt&gt;
+    &lt;echo&gt;show redundancy 1/a&lt;/echo&gt;
+    &lt;promptName&gt;normal&lt;/promptName&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.4</duration>
+        </item>
+        <item name="sample2">
+            <action actionType="command">
+                <command>
+                    <body>show redundancy 1/b</body>
+                </command>
+            </action>
+            <responseBody>  Failover Permitted:   No, Peer not ready
+  My Slot:              B
+  Peer Slot:            A
+  Current State:        Active
+  Revertive:            Disabled
+  Revertive Timeout:    15 seconds
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;prompt&gt;TA5000-1&amp;gt;&lt;/prompt&gt;
+    &lt;echo&gt;show redundancy 1/b&lt;/echo&gt;
+    &lt;promptName&gt;normal&lt;/promptName&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.3</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="pattern1">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Failover Permitted:\\s+</regex>
+                            <start>0</start>
+                            <end>22</end>
+                        </item>
+                        <item name="Failover_Permitted">
+                            <regex>[^\\r\\n]+</regex>
+                            <named>true</named>
+                            <start>22</start>
+                            <end>25</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+My Slot:\\s+</regex>
+                            <start>25</start>
+                            <end>48</end>
+                        </item>
+                        <item name="My_Slot">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>48</start>
+                            <end>49</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>\\s+Peer Slot:\\s+</regex>
+                            <start>49</start>
+                            <end>72</end>
+                        </item>
+                        <item name="Peer_Slot">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>72</start>
+                            <end>73</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor3">
+                            <regex>\\s+Current State:\\s+</regex>
+                            <start>73</start>
+                            <end>96</end>
+                        </item>
+                        <item name="Current_State">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>96</start>
+                            <end>102</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor4">
+                            <regex>\\s+Revertive:\\s+</regex>
+                            <start>102</start>
+                            <end>125</end>
+                        </item>
+                        <item name="Revertive">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>125</start>
+                            <end>133</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor5">
+                            <regex>\\s+Revertive Timeout:\\s+</regex>
+                            <start>133</start>
+                            <end>156</end>
+                        </item>
+                        <item name="Revertive_Timeout">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>156</start>
+                            <end>158</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor6">
+                            <regex>\\s+seconds</regex>
+                            <start>158</start>
+                            <end>166</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>Failover Permitted:   Yes
+My Slot:              A
+Peer Slot:            B
+Current State:        Active
+Revertive:            Disabled
+Revertive Timeout:    15 seconds</sampleMatch>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="sh* red*">
+        <application>
+            <item>com.fnfr.svt.applications.ssh</item>
+            <item>com.fnfr.svt.applications.telnet</item>
+        </application>
+    </applicabilityProperties>
+</ResponseMap>

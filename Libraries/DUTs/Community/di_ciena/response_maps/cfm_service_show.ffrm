@@ -1,0 +1,227 @@
+<?xml version="1.0" ?><ResponseMap version="6.0.0.18638fa">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="command">
+                <command>
+                    <body>cfm service show</body>
+                </command>
+            </action>
+            <responseBody>+--------------------------------------- CFM SERVICES ---------------------------------------+
+|                |    |                               |    |   |   | MEPs  | Service Faults  |
+|Name            |Type|Service Network                |Vid |Lvl|Adm|Loc|Rem|XC|CC|RM|MS|RD|IS|
++----------------+----+-------------------------------+----+---+---+---+---+--+--+--+--+--+--+
+|VPLS:1001-4serv |VLAN|ers1001                        |1001|4  |en |1  |1  |  |  |X |  |  |  |
+|VPLS:1002-4serv |VLAN|ers1002                        |1002|4  |en |1  |1  |  |  |X |  |  |  |
+|VPLS:4092-3diag |VLAN|Mgmt                           |4092|3  |en |1  |1  |  |  |X |  |  |  |
+|VPLS:2001-4serv |VLAN|ews2001                        |2001|4  |en |1  |0  |  |  |  |  |  |X |
+|VPLS:1003-4serv |VLAN|ers1003                        |1003|4  |en |1  |1  |  |  |X |  |  |  |
+|VPLS:1004-4serv |VLAN|ers1004                        |1004|4  |en |1  |0  |  |  |  |  |  |X |
+|VPWS:3332-4serv |VLAN|ers3332                        |3332|4  |en |1  |0  |  |  |  |  |  |X |
+|VPWS:3332-3diag |VLAN|ers3332                        |3332|3  |en |1  |0  |  |  |  |  |  |X |
++----------------+----+-------------------------------+----+---+---+---+---+--+--+--+--+--+--+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;terminal RequiredForRendering=&quot;true&quot;&gt;
+        &lt;prompt&gt;3911-23-BGPMH&amp;gt; &lt;/prompt&gt;
+        &lt;promptExtraction&gt;LAST_LINE&lt;/promptExtraction&gt;
+        &lt;echo&gt;cfm service show&lt;/echo&gt;
+        &lt;idleTime&gt;1.127&lt;/idleTime&gt;
+        &lt;contentType&gt;text&lt;/contentType&gt;
+        &lt;terminator&gt;SLASH_R_SLASH_N&lt;/terminator&gt;
+    &lt;/terminal&gt;
+&lt;/structure&gt;
+</structuredData>
+        </item>
+        <item name="saos_6-13">
+            <action actionType="command">
+                <command>
+                    <body>cfm service show</body>
+                </command>
+            </action>
+            <responseBody>+------------------------------------------ CFM SERVICES -------------------------------------------+
+|                 |    |                               |    |   |   |  MEPs   | Service Faults  |   |
+|Name             |Type|Service Network                |Vid |Lvl|Adm|Loc |Rem |XC|CC|RM|MS|RD|IS|Acc|
++-----------------+----+-------------------------------+----+---+---+----+----+--+--+--+--+--+--+---+
+|VPLS:282101-4serv|VLAN|ERS-3930-2101                  |2101|4  |en |1   |2   |  |  |  |X |  |  |No |
++-----------------+----+-------------------------------+----+---+---+----+----+--+--+--+--+--+--+---+
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;prompt&gt;3930-12&amp;gt; &lt;/prompt&gt;
+    &lt;echo&gt;cfm service show&lt;/echo&gt;
+    &lt;promptName&gt;normal&lt;/promptName&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.5</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.table.TabularMapperProperties">
+            <tabularMaps>
+                <item name="table1">
+                    <description>Changed label for last column of table from &quot;col2&quot; to &quot;Acc&quot; to make more meaningful. Works with 3930s. dfuhr 10/20/2015</description>
+                    <additionalBannerLineCount>1</additionalBannerLineCount>
+                    <startingLineNumber>4</startingLineNumber>
+                    <banner>\\|Name\\s+\\|Type\\|Service Network\\s+\\|Vid\\s+\\|Lvl\\|Adm\\|Loc\\|Rem\\|XC\\|CC\\|RM\\|MS\\|RD\\|IS\\|</banner>
+                    <footer>\\+-*\\+-*\\+-*\\+-*\\+-*\\+-*\\+-*\\+-*\\+-*\\+-*\\+-*\\+-*\\+-*\\+-*\\+</footer>
+                    <bannerStructure>Regex</bannerStructure>
+                    <footerStructure>Regex</footerStructure>
+                    <customDelimiter>|</customDelimiter>
+                    <delimiter>Custom</delimiter>
+                    <minOccurences>0</minOccurences>
+                    <maxOccurences>1</maxOccurences>
+                    <columns>
+                        <item name="leading_pipe">
+                            <lastFullCell/>
+                            <showInStructuredData>false</showInStructuredData>
+                        </item>
+                        <item name="Name">
+                            <defaultValue>NONE</defaultValue>
+                            <lastFullCell/>
+                        </item>
+                        <item name="Type">
+                            <lastFullCell/>
+                        </item>
+                        <item name="Service_Network">
+                            <lastFullCell/>
+                        </item>
+                        <item name="Vid">
+                            <isKey>true</isKey>
+                            <defaultValue>NONE</defaultValue>
+                            <lastFullCell/>
+                        </item>
+                        <item name="Lvl">
+                            <lastFullCell/>
+                        </item>
+                        <item name="Adm">
+                            <lastFullCell/>
+                        </item>
+                        <item name="Loc">
+                            <lastFullCell/>
+                        </item>
+                        <item name="Rem">
+                            <lastFullCell/>
+                        </item>
+                        <item name="XC">
+                            <lastFullCell/>
+                        </item>
+                        <item name="CC">
+                            <lastFullCell/>
+                        </item>
+                        <item name="RM">
+                            <lastFullCell/>
+                        </item>
+                        <item name="MS">
+                            <lastFullCell/>
+                        </item>
+                        <item name="RD">
+                            <lastFullCell/>
+                        </item>
+                        <item name="IS">
+                            <lastFullCell/>
+                        </item>
+                        <item name="Acc">
+                            <lastFullCell/>
+                        </item>
+                        <item name="trailing_pipe">
+                            <lastFullCell/>
+                            <showInStructuredData>false</showInStructuredData>
+                        </item>
+                    </columns>
+                    <ignoreBlankLines>false</ignoreBlankLines>
+                    <autoUpdateNames>false</autoUpdateNames>
+                </item>
+                <item name="SAOS_with_Acc_column">
+                    <additionalBannerLineCount>1</additionalBannerLineCount>
+                    <banner>\\|Name\\s+\\|Type\\|Service Network\\s+\\|Vid\\s+|Lvl\\|Adm\\|Loc\\s+\\|Rem\\s+\\|XC\\|CC\\|RM\\|MS\\|RD\\|IS\\|Acc\\|</banner>
+                    <footer>\\+-*\\+-*\\+-*\\+-*\\+-*\\+-*\\+-*\\+-*\\+-*\\+-*\\+-*\\+-*\\+-*\\+-*\\+-*\\+</footer>
+                    <bannerStructure>Regex</bannerStructure>
+                    <footerStructure>Regex</footerStructure>
+                    <customDelimiter>|</customDelimiter>
+                    <delimiter>Custom</delimiter>
+                    <minOccurences>0</minOccurences>
+                    <columns>
+                        <item name="head_pipe">
+                            <lastFullCell/>
+                            <showInStructuredData>false</showInStructuredData>
+                        </item>
+                        <item name="Name">
+                            <lastFullCell/>
+                        </item>
+                        <item name="Type">
+                            <lastFullCell/>
+                        </item>
+                        <item name="Service_Network">
+                            <lastFullCell/>
+                        </item>
+                        <item name="Vid">
+                            <lastFullCell/>
+                        </item>
+                        <item name="Lvl">
+                            <lastFullCell/>
+                        </item>
+                        <item name="Adm">
+                            <lastFullCell/>
+                        </item>
+                        <item name="Loc">
+                            <lastFullCell/>
+                        </item>
+                        <item name="Rem">
+                            <lastFullCell/>
+                        </item>
+                        <item name="XC">
+                            <lastFullCell/>
+                        </item>
+                        <item name="CC">
+                            <lastFullCell/>
+                        </item>
+                        <item name="RM">
+                            <lastFullCell/>
+                        </item>
+                        <item name="MS">
+                            <lastFullCell/>
+                        </item>
+                        <item name="RD">
+                            <lastFullCell/>
+                        </item>
+                        <item name="IS">
+                            <lastFullCell/>
+                        </item>
+                        <item name="Acc">
+                            <lastFullCell/>
+                        </item>
+                        <item name="tail_pipe">
+                            <lastFullCell/>
+                            <showInStructuredData>false</showInStructuredData>
+                        </item>
+                    </columns>
+                </item>
+            </tabularMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="cfm service show"/>
+    <aliases>
+        <item name="NameByVid">
+            <queryFormatString>mapped/Tabular/table1/table/row[Vid='{0}']/Name</queryFormatString>
+            <arguments>
+                <item name="Vid">
+                    <valuesQuery>.//Vid</valuesQuery>
+                    <interpretAs>SampleValues</interpretAs>
+                </item>
+            </arguments>
+        </item>
+    </aliases>
+</ResponseMap>

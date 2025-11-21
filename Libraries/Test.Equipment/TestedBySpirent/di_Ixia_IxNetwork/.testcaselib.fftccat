@@ -1,0 +1,129 @@
+<?xml version="1.0"?>
+<TestCaseCatalog version="8.0.0.201908290812">
+    <testCaseCatalog>
+        <item name="session_profiles/ixia_ixnetwork_quickcall_library.fftc">
+            <tcDescriptor version="8.0.0.201908290812">
+                <general>
+                    <documentation>Ixia IxNetwork Quickcalls</documentation>
+                    <owner>Alex Orr</owner>
+                    <sessionClass includeTestCase="true" sessionType="ixia_ixnetwork_base.ffsp"/>
+                </general>
+                <procedures>
+                    <item name="GetTrafficStats" isPublic="true" isVBlock="true">
+                        <description>Get Traffic Statistics</description>
+                        <multilineDescription>Get stats from IXNetwork&apos;s Traffic Item Statistics view
+Returns JSON block:
+\tloss_percent - percentage of transmitted packets lost 
+\ttx_bps - current transmitting bitrate in bits per second
+\trx_bps - current receiving bitrate in bits per second</multilineDescription>
+                        <arguments>
+                            <item name="traffic_flow">
+                                <description>Name of the traffic flow to get info on.</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                        <response>{&quot;loss_percent&quot;:&quot;value&quot;,&quot;rx_bps&quot;:&quot;value&quot;,&quot;tx_bps&quot;:&quot;value&quot;}</response>
+                    </item>
+                    <item name="GetAllTrafficIds" isPublic="true" isVBlock="true">
+                        <description>Get All Traffic IDs</description>
+                        <multilineDescription>Get a list of API handles for each traffic item in the config.
+Returns JSON block
+\ttraffic_ids_list - List of all traffic item handles</multilineDescription>
+                        <response>{&quot;traffic_ids_list&quot;:&quot;value&quot;}</response>
+                    </item>
+                    <item name="GetAllFlowIds" isPublic="true" isVBlock="true">
+                        <description>Get All Traffic Flow IDs</description>
+                        <multilineDescription>Get a list of API handles for each traffic flow in the config.
+Returns JSON block
+\ttraffic_ids_list - List of all traffic flow handles</multilineDescription>
+                        <response>{&quot;traffic_flows_list&quot;:&quot;value&quot;}</response>
+                    </item>
+                    <item name="GetFlowIdByName" isPublic="true" isVBlock="true">
+                        <description>Get Flow ID by Name</description>
+                        <multilineDescription>Get flow API handle by user-friendly name
+Returns JSON block
+\tflow_id - API handle of desired flow</multilineDescription>
+                        <arguments>
+                            <item name="flow_name">
+                                <description>User-readable flow name 
+ex: MEF-EndpointSet-1 - Flow Group 0001</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                        <response>{&quot;flow_id&quot;:&quot;value&quot;}</response>
+                    </item>
+                    <item name="GetTrafficNameFromId" isPublic="true" isVBlock="true">
+                        <description>Get Traffic Name From ID</description>
+                        <multilineDescription>Get user defined descriptive traffic item name from Ixia traffic item ID
+Returns JSON block
+\ttraffic_item_name - Descriptive name of desired traffic item
+</multilineDescription>
+                        <arguments>
+                            <item name="traffic_id">
+                                <description>ID of desired traffic item.
+ ex: ::ixNet::OBJ-/traffic/trafficItem:1</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                        <response>{&quot;traffic_item_name&quot;:&quot;value&quot;}</response>
+                    </item>
+                    <item name="StartTraffic" isPublic="true">
+                        <description>Start Traffic</description>
+                        <multilineDescription>Start traffic on all enabled traffic items</multilineDescription>
+                    </item>
+                    <item name="StopTraffic" isPublic="true">
+                        <description>Stop Traffic</description>
+                        <multilineDescription>Stop currently running traffic</multilineDescription>
+                    </item>
+                    <item name="ChangeFlowRate" isPublic="true" isVBlock="true">
+                        <description>Change Flow Rate</description>
+                        <multilineDescription>Modify the traffic rate and type on an existing traffic flow.
+Returns block JSON string:
+\tstatus: &apos;OK&apos; if change is successful, error otherwise
+\terror_message: gives error message if error found, &apos;none&apos; otherwise</multilineDescription>
+                        <arguments>
+                            <item name="flow_name">
+                                <description>Name of traffic flow to modify as it appears in the Ixia configuration.
+ex. Traffic Item 1, Inbound, etc.</description>
+                            </item>
+                            <item name="commit">
+                                <description>If left as default, will commit config changes at the end of the quick call. Otherwise, will not commit changes. </description>
+                                <defaultValue>yes</defaultValue>
+                            </item>
+                            <item name="rate">
+                                <description>New rate to change to. Can be in any of the supported types. Use only integers when supplying bitrates.
+ex: 1.0, 500.0, 1000000</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="type">
+                                <description>New rate type to change to. Possible rate types:
+percentLineRate
+framesPerSecond
+bitsPerSecond</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                        <response>{&quot;status&quot;:&quot;OK&quot;,&quot;error_message&quot;:&quot;none&quot;}</response>
+                    </item>
+                    <item name="CommitConfigChanges" isPublic="true">
+                        <description>Commit Config Changes</description>
+                        <multilineDescription>Commits any new config changes (works for flow objects and possibly others, traffic objects need to be applied using apply traffic command)</multilineDescription>
+                    </item>
+                    <item name="RunTraffic" isPublic="true">
+                        <description>Run Traffic</description>
+                        <author>Alex Orr</author>
+                        <version>1.0</version>
+                        <multilineDescription>Runs traffic by starting all enabled traffic items on Ixia.</multilineDescription>
+                        <arguments>
+                            <item name="duration">
+                                <description>Time in seconds to run traffic
+</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                    </item>
+                </procedures>
+            </tcDescriptor>
+        </item>
+    </testCaseCatalog>
+</TestCaseCatalog>

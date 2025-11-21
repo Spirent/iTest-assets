@@ -1,0 +1,644 @@
+<?xml version="1.0"?>
+<TestCaseCatalog version="8.1.0.201911191301">
+    <testCaseCatalog>
+        <item name="session_profiles/adb_ssh_quickcall_library.fftc">
+            <tcDescriptor version="8.1.0.201911191301">
+                <general>
+                    <sessionClass includeTestCase="true" sessionType="adb_ssh.ffsp"/>
+                </general>
+                <procedures>
+                    <item name="changeAPN" isPublic="true" isVBlock="true">
+                        <description>Read the APN value used by the phone</description>
+                        <responseMap>project://di_ADB/response_maps/JsonBlockToQueries.ffrm</responseMap>
+                        <multilineDescription>Change the APN of the handset to the specified value - note that this is NOT called from a shell</multilineDescription>
+                        <arguments>
+                            <item name="new_APN">
+                                <description>The value of the new APN</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="new_APN_protocol">
+                                <description>If desired, pass in a new_APN_protocol: IPV4, IPV6, IPV4V6. Leave as NA to make no changes.</description>
+                                <defaultValue>NA</defaultValue>
+                            </item>
+                            <item name="device_id">
+                                <description>The deviceId of the Android device - usually from getDevices</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="rooted">
+                                <description>true: this UE is rooted
+false: this UE is not rooted</description>
+                                <defaultValue>true</defaultValue>
+                            </item>
+                            <item name="carrier_name">
+                                <description>The carrier name to change in the telephony database</description>
+                                <defaultValue>Telus</defaultValue>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                        <response>{&quot;apn&quot;:&quot;&quot;,&quot;apn_protocol&quot;:null,&quot;carrier&quot;:null}</response>
+                    </item>
+                    <item name="clearLog" isPublic="true" isVBlock="true">
+                        <responseMap>project://di_ADB/response_maps/JsonBlockToQueries.ffrm</responseMap>
+                        <multilineDescription>Clear the logcat logs
+
+Return: Block
+
+success: 1-success; 0-failue</multilineDescription>
+                        <response>{&quot;success&quot;:&quot;1&quot;}</response>
+                    </item>
+                    <item name="dumpLog" isPublic="true">
+                        <multilineDescription>Dump the logcat logs
+
+Return: Logfile response
+
+</multilineDescription>
+                        <response>{&quot;success&quot;:&quot;1&quot;}</response>
+                    </item>
+                    <item name="getAirplaneModeStatus" isPublic="true" isVBlock="true">
+                        <responseMap>project://di_ADB/response_maps/JsonBlockToQueries.ffrm</responseMap>
+                        <multilineDescription>Return the status of airplane mode for the handset
+
+Return Value: Block
+status: 0 - not in airplane mode; 1 - airplane mode</multilineDescription>
+                        <response>{&quot;status&quot;:&quot;0&quot;}</response>
+                    </item>
+                    <item name="getCallStatus" isPublic="true" isVBlock="true">
+                        <responseMap>project://di_ADB/response_maps/JsonBlockToQueries.ffrm</responseMap>
+                        <multilineDescription>Get the call status for the mobile - must be in the ADB shell to execute this command
+
+Return Value: Block
+callStatus: 0 - not in call; 1 - Connecting; 2 - In call</multilineDescription>
+                        <response>{&quot;callStatus&quot;:&quot;0&quot;}</response>
+                    </item>
+                    <item name="getDevices" isPublic="true" isVBlock="true">
+                        <responseMap>project://di_ADB/response_maps/JsonBlockToQueries.ffrm</responseMap>
+                        <multilineDescription>This procedure will return a list of ADB devices and the corresponding model of each device.</multilineDescription>
+                        <response>{&quot;devices&quot;:&quot;0&quot;,&quot;models&quot;:&quot;0&quot;}</response>
+                    </item>
+                    <item name="getSMS" isPublic="true">
+                        <responseMap>project://di_ADB/response_maps/sms_sqlite.ffrm</responseMap>
+                        <multilineDescription>Get the specified SMS from the database
+
+Return: table (response mapped)
+
+id, sender, timestamp, subject, message body
+
+
+</multilineDescription>
+                        <arguments>
+                            <item name="sendingNumber">
+                                <description>if specified, the quickcall will filter only on SMS from this phone number</description>
+                            </item>
+                            <item name="text_body">
+                                <description>if specified, filter only texts containing specific keywords</description>
+                            </item>
+                            <item name="latest_only">
+                                <description>If set, only get the latest text message
+
+0 - get all messages
+1 - get only latest text message</description>
+                                <defaultValue>0</defaultValue>
+                            </item>
+                            <item name="device_id">
+                                <description>The ADB id for this device</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                        <response>{&quot;textBody&quot;:&quot;&quot;,&quot;se&quot;:&quot;value&quot;}</response>
+                    </item>
+                    <item name="getScreenshot" isPublic="true" isVBlock="true">
+                        <responseMap>project://di_ADB/response_maps/JsonBlockToQueries.ffrm</responseMap>
+                        <multilineDescription>Send the screenshot to the specified file on the host machine
+
+Return: Block
+status: 0 - failure; 1 - success;</multilineDescription>
+                        <arguments>
+                            <item name="filename">
+                                <description>The filename (full path) on the host machine of the resulting screenshot file.</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="tempfile">
+                                <description>The location (full path) of the temporary file on the handset</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="deviceId">
+                                <description>ADB device ID</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                        <response>{&quot;status&quot;:&quot;0&quot;}</response>
+                    </item>
+                    <item name="getVersion" isPublic="true" isVBlock="true">
+                        <description>Return the ADB version information</description>
+                        <responseMap>project://di_ADB/response_maps/JsonBlockToQueries.ffrm</responseMap>
+                        <multilineDescription>Return the ADB version information
+
+Return: JSON Block
+version: 0</multilineDescription>
+                        <response>{&quot;version&quot;:&quot;0&quot;}</response>
+                    </item>
+                    <item name="isDeviceActive" isPublic="true" isVBlock="true">
+                        <responseMap>project://di_ADB/response_maps/JsonBlockToQueries.ffrm</responseMap>
+                        <multilineDescription>Is this device currently active in the list of ADB devices?
+
+Return Value: Block
+active: 0 - inactive; 1 - active</multilineDescription>
+                        <arguments>
+                            <item name="expectedDevice">
+                                <description>The device ID of the device expected in the active list</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                        <response>{&quot;active&quot;:&quot;0&quot;}</response>
+                    </item>
+                    <item name="reboot" isPublic="true" isVBlock="true">
+                        <responseMap>project://di_ADB/response_maps/JsonBlockToQueries.ffrm</responseMap>
+                        <multilineDescription>Reboot the device
+
+Return Value: Block
+success: 0 - failure; 1 - success</multilineDescription>
+                        <arguments>
+                            <item name="ADB_ID">
+                                <description>The ID of the ADB device</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                        <response>{&quot;success&quot;:&quot;1&quot;}</response>
+                    </item>
+                    <item name="restartUSB" isPublic="true" isVBlock="true">
+                        <responseMap>project://di_ADB/response_maps/JsonBlockToQueries.ffrm</responseMap>
+                        <multilineDescription>Restart the USB service on the linux box. This should result in the handset re-appearing if it is missing.
+
+NOTE: **** Must have run sudo command previously to not have to re-input sudo password ****
+
+Return Value: Block
+success: 0 - failure; 1 - success</multilineDescription>
+                        <response>{&quot;success&quot;:&quot;1&quot;}</response>
+                    </item>
+                    <item name="setAirplaneMode" isPublic="true" isVBlock="true">
+                        <description>Airplane mode ON = true OFF = false</description>
+                        <responseMap>project://di_ADB/response_maps/JsonBlockToQueries.ffrm</responseMap>
+                        <multilineDescription>Set airplane mode
+
+Return Value: Block
+failure: 0 - success; 1 - failure</multilineDescription>
+                        <arguments>
+                            <item name="status">
+                                <description>Airplane mode ON = 1 OFF = 0</description>
+                                <defaultValue>1</defaultValue>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                        <response>{&quot;failure&quot;:&quot;0&quot;}</response>
+                    </item>
+                    <item name="shellAddAPN" isPublic="true" isVBlock="true">
+                        <description>Add an APN</description>
+                        <responseMap>project://di_ADB/response_maps/JsonBlockToQueries.ffrm</responseMap>
+                        <multilineDescription>Add the APN  - if it already exists, an error is returned.</multilineDescription>
+                        <arguments>
+                            <item name="APN">
+                                <description>The value of the new APN</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="APN_protocol">
+                                <description>IP, IPV6, IPV4V6</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="carrier_name">
+                                <description>The carrier name to change in the telephony database</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="mcc">
+                                <description>Mobile carrier code</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="mnc">
+                                <description>Mobile network code</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="type">
+                                <description>The APN type</description>
+                                <defaultValue>default,mms,supl,dun</defaultValue>
+                            </item>
+                        </arguments>
+                        <response>{&quot;apn&quot;:&quot;&quot;,&quot;apn_protocol&quot;:null,&quot;carrier&quot;:null,&quot;mcc&quot;:null,&quot;mnc&quot;:null}</response>
+                    </item>
+                    <item name="shellAnswerCall" isPublic="true" isVBlock="true">
+                        <responseMap>project://di_ADB/response_maps/JsonBlockToQueries.ffrm</responseMap>
+                        <multilineDescription>Send the answer call key event in the ADB shell</multilineDescription>
+                        <response>{&quot;success&quot;:&quot;1&quot;}</response>
+                    </item>
+                    <item name="shellBrowseWebPage" isPublic="true" isVBlock="true">
+                        <responseMap>project://di_ADB/response_maps/JsonBlockToQueries.ffrm</responseMap>
+                        <multilineDescription>In the ADB shell, browse to the webpage specified</multilineDescription>
+                        <arguments>
+                            <item name="page">
+                                <description>The webpage URL</description>
+                                <defaultValue>http://www.google.com</defaultValue>
+                            </item>
+                        </arguments>
+                        <response>{&quot;success&quot;:&quot;1&quot;}</response>
+                    </item>
+                    <item name="shellChangeAPN" isPublic="true" isVBlock="true">
+                        <description>Change the APN value of the handset</description>
+                        <responseMap>project://di_ADB/response_maps/JsonBlockToQueries.ffrm</responseMap>
+                        <multilineDescription>Change the APN of the handset to the specified value - note that the APN carrier type must exist in the database</multilineDescription>
+                        <arguments>
+                            <item name="new_APN">
+                                <description>The value of the new APN</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="new_APN_protocol">
+                                <description>If desired, pass in a new_APN_protocol: IP, IPV6, IPV4V6. Leave as NA to make no changes.</description>
+                                <defaultValue>NA</defaultValue>
+                            </item>
+                            <item name="carrier_name">
+                                <description>The carrier name to change in the telephony database</description>
+                                <defaultValue>Telus</defaultValue>
+                            </item>
+                        </arguments>
+                        <response>{&quot;apn&quot;:&quot;&quot;,&quot;apn_protocol&quot;:null,&quot;carrier&quot;:null,&quot;mcc&quot;:&quot;0&quot;,&quot;mnc&quot;:&quot;0&quot;,&quot;id&quot;:&quot;0&quot;}</response>
+                    </item>
+                    <item name="shellClearAPN" isPublic="true" isVBlock="true">
+                        <description>Add an APN</description>
+                        <responseMap>project://di_ADB/response_maps/JsonBlockToQueries.ffrm</responseMap>
+                        <multilineDescription>Clear all rows from the carriers table that have the specified APN.</multilineDescription>
+                        <arguments>
+                            <item name="APN">
+                                <description>The value of the new APN</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                        <response>{&quot;result&quot;:&quot;failure&quot;}</response>
+                    </item>
+                    <item name="shellDeleteAPN" isPublic="true" isVBlock="true">
+                        <description>Add an APN</description>
+                        <responseMap>project://di_ADB/response_maps/JsonBlockToQueries.ffrm</responseMap>
+                        <multilineDescription>Delete the specified APN</multilineDescription>
+                        <arguments>
+                            <item name="APN">
+                                <description>The value of the new APN</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="carrier_name">
+                                <description>The carrier name to change in the telephony database</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                        <response>{&quot;result&quot;:&quot;failure&quot;}</response>
+                    </item>
+                    <item name="shellDeleteFile" isPublic="true" isVBlock="true">
+                        <responseMap>project://di_ADB/response_maps/JsonBlockToQueries.ffrm</responseMap>
+                        <multilineDescription>Delete the file at the specified location
+
+Return Value: Block
+Success: 1-success; 0-failure;</multilineDescription>
+                        <arguments>
+                            <item name="location">
+                                <description>location: Complete path of the directory where file is present</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="file_name">
+                                <description>file_name: Name of the file to be deleted</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                        <response>{&quot;success&quot;:&quot;0&quot;}</response>
+                    </item>
+                    <item name="shellDownloadFile" isPublic="true" isVBlock="true">
+                        <responseMap>project://di_ADB/response_maps/JsonBlockToQueries.ffrm</responseMap>
+                        <multilineDescription>Download the specified file to the specified location
+
+Return Value: Block
+Success: 1-success; 0-failure;</multilineDescription>
+                        <arguments>
+                            <item name="location">
+                                <description>location: Complete path on the handset where downloaded file need to be stored.
+ exmaple: /storage/self/primary/Download</description>
+                                <defaultValue>/storage/self/primary/Download</defaultValue>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="file_url">
+                                <description>file_url: URL for the file 
+
+ Exmaple: &quot;http://www.spirent.com/-/media/Datasheets/Broadband/PAB/CLEAR/Spirent_iTest_datasheet.pdf&quot;</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                        <response>{&quot;success&quot;:&quot;0&quot;}</response>
+                    </item>
+                    <item name="shellEndCall" isPublic="true" isVBlock="true">
+                        <responseMap>project://di_ADB/response_maps/JsonBlockToQueries.ffrm</responseMap>
+                        <multilineDescription>End a call in progress </multilineDescription>
+                        <response>{&quot;success&quot;:&quot;1&quot;}</response>
+                    </item>
+                    <item name="shellExit" isPublic="true" isVBlock="true">
+                        <responseMap>project://di_ADB/response_maps/JsonBlockToQueries.ffrm</responseMap>
+                        <multilineDescription>Exit the adb command shell
+
+Return Value: Block
+Success: 1-success; 0-failure;</multilineDescription>
+                        <arguments>
+                            <item name="rooted">
+                                <description>true: UE is rooted
+false: UE is not rooted</description>
+                                <defaultValue>true</defaultValue>
+                            </item>
+                        </arguments>
+                        <response>{&quot;success&quot;:&quot;1&quot;}</response>
+                    </item>
+                    <item name="shellGetCarrierInformation" isPublic="true" isVBlock="true">
+                        <description>Read the carrier database information</description>
+                        <responseMap>project://di_ADB/response_maps/JsonBlockToQueries.ffrm</responseMap>
+                        <multilineDescription>Get the carrier database information</multilineDescription>
+                        <arguments>
+                            <item name="carrier">
+                                <description>The name of the carrier</description>
+                                <defaultValue>TELUS</defaultValue>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                        <response>{&quot;carrier&quot;:null,&quot;mcc&quot;:&quot;0&quot;,&quot;mnc&quot;:&quot;0&quot;,&quot;apn&quot;:null}</response>
+                    </item>
+                    <item name="shellGetFileSize" isPublic="true" isVBlock="true">
+                        <responseMap>project://di_ADB/response_maps/JsonBlockToQueries.ffrm</responseMap>
+                        <multilineDescription>Return the size of a file from the specified location
+
+Return Value: Block
+fileSize: integer from 0 - ?</multilineDescription>
+                        <arguments>
+                            <item name="location">
+                                <description>location: Complete path on the handset where downloaded file need to be stored.
+ exmaple: /storage/self/primary/Download</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="file_name">
+                                <description>file_name: Name of the file whose size needs to be determined.</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                        <response>{&quot;fileSize&quot;:&quot;0&quot;}</response>
+                    </item>
+                    <item name="shellGetInternalId" isPublic="true" isVBlock="true">
+                        <responseMap>project://di_ADB/response_maps/JsonBlockToQueries.ffrm</responseMap>
+                        <multilineDescription>Returns the internal ADB ID for the session</multilineDescription>
+                        <response>{&quot;internal_id&quot;:&quot;0&quot;}</response>
+                    </item>
+                    <item name="shellGetNetwork" isPublic="true" isVBlock="true">
+                        <description>Get the handset network mode</description>
+                        <responseMap>project://di_ADB/response_maps/JsonBlockToQueries.ffrm</responseMap>
+                        <multilineDescription>Get the handset network mode
+
+0: GSM/WCDMA
+1: GSM
+2: WCDMA
+9: LTE, GSM/WCDMA
+11: LTE
+12: LTE/WCDMA</multilineDescription>
+                        <response>{&quot;network_mode&quot;:&quot;0&quot;}</response>
+                    </item>
+                    <item name="shellGetSMS" isPublic="true">
+                        <responseMap>project://di_ADB/response_maps/sms_sqlite.ffrm</responseMap>
+                        <multilineDescription>Get the specified SMS from the database
+
+Return: table (response mapped)
+
+id, sender, timestamp, subject, message body
+
+
+</multilineDescription>
+                        <arguments>
+                            <item name="sendingNumber">
+                                <description>if specified, the quickcall will filter only on SMS from this phone number</description>
+                            </item>
+                            <item name="text_body">
+                                <description>if specified, filter only texts containing specific keywords</description>
+                            </item>
+                            <item name="latest_only">
+                                <description>If set, only get the latest text message
+
+0 - get all messages
+1 - get only latest text message</description>
+                                <defaultValue>0</defaultValue>
+                            </item>
+                        </arguments>
+                        <response>{&quot;textBody&quot;:&quot;&quot;,&quot;se&quot;:&quot;value&quot;}</response>
+                    </item>
+                    <item name="shellGetSessionADBId" isPublic="true" isVBlock="true">
+                        <responseMap>project://di_ADB/response_maps/JsonBlockToQueries.ffrm</responseMap>
+                        <response>{&quot;adb_id&quot;:&quot;0&quot;}</response>
+                    </item>
+                    <item name="shellHomeButton" isPublic="true" isVBlock="true">
+                        <responseMap>project://di_ADB/response_maps/JsonBlockToQueries.ffrm</responseMap>
+                        <multilineDescription>Press the KEYCODE_HOME button
+
+Return Value: Block
+Success: 1-success; 0-failure;</multilineDescription>
+                        <response>{&quot;success&quot;:&quot;1&quot;}</response>
+                    </item>
+                    <item name="shellKickstartMonSub" isPublic="true" isVBlock="true">
+                        <responseMap>project://di_ADB/response_maps/JsonBlockToQueries.ffrm</responseMap>
+                        <multilineDescription>This procedure is designed to &quot;kick start&quot; monitor subscriber. We noticed that monitor subscriber performs better after the UE registers/deregisters.
+
+Return Value: Block
+success: 1 - success; 0 - failure</multilineDescription>
+                        <response>{&quot;success&quot;:&quot;1&quot;}</response>
+                    </item>
+                    <item name="shellPowerButton" isPublic="true" isVBlock="true">
+                        <responseMap>project://di_ADB/response_maps/JsonBlockToQueries.ffrm</responseMap>
+                        <multilineDescription>Simulate the power button
+
+Return Value: Block
+Success: 1-success; 0-failure;</multilineDescription>
+                        <response>{&quot;success&quot;:&quot;1&quot;}</response>
+                    </item>
+                    <item name="shellReadAPN" isPublic="true" isVBlock="true">
+                        <description>Read the APN value used by the phone</description>
+                        <responseMap>project://di_ADB/response_maps/JsonBlockToQueries.ffrm</responseMap>
+                        <multilineDescription>Return the APN of the handset</multilineDescription>
+                        <arguments>
+                            <item name="carrier_name">
+                                <description>The carrier name to update in the carrier database. Telus is the default.</description>
+                                <defaultValue>Telus</defaultValue>
+                            </item>
+                            <item name="APN">
+                                <description>If specified, use the APN value rather than the carrier to retrieve APN information.</description>
+                            </item>
+                        </arguments>
+                        <response>{&quot;apn&quot;:&quot;&quot;,&quot;apn_protocol&quot;:null,&quot;carrier&quot;:null,&quot;id&quot;:&quot;0&quot;,&quot;mcc&quot;:&quot;0&quot;,&quot;mnc&quot;:&quot;0&quot;}</response>
+                    </item>
+                    <item name="shellReboot" isPublic="true" isVBlock="true">
+                        <responseMap>project://di_ADB/response_maps/JsonBlockToQueries.ffrm</responseMap>
+                        <multilineDescription>From within the ADB shell, reboot the device
+
+Return Values: JSON Block
+success: 1 - success; 0 - failure</multilineDescription>
+                        <response>{&quot;success&quot;:&quot;1&quot;}</response>
+                    </item>
+                    <item name="shellSendSMS" isPublic="true" isVBlock="true">
+                        <responseMap>project://di_ADB/response_maps/JsonBlockToQueries.ffrm</responseMap>
+                        <multilineDescription>Send the specified SMS message to the specified phone number
+
+Return value: Block
+success: 0 - failure, 1 - success</multilineDescription>
+                        <arguments>
+                            <item name="message">
+                                <description>The body of the SMS message</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="phoneNumber">
+                                <description>The &quot;to&quot; phone number for the SMS</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                        <response>{&quot;success&quot;:&quot;0&quot;}</response>
+                    </item>
+                    <item name="shellServiceList" isPublic="true">
+                        <description>Get the service list of all services on the phone</description>
+                        <multilineDescription>Return a table of the services enabled for this device
+
+Return value:
+
+Table of services</multilineDescription>
+                    </item>
+                    <item name="shellSetLTE" isPublic="true" isVBlock="true">
+                        <description>Get the service list of all services on the phone</description>
+                        <responseMap>project://di_ADB/response_maps/JsonBlockToQueries.ffrm</responseMap>
+                        <multilineDescription>Set LTE via pressing *#2263#
+
+Return value: Block
+
+success: 0-Failue; 1-Success</multilineDescription>
+                        <response>{&quot;success&quot;:&quot;1&quot;}</response>
+                    </item>
+                    <item name="shellSetNetwork" isPublic="true" isVBlock="true">
+                        <description>Set the handset for VoLTE</description>
+                        <responseMap>project://di_ADB/response_maps/JsonBlockToQueries.ffrm</responseMap>
+                        <multilineDescription>Set the handset for VoLTE and return the network mode:
+
+0: GSM/WCDMA
+1: GSM
+2: WCDMA
+9: LTE, GSM/WCDMA
+11: LTE
+12: LTE/WCDMA
+
+Return Values: 
+
+JSON Block: 
+network_mode</multilineDescription>
+                        <arguments>
+                            <item name="network_type">
+                                <description>0: GSM/WCDMA
+1: GSM
+2: WCDMA
+9: LTE, GSM/WCDMA
+11: LTE
+12: LTE/WCDMA</description>
+                                <defaultValue>9</defaultValue>
+                            </item>
+                        </arguments>
+                        <response>{&quot;network_mode&quot;:&quot;0&quot;}</response>
+                    </item>
+                    <item name="shellSetNetworkPressMenu" isPublic="true" isVBlock="true">
+                        <arguments>
+                            <item name="network_mode">
+                                <description>0 = LTE/WCDMA/GSM (auto connect)
+1 = WCDMA/GSM (auto connect)
+2 = WCDMA only
+3 = GSM only </description>
+                                <defaultValue>0</defaultValue>
+                            </item>
+                        </arguments>
+                        <response>{&quot;set_network_mode&quot;:&quot;1&quot;}</response>
+                    </item>
+                    <item name="shellSetTerminalWidth" isPublic="true" isVBlock="true">
+                        <description>Get the service list of all services on the phone</description>
+                        <responseMap>project://di_ADB/response_maps/JsonBlockToQueries.ffrm</responseMap>
+                        <multilineDescription>Set the terminal width
+
+Return value: Block
+
+success: 0-Failue; 1-Success</multilineDescription>
+                        <arguments>
+                            <item name="width">
+                                <description>The width of the terminal window</description>
+                                <defaultValue>1200</defaultValue>
+                            </item>
+                        </arguments>
+                        <response>{&quot;success&quot;:&quot;1&quot;}</response>
+                    </item>
+                    <item name="shellSetVoLTE" isPublic="true" isVBlock="true">
+                        <description>Set the handset for VoLTE</description>
+                        <responseMap>project://di_ADB/response_maps/JsonBlockToQueries.ffrm</responseMap>
+                        <multilineDescription>Set the handset for VoLTE</multilineDescription>
+                        <arguments>
+                            <item name="mode">
+                                <description>0 - Turn off VoLTE
+1 - Turn on VoLTE</description>
+                                <defaultValue>1</defaultValue>
+                            </item>
+                        </arguments>
+                        <response>{&quot;result&quot;:&quot;success&quot;}</response>
+                    </item>
+                    <item name="shellSetVoLTEPressMenu" isPublic="true">
+                        <arguments>
+                            <item name="volte_on_off">
+                                <description>on or off</description>
+                                <defaultValue>on</defaultValue>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="shellStartCall" isPublic="true" isVBlock="true">
+                        <responseMap>project://di_ADB/response_maps/JsonBlockToQueries.ffrm</responseMap>
+                        <multilineDescription>Call a specified phone number
+
+Response: Block
+success: 0 - failed, 1 - success</multilineDescription>
+                        <arguments>
+                            <item name="phoneNumber">
+                                <description>The phone number to be called</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                        <response>{&quot;success&quot;:&quot;0&quot;}</response>
+                    </item>
+                    <item name="shellViewVideo" isPublic="true" isVBlock="true">
+                        <responseMap>project://di_ADB/response_maps/JsonBlockToQueries.ffrm</responseMap>
+                        <multilineDescription>This procedure is designed to stream a large video from YouTube
+
+Return Value: Block
+Success: 1-success; 0-failure;</multilineDescription>
+                        <arguments>
+                            <item name="video">
+                                <description>The URL of a YouTube video to stream</description>
+                                <defaultValue>https://www.youtube.com/watch?v=04HSg0YZi9E</defaultValue>
+                            </item>
+                        </arguments>
+                        <response>{&quot;success&quot;:&quot;1&quot;}</response>
+                    </item>
+                    <item name="startShell" isPublic="true" isVBlock="true">
+                        <responseMap>project://di_ADB/response_maps/JsonBlockToQueries.ffrm</responseMap>
+                        <multilineDescription>Enter the ADB shell on the specified handset
+
+Return Values: JSON Block
+
+success: 0 - Unsuccessful; 1 - Successful</multilineDescription>
+                        <arguments>
+                            <item name="device_id">
+                                <description>The deviceId of the Android device - usually from getDevices</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                            <item name="rooted">
+                                <description>true: The handset is rooted
+false: The handset is not rooted</description>
+                                <defaultValue>true</defaultValue>
+                            </item>
+                        </arguments>
+                        <response>{&quot;success&quot;:&quot;1&quot;}</response>
+                    </item>
+                </procedures>
+            </tcDescriptor>
+        </item>
+    </testCaseCatalog>
+</TestCaseCatalog>

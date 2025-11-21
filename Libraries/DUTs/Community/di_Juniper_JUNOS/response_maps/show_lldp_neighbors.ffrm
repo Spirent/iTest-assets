@@ -1,0 +1,157 @@
+<?xml version="1.0" ?><ResponseMap version="6.0.0.18638fa">
+    <sampleDictionary>
+        <item name="sample1">
+            <responseBody>Local Interface Chassis Id        Port info     System Name
+et-9/3/0        00:05:85:77:f7:c0 2769          chgil302vr1-PE6
+xe-9/0/0        00:19:e2:b8:37:c0 xe-0/0/3      chgil304ia2-pe1
+xe-9/0/1        00:19:e2:b8:37:c0 xe-0/3/3      chgil304ia2-pe1
+xe-1/0/0        00:19:e2:b9:87:c0 xe-0/3/3      chgil311ia2-PE16
+xe-9/2/0        00:1d:b5:41:63:c0 xe-5/0/0      chgil314ia1-PE11
+et-0/1/0        3c:61:04:09:2b:c0 520           chgil303mp2-mpc3
+et-0/3/0        3c:61:04:09:33:c0 518           chgil304mp2-mpc4
+et-10/1/0       3c:61:04:09:63:c0 530           chgil302mp2-mpc2
+xe-0/2/0        3c:8a:b0:39:db:c0 541           chgil301mp1-mpc1
+
+{master}
+</responseBody>
+        </item>
+        <item name="Junos_15-1F2-S10">
+            <responseBody>Local Interface    Parent Interface    Chassis Id          Port info          System Name
+xe-5/1/0           ae69                00:23:8a:31:93:00   2.1                5150-20-NSR
+xe-5/2/0           ae69                00:23:8a:31:93:00   3.1                5150-20-NSR
+et-2/0/0           ae10                3c:61:04:06:3b:c0   et-2/2/0           PE50
+et-3/0/0           ae11                78:19:f7:bc:a7:ba   et-11/0/0          PE52
+
+{master}
+</responseBody>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="pattern1">
+                    <groups>
+                        <item name="Interface">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>0</start>
+                            <end>8</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor0">
+                            <regex>\\s+</regex>
+                            <start>8</start>
+                            <end>16</end>
+                        </item>
+                        <item name="Chassis_id">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>16</start>
+                            <end>33</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+</regex>
+                            <start>33</start>
+                            <end>34</end>
+                        </item>
+                        <item name="Port">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>34</start>
+                            <end>42</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>\\s+</regex>
+                            <start>42</start>
+                            <end>48</end>
+                        </item>
+                        <item name="System_name1">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>48</start>
+                            <end>59</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor3">
+                            <regex>-</regex>
+                            <start>59</start>
+                            <end>60</end>
+                        </item>
+                        <item name="System_name">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <key>true</key>
+                            <start>60</start>
+                            <end>63</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>xe-9/0/0        00:19:e2:b8:37:c0 xe-0/0/3      chgil304ia2-pe1</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+            </regexMaps>
+        </item>
+        <item type="com.fnfr.svt.mapping.table.TabularMapperProperties">
+            <tabularMaps>
+                <item name="table1">
+                    <banner>Local Interface\\s+Parent Interface\\s+Chassis Id\\s+ Port info\\s+System Name</banner>
+                    <bannerStructure>Regex</bannerStructure>
+                    <minOccurences>0</minOccurences>
+                    <maxOccurences>1</maxOccurences>
+                    <columns>
+                        <item name="local_int">
+                            <isKey>true</isKey>
+                            <lastFullCell/>
+                        </item>
+                        <item name="parent_int">
+                            <lastFullCell/>
+                        </item>
+                        <item name="chassis_id">
+                            <lastFullCell/>
+                        </item>
+                        <item name="port_info">
+                            <lastFullCell/>
+                        </item>
+                        <item name="system_name">
+                            <lastFullCell/>
+                        </item>
+                    </columns>
+                </item>
+            </tabularMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="show lldp neighbors"/>
+    <aliases>
+        <item name="ciena_mac_cnt_all">
+            <queryFormatString>count(mapped/Tabular/table1/table/row/chassis_id[contains(text(),'00:23:8a')])</queryFormatString>
+        </item>
+        <item name="adtran_mac_cnt_all">
+            <queryFormatString>count(mapped/Tabular/table1/table/row/chassis_id[contains(text(),'00:a0:c8')])</queryFormatString>
+        </item>
+    </aliases>
+</ResponseMap>

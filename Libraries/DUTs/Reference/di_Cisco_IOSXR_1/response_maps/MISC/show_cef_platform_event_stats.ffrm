@@ -1,0 +1,166 @@
+<?xml version="1.0"?>
+<ResponseMap version="6.0.0.18638fa">
+    <sampleDictionary>
+        <item name="sample1">
+            <responseBody>show cef platform event stats location 0/3/CPU0 | b FIB_$
+Sat Aug  5 18:20:15.302 EDT
+    FIB_HAL_OBJECT_NHINFO_TE_NH (total events:792):
+                      CREATE:      304        0    20us    55us
+                      MODIFY:      188        0    33us    13us (12 evts ignored in avg time)
+                      DELETE:      300        0     4us    13us
+
+    FIB_HAL_OBJECT_SHLDI (total events:943):
+                      CREATE:      504        0    23us     2us
+                      MODIFY:       58        0    26us     2us
+                      DELETE:      381        0     9us     0us
+
+    FIB_HAL_OBJECT_NRLWLDI (total events:1232701):
+                      CREATE:   507421        0    27us    35us
+                      MODIFY:   221502        0    65us    27us
+                      DELETE:   503778        0     2us     3us
+
+    FIB_HAL_OBJECT_LEAF (total events:2519334):
+                      CREATE:   791850        0     1us     1us
+                      MODIFY:       51        0     1us    29us
+                      DELETE:   849059        0     0us     0us
+                        BIND:    29307        0     1us    29us
+                      UNBIND:   849067        0     1us     0us
+
+    FIB_HAL_OBJECT_TABLE (total events:11):
+                      CREATE:       11        0     7us     6us
+
+    FIB_HAL_OBJECT_IDB (total events:690):
+                      CREATE:      124        0     5us    42us
+                      DELETE:       81        0     1us     2us
+                        BIND:      104        0     2us    15us
+                      UNBIND:       81        0     2us     3us
+                  MODIFY_MTU:       60        0     3us    29us
+                  MODIFY_RPF:       67        0     1us     2us
+           PROTO_ENABLE_INTF:      173        0     5us     6us
+
+    FIB_HAL_OBJECT_LI (total events:1144941):
+                      CREATE:   574228        0    21us    64us
+                      DELETE:   570713        0     2us     3us
+
+    FIB_HAL_OBJECT_REC_SHLDI (total events:3):
+                      CREATE:        3        0    48us    23us
+
+    FIB_HAL_OBJECT_MPLS_FRR_PROTECT_NH (total events:232):
+                      CREATE:       70        0    12us    24us
+                      DELETE:       70        0     1us     4us
+                         FRR:       12        0     5us   498us
+           FRR_GLOBAL_ACTIVE:        5        0    12us     7us
+         FRR_GLOBAL_INACTIVE:       68        0     3us     6us
+                    FRR_MAIN:        5        0    12us     1us
+                 FRR_BM_DOWN:        2        0     8us     1us
+
+    FIB_HAL_OBJECT_MPLS_FRR_BACKUP_NH (total events:188):
+                      CREATE:       94        0    32us    13us
+                      DELETE:       94        0     2us     3us
+FIB Gtrie Statistics and avg time per update:
+                      Event:   Success#   Failure#      Avg time/update
+
+    IPV4_UNI_GLOBAL (total events:151027):
+                 GTRIE_ALLOC:    37771        0     1us
+                  GTRIE_FREE:    37718        0     1us
+                GTRIE_INSERT:    37805        0    26us
+                GTRIE_DELETE:    37733        0    16us
+
+    IPV6_UNI_GLOBAL (total events:96319):
+                 GTRIE_ALLOC:    24091        0     1us
+                  GTRIE_FREE:    24060        0     0us
+                GTRIE_INSERT:    24108        0    25us
+                GTRIE_DELETE:    24060        0    16us
+
+    MPLS_GLOBAL (total events:3444263):
+                 GTRIE_ALLOC:   791850        0     1us
+                  GTRIE_FREE:   787266        0     6us
+                GTRIE_INSERT:  1077881        0    25us (13 evts ignored in avg time)
+                GTRIE_DELETE:   787266        0    23us
+
+    IPV6_LINK_LCL (total events:46):
+                 GTRIE_ALLOC:       15        0    80us
+                  GTRIE_FREE:        8        0     0us
+                GTRIE_INSERT:       15        0    72us
+                GTRIE_DELETE:        8        0    60us
+
+    IPV4_VRF (total events:56):
+                 GTRIE_ALLOC:       27        0    49us
+                GTRIE_INSERT:       29        0    53us
+
+    IPV6_VRF (total events:42):
+                 GTRIE_ALLOC:       21        0    55us
+                GTRIE_INSERT:       21        0    42us
+
+    IPV4_REJECTED (total events:37):
+                  GTRIE_FREE:        7        0     0us
+                GTRIE_INSERT:       15        0    13us
+                GTRIE_DELETE:       15        0    13us
+
+    IPV4_VRF_REJECTED (total events:2):
+                 GTRIE_ALLOC:        1        0     3us
+                GTRIE_INSERT:        1        0     6us
+
+ Avg period of 25 anomalous events is: 80837 us
+ Time elapsed from last clear to latest FIB event is: 5426873268 us
+</responseBody>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="pattern1">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>\\s+FIB_HAL_OBJECT_NHINFO_TE_NH \\(total events:\\d+\\):\\s+CREATE:\\s+</regex>
+                            <start>0</start>
+                            <end>87</end>
+                        </item>
+                        <item name="event_stats_create">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>87</start>
+                            <end>90</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+\\d+\\s+\\d+us\\s+\\d+us\\s+MODIFY:\\s+\\d+\\s+\\d+\\s+\\d+us\\s+\\d+us\\s+(\\(.*\\))?\\s+DELETE:\\s+</regex>
+                            <start>90</start>
+                            <end>245</end>
+                        </item>
+                        <item name="event_stats_delete">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>245</start>
+                            <end>248</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>\\s+\\d+\\s+\\d+us\\s+\\d+us</regex>
+                            <start>248</start>
+                            <end>273</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>    FIB_HAL_OBJECT_NHINFO_TE_NH (total events:792):
+                      CREATE:      304        0    20us    55us
+                      MODIFY:      188        0    33us    13us (12 evts ignored in avg time)
+                      DELETE:      300        0     4us    13us</sampleMatch>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+</ResponseMap>

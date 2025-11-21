@@ -1,0 +1,733 @@
+<?xml version="1.0"?>
+<testCase version="8.1.4.0">
+    <general>
+        <isProcedureLibrary>true</isProcedureLibrary>
+    </general>
+    <procedures>
+        <item name="main">
+            <steps>
+                <item guid="83f6fad0-587b-4510-bb9e-25a8d8abce7d" action="open" session="tcl1">
+                    <command>
+                        <body>project://di_attero100G/session_profiles/attero100G_tcl_base.ffsp</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.OpenStepPropertyGroup">
+                        <stepProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionProperties type="com.fnfr.svt.applications.tclsh.TclshSessionProperties">
+                            <tclProperties>
+                                <useGlobalInterpreter inherit="false" defaultValue=""/>
+                                <interpreterUseLIBPATH inherit="false">false</interpreterUseLIBPATH>
+                            </tclProperties>
+                        </sessionProperties>
+                        <sessionClass type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        <sessionVersion type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    </applicationProperties>
+                </item>
+                <item guid="db8976c9-b9e3-4536-9c67-91c8052c3ff9" action="call" useFieldsInCommand="false">
+                    <command>
+                        <body>Init -session tcl1 -IPAddress [param atteroIPAddress]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="a9d0d3ce-fa21-401f-9cd3-eac93475012e" action="comment" useFieldsInCommand="false">
+                    <command>
+                        <body>Unit Test REST API - GET</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="ca633207-896c-4e45-9fa0-ed0d3e432e59" action="eval" skip="true" useFieldsInCommand="false">
+                    <command>
+                        <body>set args {&quot;SerialNumber&quot;}</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="1475cd0b-4a08-4e66-a5d3-77df39f4a290" action="call" skip="true" useFieldsInCommand="false">
+                    <command>
+                        <body>a100get -session tcl1 -url instrument/information -args $args</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>group1()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="message">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.MessageProcessorPropertyGroup" severity="Information">
+                                        <message> $args: {value}</message>
+                                        <tag sub="false" defaultValue=""/>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="32112c5c-fb8a-49c0-85ef-0a0a6d6e672d" action="comment" useFieldsInCommand="false">
+                    <command>
+                        <body>Read Jitter Profile JSON file</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="2f572ec6-fc1e-43ca-82aa-bf0bd06219c2" action="call" skip="true" useFieldsInCommand="false">
+                    <command>
+                        <body>a100get -session tcl1 -url  app/impairment/jitter/Port1/3/jitterprofile </body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="12b999fd-90d9-45f8-abda-88c045064203" action="comment" useFieldsInCommand="false">
+                    <command>
+                        <body>Unit Test REST API - PUT</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="66c4187f-3b39-48f3-a405-e82d35565e3b" action="call" skip="true" useFieldsInCommand="false">
+                    <command>
+                        <body>a100set -session tcl1 -url app/impairment/delay/Port1/0/enable -args &quot;Enable {true}&quot;</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="9a9bb812-d632-4237-b16a-d319388cc0c0" action="call" useFieldsInCommand="false">
+                    <command>
+                        <body>a100create -session tcl1 -url app/impairment/jitter/jitterprofile/file/upload -args {{ &quot;Data&quot; : {     }, &quot;Overwrite&quot; : True, &quot;Autorename&quot; : True }}</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="dc08aa5b-fd63-4d66-99c1-0344c7822278" action="comment" useFieldsInCommand="false">
+                    <command>
+                        <body>Unit Test REST API - POST</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="4e53fbc3-991e-47da-b040-6582cb4e3d9b" action="comment" useFieldsInCommand="false">
+                    <command>
+                        <body>Unit Test REST API - DELETE</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="14192517-d116-4681-984a-c2d523a8e02d" action="call" useFieldsInCommand="false">
+                    <command>
+                        <body>a100del -session tcl1 -url app/impairment/delay/Port1/0/enable</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="cfb04157-fd15-494c-b539-47c31f9ce891" action="close" session="tcl1" useFieldsInCommand="false">
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+        </item>
+        <item name="Init" isPublic="true" defaultSessionProfile="project://di_attero100G/session_profiles/attero100G_tcl_base.ffsp">
+            <steps>
+                <item guid="d8fdfbd5-55c8-4981-86b1-cad208c82b5d" action="command" session="$session" useFieldsInCommand="false">
+                    <command>
+                        <body>package require rest</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="47309a78-b9fb-4a93-ab5b-471a6c6ed843" action="command" session="$session" useFieldsInCommand="false">
+                    <command>
+                        <body>package require json</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="221030d7-b36d-4527-8903-479aa89ae4e1" action="command" session="$session" useFieldsInCommand="false">
+                    <command>
+                        <body>package require json::write</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="fe17c608-d65f-4617-af3d-551c5050eb93" action="command" session="$session">
+                    <command>
+                        <body>set \\[namespace current\\]::_instrument &quot;http://[get IPAddress]/api/&quot;</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <multilineDescription>Variable _instrument must be set to the URL for Attero 100G’s RESTful API, which is comprised of the instrument control port IP address (as indicated on the LCD panel of the instrument after startup) followed by “/api”. When the script is being run against the same instrument from which it was generated, then there would not normally be any need to edit this URL, unless the instrument’s IP address has changed since the script was generated.</multilineDescription>
+            <arguments>
+                <item name="session">
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="IPAddress">
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="a100req" isPublic="true" defaultSessionProfile="project://di_attero100G/session_profiles/attero100G_tcl_base.ffsp">
+            <steps>
+                <item guid="a119a4cd-494b-4927-83fb-7bdd96a44cf5" action="command" session="$session" useFieldsInCommand="false">
+                    <command>
+                        <body>global [namespace current]::_instrument</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="9e24768e-e01a-4b05-8dc0-25dbea6181c4" action="command" session="$session">
+                    <command>
+                        <body>set config &quot;method [get req] headers \\{Content-Type application/json\\}&quot;</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="e06776a2-6c7b-4582-a335-e1f5e0ce4adc" action="command" session="$session" responseMap="project://di_attero/response_maps/x_rest__simple_____instrument_something_here_too_json______config_.ffrm" useResponseMapLibraryApplicability="false">
+                    <command>
+                        <body>rest::simple &quot;\\${_instrument}[get url].json&quot; &quot;&quot; \\$config [get body]</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>result</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>restResp</storageLocation>
+                                        <responseValue type="com.fnfr.documents.PropertyBoolean">false</responseValue>
+                                        <variable type="com.fnfr.documents.PropertyBoolean">true</variable>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useResponseMapLibraryFromSession>false</useResponseMapLibraryFromSession>
+                    <performResponseMapping>false</performResponseMapping>
+                </item>
+                <item guid="64535f34-e904-4717-89b1-ab246a0e4581" action="return">
+                    <command>
+                        <body>$restResp</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <arguments>
+                <item name="session">
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="req">
+                    <description>put
+post
+delete
+</description>
+                    <defaultValue>put</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="url">
+                    <description>Example:
+app/impairment/delay/Port1/0/enable</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="body">
+                    <defaultValue>&quot;&quot;</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="a100req2" isPublic="true" defaultSessionProfile="project://di_attero100G/session_profiles/attero100G_tcl_base.ffsp">
+            <steps>
+                <item guid="a5b9b646-1dad-45e6-ac06-2f38335007ba" action="command" session="$session" skip="true" useFieldsInCommand="false">
+                    <command>
+                        <body>global [namespace current]::_instrument</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="30a42f4e-bcfe-4389-808f-2490e6c8843e" action="command" session="$session" skip="true" useFieldsInCommand="false">
+                    <command>
+                        <body>set boundary &quot;4338a6a33d964ba886efb83eea33a395&quot;  </body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="908005a3-84a8-4e7e-a3c6-0cef2c6e1205" action="command" session="$session" skip="true" useFieldsInCommand="false">
+                    <command>
+                        <body>set header [list content-type &quot;multipart/form-data; boundary=$boundary&quot;]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="14c13d96-f068-4591-b36c-76b848d80043" action="command" session="$session" skip="true">
+                    <command>
+                        <body>set config&quot;[list format json method [get req] headers $header]&quot;</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="c3d301d8-4979-4bc4-8a2f-0dac2f133f5c" action="command" session="$session" skip="true" responseMap="project://di_attero/response_maps/x_rest__simple_____instrument_something_here_too_json______config_.ffrm" useResponseMapLibraryApplicability="false">
+                    <command>
+                        <body>rest::simple &quot;\\${_instrument}[get url].json&quot; &quot;&quot; \\$config [get body]</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>result</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>restResp</storageLocation>
+                                        <responseValue type="com.fnfr.documents.PropertyBoolean">false</responseValue>
+                                        <variable type="com.fnfr.documents.PropertyBoolean">true</variable>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useResponseMapLibraryFromSession>false</useResponseMapLibraryFromSession>
+                    <performResponseMapping>false</performResponseMapping>
+                </item>
+                <item guid="b496ea3c-1d15-454c-96de-0fb66f8b9b54" action="command" session="$session" responseMap="project://di_attero/response_maps/x_rest__simple_____instrument_something_here_too_json______config_.ffrm" useResponseMapLibraryApplicability="false">
+                    <command>
+                        <body>rest::simple [get url] &quot;&quot; \\$config [get body]</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>result</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>restResp</storageLocation>
+                                        <responseValue type="com.fnfr.documents.PropertyBoolean">false</responseValue>
+                                        <variable type="com.fnfr.documents.PropertyBoolean">true</variable>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useResponseMapLibraryFromSession>false</useResponseMapLibraryFromSession>
+                    <performResponseMapping>false</performResponseMapping>
+                </item>
+                <item guid="b70e576e-782f-4247-a940-668a20f12404" action="return">
+                    <command>
+                        <body>$restResp</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <arguments>
+                <item name="session">
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="req">
+                    <description>put
+post
+delete
+</description>
+                    <defaultValue>put</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="url">
+                    <description>Example:
+app/impairment/delay/Port1/0/enable</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="header"/>
+                <item name="body">
+                    <defaultValue>&quot;&quot;</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="a100get" isPublic="true" defaultSessionProfile="project://di_attero100G/session_profiles/attero100G_tcl_base.ffsp">
+            <steps>
+                <item guid="0cc766a5-1093-4ee3-97c7-e7ebdd494f10" action="call" responseMap="project://di_attero/response_maps/x_rest__simple_____instrument_something_here_too_json______config_.ffrm" useResponseMapLibraryApplicability="false" useFieldsInCommand="false">
+                    <command>
+                        <body>a100req -session $session -req get -url [get url] -body $args</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>responseLine</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>restResp</storageLocation>
+                                        <responseValue type="com.fnfr.documents.PropertyBoolean">false</responseValue>
+                                        <variable type="com.fnfr.documents.PropertyBoolean">true</variable>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useResponseMapLibraryFromSession>false</useResponseMapLibraryFromSession>
+                    <performResponseMapping>false</performResponseMapping>
+                </item>
+                <item guid="abba7d69-fdbc-4ca8-962d-04ab89682ff7" action="comment" skip="true" useFieldsInCommand="false">
+                    <command>
+                        <body>Uncomment below 3-lines if need to convert JSON to dictionary format</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="7a2fd1cd-6c1f-45b1-b619-ef28cb47ee64" action="command" session="$session" skip="true">
+                    <command>
+                        <body>set res \\[json::json2dict {[get restResp]}\\]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="91dce2ce-935d-4a46-bf0c-425355a254aa" action="scriptGet" skip="true" useFieldsInCommand="false">
+                    <command>
+                        <body>dict {$res}</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptGetProperties">
+                        <sessionTclInterpreter inherit="false" sub="true">$session</sessionTclInterpreter>
+                    </applicationProperties>
+                </item>
+                <item guid="72771397-0666-493e-8e4e-c6b550ca4594" action="if" skip="true" useFieldsInCommand="false">
+                    <command>
+                        <body>[llength $args] == 0</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="1f492b99-b91a-4962-ae75-0aae69e09549" action="then" useFieldsInCommand="false">
+                            <nestedSteps>
+                                <item guid="2f06638e-3271-4707-b738-4e317e450b32" action="return">
+                                    <command>
+                                        <body>$dict</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="4348fd16-11e3-404e-9f57-ddf241edabeb" action="else" useFieldsInCommand="false">
+                            <nestedSteps>
+                                <item guid="2811aca0-5780-40f4-b57c-f33dde509fa9" action="command" session="$session">
+                                    <command>
+                                        <body>dict get \\$res {*}[get args]</body>
+                                    </command>
+                                    <postProcessing>
+                                        <analysisRules>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                        <query>result</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="store">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                        <storageLocation>restResp</storageLocation>
+                                                        <responseValue type="com.fnfr.documents.PropertyBoolean">false</responseValue>
+                                                        <variable type="com.fnfr.documents.PropertyBoolean">true</variable>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                        </analysisRules>
+                                    </postProcessing>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                                <item guid="21a7016f-8d15-4302-a659-2d81164a0163" action="return">
+                                    <command>
+                                        <body>$restResp</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="81050b6e-cb63-4998-bb12-abcc5dfca854" action="comment" skip="true" useFieldsInCommand="false">
+                    <command>
+                        <body>Use JSON response AS-IS</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="29aeeb3a-b291-49ca-b120-077ab40add3d" action="if" useFieldsInCommand="false">
+                    <command>
+                        <body>[llength $args] == 0</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="f13d2e99-2a8c-406e-8e4f-8510b2c2997c" action="then" useFieldsInCommand="false">
+                            <nestedSteps>
+                                <item guid="cb0e06c5-61ca-4bf8-91eb-49a40643f4b0" action="return">
+                                    <command>
+                                        <body>$restResp</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="2606e45e-2bb6-4f76-9518-1b5cb354c3c3" action="else" useFieldsInCommand="false">
+                            <nestedSteps>
+                                <item guid="1659acc4-3a06-4f50-8f5e-25f386171a61" action="command" session="$session">
+                                    <command>
+                                        <body>dict get [get restResp] {*}[get args]</body>
+                                    </command>
+                                    <postProcessing>
+                                        <analysisRules>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                        <query>result</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="store">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                        <storageLocation>restResp</storageLocation>
+                                                        <responseValue type="com.fnfr.documents.PropertyBoolean">false</responseValue>
+                                                        <variable type="com.fnfr.documents.PropertyBoolean">true</variable>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                        </analysisRules>
+                                    </postProcessing>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                                <item guid="cbd2abe6-b086-42fb-a7c8-c775a45ab45e" action="return">
+                                    <command>
+                                        <body>$restResp</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <arguments>
+                <item name="session">
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="url">
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="args"/>
+            </arguments>
+        </item>
+        <item name="a100get2" isPublic="true" defaultSessionProfile="project://di_attero100G/session_profiles/attero100G_tcl_base.ffsp">
+            <steps>
+                <item guid="c7665f73-ee6a-453e-a848-9c52633ce8da" action="call" responseMap="project://di_attero/response_maps/x_rest__simple_____instrument_something_here_too_json______config_.ffrm" useResponseMapLibraryApplicability="false" useFieldsInCommand="false">
+                    <command>
+                        <body>a100req -session $session -req get -url [get url] -body $args</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>responseLine</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>restResp</storageLocation>
+                                        <responseValue type="com.fnfr.documents.PropertyBoolean">false</responseValue>
+                                        <variable type="com.fnfr.documents.PropertyBoolean">true</variable>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useResponseMapLibraryFromSession>false</useResponseMapLibraryFromSession>
+                    <performResponseMapping>false</performResponseMapping>
+                </item>
+                <item guid="c4ba404c-5beb-4346-b894-2448431d4cf9" action="return">
+                    <command>
+                        <body>$restResp</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <arguments>
+                <item name="session">
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="url">
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="args"/>
+            </arguments>
+        </item>
+        <item name="a100set" isPublic="true" defaultSessionProfile="project://di_attero100G/session_profiles/attero100G_tcl_base.ffsp">
+            <steps>
+                <item guid="394d9fab-d3a7-4ff3-9617-eab897c4b687" action="if" useFieldsInCommand="false">
+                    <command>
+                        <body>$bypass == false</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="8734ce58-ce25-4fb6-b534-9774c4c3cadf" action="then" useFieldsInCommand="false">
+                            <nestedSteps>
+                                <item guid="3ca1c4c1-87c8-4af0-9d84-32e4d88af425" action="command" session="$session">
+                                    <command>
+                                        <body>json::write object [get args]</body>
+                                    </command>
+                                    <postProcessing>
+                                        <analysisRules>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                        <query>result</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="store">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                        <storageLocation>restResp</storageLocation>
+                                                        <responseValue type="com.fnfr.documents.PropertyBoolean">false</responseValue>
+                                                        <variable type="com.fnfr.documents.PropertyBoolean">true</variable>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                        </analysisRules>
+                                    </postProcessing>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                                <item guid="47de4263-5395-405c-8bf0-ba0f5dee3928" action="command" session="$session" skip="true">
+                                    <command>
+                                        <body>json::write object {*}[get args]</body>
+                                    </command>
+                                    <postProcessing>
+                                        <analysisRules>
+                                            <item>
+                                                <extractorInfo extractorType="query">
+                                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                        <query>result</query>
+                                                    </extractorProperties>
+                                                </extractorInfo>
+                                                <processorInfo ruleType="store">
+                                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                        <storageLocation>restResp</storageLocation>
+                                                        <responseValue type="com.fnfr.documents.PropertyBoolean">false</responseValue>
+                                                        <variable type="com.fnfr.documents.PropertyBoolean">true</variable>
+                                                    </ruleProperties>
+                                                </processorInfo>
+                                            </item>
+                                        </analysisRules>
+                                    </postProcessing>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="a1cb39f2-6b4f-4517-9ff9-961365bb8b0b" action="else" useFieldsInCommand="false">
+                            <nestedSteps>
+                                <item guid="0f27c834-04e2-4718-be71-cb5b1f0aeb22" action="eval" useFieldsInCommand="false">
+                                    <command>
+                                        <body>set restResp $args</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="63bb885c-7568-461a-8efa-e26c3f0545db" action="call" useFieldsInCommand="false">
+                    <command>
+                        <body>a100req -session $session -req put -url [get url] -body \\{[get restResp]\\}</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <arguments>
+                <item name="session">
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="url">
+                    <description>Example:
+app/impairment/delay/Port1/0/enable</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="args">
+                    <description>Example:
+Enable {true}</description>
+                </item>
+                <item name="bypass">
+                    <description>Bypass JSON formatting step
+</description>
+                    <defaultValue>false</defaultValue>
+                </item>
+            </arguments>
+        </item>
+        <item name="a100create" isPublic="true" defaultSessionProfile="project://di_attero100G/session_profiles/attero100G_tcl_base.ffsp">
+            <steps>
+                <item guid="4c3b5480-1083-47a4-9527-373c77be5247" action="scriptSet" useFieldsInCommand="false">
+                    <command>
+                        <body>Url [get url]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties">
+                        <sessionTclInterpreter inherit="false" sub="true">$session</sessionTclInterpreter>
+                    </applicationProperties>
+                </item>
+                <item guid="e2d30149-6a36-4ca6-a8e3-8f52b8c94db1" action="scriptSet" useFieldsInCommand="false">
+                    <command>
+                        <body>Config [get config]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties">
+                        <sessionTclInterpreter inherit="false" sub="true">$session</sessionTclInterpreter>
+                    </applicationProperties>
+                </item>
+                <item guid="a2d71201-3431-4d9c-a089-c3ce8b638b3b" action="scriptSet" useFieldsInCommand="false">
+                    <command>
+                        <body>Data [get data]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.execution.tcl.properties.ScriptSetProperties">
+                        <sessionTclInterpreter inherit="false" sub="true">$session</sessionTclInterpreter>
+                    </applicationProperties>
+                </item>
+                <item guid="99036934-8acf-4dc1-8a80-d29c12f48477" action="command" session="$session" responseMap="project://di_attero/response_maps/x_rest__simple_____instrument_something_here_too_json______config_.ffrm" useResponseMapLibraryApplicability="false" useFieldsInCommand="false">
+                    <command>
+                        <body>rest::simple $Url &quot;&quot; $Config $Data</body>
+                    </command>
+                    <postProcessing>
+                        <storeResponseAt>restResp</storeResponseAt>
+                        <storeResponseText>true</storeResponseText>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useResponseMapLibraryFromSession>false</useResponseMapLibraryFromSession>
+                    <performResponseMapping>false</performResponseMapping>
+                </item>
+                <item guid="435b8cdf-a2f5-4e4c-8633-538cdb538bcb" action="return">
+                    <command>
+                        <body>$restResp</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <arguments>
+                <item name="session">
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="url">
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="bypass">
+                    <defaultValue>true</defaultValue>
+                </item>
+                <item name="config"/>
+                <item name="data"/>
+            </arguments>
+        </item>
+        <item name="a100del" isPublic="true" defaultSessionProfile="project://di_attero100G/session_profiles/attero100G_tcl_base.ffsp">
+            <steps>
+                <item guid="e70556ba-1956-49b9-a752-c9b1d0ea1105" action="call" useFieldsInCommand="false">
+                    <command>
+                        <body>a100req -session $session -req delete -url [get url] &quot;&quot;</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <arguments>
+                <item name="session">
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="url">
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="args"/>
+            </arguments>
+        </item>
+    </procedures>
+</testCase>

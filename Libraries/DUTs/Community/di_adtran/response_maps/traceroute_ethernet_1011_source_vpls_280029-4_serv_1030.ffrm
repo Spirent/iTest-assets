@@ -1,0 +1,302 @@
+<?xml version="1.0" ?><ResponseMap version="6.0.0.18638fa">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="command">
+                <command>
+                    <body>traceroute ethernet 1011 source vpls:280029-4 serv 1030</body>
+                </command>
+            </action>
+            <responseBody>
+Type CRTL+C to abort. 
+TTL 64, Linktrace Timeout is 2000 milliseconds.
+Tracing route to Remote MEP 1011 from MEP 1030
+ 
+-------------------------------------------------------------------------------
+Hop   Relay_Action  Forwarding_Action
+      Reply Contents
+-------------------------------------------------------------------------------
+1     RLY_HIT       Term Mep
+      Last Egress MAC/ID: 00:A0:C8:4C:A6:A0
+      Egress MAC/Action : 00:A0:C8:4C:A6:3F egrDown 
+      Egress Port-ID    : Ethernet 1/0/1
+
+
+Destination Remote MEP ID 1011 reached at hop 1
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;prompt&gt;838-3#&lt;/prompt&gt;
+    &lt;echo&gt;traceroute ethernet 1011 source vpls:280029-4 serv 1030&lt;/echo&gt;
+    &lt;promptName&gt;enable&lt;/promptName&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+            </aliases>
+            <duration>2.8</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="colon_auto1">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>\\s+Last Egress MAC/ID:\\s+</regex>
+                            <start>0</start>
+                            <end>26</end>
+                        </item>
+                        <item name="Last_Egress_MAC_ID">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>26</start>
+                            <end>43</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>      Last Egress MAC/ID: 00:A0:C8:4C:A6:A0</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+                <item name="egress_mac">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>\\s+Egress MAC/Action :\\s+</regex>
+                            <start>0</start>
+                            <end>26</end>
+                        </item>
+                        <item name="Egress_MAC_Action">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>26</start>
+                            <end>43</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+</regex>
+                            <start>43</start>
+                            <end>44</end>
+                        </item>
+                        <item name="egress_action">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>44</start>
+                            <end>51</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>\\s+</regex>
+                            <start>51</start>
+                            <end>52</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>      Egress MAC/Action : 00:A0:C8:4C:A6:3F egrDown </sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+                <item name="egress_port_id">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>\\s+Egress Port-ID\\s+:\\s+</regex>
+                            <start>0</start>
+                            <end>26</end>
+                        </item>
+                        <item name="Egress_Port_ID">
+                            <regex>[^\\r\\n]+</regex>
+                            <named>true</named>
+                            <start>26</start>
+                            <end>40</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>      Egress Port-ID    : Ethernet 1/0/1</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+                <item name="pattern1">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Type CRTL\\+C to abort\\.\\s+TTL\\s+</regex>
+                            <start>0</start>
+                            <end>27</end>
+                        </item>
+                        <item name="TTL">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>27</start>
+                            <end>29</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>, Linktrace Timeout is\\s+</regex>
+                            <start>29</start>
+                            <end>52</end>
+                        </item>
+                        <item name="Linktrace_Timeout">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>52</start>
+                            <end>56</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>\\s+milliseconds\\.\\s+Tracing route to Remote MEP\\s+</regex>
+                            <start>56</start>
+                            <end>99</end>
+                        </item>
+                        <item name="Tracing_route_to_Remote_MEP">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>99</start>
+                            <end>103</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor3">
+                            <regex>\\s+from MEP\\s+</regex>
+                            <start>103</start>
+                            <end>113</end>
+                        </item>
+                        <item name="from_MEP">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>113</start>
+                            <end>117</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>Type CRTL+C to abort. 
+TTL 64, Linktrace Timeout is 2000 milliseconds.
+Tracing route to Remote MEP 1011 from MEP 1030</sampleMatch>
+                </item>
+                <item name="pattern2">
+                    <groups>
+                        <item name="anchor0">
+                            <start>0</start>
+                            <end>0</end>
+                        </item>
+                        <item name="RLY_HIT_Term_Mep">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>0</start>
+                            <end>1</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+RLY_HIT\\s+Term Mep</regex>
+                            <start>1</start>
+                            <end>28</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>1     RLY_HIT       Term Mep</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+                <item name="pattern3">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Destination Remote MEP ID\\s+</regex>
+                            <start>0</start>
+                            <end>26</end>
+                        </item>
+                        <item name="Destination_Remote_MEP_ID">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>26</start>
+                            <end>30</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+reached at hop\\s+</regex>
+                            <start>30</start>
+                            <end>46</end>
+                        </item>
+                        <item name="reached_at_hop">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>46</start>
+                            <end>47</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>Destination Remote MEP ID 1011 reached at hop 1</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="traceroute ethernet *"/>
+</ResponseMap>

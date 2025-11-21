@@ -1,0 +1,137 @@
+<?xml version="1.0"?>
+<ResponseMap version="5.1.0.77511">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="command">
+                <command>
+                    <body>show bgp scale </body>
+                </command>
+            </action>
+            <responseBody>Thu Jun 18 22:45:35.078 EDT
+
+VRF: default
+ Neighbors Configured: 408    Established: 2     
+
+ Address-Family   Prefixes Paths    PathElem   Prefix     Path       PathElem  
+                                               Memory     Memory     Memory  
+  IPv4 Unicast    211      211      211        20KB       13KB       10KB       
+  IPv6 Unicast    211      211      211        22KB       13KB       10KB       
+  Total           422      422      422        43KB       26KB       21KB       
+
+Total VRFs Configured: 0
+
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;prompt&gt;RP/0/RSP0/CPU0:google_D9_tb2#&lt;/prompt&gt;
+    &lt;echo&gt;show bgp scale &lt;/echo&gt;
+    &lt;promptName&gt;prompt1&lt;/promptName&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.4</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.table.TabularMapperProperties">
+            <tabularMaps>
+                <item name="bgp_scale">
+                    <additionalBannerLineCount>1</additionalBannerLineCount>
+                    <banner> Address-Family   Prefixes Paths    PathElem   Prefix     Path       PathElem  </banner>
+                    <bannerStructure>CaseInsensitive</bannerStructure>
+                    <columnBoundaries>Positional</columnBoundaries>
+                    <maxOccurences>1</maxOccurences>
+                    <columns>
+                        <item name="Address-Family">
+                            <isKey>true</isKey>
+                            <width>18</width>
+                        </item>
+                        <item name="Prefixes">
+                            <width>9</width>
+                        </item>
+                        <item name="Paths">
+                            <width>9</width>
+                        </item>
+                        <item name="col1">
+                            <width>11</width>
+                        </item>
+                        <item name="Prefix_memory">
+                            <width>11</width>
+                        </item>
+                        <item name="Path_memory">
+                            <width>11</width>
+                        </item>
+                        <item name="PathElem1">
+                            <width>34</width>
+                        </item>
+                    </columns>
+                </item>
+            </tabularMaps>
+        </item>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="neighbor_information">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Neighbors Configured:\\s+</regex>
+                            <start>0</start>
+                            <end>22</end>
+                        </item>
+                        <item name="Neighbors_Configured">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>22</start>
+                            <end>25</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+Established:\\s+</regex>
+                            <start>25</start>
+                            <end>42</end>
+                        </item>
+                        <item name="Established">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>42</start>
+                            <end>43</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>Neighbors Configured: 408    Established: 2</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="sh* bgp scale"/>
+    <responseFilters>
+        <item name="TableSummary" filterAction="EXC_LINES_CONTAINING">
+            <pattern>---------------------------*</pattern>
+        </item>
+    </responseFilters>
+</ResponseMap>

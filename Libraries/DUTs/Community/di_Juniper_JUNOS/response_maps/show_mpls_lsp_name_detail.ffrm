@@ -1,0 +1,100 @@
+<?xml version="1.0" ?><ResponseMap version="5.1.0.77511">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="command">
+                <command>
+                    <body>show mpls lsp name MX_960_2-9K_LER-0001 detail</body>
+                </command>
+            </action>
+            <responseBody>Ingress LSP: 4000 sessions
+
+0.0.0.0
+  From: 0.0.0.0, State: Up, ActiveRoute: 0, LSPname: MX_960_2-9K_LER-0001
+  ActivePath: THRU-9K-LER-BB (primary)
+  Node/Link protection desired
+  LSPtype: Static Configured, Penultimate hop popping
+  LoadBalance: Random
+  Autobandwidth 
+  MinBW: 200kbps
+  AdjustTimer: 1800 secs AdjustThreshold: 10%
+  Max AvgBW util: 5.54662bps, Bandwidth Adjustment in 222 second(s).
+  Overflow limit: 0, Overflow sample count: 0
+  Underflow limit: 0, Underflow sample count: 5, Underflow Max AvgBW: 5.54662bps
+  Encoding type: Packet, Switching type: Packet, GPID: IPv4
+ *Primary   THRU-9K-LER-BB   State: Up
+    Priorities: 5 5
+    Bandwidth: 200kbps
+    OptimizeTimer: 10800
+    SmartOptimizeTimer: 180
+          Exclude: red
+    Reoptimization in 10345 second(s).
+    Computed ERO (S [L] denotes strict [loose] hops): (CSPF metric: 40)
+ 0.0.0.0 S 0.0.0.0 S 0.0.0.0 S 0.0.0.0 S 
+    Received RRO (ProtectionFlag 1=Available 2=InUse 4=B/W 8=Node 10=SoftPreempt 20=Node-ID):
+          0.0.0.0(flag=0x29 Label=43380) 0.0.0.0(flag=9 Label=43380) 0.0.0.0(flag=0x29 Label=55392) 0.0.0.0(flag=9 Label=55392) 0.0.0.0(flag=0x21) 0.0.0.0(flag=1 Label=511825) 0.0.0.0(flag=0x20 Label=3) 0.0.0.0(Label=3)
+Total 1 displayed, Up 1, Down 0
+
+Egress LSP: 20007 sessions
+Total 0 displayed, Up 0, Down 0
+
+Transit LSP: 2 sessions
+Total 0 displayed, Up 0, Down 0
+
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;prompt&gt;itest@google_D6_tb2&amp;gt; &lt;/prompt&gt;
+    &lt;echo&gt;show mpls lsp name MX_960_2-9K_LER-0001 detail &lt;/echo&gt;
+    &lt;promptName&gt;unpriv_prompt&lt;/promptName&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.3</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="LSP_Path">
+                    <groups>
+                        <item name="Route_Path_IPv4">
+                            <regex>((\\d+\\.)+\\d+)</regex>
+                            <named>true</named>
+                            <start>0</start>
+                            <end>12</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="((\d+\.)+\d+)">one or more of digit and dots</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor0">
+                            <regex>\\(</regex>
+                            <start>12</start>
+                            <end>13</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>0.0.0.0(</sampleMatch>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="show mpls lsp name * detail" priority="1">
+        <application>
+            <item>com.fnfr.svt.applications.ssh</item>
+            <item>com.fnfr.svt.applications.telnet</item>
+        </application>
+    </applicabilityProperties>
+</ResponseMap>

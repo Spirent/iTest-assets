@@ -1,0 +1,508 @@
+<?xml version="1.0" ?><ResponseMap version="5.4.0.4f90e5a">
+    <sampleDictionary>
+        <item name="sampleUbuntu">
+            <action actionType="command">
+                <command>
+                    <body>ping www.spirent.com -c 4 -s 1024</body>
+                </command>
+            </action>
+            <responseBody>PING url.goes.here (0.0.0.0) 1024(1052) bytes of data.
+1032 bytes from 0.0.0.0: icmp_req=1 ttl=111 time=72.0 ms
+1032 bytes from 0.0.0.0: icmp_req=2 ttl=111 time=72.0 ms
+1032 bytes from 0.0.0.0: icmp_req=3 ttl=111 time=72.2 ms
+1032 bytes from 0.0.0.0: icmp_req=4 ttl=111 time=72.1 ms
+
+--- url.goes.here ping statistics ---
+4 packets transmitted, 4 received, 0% packet loss, time 15226ms
+rtt min/avg/max/mdev = 72.048/72.124/72.240/0.278 ms
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://url.goes.here/svt/mapping&quot;&gt;
+    &lt;prompt&gt;spirent@ubuntu:~$ &lt;/prompt&gt;
+    &lt;echo&gt;ping url.goes.here -c 4 -s 1024&lt;/echo&gt;
+    &lt;promptName&gt;normalPrompt&lt;/promptName&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+            </aliases>
+            <duration>16.4</duration>
+        </item>
+        <item name="sampleITE">
+            <action actionType="command">
+                <command>
+                    <body>ping www.spirent.com -c 4 -s 1024</body>
+                </command>
+            </action>
+            <responseBody>PING url.goes.here (0.0.0.0): 1024 data bytes
+1032 bytes from 0.0.0.0: seq=0 ttl=108 time=66.613 ms
+1032 bytes from 0.0.0.0: seq=1 ttl=108 time=66.330 ms
+1032 bytes from 0.0.0.0: seq=2 ttl=108 time=66.379 ms
+1032 bytes from 0.0.0.0: seq=3 ttl=108 time=66.360 ms
+
+--- url.goes.here ping statistics ---
+4 packets transmitted, 4 packets received, 0% packet loss
+round-trip min/avg/max = 66.330/66.420/66.613 ms
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://url.goes.here/svt/mapping&quot;&gt;
+    &lt;prompt&gt;root@iTE:~# &lt;/prompt&gt;
+    &lt;echo&gt;ping url.goes.here -c 4 -s 1024&lt;/echo&gt;
+    &lt;promptName&gt;normalPrompt&lt;/promptName&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+            </aliases>
+            <duration>3.3</duration>
+        </item>
+        <item name="sampleUnreachable">
+            <action actionType="command">
+                <command>
+                    <body>ping 0.0.0.0 -c 4 -s 1024</body>
+                </command>
+            </action>
+            <responseBody>PING 0.0.0.0 (0.0.0.0) 1024(1052) bytes of data.
+From 0.0.0.0 icmp_seq=1 Destination Host Unreachable
+
+--- 0.0.0.0 ping statistics ---
+4 packets transmitted, 0 received, +1 errors, 100% packet loss, time 3023ms
+pipe 4
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://url.goes.here/svt/mapping&quot;&gt;
+    &lt;prompt&gt;spirent@ubuntu:~$ &lt;/prompt&gt;
+    &lt;echo&gt;ping 0.0.0.0 -c 4 -s 1024&lt;/echo&gt;
+    &lt;promptName&gt;normalPrompt&lt;/promptName&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+            </aliases>
+            <duration>13.3</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="statsLineUbuntu">
+                    <groups>
+                        <item name="packets_transmitted">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>0</start>
+                            <end>1</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor0">
+                            <regex>\\s+packets transmitted,\\s+</regex>
+                            <start>1</start>
+                            <end>23</end>
+                        </item>
+                        <item name="packets_received">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>23</start>
+                            <end>24</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+received,\\s+\\d+% packet loss</regex>
+                            <start>24</start>
+                            <end>49</end>
+                        </item>
+                        <item name="group0">
+                            <regex>.+</regex>
+                            <start>49</start>
+                            <end>63</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>4 packets transmitted, 4 received, 0% packet loss, time 15226ms</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                    <maintainConsistency>false</maintainConsistency>
+                </item>
+                <item name="statsLineITE">
+                    <groups>
+                        <item name="packets_transmitted">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>0</start>
+                            <end>1</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor0">
+                            <regex>\\s+packets transmitted,\\s+</regex>
+                            <start>1</start>
+                            <end>23</end>
+                        </item>
+                        <item name="packets_received">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>23</start>
+                            <end>24</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+packets received,\\s+</regex>
+                            <start>24</start>
+                            <end>43</end>
+                        </item>
+                        <item name="packet_loss">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>43</start>
+                            <end>44</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>% packet loss</regex>
+                            <start>44</start>
+                            <end>57</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>4 packets transmitted, 4 packets received, 0% packet loss</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+                <item name="statsLineWithError">
+                    <groups>
+                        <item name="packets_transmitted">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>0</start>
+                            <end>1</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor0">
+                            <regex>\\s+packets transmitted,\\s+</regex>
+                            <start>1</start>
+                            <end>23</end>
+                        </item>
+                        <item name="packets_received">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>23</start>
+                            <end>24</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+received,\\s+</regex>
+                            <start>24</start>
+                            <end>35</end>
+                        </item>
+                        <item name="errors">
+                            <regex>([-+]?\\d+\\.?\\d*([eE][-+]?\\d+)?)</regex>
+                            <named>true</named>
+                            <start>35</start>
+                            <end>37</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>\\s+errors,\\s+</regex>
+                            <start>37</start>
+                            <end>46</end>
+                        </item>
+                        <item name="packet_loss">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>46</start>
+                            <end>49</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor3">
+                            <regex>% packet loss, time\\s+</regex>
+                            <start>49</start>
+                            <end>69</end>
+                        </item>
+                        <item name="time">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>69</start>
+                            <end>73</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor4">
+                            <regex>ms</regex>
+                            <start>73</start>
+                            <end>75</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>4 packets transmitted, 0 received, +1 errors, 100% packet loss, time 3023ms</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+                <item name="rttUbuntu">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>rtt min/avg/max/mdev =\\s+</regex>
+                            <start>0</start>
+                            <end>23</end>
+                        </item>
+                        <item name="rtMin">
+                            <regex>([\\d]+(\\.[\\d]+))</regex>
+                            <named>true</named>
+                            <start>23</start>
+                            <end>29</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="((\d+\.)+\d+)">one or more of digit and dots</item>
+                                <item name="([\d]+(\.[\d]+))">one simple decimal number</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>/</regex>
+                            <start>29</start>
+                            <end>30</end>
+                        </item>
+                        <item name="rtAvg">
+                            <regex>([\\d]+(\\.[\\d]+))</regex>
+                            <named>true</named>
+                            <start>30</start>
+                            <end>36</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="((\d+\.)+\d+)">one or more of digit and dots</item>
+                                <item name="([\d]+(\.[\d]+))">one simple decimal number</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>/</regex>
+                            <start>36</start>
+                            <end>37</end>
+                        </item>
+                        <item name="rtMax">
+                            <regex>([\\d]+(\\.[\\d]+))</regex>
+                            <named>true</named>
+                            <start>37</start>
+                            <end>43</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="((\d+\.)+\d+)">one or more of digit and dots</item>
+                                <item name="([\d]+(\.[\d]+))">one simple decimal number</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor3">
+                            <regex>/</regex>
+                            <start>43</start>
+                            <end>44</end>
+                        </item>
+                        <item name="ms">
+                            <regex>([\\d]+(\\.[\\d]+))</regex>
+                            <start>44</start>
+                            <end>49</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="((\d+\.)+\d+)">one or more of digit and dots</item>
+                                <item name="([\d]+(\.[\d]+))">one simple decimal number</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor4">
+                            <regex>\\s+ms</regex>
+                            <start>49</start>
+                            <end>52</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>rtt min/avg/max/mdev = 72.048/72.124/72.240/0.278 ms</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+                <item name="rttITE">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>round-trip min/avg/max =\\s+</regex>
+                            <start>0</start>
+                            <end>25</end>
+                        </item>
+                        <item name="rtMin">
+                            <regex>([\\d]+(\\.[\\d]+))</regex>
+                            <named>true</named>
+                            <start>25</start>
+                            <end>31</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="((\d+\.)+\d+)">one or more of digit and dots</item>
+                                <item name="([\d]+(\.[\d]+))">one simple decimal number</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>/</regex>
+                            <start>31</start>
+                            <end>32</end>
+                        </item>
+                        <item name="rtAvg">
+                            <regex>([\\d]+(\\.[\\d]+))</regex>
+                            <named>true</named>
+                            <start>32</start>
+                            <end>38</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="((\d+\.)+\d+)">one or more of digit and dots</item>
+                                <item name="([\d]+(\.[\d]+))">one simple decimal number</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>/</regex>
+                            <start>38</start>
+                            <end>39</end>
+                        </item>
+                        <item name="rtMax">
+                            <regex>([\\d]+(\\.[\\d]+))</regex>
+                            <named>true</named>
+                            <start>39</start>
+                            <end>45</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="((\d+\.)+\d+)">one or more of digit and dots</item>
+                                <item name="([\d]+(\.[\d]+))">one simple decimal number</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor3">
+                            <regex>\\s+ms</regex>
+                            <start>45</start>
+                            <end>48</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>round-trip min/avg/max = 66.330/66.420/66.613 ms</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="ping *"/>
+    <aliases>
+        <item name="pingSuccess">
+            <description>Number of packets received is same as transmitted so ping was successful.</description>
+            <queryFormatString>//packets_transmitted=//packets_received</queryFormatString>
+        </item>
+        <item name="pingPartial">
+            <description>Ping was partially successful</description>
+            <queryFormatString>//packets_transmitted&gt;//packets_received and //packets_received&gt;0</queryFormatString>
+        </item>
+        <item name="pingFail">
+            <description>Ping was partially successful</description>
+            <queryFormatString>//packets_received=0</queryFormatString>
+        </item>
+    </aliases>
+</ResponseMap>

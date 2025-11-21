@@ -1,0 +1,162 @@
+<?xml version="1.0" ?><ResponseMap version="6.0.0.18638fa">
+    <notes>This command is used to inspect the state of the router for NSR/ISSU readiness</notes>
+    <headline>Show database replication state</headline>
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="command">
+                <command>
+                    <body>show database-replication summary</body>
+                </command>
+            </action>
+            <responseBody>
+General:
+    Graceful Restart           Enabled
+    Mastership                 Master
+    Connection                 Up
+    Database                   Synchronized
+    Message Queue              Ready
+
+{master}
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;prompt&gt;itest-ap@PE50&amp;gt; &lt;/prompt&gt;
+    &lt;echo&gt;show database-replication summary &lt;/echo&gt;
+    &lt;promptName&gt;normal&lt;/promptName&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.4</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="pattern1">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>\\s+Graceful Restart\\s+</regex>
+                            <start>0</start>
+                            <end>31</end>
+                        </item>
+                        <item name="Graceful_Restart">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>31</start>
+                            <end>38</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+Mastership\\s+</regex>
+                            <start>38</start>
+                            <end>70</end>
+                        </item>
+                        <item name="Mastership">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>70</start>
+                            <end>76</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>\\s+Connection\\s+</regex>
+                            <start>76</start>
+                            <end>108</end>
+                        </item>
+                        <item name="Connection">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>108</start>
+                            <end>110</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor3">
+                            <regex>\\s+Database\\s+</regex>
+                            <start>110</start>
+                            <end>142</end>
+                        </item>
+                        <item name="Database">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>142</start>
+                            <end>154</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor4">
+                            <regex>\\s+Message Queue\\s+</regex>
+                            <start>154</start>
+                            <end>186</end>
+                        </item>
+                        <item name="Message_Queue">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>186</start>
+                            <end>191</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>    Graceful Restart           Enabled
+    Mastership                 Master
+    Connection                 Up
+    Database                   Synchronized
+    Message Queue              Ready</sampleMatch>
+                    <optional>true</optional>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="show database-replication summary">
+        <application>
+            <item>com.fnfr.svt.applications.cmd</item>
+            <item>com.fnfr.svt.applications.ssh</item>
+            <item>com.fnfr.svt.applications.telnet</item>
+        </application>
+    </applicabilityProperties>
+    <aliases>
+        <item name="enabled_and_ready">
+            <description>Verify the connection between RE0 and RE1  inorder for NSR/ISSU to proceed</description>
+            <queryFormatString> //Connection = 'Up' and //Database = 'Synchronized' and //Message_Queue = 'Ready'</queryFormatString>
+        </item>
+    </aliases>
+</ResponseMap>

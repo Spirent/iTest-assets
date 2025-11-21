@@ -1,0 +1,277 @@
+<?xml version="1.0" ?><ResponseMap version="6.0.0.18638fa">
+    <sampleDictionary>
+        <item name="saos_6_10_2">
+            <action actionType="command">
+                <command>
+                    <body>cfm service show service &quot;VPLS:70500-4serv&quot; mep</body>
+                </command>
+            </action>
+            <responseBody>+-------------------------------- CFM MEPs ---------------------------------+
+|                |        |    |     |    |                 |Admin|CCM  |CCM|
+|Service         |Port    |Vid |Mepid|Type|   Mac Address   |State|State|Pri|
++----------------+--------+----|-----+----+-----------------+-----+-----+---+
+|VPLS:70500-4serv|2       |1713|220  |up  |00:02:A1:8D:E4:13|en   |on   |6  |
++----------------+--------+----|-----+----+-----------------+-----+-----+---+
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;isEmpty&gt;false&lt;/isEmpty&gt;
+    &lt;promptName&gt;normal&lt;/promptName&gt;
+    &lt;echo&gt;cfm service show service &amp;quot;VPLS:70500-4serv&amp;quot; mep&lt;/echo&gt;
+    &lt;prompt&gt;3911-29-NTE&amp;gt; &lt;/prompt&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="isEmpty">
+                    <queryFormatString>.//isEmpty</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.4</duration>
+        </item>
+        <item name="saos_6-13-0">
+            <action actionType="command">
+                <command>
+                    <body>cfm service show service &quot;VPLS:210530-3diag&quot; mep</body>
+                </command>
+            </action>
+            <responseBody>+--------------------------------------- CFM MEPs ---------------------------------------+
+|                 |        |    |     |    |                 |Admin|CCM  |CCM|Accelerated|
+|Service          |Port    |Vid |Mepid|Type|   Mac Address   |State|State|Pri|           |
++-----------------+--------+----+-----+----+-----------------+-----+-----+---+-----------+
+|VPLS:210530-3diag|2       |777 |4403 |up  |2C:39:C1:22:0E:13|en   |on   |6  |No         |
++-----------------+--------+----+-----+----+-----------------+-----+-----+---+-----------+
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;prompt&gt;3903X-25ESM&amp;gt; &lt;/prompt&gt;
+    &lt;echo&gt;cfm service show service &amp;quot;VPLS:210530-3diag&amp;quot; mep&lt;/echo&gt;
+    &lt;promptName&gt;normal&lt;/promptName&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.3</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="service_instance">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>\\|</regex>
+                            <start>0</start>
+                            <end>1</end>
+                        </item>
+                        <item name="service">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>1</start>
+                            <end>18</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name=".{17}">exactly 17 of any character</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>(\\s+)?\\|</regex>
+                            <start>18</start>
+                            <end>19</end>
+                        </item>
+                        <item name="port">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>19</start>
+                            <end>20</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>\\s+\\|</regex>
+                            <start>20</start>
+                            <end>28</end>
+                        </item>
+                        <item name="vid">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>28</start>
+                            <end>31</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor3">
+                            <regex>(\\s+)?\\|</regex>
+                            <start>31</start>
+                            <end>33</end>
+                        </item>
+                        <item name="mepid">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>33</start>
+                            <end>37</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor4">
+                            <regex>(\\s+)?\\|</regex>
+                            <start>37</start>
+                            <end>39</end>
+                        </item>
+                        <item name="type">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>39</start>
+                            <end>41</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor5">
+                            <regex>\\s+\\|</regex>
+                            <start>41</start>
+                            <end>44</end>
+                        </item>
+                        <item name="mac_addr">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>44</start>
+                            <end>61</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name=".{17}">exactly 17 of any character</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor6">
+                            <regex>\\|</regex>
+                            <start>61</start>
+                            <end>62</end>
+                        </item>
+                        <item name="adm_state">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>62</start>
+                            <end>64</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor7">
+                            <regex>\\s+\\|</regex>
+                            <start>64</start>
+                            <end>68</end>
+                        </item>
+                        <item name="ccm_state">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>68</start>
+                            <end>70</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor8">
+                            <regex>\\s+\\|</regex>
+                            <start>70</start>
+                            <end>74</end>
+                        </item>
+                        <item name="ccm_pri">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>74</start>
+                            <end>75</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor9">
+                            <regex>\\s+\\|</regex>
+                            <start>75</start>
+                            <end>78</end>
+                        </item>
+                        <item name="accel">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>78</start>
+                            <end>80</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor10">
+                            <regex>\\s+\\|</regex>
+                            <start>80</start>
+                            <end>90</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>|VPLS:210530-3diag|2       |777 |4403 |up  |2C:39:C1:22:0E:13|en   |on   |6  |No         |</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="cfm service show service \\S+ mep" matchType="Regex"/>
+</ResponseMap>

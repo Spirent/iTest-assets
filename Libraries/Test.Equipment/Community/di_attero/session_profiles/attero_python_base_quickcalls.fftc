@@ -1,0 +1,259 @@
+<?xml version="1.0"?>
+<testCase version="6.1.0.e2e4ec0">
+    <general>
+        <sessionClass includeTestCase="true" sessionType="project://di_attero/session_profiles/attero_python_base.ffsp"/>
+    </general>
+    <procedures>
+        <item name="main">
+            <steps>
+                <item guid="919a390b-05ed-462d-a02f-00bf64c1adb8" action="comment">
+                    <command>
+                        <body>Attero QuickCall Library</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+        </item>
+        <item name="stopImpairment" isPublic="true">
+            <steps>
+                <item guid="eb2919ea-4213-470a-83a1-1737a52da666" action="command" session="$session" normalOffset="0.002" estimatedStepExecutionTime="0.001">
+                    <command>
+                        <body>a.stopimpairment()</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+        </item>
+        <item name="clearImpairments" isPublic="true">
+            <steps>
+                <item guid="417ed1b8-940a-498b-802c-bb6fd145d586" action="command" session="$session">
+                    <command>
+                        <body>a.atteroset(&quot;Impair ClearAll&quot;)</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+        </item>
+        <item name="disconnectSystem" isPublic="true">
+            <steps>
+                <item guid="cb025522-6582-4361-97df-b9e6922673fa" action="command" session="$session" normalOffset="0.002" estimatedStepExecutionTime="0.075">
+                    <command>
+                        <body>a.disconnect()</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+        </item>
+        <item name="connectSystem" isPublic="true">
+            <steps>
+                <item guid="acc7bc0c-b18e-48cd-8858-45ad34241078" action="command" session="$session" normalOffset="36.105" estimatedStepExecutionTime="0.501">
+                    <command>
+                        <body>from __future__ import print_function</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="9da36f61-e473-4d88-bc78-8ec0c62e61ba" action="command" session="$session" normalOffset="0.005" estimatedStepExecutionTime="0.502">
+                    <command>
+                        <body>import sys</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="e7b251bd-013f-4e36-8fe1-4166c568bfa7" action="command" session="$session" normalOffset="0.004" estimatedStepExecutionTime="0.502">
+                    <command>
+                        <body>sys.path.insert(0, &apos;C:/Calnex/Attero/RemoteControl/Python/&apos;)</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="ac18a833-8aa8-4ab8-be7e-c4fb3ec9b495" action="command" session="$session" normalOffset="0.002" estimatedStepExecutionTime="0.502">
+                    <command>
+                        <body>import attero as a</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="3b0e1063-8704-4a52-955e-4b77add32cff" action="command" session="$session" normalOffset="0.003" estimatedStepExecutionTime="0.002">
+                    <command>
+                        <body>a.connect(&quot;$host&quot;)</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="contains">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                        <searchString>Success</searchString>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$value == 1</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="PassTestIfNotAlreadyFailed">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="OK">
+                                                    <message>Successfully connected to Attero</message>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenTrue>
+                                        <actionsWhenFalse>
+                                            <item actionId="FailTest">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message>Did not successfully connect to Attero</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="AbortTest">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                        </actionsWhenFalse>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="309c2f41-5a17-4f3e-903e-ad8afa907e91" action="command" session="$session" skip="true" normalOffset="0.003" estimatedStepExecutionTime="0.002">
+                    <command>
+                        <body>a.connect(&quot;172.16.11.80&quot;, &quot;localhost&quot;, 9000, 9990)</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <arguments>
+                <item name="host">
+                    <defaultValue>172.16.11.80</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="pythonVersion" isPublic="true">
+            <steps>
+                <item guid="9c0030ef-6bad-4f80-b703-915bdf59fec8" action="command" session="$session" normalOffset="51.047" estimatedStepExecutionTime="0.505">
+                    <command>
+                        <body>import sys</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="818167ab-5f48-44d3-97ba-2e600bf5ff75" action="command" session="$session" normalOffset="4.217" estimatedStepExecutionTime="0.077">
+                    <command>
+                        <body>print sys.version</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+        </item>
+        <item name="delayLoop" isPublic="true">
+            <steps>
+                <item guid="2c4c8692-3419-4f3d-b084-f601afc63c99" action="eval">
+                    <command>
+                        <body>set rtd $startingDelay</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="9580df85-3491-4659-8381-ec0b19a6324c" action="while">
+                    <command>
+                        <body>$rtd &lt;= $endingDelay</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="d22f2b4c-c8f9-4be1-bc62-8bd50db630aa" action="eval">
+                            <command>
+                                <body>set delay [expr $rtd * 1000 / 2]</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="1f56eadc-094e-443b-850a-e0db6263381f" action="command" session="$session" normalOffset="0.002" estimatedStepExecutionTime="0.001">
+                            <command>
+                                <body>a.atteroset(&quot;Impair ImpairProfile #0 #7 FixedDelay&quot;,&quot;$delay&quot;)</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="bd4c1c23-626c-4d52-8945-42c70c12a3bd" action="command" session="$session" normalOffset="0.002" estimatedStepExecutionTime="0.001">
+                            <command>
+                                <body>a.atteroset(&quot;Impair Jitter #7 ProfileCurrent Download&quot;,&quot;TRUE&quot;)</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="4268a82e-520b-407a-914f-52a584fd818a" action="command" session="$session" normalOffset="0.002" estimatedStepExecutionTime="0.001">
+                            <command>
+                                <body>a.atteroset(&quot;Impair ImpairProfile #1 #7 FixedDelay&quot;,&quot;$delay&quot;)</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="9a3e86eb-80d3-4eea-a78d-6186348bace3" action="command" session="$session" normalOffset="0.003" estimatedStepExecutionTime="0.002">
+                            <command>
+                                <body>a.atteroset(&quot;Impair Jitter #15 ProfileCurrent Download&quot;,&quot;TRUE&quot;)</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="bfbcfe74-3fb8-4899-a445-dbac50ed7e8a" action="command" session="$session" normalOffset="0.002" estimatedStepExecutionTime="0.001">
+                            <command>
+                                <body>a.atteroset(&quot;Measurement Count Reset&quot;,&quot;TRUE&quot;)</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="44a3d9a2-f3dc-499f-8550-6265129ad256" action="command" session="$session" normalOffset="0.002" estimatedStepExecutionTime="0.034">
+                            <command>
+                                <body>a.startimpairment()</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="3dd47492-f3fd-4047-8a0e-84c10475d852" action="eval">
+                            <command>
+                                <body>puts $rtd</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="96c0d961-dcfa-4f35-a291-4971157e84ee" action="comment">
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="0e0a0ea2-d76b-4480-aed0-717215731260" action="sleep">
+                            <command>
+                                <body>$stepDuration</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="01664c93-4e1d-4ceb-b708-ebd74ddb6419" action="eval">
+                            <command>
+                                <body>incr rtd $step</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <arguments>
+                <item name="startingDelay"/>
+                <item name="endingDelay"/>
+                <item name="step"/>
+                <item name="stepDuration"/>
+            </arguments>
+        </item>
+    </procedures>
+</testCase>

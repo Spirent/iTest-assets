@@ -1,0 +1,166 @@
+<?xml version="1.0" ?><ResponseMap version="6.0.0.18638fa">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="command">
+                <command>
+                    <body>show rsvp interface instance PLS</body>
+                </command>
+            </action>
+            <responseBody>Jan 31 09:51:18 
+RSVP interface: 2 active
+                  Active Subscr- Static      Available   Reserved    Highwater
+Interface   State resv   iption  BW          BW          BW          mark
+ae99.0      Up         1   100%  20Gbps      20Gbps      1000bps     1000bps    
+lo0.300     Up         0   100%  0bps        0bps        0bps        0bps       
+
+{backup}
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;isEmpty&gt;false&lt;/isEmpty&gt;
+    &lt;promptName&gt;system_prompt&lt;/promptName&gt;
+    &lt;echo&gt;show rsvp interface instance PLS&lt;/echo&gt;
+    &lt;prompt&gt;automation@PE50&amp;gt; &lt;/prompt&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="isEmpty">
+                    <queryFormatString>.//isEmpty</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.7</duration>
+        </item>
+        <item name="sample2">
+            <action>
+                <command>
+                    <body>show rsvp interface instance PLS</body>
+                </command>
+            </action>
+            <responseBody>RSVP instance is not running
+
+{master}</responseBody>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="pattern1">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>RSVP interface:\\s+</regex>
+                            <start>0</start>
+                            <end>16</end>
+                        </item>
+                        <item name="RSVP_interface">
+                            <regex>[^\\r\\n]+</regex>
+                            <named>true</named>
+                            <start>16</start>
+                            <end>24</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>RSVP interface: 2 active</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+                <item name="pattern2">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>RSVP instance is\\s+</regex>
+                            <start>0</start>
+                            <end>17</end>
+                        </item>
+                        <item name="RSVP_instance">
+                            <regex>[^0-9\\r\\n]+</regex>
+                            <named>true</named>
+                            <start>17</start>
+                            <end>28</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>RSVP instance is not running</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+            </regexMaps>
+        </item>
+        <item type="com.fnfr.svt.mapping.table.TabularMapperProperties">
+            <tabularMaps>
+                <item name="Active_resv">
+                    <additionalBannerLineCount>1</additionalBannerLineCount>
+                    <banner>                  Active Subscr- Static      Available   Reserved    Highwater</banner>
+                    <bannerStructure>CaseInsensitive</bannerStructure>
+                    <columnBoundaries>Positional</columnBoundaries>
+                    <minOccurences>0</minOccurences>
+                    <columns>
+                        <item name="Interface">
+                            <isKey>true</isKey>
+                            <width>12</width>
+                            <lastFullCell/>
+                            <uid>5e86253d-a88f-4078-8912-52c3622054c9</uid>
+                        </item>
+                        <item name="State">
+                            <width>11</width>
+                            <lastFullCell/>
+                            <uid>5163be66-7fa7-48aa-8382-44a158b4d4b0</uid>
+                        </item>
+                        <item name="Active_res">
+                            <width>4</width>
+                            <lastFullCell/>
+                            <uid>b69d1c38-a24d-448c-9428-b9376b20a984</uid>
+                        </item>
+                        <item name="Subscription">
+                            <width>6</width>
+                            <lastFullCell/>
+                            <uid>de9e52e3-f326-43b6-9902-21f7a1da1096</uid>
+                        </item>
+                        <item name="Static_BW">
+                            <width>12</width>
+                            <lastFullCell/>
+                            <uid>f55d718a-c6cb-4aab-a5aa-ac3a5b3ab781</uid>
+                        </item>
+                        <item name="Available_BW">
+                            <width>12</width>
+                            <lastFullCell/>
+                            <uid>ebac0919-ca86-42b8-9a34-632886c8ecf8</uid>
+                        </item>
+                        <item name="Reserved_BW">
+                            <width>12</width>
+                            <lastFullCell/>
+                            <uid>f01e465d-ad50-4fb5-8153-188574f82ec1</uid>
+                        </item>
+                        <item name="Highwater_mark">
+                            <width>0</width>
+                            <lastFullCell/>
+                            <uid>70570ba8-e6c3-4f9e-9bdb-19df56a6377a</uid>
+                        </item>
+                    </columns>
+                </item>
+            </tabularMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="show rsvp interface instance *">
+        <application>
+            <item>com.fnfr.itest.application.serial</item>
+            <item>com.fnfr.svt.applications.ssh</item>
+            <item>com.fnfr.svt.applications.telnet</item>
+        </application>
+    </applicabilityProperties>
+</ResponseMap>

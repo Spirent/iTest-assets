@@ -1,0 +1,410 @@
+<?xml version="1.0"?>
+<ResponseMap version="7.0.0.9d01ac1">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="command">
+                <command>
+                    <body>show ip ospf interface Eth1/1</body>
+                </command>
+            </action>
+            <responseBody> Ethernet1/1 is up, line protocol is up
+    IP address 0.0.0.0/31, Process ID 33070 VRF default, area 0.0.0.0
+    Enabled by interface configuration
+    State DR, Network type BROADCAST, cost 4
+    Index 2, Passive interface
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;prompt&gt;N7010-1-LAB# &lt;/prompt&gt;
+    &lt;echo&gt;show ip ospf interface Eth1/1&lt;/echo&gt;
+    &lt;promptName&gt;Priviledged_Prompt&lt;/promptName&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.1</duration>
+        </item>
+        <item name="sample2">
+            <action actionType="command">
+                <command>
+                    <body>show ip ospf interface po22</body>
+                </command>
+            </action>
+            <responseBody> port-channel22 is up, line protocol is down
+    IP address 0.0.0.0/31, Process ID 33070 VRF default, area 0.0.0.0
+    Enabled by interface configuration
+    State DOWN, Network type BROADCAST, cost 400
+    Index 4, Transmit delay 1 sec, Router Priority 1
+    No designated router on this network
+    No backup designated router on this network
+    0 Neighbors, flooding to 0, adjacent with 0
+    Timer intervals: Hello 10, Dead 40, Wait 40, Retransmit 5
+    No authentication
+    Number of opaque link LSAs: 0, checksum sum 0
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;prompt&gt;N7010-1-LAB# &lt;/prompt&gt;
+    &lt;echo&gt;show ip ospf interface po22&lt;/echo&gt;
+    &lt;promptName&gt;Priviledged_Prompt&lt;/promptName&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.1</duration>
+        </item>
+        <item name="sample3">
+            <responseBody> Ethernet2/5 is up, line protocol is up
+    IP address 172.16.4.10/24
+Process ID 1 VRF default, area 0.0.0.0
+    Enabled by interface configuration
+    State DR, Network type BROADCAST, cost 1
+    Index 3, Transmit delay 1 sec, Router Priority 1
+    No designated router on this network
+    No backup designated router on this network
+    0 Neighbors, flooding to 0, adjacent with 0
+    Timer intervals: Hello 10, Dead 40, Wait 40, Retransmit 5
+      Hello timer due in 00:00:03
+    No authentication
+    Number of opaque link LSAs: 0, checksum sum 0
+</responseBody>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="ospf_interface_topline">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>\\s+</regex>
+                            <start>0</start>
+                            <end>1</end>
+                        </item>
+                        <item name="ospf_interface_name">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>1</start>
+                            <end>12</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+is\\s+</regex>
+                            <start>12</start>
+                            <end>16</end>
+                        </item>
+                        <item name="ospf_interface_status">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>16</start>
+                            <end>18</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>, line protocol is\\s+</regex>
+                            <start>18</start>
+                            <end>37</end>
+                        </item>
+                        <item name="ospf_protocol_status">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>37</start>
+                            <end>39</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch> Ethernet1/1 is up, line protocol is up</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+                <item name="ospf_address">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>\\s+IP address\\s+</regex>
+                            <start>0</start>
+                            <end>15</end>
+                        </item>
+                        <item name="IP_address">
+                            <regex>((\\d+\\.)+\\d+)</regex>
+                            <named>true</named>
+                            <start>15</start>
+                            <end>22</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="((\d+\.)+\d+)">one or more of digit and dots</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>/</regex>
+                            <start>22</start>
+                            <end>23</end>
+                        </item>
+                        <item name="group1">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>23</start>
+                            <end>25</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>    IP address 0.0.0.0/31</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+                <item name="process_and_area">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>.*Process ID\\s+</regex>
+                            <start>0</start>
+                            <end>11</end>
+                        </item>
+                        <item name="Process_ID">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>11</start>
+                            <end>16</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+VRF default, area\\s+</regex>
+                            <start>16</start>
+                            <end>35</end>
+                        </item>
+                        <item name="area">
+                            <regex>((\\d+\\.)+\\d+)</regex>
+                            <named>true</named>
+                            <start>35</start>
+                            <end>42</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="((\d+\.)+\d+)">one or more of digit and dots</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>Process ID 33070 VRF default, area 0.0.0.0</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+                <item name="ospf_state_network_type">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>\\s+State\\s+</regex>
+                            <start>0</start>
+                            <end>10</end>
+                        </item>
+                        <item name="State">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>10</start>
+                            <end>12</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>, Network type\\s+</regex>
+                            <start>12</start>
+                            <end>27</end>
+                        </item>
+                        <item name="Network_type">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>27</start>
+                            <end>36</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>, cost\\s+</regex>
+                            <start>36</start>
+                            <end>43</end>
+                        </item>
+                        <item name="cost">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>43</start>
+                            <end>44</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>    State DR, Network type BROADCAST, cost 4</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+                <item name="ospf_passive_interface">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>\\s+Index\\s+</regex>
+                            <start>0</start>
+                            <end>10</end>
+                        </item>
+                        <item name="Index">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>10</start>
+                            <end>11</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>,\\s+</regex>
+                            <start>11</start>
+                            <end>13</end>
+                        </item>
+                        <item name="passive_interface">
+                            <regex>[^0-9\\r\\n]+</regex>
+                            <named>true</named>
+                            <start>13</start>
+                            <end>30</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>    Index 2, Passive interface</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+                <item name="ospf_neighbor_count">
+                    <groups>
+                        <item name="neighbor_count">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>0</start>
+                            <end>1</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor0">
+                            <regex>\\s+Neighbors, flooding to\\s+</regex>
+                            <start>1</start>
+                            <end>25</end>
+                        </item>
+                        <item name="group1">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>25</start>
+                            <end>26</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>, adjacent with\\s+</regex>
+                            <start>26</start>
+                            <end>42</end>
+                        </item>
+                        <item name="ospf_adjacent_count">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>42</start>
+                            <end>43</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>0 Neighbors, flooding to 0, adjacent with 0</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="show ip ospf interface (\\w+\\d+)\\/?.*" matchType="Regex">
+        <application>
+            <item>com.fnfr.svt.applications.ssh</item>
+            <item>com.fnfr.svt.applications.telnet</item>
+        </application>
+    </applicabilityProperties>
+</ResponseMap>

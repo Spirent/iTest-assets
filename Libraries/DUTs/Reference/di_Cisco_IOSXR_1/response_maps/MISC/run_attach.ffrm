@@ -1,0 +1,104 @@
+<?xml version="1.0"?>
+<ResponseMap version="6.0.0.18638fa">
+    <sampleDictionary>
+        <item name="sample1">
+            <action>
+                <command>
+                    <body>run attach $lc
+pkg/bin/show_ixdb -f vkg_pmlib_ixdb -s</body>
+                </command>
+            </action>
+            <responseBody>-f processed with vkg_pmlib_ixdb
+-s processed
+
+========ixdb header========
+ixdb version = 1, ispec version = 1, pathname = vkg_pmlib_ixdb, 
+New Free q algorithm used
+
+Writer id map bytes [b0-&gt;b3] in hex : 0x7 0x0 0x0 0x80
+Hash collisions possible? Yes, invalid_key = 0x0, hashsize = 163840, db_size = 81920, rec_size = 760
+
+db_keys_offset = 331776, hashtable_offset = 987136, pool0_offset = 1642520, db_offset = 17371296, start_alloc_index = 99, alloc_index_tail = 97, gc optimizer state = 0
+, gc sched yield count = 9128
+, gc list inserts = 82
+, gc list remove = 82
+, cas fail gc add1 = 0
+, cas fail gc add2 = 0
+, gc free fail = 0
+, ll add = 99
+, ll delete = 82
+, gc 0 arr index = 0
+, gc arr index = 0
+, gc list entry = 0
+, free list entry = 0
+, ixdb add entry = 99
+, ixdb rem entry = 82
+, ixdb null key add = 0
+, ixdb null key del = 0
+, serial = 1, last db alloc happened = 7885 seconds ago
+Number of allocated db records = 18, Number of free db records = 81902, Used hash table entries = 15, Unused hash table entries = 163825, Collisions = 2, 
+Pool0 linked list pool information.
+version = 0, magic = 0xfeef1f00, pool id/ serial = 0/0, name = , size in bytes  = 15728776, allocation is allowed, Total entries = 655360, Free entries = 655343, next pool id/ serial = 0/0, next pool name = &quot;&quot;, next pool size = 0
+</responseBody>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="pattern1">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Number of allocated db records =\\s+</regex>
+                            <start>0</start>
+                            <end>33</end>
+                        </item>
+                        <item name="allocated_db_records">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>33</start>
+                            <end>35</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>Number of allocated db records = 18</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+                <item name="pattern2">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Used hash table entries =\\s+</regex>
+                            <start>0</start>
+                            <end>26</end>
+                        </item>
+                        <item name="hash_table_entries">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>26</start>
+                            <end>28</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>Used hash table entries = 15</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="run_attach"/>
+</ResponseMap>

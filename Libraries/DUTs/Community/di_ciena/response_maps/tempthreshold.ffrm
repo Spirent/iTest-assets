@@ -1,0 +1,121 @@
+<?xml version="1.0" ?><ResponseMap version="6.0.0.18638fa">
+    <notes>Chasiss temp check</notes>
+    <headline>Currenttemp check for threshold</headline>
+    <sampleDictionary>
+        <item name="curtemp">
+            <action actionType="command">
+                <command>
+                    <body>chassis show temperature</body>
+                </command>
+            </action>
+            <responseBody>
++- TEMPERATURE THRESHOLD -+
+| Low        | High       |
++------------+------------+
+| -40 C      | 80  C      |
++------------+------------+
+
++--- TEMPERATURE STATUS --+
+| Current | Low   | High  |
++---------+-------+-------+
+| 47  C   | 47  C | 47  C |
++---------+-------+-------+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;terminal RequiredForRendering=&quot;true&quot;&gt;
+        &lt;prompt&gt;3930-9_BGPMH&amp;gt; &lt;/prompt&gt;
+        &lt;promptExtraction&gt;LAST_LINE&lt;/promptExtraction&gt;
+        &lt;echo&gt;ls -ltr /mnt/log/corefiles&lt;/echo&gt;
+        &lt;idleTime&gt;0.872&lt;/idleTime&gt;
+        &lt;contentType&gt;text&lt;/contentType&gt;
+        &lt;terminator&gt;SLASH_R_SLASH_N&lt;/terminator&gt;
+    &lt;/terminal&gt;
+&lt;/structure&gt;
+</structuredData>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="ctemp">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>\\s+\\+--- TEMPERATURE STATUS --\\+\\s+\\| Current \\| Low\\s+\\| High\\s+\\|\\s+\\+---------\\+-------\\+-------\\+\\s+\\|\\s+</regex>
+                            <start>0</start>
+                            <end>88</end>
+                        </item>
+                        <item name="curtemp">
+                            <regex>([-+]?\\d+\\.?\\d*([eE][-+]?\\d+)?)</regex>
+                            <named>true</named>
+                            <start>88</start>
+                            <end>90</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+C\\s+\\|\\s+</regex>
+                            <start>90</start>
+                            <end>98</end>
+                        </item>
+                        <item name="Min">
+                            <regex>([-+]?\\d+\\.?\\d*([eE][-+]?\\d+)?)</regex>
+                            <named>true</named>
+                            <start>98</start>
+                            <end>100</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>\\s+C \\|\\s+</regex>
+                            <start>100</start>
+                            <end>106</end>
+                        </item>
+                        <item name="Max">
+                            <regex>([-+]?\\d+\\.?\\d*([eE][-+]?\\d+)?)</regex>
+                            <named>true</named>
+                            <start>106</start>
+                            <end>108</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor3">
+                            <regex>\\s+C \\|\\s+\\+---------\\+-------\\+-------\\+</regex>
+                            <start>108</start>
+                            <end>141</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>
+
++--- TEMPERATURE STATUS --+
+| Current | Low   | High  |
++---------+-------+-------+
+| 47  C   | 47  C | 47  C |
++---------+-------+-------+</sampleMatch>
+                    <optional>true</optional>
+                    <maintainConsistency>false</maintainConsistency>
+                </item>
+            </regexMaps>
+        </item>
+        <item type="com.fnfr.svt.mapping.table.TabularMapperProperties"/>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="chas* sh* temp*" priority="40"/>
+</ResponseMap>

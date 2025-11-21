@@ -1,0 +1,162 @@
+<?xml version="1.0" ?><ResponseMap version="6.0.0.18638fa">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="show_vpls_connection_instance">
+                <command>
+                    <body>-service $service -instance_name $instance_name</body>
+                </command>
+            </action>
+            <responseBody>Instance : VPLS:INFRA_NMVPN
+Local_site_id : 10 (10)
+Status_by_rmt(5) : Up
+Status_by_rmt(9) : Up
+Status_by_rmt(12) : Up
+Status_by_rmt(14) : Up
+Status_by_rmt(15) : Up
+Status_by_rmt(29) : Up
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;definedIn&gt;project://d_juniper/session_profiles/juniper_qc_netconf.fftc&lt;/definedIn&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="definedIn">
+                    <queryFormatString>.//definedIn</queryFormatString>
+                    <source>Kernel</source>
+                </item>
+            </aliases>
+            <duration>1.0</duration>
+        </item>
+        <item name="sample2">
+            <responseBody>Instance : VPLS:INFRA_NMVPN
+Local_site_id : 10 
+Status_by_rmt(5) : Up
+Status_by_rmt(9) : Up
+Status_by_rmt(12) : Up
+Status_by_rmt(14) : Up
+Status_by_rmt(15) : Up
+Status_by_rmt(29) : Up
+</responseBody>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="colon_auto1">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Instance :\\s+</regex>
+                            <start>0</start>
+                            <end>11</end>
+                        </item>
+                        <item name="Instance">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>11</start>
+                            <end>27</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>Instance : VPLS:INFRA_NMVPN</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+                <item name="colon_auto2">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Local_site_id :\\s+</regex>
+                            <start>0</start>
+                            <end>16</end>
+                        </item>
+                        <item name="Local_site_id">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>16</start>
+                            <end>18</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s*</regex>
+                            <start>18</start>
+                            <end>19</end>
+                        </item>
+                        <item name="group1">
+                            <regex>[^\\r\\n]*</regex>
+                            <named>true</named>
+                            <start>19</start>
+                            <end>23</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>Local_site_id : 10 (10)</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+                <item name="colon_auto3">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Status_by_rmt\\(</regex>
+                            <start>0</start>
+                            <end>14</end>
+                        </item>
+                        <item name="rmt">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <key>true</key>
+                            <start>14</start>
+                            <end>15</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\) :\\s+</regex>
+                            <start>15</start>
+                            <end>19</end>
+                        </item>
+                        <item name="Status">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>19</start>
+                            <end>21</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>Status_by_rmt(5) : Up</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="show_vpls_connection_instance" command="-service $service -instance_name $instance_name"/>
+</ResponseMap>

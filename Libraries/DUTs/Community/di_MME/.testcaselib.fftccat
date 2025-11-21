@@ -1,0 +1,170 @@
+<?xml version="1.0"?>
+<TestCaseCatalog version="8.0.0.201908290812">
+    <testCaseCatalog>
+        <item name="session_profiles/MME_ssh_quickcall_library.fftc">
+            <tcDescriptor version="8.0.0.201908290812">
+                <general>
+                    <owner>Spirent</owner>
+                    <sessionClass includeTestCase="true" sessionType="project://di_MME/session_profiles/MME_ssh.ffsp"/>
+                </general>
+                <procedures>
+                    <item name="getSubscriberIMSI" isPublic="true" isVBlock="true">
+                        <multilineDescription>For the specified IMEI, return the IMSI of this subscriber if registered.</multilineDescription>
+                        <arguments>
+                            <item name="IMEI">
+                                <description>For the specified IMEI, return the IMSI value
+
+Return Value: JSON Block
+
+IMSI: 0 - invalid; nonzero IMEI</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                        <response>{&quot;IMSI&quot;:&quot;0&quot;}</response>
+                    </item>
+                    <item name="getSubscriberInfo" isPublic="true" isVBlock="true">
+                        <responseMap>project://di_MME/response_maps/JsonBlockToQueries.ffrm</responseMap>
+                        <multilineDescription>Retrieve the information about a subscriber based upon the IMSI
+
+Return values: JSON Block
+
+registered: 1 - device is registered; 0 - device not registered;   NOTE: if the device is not registered, none of the other information is valid
+ECM_State: String from command response: Registered Idle
+EMM_State: String from command response: Idle</multilineDescription>
+                        <arguments>
+                            <item name="IMSI">
+                                <description>The IMSI of the subscriber</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                        <response>{&quot;registered&quot;:&quot;0&quot;,&quot;EMM_State&quot;:&quot;0&quot;,&quot;ECM_State&quot;:&quot;0&quot;,&quot;UE_IPv4_Address&quot;:&quot;0&quot;,&quot;SGS_Assoc_State&quot;:&quot;0&quot;,&quot;VLR&quot;:&quot;0&quot;}</response>
+                    </item>
+                    <item name="clearMMESubscriberInfo" isPublic="true" isVBlock="true">
+                        <multilineDescription>Clear the subcriber info for the specified IMSI</multilineDescription>
+                        <arguments>
+                            <item name="IMSI">
+                                <description>The IMSI of the UE to clear</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="setVoiceOverPS" isPublic="true" isVBlock="true">
+                        <responseMap>project://di_MME/response_maps/JsonBlockToQueries.ffrm</responseMap>
+                        <multilineDescription>Check to see if the call control profile is set for Voice over PS and if not, attempt to set it.</multilineDescription>
+                        <arguments>
+                            <item name="cc_profile">
+                                <description>The call control profile to be set</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                        <response>{&quot;success&quot;:&quot;1&quot;}</response>
+                    </item>
+                    <item name="showMMEServiceSession" isPublic="true" isVBlock="true">
+                        <multilineDescription>Show MME service information for a subscriber.
+
+Return value: 
+</multilineDescription>
+                        <arguments>
+                            <item name="IMSI">
+                                <description>The IMSI values</description>
+                            </item>
+                            <item name="full">
+                                <description>1 - show mme-service session full imsi; 0 - show mme-service session imsi</description>
+                                <defaultValue>0</defaultValue>
+                            </item>
+                        </arguments>
+                        <response>{}</response>
+                    </item>
+                    <item name="showMMEServiceName" isPublic="true" isVBlock="true">
+                        <responseMap>project://di_MME/response_maps/JsonBlockToQueries.ffrm</responseMap>
+                        <multilineDescription>Show MME service information for a service name
+
+Return value: 
+SetUETimeAttachProcessing: 0: invalid; Enabled; Disabled.
+T3412Timeout: 0: invalid; &gt;0s: valid
+ImplicitDetahTimeout: 0: invalid; &gt;0s: valid
+MobileReachabilitTimeout: 0: invalid; &gt;0s: valid</multilineDescription>
+                        <arguments>
+                            <item name="name">
+                                <description>MME service name.
+
+MME service name, eg. TLBMME37001-047</description>
+                                <isMandatory>true</isMandatory>
+                            </item>
+                        </arguments>
+                        <response>{&quot;SetUETimeAttachProcessing&quot;:&quot;0&quot;,&quot;T3412Timeout&quot;:&quot;0&quot;,&quot;ImplicitDetachTimeout&quot;:&quot;0&quot;,&quot;MobileReachabilitTimeout&quot;:&quot;0&quot;}</response>
+                    </item>
+                    <item name="showMMEServiceEncriptionAlgorithm" isPublic="true" isVBlock="true">
+                        <multilineDescription>show mme service encription algorithm.
+- 128 EEA0 (NULL ENCRYPTION)
+</multilineDescription>
+                        <response>{&quot;EncryptionAlgorithm&quot;:&quot;0&quot;}</response>
+                    </item>
+                    <item name="showSgsServiceVlrStatus" isPublic="true" isVBlock="true">
+                        <multilineDescription>Show sgs-service vlr status information.
+0: no vlr information. 
+UP/DOWN</multilineDescription>
+                        <arguments>
+                            <item name="full">
+                                <description>full: show sgs-service vlr-status full information.
+other: show sgs-service vlr-status not full info.</description>
+                            </item>
+                        </arguments>
+                        <response>{&quot;AssocState&quot;:&quot;0&quot;}</response>
+                    </item>
+                    <item name="showEnodeBAssociation" isPublic="true"/>
+                    <item name="configTAUTimer" isPublic="true">
+                        <multilineDescription>Config MME TAU timeout timer.
+
+
+</multilineDescription>
+                        <arguments>
+                            <item name="mmeServiceName">
+                                <defaultValue>TLBMME37001-039</defaultValue>
+                            </item>
+                            <item name="tauTimer">
+                                <defaultValue>60</defaultValue>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="configMobileReachableTimer" isPublic="true">
+                        <multilineDescription>Config MME TAU timeout timer.
+
+
+</multilineDescription>
+                        <arguments>
+                            <item name="mmeServiceName">
+                                <defaultValue>TLBMME37001-039</defaultValue>
+                            </item>
+                            <item name="timeoutTimer">
+                                <defaultValue>120</defaultValue>
+                            </item>
+                        </arguments>
+                    </item>
+                    <item name="configImplicitDetachTimer" isPublic="true" isVBlock="true">
+                        <responseMap>project://di_MME/response_maps/JsonBlockToQueries.ffrm</responseMap>
+                        <multilineDescription>Config MME implicit detach timer
+
+Return: Block
+
+result: 1 = success; 0 = failure
+
+
+</multilineDescription>
+                        <arguments>
+                            <item name="mmeServiceName">
+                                <description>The service name of the MME</description>
+                                <defaultValue>TLBMME37001-039</defaultValue>
+                            </item>
+                            <item name="timeoutTimer">
+                                <description>The timer value for the implicit detach timer</description>
+                                <defaultValue>60</defaultValue>
+                            </item>
+                        </arguments>
+                        <response>{&quot;result&quot;:&quot;success&quot;}</response>
+                    </item>
+                </procedures>
+            </tcDescriptor>
+        </item>
+    </testCaseCatalog>
+</TestCaseCatalog>

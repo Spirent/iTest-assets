@@ -1,0 +1,95 @@
+<?xml version="1.0"?>
+<ResponseMap version="5.1.0.77511">
+    <sampleDictionary>
+        <item name="sample1">
+            <action>
+                <command>
+                    <body>show run mpls traffic-eng</body>
+                </command>
+            </action>
+            <responseBody>Fri May 22 07:29:44.046 EDT
+CPU utilization for one minute: 2%; five minutes: 2%; fifteen minutes: 2%
+</responseBody>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="util_pattern">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>CPU utilization for one minute:\\s+</regex>
+                            <start>0</start>
+                            <end>32</end>
+                        </item>
+                        <item name="util_one_minute">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>32</start>
+                            <end>33</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>%; five minutes:\\s+</regex>
+                            <start>33</start>
+                            <end>50</end>
+                        </item>
+                        <item name="util_five_minutes">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>50</start>
+                            <end>51</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>%; fifteen minutes:\\s+</regex>
+                            <start>51</start>
+                            <end>71</end>
+                        </item>
+                        <item name="util_fifteen_minutes">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>71</start>
+                            <end>72</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor3">
+                            <regex>%</regex>
+                            <start>72</start>
+                            <end>73</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>CPU utilization for one minute: 2%; five minutes: 2%; fifteen minutes: 2%</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="get_cpu_utilization" priority="40">
+        <application>
+            <item>com.fnfr.svt.applications.ssh</item>
+            <item>com.fnfr.svt.applications.telnet</item>
+        </application>
+    </applicabilityProperties>
+</ResponseMap>

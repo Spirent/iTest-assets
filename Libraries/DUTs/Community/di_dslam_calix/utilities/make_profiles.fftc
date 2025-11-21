@@ -1,0 +1,128 @@
+<?xml version="1.0"?>
+<testCase version="5.3.0.338ed32">
+    <execution>
+        <parameters version="5.3.0.338ed32">
+            <parameters escape="true">
+                <parameters xmlns:pt="http://www.fnfr.com/schemas/parameterTree">
+                    <input_file>profile_names.txt</input_file>
+                    <template_file>set_profile_template.xml</template_file>
+                    <output_file>all_profiles.xml</output_file>
+                    <vdsl>
+                        <file>vdsl_unbonded.xml</file>
+                        <profiles>10240x3072_8a 10240x640_8a 11776x1024_LCTL 12128x5120_8a 12128x896_8a 15008x1504_LCTL 15136x3072_8a 1536x640_8a 1536x896_8a 1760x288_LCTL 1760x576_LCTL 18128x896_8a 20000x2016_LCTL 20128x5120_8a 20128x896_8a 20Mx2M_LCIPTV 25024x2016_LCTL 25Mx2M_8a 30016x2016_LCTL 3072x2048_8a 3072x640_8a 35136x15136_12a 35136x3072_8a 3520x576_LCTL 40000x5024_LCTL 40128x20128_12a 40128x5120_8a 40Mx5M_8a 50016x5024_LCTL 5120x3072_8a 5120x5120_8a 5120x896_8a 5888x896_LCTL 640x256_8a 6SNR_8D_1INP_12a 6SNR_8D_1INP_12a_UPBO 6SNR_8D_1INP_17a 6SNR_8D_1INP_17a_UPBO 6SNR_8D_1INP_8a 6SNR_8D_1INP_8a_UPBO 7168x2048_8a 7168x5120_8a 7168x896_8a 896x288_LCTL 896x448_LCTL 9SNR_8x5D_2INP_12a 9SNR_8x5D_2INP_17a 9SNR_8x5D_2INP_8a 9SNR_8x5D_2x1INP_12a_UPBO 9SNR_8x5D_2x1INP_17a_UPBO 9SNR_8x5D_2x1INP_8a_UPBO V1.5Mx768K V10MX1M V10Mx10M_IPC V10Mx768K V12Mx1.5M V12Mx5M V15Mx768K V20Mx1.5M V20Mx20M_IPC V20Mx5M V20Mx896K V25Mx1.5M_IPTV V30Mx1.5M V30Mx30M_IPC V3Mx3M_IPC V3Mx768K V40Mx20M_12a V40Mx20M_17a V40Mx40M_IPC V40Mx5M V40Mx5M_IPTV V4Mx1M V5Mx5M_IPC V60Mx5M V60Mx5M_IPTV V6Mx1.5M V6Mx768K V7Mx7M_IPC</profiles>
+                    </vdsl>
+                    <adsl2>
+                        <file>adsl_unbonded.xml</file>
+                        <profiles>10240x640 11776x1024_LC 11776x896_LC 12128x896 18128x896 20128x896 32000x2048 32000x2048_IPTV 6SNR_8D_1INP_2+ 6SNR_8D_1INP_2+ATM 9440x896_LC AF1.5Mx768K AF3Mx768K</profiles>
+                    </adsl2>
+                    <adsl>
+                        <file>adsl_unbonded.xml</file>
+                        <profiles pt:description="1536x640 1536x896 1760x288_LC 1760x576_LC 256x256 3072x640 3520x576_LC 3520x736_LC 4704x576_LC 5120x896 576x288_LC 5888x896_LC 640x256 7072x576_LC 7168x896 8032x1024 8032x1024_ansi 8032x1024_dmt 896x288_LC 896x448_LC">1536x640 1536x896 1760x288_LC 1760x576_LC 256x256 3072x640 3520x576_LC 3520x736_LC 4704x576_LC 5120x896 576x288_LC 5888x896_LC 640x256 7072x576_LC 7168x896 8032x1024 8032x1024_ansi 8032x1024_dmt 896x288_LC 896x448_LC</profiles>
+                    </adsl>
+                </parameters>
+            </parameters>
+        </parameters>
+    </execution>
+    <procedures>
+        <item name="main">
+            <steps>
+                <item guid="b8db9823-8e71-4b80-bf42-ae9b4edb1618" action="writeFile">
+                    <command>
+                        <body>[param output_file] {}</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.execution.builtin.exec.WriteFilePropertyGroup">
+                        <appendMode>Overwrite</appendMode>
+                    </applicationProperties>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="cac6a3ee-664c-48b8-80f8-6b749fdae9b6" action="readFile">
+                    <command>
+                        <body>[param template_file]</body>
+                    </command>
+                    <postProcessing>
+                        <storeResponseAt>base_test_case</storeResponseAt>
+                        <storeResponseText>true</storeResponseText>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.execution.builtin.exec.ReadFilePropertyGroup"/>
+                </item>
+                <item guid="4c55025b-9ae1-41c2-9fb9-7a5dec5e2126" action="readFile">
+                    <command>
+                        <body>[param input_file]</body>
+                    </command>
+                    <postProcessing>
+                        <storeResponseAt>fileinfo</storeResponseAt>
+                        <storeResponseText>true</storeResponseText>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.execution.builtin.exec.ReadFilePropertyGroup"/>
+                </item>
+                <item guid="f0ca0dde-4665-4bb2-94fe-89bacc8fd942" action="foreach">
+                    <command>
+                        <body>type {vdsl adsl2 adsl}</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="8ffec6d0-b18a-4e77-8b58-287e74b52ff6" action="readFile" skip="true">
+                            <command>
+                                <body>[param ${type}/file]</body>
+                            </command>
+                            <postProcessing>
+                                <storeResponseAt>base_test_case</storeResponseAt>
+                                <storeResponseText>true</storeResponseText>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.svt.execution.builtin.exec.ReadFilePropertyGroup"/>
+                        </item>
+                        <item guid="4fe868c8-9bed-42eb-98e8-f25385c06bdd" action="eval" skip="true">
+                            <command>
+                                <body>puts [param ${type}/profiles]</body>
+                            </command>
+                            <postProcessing>
+                                <storeResponseAt>base_test_case</storeResponseAt>
+                                <storeResponseText>true</storeResponseText>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="9de1d1c0-9c12-4b36-bde6-0622cddf20d8" action="foreach">
+                            <command>
+                                <body>i [param ${type}/profiles]</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="5ca55aba-40cf-414d-8a46-af0f9a716ceb" action="eval">
+                                    <command>
+                                        <body>set loc [lsearch $fileinfo $i]</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="ddc540ee-3b42-4cb1-b20c-35fe456bc00d" action="eval">
+                                    <command>
+                                        <body>set profile [lindex $fileinfo [expr $loc +1]]</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="3f2eb9ed-5d78-4a40-b9ee-e16f1dd86773" action="eval">
+                                    <command>
+                                        <body>set procname [string map {{.} {_} {+} {p}} $i]</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="86aea81f-269d-4d80-b259-79a740a0b621" action="writeFile">
+                                    <command>
+                                        <body>[param output_file] [string map &quot;{***} {$procname} {^^^} {$profile}&quot; $base_test_case]</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.execution.builtin.exec.WriteFilePropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+        </item>
+    </procedures>
+</testCase>

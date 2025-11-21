@@ -1,0 +1,207 @@
+<?xml version="1.0" ?><ResponseMap version="6.0.0.18638fa">
+    <notes>2/10/13 NJL: Inital developement.  This is a pattern map for an individual vc instance.  Added the whole response as a pattern.  Should be ok, but may need to change later.</notes>
+    <headline>Ciena virtual circuit etherenet show for an individual instance</headline>
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="command">
+                <command>
+                    <body>virtual-circuit ethernet show  vc  EWS-2830-VC</body>
+                </command>
+            </action>
+            <responseBody>
++------- ETHERNET VIRTUAL CIRCUIT EWS-2830-VC INFO -------+
+| Parameter            | Value                            |
++----------------------+----------------------------------+
+| Name                 | EWS-2830-VC                      |
+| ID                   | 11                               |
+| Provider VLAN        | (2830)  EWS-3960-2830            |
+| Psuedo-Wire Type     | untagged                         |
+| VS Using             | (11)    EWS-2830-VS              |
+| Stats Collection     | Off                              |
++---------------------------------------------------------+
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;terminal RequiredForRendering=&quot;true&quot;&gt;
+        &lt;prompt&gt;3960-11&amp;gt; &lt;/prompt&gt;
+        &lt;promptExtraction&gt;LAST_LINE&lt;/promptExtraction&gt;
+        &lt;echo&gt;EWS-2830-VC&lt;/echo&gt;
+        &lt;idleTime&gt;1.343&lt;/idleTime&gt;
+        &lt;contentType&gt;text&lt;/contentType&gt;
+        &lt;terminator&gt;SLASH_R_SLASH_N&lt;/terminator&gt;
+    &lt;/terminal&gt;
+&lt;/structure&gt;
+</structuredData>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="pattern1">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>\\| Name\\s+\\|\\s+</regex>
+                            <start>0</start>
+                            <end>25</end>
+                        </item>
+                        <item name="vc_name">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>25</start>
+                            <end>36</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+\\|\\s+\\| ID\\s+\\|\\s+</regex>
+                            <start>36</start>
+                            <end>85</end>
+                        </item>
+                        <item name="vc_id">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>85</start>
+                            <end>87</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>\\s+\\|\\s+\\| Provider VLAN\\s+\\| \\(</regex>
+                            <start>87</start>
+                            <end>146</end>
+                        </item>
+                        <item name="provider_vlan_number">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>146</start>
+                            <end>150</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor3">
+                            <regex>\\)\\s+</regex>
+                            <start>150</start>
+                            <end>153</end>
+                        </item>
+                        <item name="provider_vlan_name">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>153</start>
+                            <end>166</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor4">
+                            <regex>\\s+\\|\\s+\\| Psuedo-Wire Type\\s+\\|\\s+</regex>
+                            <start>166</start>
+                            <end>205</end>
+                        </item>
+                        <item name="psuedo_wire_type">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>205</start>
+                            <end>213</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor5">
+                            <regex>\\s+\\|\\s+\\| VS Using\\s+\\| \\(</regex>
+                            <start>213</start>
+                            <end>266</end>
+                        </item>
+                        <item name="vs_using_number">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>266</start>
+                            <end>268</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor6">
+                            <regex>\\)\\s+</regex>
+                            <start>268</start>
+                            <end>273</end>
+                        </item>
+                        <item name="vs_using_name">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>273</start>
+                            <end>284</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor7">
+                            <regex>\\s+\\|\\s+\\| Stats Collection\\s+\\|\\s+</regex>
+                            <start>284</start>
+                            <end>325</end>
+                        </item>
+                        <item name="stats_collection">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>325</start>
+                            <end>328</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor8">
+                            <regex>\\s+\\|</regex>
+                            <start>328</start>
+                            <end>359</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>| Name                 | EWS-2830-VC                      |
+| ID                   | 11                               |
+| Provider VLAN        | (2830)  EWS-3960-2830            |
+| Psuedo-Wire Type     | untagged                         |
+| VS Using             | (11)    EWS-2830-VS              |
+| Stats Collection     | Off                              |</sampleMatch>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="virt*-circ* eth* sh* vc *">
+        <application>
+            <item>com.fnfr.svt.applications.cmd</item>
+            <item>com.fnfr.svt.applications.ssh</item>
+            <item>com.fnfr.svt.applications.telnet</item>
+        </application>
+    </applicabilityProperties>
+</ResponseMap>

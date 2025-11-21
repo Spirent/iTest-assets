@@ -1,0 +1,153 @@
+<?xml version="1.0" ?><ResponseMap version="5.4.0.4f90e5a">
+    <sampleDictionary>
+        <item name="sample1">
+            <responseBody>    Procedure Code : id-Paging (14)
+    Criticality
+      | 01.. .... | Ignore (1)
+    Paging Value : 
+      | .010 0011 | Length Determinant : 35
+      Value : 
+        Paging
+          | 0... .... | Ext bit : 0
+          Bit map : 
+            | .0.. .... | Paging Extensions : Not present
+          Paging IEs
+            IEs Count : 4
+              IE : 1
+                Protocol IE ID : CN Domain Indicator (3)
+                Criticality
+                  | 01.. .... | Ignore (1)
+                CN Domain Indicator Value : 
+                  | .000 0001 | Length Determinant : 1
+                  Value : 
+                    | 1... .... | ps-domain (1)
+              IE : 2
+                Protocol IE ID : Permanent NAS UE ID (23)
+                Criticality
+                  | 01.. .... | Ignore (1)
+                Permanent NAS UE ID Value : 
+                  | .000 1001 | Length Determinant : 9
+                  Value : 
+                    | 0... .... | Ext bit : 0
+                    Choice index : 0
+                      IMSI
+                        | .101 .... | Length Determinant : 8
+                        302221001813503
+              IE : 3
+                Protocol IE ID : Temporary UE ID (64)
+                Criticality
+                  | 01.. .... | Ignore (1)
+                Temporary UE ID Value : 
+                  | .000 0101 | Length Determinant : 5
+                  Value : 
+                    | 0... .... | Ext bit : 0
+                    | .1.. .... | Choice index : 1
+                      P-TMSI
+                        0xc322de30
+              IE : 4
+                Protocol IE ID : Paging Cause (22)</responseBody>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="pattern2">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>IE :\\s+1+\\s+Protocol IE ID :\\s+</regex>
+                            <start>0</start>
+                            <end>40</end>
+                        </item>
+                        <item name="Protocol_IE_ID">
+                            <regex>[^0-9\\r\\n]+</regex>
+                            <named>true</named>
+                            <start>40</start>
+                            <end>59</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name=".{19}">exactly 19 of any character</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+\\(</regex>
+                            <start>59</start>
+                            <end>61</end>
+                        </item>
+                        <item name="Protocol_IE_ID_value">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>61</start>
+                            <end>62</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>\\)</regex>
+                            <start>62</start>
+                            <end>63</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>IE : 1
+                Protocol IE ID : CN Domain Indicator (3)</sampleMatch>
+                    <optional>true</optional>
+                </item>
+                <item name="pattern1">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>\\|\\s+\\d+\\.\\.\\. \\.\\.\\.\\. \\|\\s+</regex>
+                            <start>0</start>
+                            <end>14</end>
+                        </item>
+                        <item name="domain">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>14</start>
+                            <end>23</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+\\(</regex>
+                            <start>23</start>
+                            <end>25</end>
+                        </item>
+                        <item name="domain_value">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>25</start>
+                            <end>26</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>\\)\\s+IE :\\s+\\d+</regex>
+                            <start>26</start>
+                            <end>48</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>| 1... .... | ps-domain (1)
+              IE : 2</sampleMatch>
+                    <optional>true</optional>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+</ResponseMap>

@@ -1,0 +1,104 @@
+<?xml version="1.0"?>
+<testCase version="6.0.0.18638fa">
+    <general>
+        <owner>remch</owner>
+    </general>
+    <execution>
+        <parameters version="6.0.0.18638fa">
+            <parameters escape="true">
+                <parameters xmlns:pt="http://www.fnfr.com/schemas/parameterTree">
+                    <Var>5</Var>
+                </parameters>
+            </parameters>
+        </parameters>
+    </execution>
+    <procedures>
+        <item name="main">
+            <steps>
+                <item guid="c20f1f97-ba31-401d-bb80-d948fc0e7a3e" action="comment">
+                    <command>
+                        <body>entry point for test case</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="fca1b127-de1e-4666-a639-647fe929d3c5" action="call">
+                            <command>
+                                <body>createNonVelocityTopology -topologyFile project://t_velocityTopologies/topologies/Testing/home_network.tbml</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <arguments>
+                <item name="myVar">
+                    <defaultValue>[param Var]</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="createNonVelocityTopology" isVBlock="true">
+            <steps>
+                <item guid="5183106f-81f4-4634-88f4-c5c0e08d9a01" action="if">
+                    <command>
+                        <body>$iTestTopologyFile eq &quot;&quot;</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="16f0175a-e510-407b-bd73-72292b098d50" action="then">
+                            <nestedSteps>
+                                <item guid="60a3c099-3918-42ac-a0a6-67ca63c59fda" action="eval">
+                                    <command>
+                                        <body>set iTestTopologyFile [string map {&quot;.tbml&quot; &quot;_iTest.tbml&quot;} $topologyFile]</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="51cbd39c-4a7c-4a9c-b302-4d5458544ce2" action="readFile">
+                    <command>
+                        <body>$topologyFile</body>
+                    </command>
+                    <postProcessing>
+                        <storeResponseText>true</storeResponseText>
+                        <responseFile inherit="false" sub="true">$iTestTopologyFile</responseFile>
+                        <appendCommand inherit="false">false</appendCommand>
+                        <appendTimestamp inherit="false">false</appendTimestamp>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.execution.builtin.exec.ReadFilePropertyGroup"/>
+                    <responseFilterList inherit="false">
+                        <item name="Remove_rmGuid" filterAction="EXC_LINES_MATCHING">
+                            <pattern>*&lt;property name=&quot;rmGuid&quot;&gt;*</pattern>
+                        </item>
+                    </responseFilterList>
+                </item>
+            </steps>
+            <author>remch</author>
+            <version>1.0</version>
+            <multilineDescription>For the given topology file, remove the Velocity information and create a file that works with iTest outside of Velocity. If an iTest topology file name is passed, iTest will write to this file path. Otherwise, iTest will append an _iTest to the topology file name.
+
+Return Value: Block
+
+success: 1=success; 0=failure</multilineDescription>
+            <arguments>
+                <item name="topologyFile">
+                    <description>The path of the topology file to be converted from Velocity to iTest-Only</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="iTestTopologyFile">
+                    <description>If passed, iTest will write to this file. Otherwise, iTest will append an _iTest to the topology file name.</description>
+                </item>
+            </arguments>
+            <response>{&quot;success&quot;:&quot;0&quot;}</response>
+        </item>
+    </procedures>
+    <qualityCenterTestInfo storeTestLocation="true"/>
+</testCase>

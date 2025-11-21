@@ -1,0 +1,2347 @@
+<?xml version="1.0"?>
+<testCase version="7.1.0.201804110601">
+    <general>
+        <sessionClass includeTestCase="true" sessionType="project://di_Cisco_NCS5k/session_profiles/cisco_NCS5k_ssh.ffsp"/>
+    </general>
+    <procedures>
+        <item name="main">
+            <steps>
+                <item guid="d48422d4-004d-4a17-a181-14c85a702d99" action="comment">
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+        </item>
+        <item name="backup_configuration" isPublic="true">
+            <steps>
+                <item guid="0d2c36b8-b7cd-4aee-97e9-5034177faf37" action="comment">
+                    <command>
+                        <body>Initialize return code</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="none">
+                                    <extractorProperties type="com.fnfr.svt.documents.EmptyExtractorPropertyGroup"/>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>1</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="Eval">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                    <statement>set retCode &quot;TRUE&quot;</statement>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenTrue>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="5f6c0a38-aeaa-4472-a5be-c26eea6885f5" action="comment">
+                    <command>
+                        <body>Enter privileged mode</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="cd72a78d-c881-4385-8883-ae896034d09f" action="command" session="$session">
+                            <command>
+                                <body>end</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="e80d0e73-2185-49dd-9f2b-d4ddaed87067" action="comment">
+                    <command>
+                        <body>Execute the command</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="ced78df0-3834-495d-95c5-98bbd22a0613" action="command" session="$session">
+                            <command>
+                                <body>copy running-config disk0:</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                        </item>
+                        <item guid="dab9b95e-a81f-41df-9cd3-362aaa57d86f" action="command" session="$session">
+                            <command>
+                                <body>$backup_config_file</body>
+                            </command>
+                            <postProcessing>
+                                <analysisRules>
+                                    <item>
+                                        <extractorInfo extractorType="query">
+                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                <query>promptName()</query>
+                                            </extractorProperties>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="assert">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                <expression>$value eq &quot;confirm_overwrite&quot;</expression>
+                                                <actionsWhenTrue>
+                                                    <item actionId="Eval">
+                                                        <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                            <statement>set need_confirmation yes</statement>
+                                                        </actionProperties>
+                                                    </item>
+                                                </actionsWhenTrue>
+                                                <actionsWhenFalse>
+                                                    <item actionId="Eval">
+                                                        <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                            <statement>set need_confirmation no</statement>
+                                                        </actionProperties>
+                                                    </item>
+                                                </actionsWhenFalse>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                </analysisRules>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                        </item>
+                        <item guid="983e8f24-f53c-4cd4-9f85-adbcbf12a2b5" action="if">
+                            <command>
+                                <body>$need_confirmation eq &quot;yes&quot;</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="7af54ebd-5c50-4ef5-a70c-b07a7231815f" action="then">
+                                    <nestedSteps>
+                                        <item guid="60bd3623-f452-41aa-976b-5e050e534a39" action="command" session="$session">
+                                            <command>
+                                                <body>y</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                            <advancedProperties defaultSessionProfile="application:com.fnfr.svt.applications.telnet"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="7930a413-2140-402e-90e8-f74db0c322a8" action="comment">
+                    <command>
+                        <body>Exit</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="41be7c88-1406-40cf-96e3-8418a9986dfb" action="command" session="$session">
+                            <command>
+                                <body>end</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="d75c5cb2-31ba-437b-ba3f-99ae2e826d16" action="comment">
+                    <command>
+                        <body>Return success code</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="0fe4160f-ce91-4553-a13f-d8953b35afa2" action="return">
+                            <command>
+                                <body>retCode: $retCode</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <arguments>
+                <item name="backup_config_file">
+                    <description>Backup configuration file name.</description>
+                    <defaultValue>Backup_mm_dd_yy.cfg</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="restore_configuration" isPublic="true">
+            <steps>
+                <item guid="99426c8b-d56b-48a6-9216-02aab7c1b1d8" action="comment">
+                    <command>
+                        <body>Initialize return code</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="none">
+                                    <extractorProperties type="com.fnfr.svt.documents.EmptyExtractorPropertyGroup"/>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>1</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="Eval">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                    <statement>set retCode &quot;TRUE&quot;</statement>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenTrue>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="918131a4-d67f-47ea-9b57-301eb00a55e1" action="comment">
+                    <command>
+                        <body>Enter privileged mode</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="083c3a97-44d5-4031-bc0a-faa03f5ea03c" action="command" session="$session">
+                            <command>
+                                <body>end</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="cbf67b33-7da4-4c73-bc58-31091b226281" action="comment">
+                    <command>
+                        <body>Execute the command</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="9d3154e2-b8b4-4e43-92c0-a199fb1ff128" action="command" session="$session">
+                            <command>
+                                <body>configure terminal</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                        </item>
+                        <item guid="0587130a-a636-4616-8452-e0adcf7b35ae" action="command" session="$session">
+                            <command>
+                                <body>load disk0:/$backup_config_file</body>
+                            </command>
+                            <postProcessing>
+                                <analysisRules>
+                                    <item>
+                                        <extractorInfo extractorType="query">
+                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                <query>promptName()</query>
+                                            </extractorProperties>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="assert">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                <expression>$value eq &quot;confirm_overwrite&quot;</expression>
+                                                <actionsWhenTrue>
+                                                    <item actionId="Eval">
+                                                        <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                            <statement>set need_confirmation yes</statement>
+                                                        </actionProperties>
+                                                    </item>
+                                                </actionsWhenTrue>
+                                                <actionsWhenFalse>
+                                                    <item actionId="Eval">
+                                                        <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                            <statement>set need_confirmation no</statement>
+                                                        </actionProperties>
+                                                    </item>
+                                                </actionsWhenFalse>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                </analysisRules>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                        </item>
+                        <item guid="b3898e8e-506e-49e4-a560-3b2f465b5686" action="if">
+                            <command>
+                                <body>$need_confirmation eq &quot;yes&quot;</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="ae40ab2d-f627-49bc-bd9d-5d5bd0415997" action="then">
+                                    <nestedSteps>
+                                        <item guid="0d376555-57f6-443a-8fd3-4679427561db" action="command" session="$session">
+                                            <command>
+                                                <body>y</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                            <advancedProperties defaultSessionProfile="application:com.fnfr.svt.applications.telnet"/>
+                        </item>
+                        <item guid="a50abd66-609e-4242-b964-2b7e980dfedc" action="command" session="$session">
+                            <command>
+                                <body>commit</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                            <advancedProperties defaultSessionProfile="application:com.fnfr.svt.applications.telnet"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="6dcd1735-95df-4808-bc75-b4a0ee71c036" action="comment">
+                    <command>
+                        <body>Exit</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="dabf9869-13a1-4cba-9872-aacd58aa8f7e" action="command" session="$session">
+                            <command>
+                                <body>end</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="a06209f5-7ff7-409c-b958-085d0cd7f968" action="comment">
+                    <command>
+                        <body>Return success code</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="c4c71e35-450e-42a8-a7c9-a8b08bd4ac27" action="return">
+                            <command>
+                                <body>retCode: $retCode</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <arguments>
+                <item name="backup_config_file">
+                    <description>Backup configuration file name.</description>
+                    <defaultValue>Backup_mm_dd_yy.cfg</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="restart_bgp_process" isPublic="true" isVBlock="true">
+            <steps>
+                <item guid="d521457c-d87e-4062-a0e3-662dd917cc03" action="comment">
+                    <command>
+                        <body>Initialize return code</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="none">
+                                    <extractorProperties type="com.fnfr.svt.documents.EmptyExtractorPropertyGroup"/>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>1</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="Eval">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                    <statement>set retCode &quot;TRUE&quot;</statement>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenTrue>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="20ee71b0-bbd4-4db6-8793-9586203d89ad" action="comment">
+                    <command>
+                        <body>Issue command</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="7ee35917-201e-4bfa-8ed8-e43bcf0f7c3a" action="command" session="$session">
+                            <command>
+                                <body>end</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                        </item>
+                        <item guid="194b0bc1-3707-440d-9e25-23dc8b106a95" action="command" session="$session">
+                            <command>
+                                <body>show processes | in bgp</body>
+                            </command>
+                            <postProcessing>
+                                <analysisRules>
+                                    <item>
+                                        <extractorInfo extractorType="query">
+                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                <query>pid_bgp_policy_reg()</query>
+                                            </extractorProperties>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="store">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                <storageLocation>pid_bgp_policy_reg</storageLocation>
+                                                <query>pid_bgp_policy_reg</query>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                    <item>
+                                        <extractorInfo extractorType="query">
+                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                <query>pid_bgp_epe()</query>
+                                            </extractorProperties>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="store">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                <storageLocation>pid_bgp_epe</storageLocation>
+                                                <query>pid_bgp_epe</query>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                    <item>
+                                        <extractorInfo extractorType="query">
+                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                <query>pid_bgp()</query>
+                                            </extractorProperties>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="store">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                                <storageLocation>pid_bgp</storageLocation>
+                                                <query>pid_bgp</query>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                </analysisRules>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                        </item>
+                        <item guid="0d0230f6-039b-4e4c-873f-c7e2ab04f42d" action="command" session="$session">
+                            <command>
+                                <body>process restart $pid_bgp_policy_reg</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                        </item>
+                        <item guid="b00f60a9-7def-4749-83e5-7763b4d8d4d1" action="command" session="$session">
+                            <command>
+                                <body>process restart $pid_bgp_epe</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                        </item>
+                        <item guid="44bd7115-729d-4dd4-a71f-5e152b8b2446" action="command" session="$session">
+                            <command>
+                                <body>process restart $pid_bgp</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <author>Cosmin Stanuica</author>
+            <arguments>
+                <item name="as_number">
+                    <description>BGP local AS number</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+            <response>{&quot;pid_bgp_policy_reg&quot;:&quot;-1&quot;,&quot;pid_bgp_epe&quot;:&quot;-1&quot;,&quot;pid_bgp&quot;:&quot;-1&quot;}</response>
+        </item>
+        <item name="show_install" isPublic="true">
+            <description>Install Manager information</description>
+            <steps>
+                <item guid="eb6e7642-85e8-4cdb-9448-c7bbb045acab" action="command" session="$session">
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="0f80b9fe-a7a9-40ef-be19-2490725cf5c7" action="eval">
+                    <command>
+                        <body>set cli_cmd &quot;show install&quot;</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="edbd7d19-4fff-41eb-9111-f1c28d233951" action="if">
+                    <command>
+                        <body>$active != &quot;null&quot;</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="73bd8452-409c-4acb-9bc8-0952dd8e7a78" action="then">
+                            <nestedSteps>
+                                <item guid="12f1a7ff-5d12-4543-823a-58bbcf0200e3" action="eval">
+                                    <command>
+                                        <body>set cli_cmd [concat $cli_cmd active]</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="85e01b07-2cd5-462b-986a-02a39acf16b2" action="if">
+                    <command>
+                        <body>$commited != &quot;null&quot;</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="bb2e1161-a4f4-47c4-81fc-633dca9418f8" action="then">
+                            <nestedSteps>
+                                <item guid="85fba1fc-e1a1-4e73-a370-1214163344e3" action="eval">
+                                    <command>
+                                        <body>set cli_cmd [concat $cli_cmd comm]</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="15b054d1-4e69-47e4-b07f-31805b8a0dca" action="if">
+                    <command>
+                        <body>$rollback != &quot;null&quot;</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="6875f7da-8e97-451d-8f9c-7e184c85e6fa" action="then">
+                            <nestedSteps>
+                                <item guid="3e251edc-1833-47ad-ba43-582c6a44a3a0" action="eval">
+                                    <command>
+                                        <body>set cli_cmd &quot;admin show install rollback &quot;</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="124cd102-4e54-47d5-8688-aab6643830c8" action="comment">
+                    <command>
+                        <body>Issue command</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="f6f925a3-0463-428d-bf0e-b4ac440761d5" action="command" session="$session">
+                            <command>
+                                <body>$cli_cmd</body>
+                            </command>
+                            <postProcessing>
+                                <storeResponseAt>command_output</storeResponseAt>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="5f2f0b7d-1b23-4b84-aa71-c3e93bb46d4e" action="comment">
+                    <command>
+                        <body>Return result</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="a90b0f01-b2a9-4bb6-bc0a-7d5298b013ea" action="return">
+                            <command>
+                                <body>[response command_output]</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <multilineDescription>This procedure is extracting information about the current IOS version present on the DUT</multilineDescription>
+            <arguments>
+                <item name="active">
+                    <description>Values:
+- null - default, parameter is not used in execution
+- yes - parameter will be used in execution
+
+Shows the active package information</description>
+                    <defaultValue>null</defaultValue>
+                </item>
+                <item name="rollback">
+                    <defaultValue>null</defaultValue>
+                </item>
+                <item name="commited">
+                    <description>Values:
+- null - default, parameter is not used in execution
+- yes - parameter will be used in execution</description>
+                    <defaultValue>null</defaultValue>
+                </item>
+                <item name="summary">
+                    <description>Values:
+- null - default, parameter is not used in execution
+- yes - parameter will be used in execution
+
+Shows summary information about the IOS version</description>
+                    <defaultValue>null</defaultValue>
+                </item>
+                <item name="option">
+                    <description>Use with active parameter
+Example:
+detail    Show information about constituent packages
+location  Show active packages on a node
+summary   Show summary information
+verbose   Show summary, component and file information for each package</description>
+                    <defaultValue>null</defaultValue>
+                </item>
+            </arguments>
+        </item>
+        <item name="get_xml_op" isPublic="true">
+            <steps>
+                <item guid="a86aa6f7-5ae2-400c-a88b-b6db42508668" action="command" session="$session">
+                    <command>
+                        <body>xml echo format</body>
+                    </command>
+                    <postProcessing>
+                        <storeResponseAt>command_output</storeResponseAt>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                    <performResponseMapping>false</performResponseMapping>
+                </item>
+                <item guid="1ec3d463-48e6-472e-a9ae-b90ddb6972b9" action="command" session="$session" estimatedStepExecutionTime="200" timeout="200" useProcTimeout="false">
+                    <command>
+                        <body>$query</body>
+                    </command>
+                    <postProcessing>
+                        <storeResponseAt>command_output</storeResponseAt>
+                    </postProcessing>
+                    <eventHandlers>
+                        <item name="OnStepTimeout"/>
+                    </eventHandlers>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                        <promptProperties>
+                            <alsoUseSessionPrompts inherit="false" defaultValue=""/>
+                        </promptProperties>
+                        <completionProperties>
+                            <idleChannel inherit="false" sub="true">20000</idleChannel>
+                            <completeWhen inherit="false">IDLE</completeWhen>
+                        </completionProperties>
+                    </applicationProperties>
+                </item>
+                <item guid="4dbbe2c8-8bdc-4333-a8e6-66ce969c34f2" action="command" session="$session">
+                    <command>
+                        <body>exit</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="2a08625d-9df0-4ae3-a69c-5f822aa59685" action="return" estimatedStepExecutionTime="100" timeout="100">
+                    <command>
+                        <body>[response command_output]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <arguments>
+                <item name="query">
+                    <description>pass hte xml query
+</description>
+                    <defaultValue>null</defaultValue>
+                </item>
+            </arguments>
+            <response>{&quot;apply-group_backbone_interface_configured&quot;:&quot;value&quot;,&quot;shut&quot;:&quot;value&quot;,&quot;apply-group_list&quot;:[&quot;value1&quot;]}</response>
+        </item>
+        <item name="show_version" isPublic="true">
+            <steps>
+                <item guid="7a13b3c3-e122-44cf-b831-1a5feeb98744" action="command" session="$session">
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="27ac5af5-e170-400a-9a49-e4190f65f9ba" action="command" session="$session">
+                    <command>
+                        <body>[char Ctrl-Z]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="0220d01e-4cf4-4df2-ad41-c600fb7b4e86" action="eval">
+                    <command>
+                        <body>set cli_cmd &quot;show version&quot;</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="95501001-d36d-44a3-9ff0-0c0b1889276a" action="if">
+                    <command>
+                        <body>($extra_arg != &quot;null&quot;)&amp;&amp;($extra_arg != &quot;brief&quot;)</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="94fda2df-397f-409b-9da4-86daaf2f05fc" action="then">
+                            <nestedSteps>
+                                <item guid="c5436df2-f4e0-44a2-844f-f9002cd13324" action="eval">
+                                    <command>
+                                        <body>set cli_cmd [concat $cli_cmd $extra_arg]</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="af941dcc-bb5c-454c-9988-baaf82584879" action="command" session="$session">
+                    <command>
+                        <body>$cli_cmd</body>
+                    </command>
+                    <postProcessing>
+                        <storeResponseAt>version</storeResponseAt>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                        <completionProperties>
+                            <idleChannel inherit="false">500</idleChannel>
+                        </completionProperties>
+                    </applicationProperties>
+                </item>
+                <item guid="d96f5ae4-533c-4c7d-a5e1-c561b432f49b" action="return">
+                    <command>
+                        <body>[response version]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <multilineDescription>Get router show version</multilineDescription>
+            <arguments>
+                <item name="extra_arg">
+                    <description>- Can be:
+brief
+| incl  &quot;something&quot;</description>
+                    <defaultValue>null</defaultValue>
+                </item>
+            </arguments>
+        </item>
+        <item name="clear_drop" isPublic="true">
+            <steps>
+                <item guid="f0fb5c4f-d4e7-44ce-8db0-c0eda231a64b" action="comment">
+                    <command>
+                        <body>Initialize variables</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="6c64d4e5-2b35-44e4-9414-22fbc99dcec5" action="eval">
+                            <command>
+                                <body>set retCode TRUE</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="e1b1351d-2ed7-4d2a-8449-fc0e08d1f897" action="comment">
+                    <command>
+                        <body>Create command</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="a6a408cb-15fe-42b9-a362-a235f013db96" action="eval">
+                            <command>
+                                <body>set cli_command &quot;clear counters&quot;</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="8d7907c7-387d-4675-8263-f96a86f1f7ef" action="if">
+                            <command>
+                                <body>$drop_option == &quot;np&quot;</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="c2cc2ee5-ef5d-4767-b41b-d7b866e94a4d" action="then">
+                                    <nestedSteps>
+                                        <item guid="9f589909-17ac-4036-ae35-00f2b67f40a9" action="eval">
+                                            <command>
+                                                <body>set cli_command &quot;$cli_command&quot;</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                        <item guid="decb5149-5ddf-4359-a541-4d7b03b967ed" action="if">
+                                            <command>
+                                                <body>$np_option != &quot;null&quot;</body>
+                                            </command>
+                                            <nestedSteps>
+                                                <item guid="af3450e0-29e0-44d5-8b6e-47c7c3942ad6" action="then">
+                                                    <nestedSteps>
+                                                        <item guid="f001ab1c-ead4-4217-bfcd-7111aa9d9d90" action="eval">
+                                                            <command>
+                                                                <body>set cli_command &quot;$cli_command $np_option&quot;</body>
+                                                            </command>
+                                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                                        </item>
+                                                    </nestedSteps>
+                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                </item>
+                                            </nestedSteps>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="95bb75d0-5fb4-41da-b184-e651942a3e01" action="comment">
+                    <command>
+                        <body>Issue command</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="ec99693a-f16c-4228-99c6-6e097f2476e0" action="command" session="$session">
+                            <command>
+                                <body>$cli_command</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                        </item>
+                        <item guid="9c5735dc-870b-4008-a9bd-a8364121046e" action="command" session="$session">
+                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                        </item>
+                        <item guid="19c23501-152f-43e1-99a4-eae1f65a19fb" action="command" session="$session">
+                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="f3f55961-5e98-4f2d-bd59-f14fbc6b0571" action="comment">
+                    <command>
+                        <body>Return result</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="18fcf252-b3f9-49a9-8e96-5602a02471e0" action="return">
+                            <command>
+                                <body>retCode: $retCode</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <arguments>
+                <item name="drop_option">
+                    <description>np</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="np_option">
+                    <description>Use this in conjunction with drop_option = np
+
+all</description>
+                </item>
+            </arguments>
+        </item>
+        <item name="clear_line" isPublic="true">
+            <steps>
+                <item guid="4a40393a-6fe6-4463-9913-1c7508812de7" action="eval">
+                    <command>
+                        <body>set cli_command &quot;clear line vty&quot;</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="b6ebe565-4f2c-40ab-9d55-07c714858a4e" action="if">
+                    <command>
+                        <body>$vty_line_num != &quot;null&quot;</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="b8950556-5952-4a62-9ae5-c577bf190d6b" action="then">
+                            <nestedSteps>
+                                <item guid="fae74072-742d-4c2b-be5a-6fbec06e80d9" action="eval">
+                                    <command>
+                                        <body>set cli_command &quot;$cli_command $vty_line_num&quot;</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="ca8b9bf4-811d-44cd-a15c-ba18737dccb4" action="command" session="$session">
+                    <command>
+                        <body>$cli_command</body>
+                    </command>
+                    <postProcessing>
+                        <storeResponseAt>command_output</storeResponseAt>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                        <lineTerminator inherit="false">SLASH_R_SLASH_N</lineTerminator>
+                        <completionProperties>
+                            <idleChannel inherit="false">500</idleChannel>
+                            <promptExtraction inherit="false">LAST_NONEMPTY_LINE</promptExtraction>
+                            <completionTime inherit="false">3</completionTime>
+                        </completionProperties>
+                    </applicationProperties>
+                </item>
+                <item guid="5dda7f7d-09ea-4b2d-aa37-07bcd913f139" action="command" session="$session" skip="true">
+                    <postProcessing>
+                        <storeResponseAt>command_output</storeResponseAt>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                        <lineTerminator inherit="false">SLASH_R_SLASH_N</lineTerminator>
+                        <completionProperties>
+                            <idleChannel inherit="false">500</idleChannel>
+                            <promptExtraction inherit="false" defaultValue=""/>
+                            <completionTime inherit="false">3</completionTime>
+                        </completionProperties>
+                    </applicationProperties>
+                </item>
+                <item guid="6ec28046-ee5b-4bfe-be0a-1527f875f73b" action="return">
+                    <command>
+                        <body>[response command_output]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <author>Tiberiu Carpenco</author>
+            <multilineDescription>Use this command do to a standard &quot;show run&quot; or use $output_modifier to add the &quot;|&quot; character and modify the output.
+</multilineDescription>
+            <arguments>
+                <item name="vty_line_num">
+                    <defaultValue>null</defaultValue>
+                </item>
+            </arguments>
+        </item>
+        <item name="show_controllers" isPublic="true">
+            <steps>
+                <item guid="ccd049fd-8f2d-4c4e-84c0-ab514788f033" action="eval">
+                    <command>
+                        <body>set cli_cmd &quot;show controller&quot;</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="645fbd09-4238-4490-9b24-085118f4389b" action="if">
+                    <command>
+                        <body>($interface != &quot;null&quot;) &amp;&amp; ($wanphy == &quot;null&quot;)</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="664972db-1754-4961-9bd0-dddacd9ef160" action="then">
+                            <nestedSteps>
+                                <item guid="35d92f9c-57d2-4159-a3cc-bfa06dee9db3" action="eval">
+                                    <command>
+                                        <body>set cli_cmd &quot;$cli_cmd $interface&quot;</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="0d71ab38-1116-4e57-83c7-81abd92477aa" action="if">
+                    <command>
+                        <body>$int_option != &quot;null&quot;</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="10ff0107-68b6-4e7c-a92e-5df55c72971d" action="then">
+                            <nestedSteps>
+                                <item guid="01d9267b-204b-4453-b076-145ddaa1e16b" action="if">
+                                    <command>
+                                        <body>$int_option == &quot;phy&quot;</body>
+                                    </command>
+                                    <nestedSteps>
+                                        <item guid="ef59cb21-a311-4af6-a918-7d5027f69008" action="then">
+                                            <nestedSteps>
+                                                <item guid="bc548311-3c83-4f51-bb1b-537a6e689c53" action="eval">
+                                                    <command>
+                                                        <body>set int_option all</body>
+                                                    </command>
+                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                </item>
+                                            </nestedSteps>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="6d2beef9-fe19-401c-acd1-ea7951ff65a8" action="eval">
+                                    <command>
+                                        <body>set cli_cmd &quot;$cli_cmd $int_option&quot;</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="66088754-ff26-4f2b-ba61-d32ad24b6e53" action="if">
+                    <command>
+                        <body>$port_map_np != &quot;null&quot;</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="22144748-9421-4ad5-8d1c-06a907460eeb" action="then">
+                            <nestedSteps>
+                                <item guid="eb60f856-faea-4d4f-8dbb-a10b2b6be495" action="if">
+                                    <command>
+                                        <body>$location !=  &quot;null&quot;</body>
+                                    </command>
+                                    <nestedSteps>
+                                        <item guid="b350e25e-32e1-463c-9c52-978f8d0089b5" action="then">
+                                            <nestedSteps>
+                                                <item guid="3b3e2fbe-bc6d-4430-ba7d-53426099e5e8" action="eval">
+                                                    <command>
+                                                        <body>set cli_cmd &quot;$cli_cmd np portmap $port_map_np location $location &quot;</body>
+                                                    </command>
+                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                </item>
+                                            </nestedSteps>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                        <item guid="d52aa738-4f33-4016-9207-92fc58af9ff5" action="else">
+                                            <nestedSteps>
+                                                <item guid="fda956db-b201-4caa-ac29-c23a5e51ebb5" action="comment">
+                                                    <command>
+                                                        <body>Insert steps here for when the expression evaluates to false</body>
+                                                    </command>
+                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                </item>
+                                                <item guid="0f2e5066-b17f-49ab-9555-3769aa182def" action="eval">
+                                                    <command>
+                                                        <body>set cli_cmd &quot;$cli_cmd np portmap $port_map_np  &quot;</body>
+                                                    </command>
+                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                </item>
+                                            </nestedSteps>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="f92220f7-1f51-4bb2-ae8e-95be3ea90e9d" action="if">
+                    <command>
+                        <body>$np_logical_chnl_loc != &quot;null&quot;</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="6dd76a9e-ff5b-4fd5-aa3b-25ca7fb18c73" action="then">
+                            <nestedSteps>
+                                <item guid="7413c81f-9d4e-498a-ae74-4daa2f893d78" action="eval">
+                                    <command>
+                                        <body>set cli_cmd &quot;$cli_cmd np chn-load-counter all all location $np_logical_chnl_loc &quot;</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="9b5a20b0-79f3-48a6-a74c-c52c91f036fe" action="if">
+                    <command>
+                        <body>$ports_np  != &quot;null&quot;</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="2655469c-17ad-44ba-9ee7-0433232349ce" action="then">
+                            <nestedSteps>
+                                <item guid="09ae28ab-576f-4be9-a67a-abb19083be1b" action="if">
+                                    <command>
+                                        <body>$location !=  &quot;null&quot;</body>
+                                    </command>
+                                    <nestedSteps>
+                                        <item guid="58b5e215-b569-4473-9cd8-0fd672d80fb7" action="then">
+                                            <nestedSteps>
+                                                <item guid="83a6b34f-d125-4996-a210-cbfdfacbdc6e" action="eval">
+                                                    <command>
+                                                        <body>set cli_cmd &quot;$cli_cmd  np ports $ports_np  location $location &quot;</body>
+                                                    </command>
+                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                </item>
+                                            </nestedSteps>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                        <item guid="ff021508-91b1-49df-a2ce-ef579a40f72f" action="else">
+                                            <nestedSteps>
+                                                <item guid="0689fef9-648f-48bd-aecf-1ab6af4e5bb9" action="comment">
+                                                    <command>
+                                                        <body>Insert steps here for when the expression evaluates to false</body>
+                                                    </command>
+                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                </item>
+                                                <item guid="1b05af23-2225-424a-afea-246e48492747" action="eval">
+                                                    <command>
+                                                        <body>set cli_cmd &quot;$cli_cmd np portmap $port_map_np  &quot;</body>
+                                                    </command>
+                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                </item>
+                                            </nestedSteps>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="0c0c4e08-a3f5-4647-b93c-dad0b7c530cb" action="if">
+                    <command>
+                        <body>$fabric_plane != &quot;null&quot;</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="a4abb689-6b0b-4a20-b4ee-c7c6238c9e30" action="then">
+                            <nestedSteps>
+                                <item guid="7ab25c17-3ceb-424e-9705-955bdc9e92ea" action="eval">
+                                    <command>
+                                        <body>set cli_cmd &quot;$cli_cmd  fabric plane $fabric_plane&quot;</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="66ea77cb-61e0-4a89-bdae-1e87f77639d3" action="if">
+                    <command>
+                        <body>$fia_q_depth_loc!= &quot;null&quot;</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="2f3c5c1c-7b29-4d24-b639-8484d1846075" action="then">
+                            <nestedSteps>
+                                <item guid="917ec785-d3a4-4160-8c8f-6299d02652ff" action="eval">
+                                    <command>
+                                        <body>set cli_cmd &quot;$cli_cmd fabric fia q-depth loc $fia_q_depth_loc&quot;</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="ce9ae5a7-c6c6-45d2-a216-d9557ebed7e9" action="if">
+                    <command>
+                        <body>$bw_fia_trace_loc != &quot;null&quot;</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="bd043709-d9a9-42c1-930f-26189dc7cd08" action="then">
+                            <nestedSteps>
+                                <item guid="27f97896-49a4-4774-bdcf-8ca4d154d6cd" action="eval">
+                                    <command>
+                                        <body>set include &quot;bw_if&quot;</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="9b6d735f-b22e-4448-9ce1-bb3f52d36e59" action="eval">
+                                    <command>
+                                        <body>set cli_cmd &quot;$cli_cmd fabric fia trace loc  $bw_fia_trace_loc  | i  $include &quot;</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="fc5d5c95-1857-4534-be06-eb902df636df" action="if">
+                    <command>
+                        <body>$config_sram_np != &quot;null&quot;</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="0cbd4613-6e64-4709-9022-42866b2a5fa5" action="then">
+                            <nestedSteps>
+                                <item guid="f6de5ad5-d9a5-42f9-90a2-923e58b2102b" action="if">
+                                    <command>
+                                        <body>$config_sram_port !=  &quot;null&quot;</body>
+                                    </command>
+                                    <nestedSteps>
+                                        <item guid="77b46225-a908-4edd-ad05-95694e6c2e13" action="then">
+                                            <nestedSteps>
+                                                <item guid="95986142-a809-4776-9a96-b3e39d69a8fe" action="eval">
+                                                    <command>
+                                                        <body>set cli_cmd &quot;$cli_cmd np configsram $config_sram_port  np$config_sram_np  location $location | in $include_filter &quot;</body>
+                                                    </command>
+                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                </item>
+                                            </nestedSteps>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                        <item guid="f4adae22-47a9-4144-b504-54f80196623a" action="else">
+                                            <nestedSteps>
+                                                <item guid="97db80ef-0b2a-471d-8bea-a05fe13b7d5b" action="comment">
+                                                    <command>
+                                                        <body>Insert steps here for when the expression evaluates to false</body>
+                                                    </command>
+                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                </item>
+                                                <item guid="6e1d2f38-f607-4cc3-a92b-16f55f2cff32" action="eval">
+                                                    <command>
+                                                        <body>set cli_cmd &quot;$cli_cmd np portmap $port_map_np  &quot;</body>
+                                                    </command>
+                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                </item>
+                                            </nestedSteps>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="c41d8dcd-ca60-4318-8ae0-2e42c0b968b1" action="if">
+                    <command>
+                        <body>$wanphy != &quot;null&quot;</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="cc994fa3-694f-431a-93f4-fa4794b21eb5" action="then">
+                            <nestedSteps>
+                                <item guid="bb444db5-4916-4da9-b761-9accb5c5ce65" action="eval">
+                                    <command>
+                                        <body>set int_id [regexp -inline -all {[\\d/]+$} $interface]</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="0b1911c5-60a5-4c54-a38f-250db2912645" action="eval">
+                                    <command>
+                                        <body>set cli_cmd &quot;$cli_cmd wanphy $int_id&quot;</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="e1c6f0b7-5150-48e6-9664-f26bdbaff654" action="if">
+                    <command>
+                        <body>$wanphy_option != &quot;null&quot;</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="50b8ee44-aff4-4bbf-97b8-dad6bcabcad7" action="then">
+                            <nestedSteps>
+                                <item guid="dc30405f-1f68-4ba7-b2ca-3f9cdb40725d" action="eval">
+                                    <command>
+                                        <body>set cli_cmd &quot;$cli_cmd $wanphy_option&quot;</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="e149d758-37b0-4914-b74a-1e9879f556b4" action="if">
+                    <command>
+                        <body>$np_loc != &quot;null&quot;</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="9ad7140f-7397-40c8-9ce5-c426644d895f" action="then">
+                            <nestedSteps>
+                                <item guid="e8a4063e-bb0c-40c7-90cb-aedac5c45a83" action="if">
+                                    <command>
+                                        <body>$np_loc != &quot;all&quot;</body>
+                                    </command>
+                                    <nestedSteps>
+                                        <item guid="71e4483f-c38d-4f37-bd17-fb42f1b28b8a" action="then">
+                                            <nestedSteps>
+                                                <item guid="367d0172-5a0f-4883-9150-973a830ddaf4" action="eval">
+                                                    <command>
+                                                        <body>set cli_cmd &quot;$cli_cmd np counters np${np_loc}&quot;</body>
+                                                    </command>
+                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                </item>
+                                            </nestedSteps>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                        <item guid="af936cbc-bc43-43fc-a4b8-ba22cd533bdb" action="else">
+                                            <nestedSteps>
+                                                <item guid="16cd03ca-b389-4cf6-9d3d-06a88dabbc51" action="comment">
+                                                    <command>
+                                                        <body>Insert steps here for when the expression evaluates to false</body>
+                                                    </command>
+                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                </item>
+                                                <item guid="f5588ce9-e9eb-4eae-8a73-de6dbae7dc88" action="eval">
+                                                    <command>
+                                                        <body>set cli_cmd &quot;$cli_cmd np counters ${np_loc}&quot;</body>
+                                                    </command>
+                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                </item>
+                                            </nestedSteps>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="3ca30ca0-afba-4d36-8c03-5566528362e5" action="if">
+                    <command>
+                        <body>$lc_loc != &quot;null&quot;</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="ad5fea1f-56ca-41ce-9ee4-e8d559c5c273" action="then">
+                            <nestedSteps>
+                                <item guid="26f6a340-5a68-4a7b-87ca-53a3ecd4b390" action="eval">
+                                    <command>
+                                        <body>set cli_cmd &quot;$cli_cmd location $lc_loc&quot;</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="2fe8928c-beb0-449d-bb7a-e93e50df4e17" action="if">
+                    <command>
+                        <body>$extra_arg != &quot;null&quot;</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="7071c6b4-744b-4ba1-93f6-00d39717db62" action="then">
+                            <nestedSteps>
+                                <item guid="f99fff67-0601-4836-9fad-5780c4c11772" action="eval">
+                                    <command>
+                                        <body>set cli_cmd &quot;$cli_cmd $extra_arg&quot;</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="8b6f9f79-3662-4014-9a0d-63ea12d525ff" action="if">
+                    <command>
+                        <body>$utility_filter != &quot;null&quot;</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="00ba5092-b6ef-4ace-b30b-bba07da6833a" action="then">
+                            <nestedSteps>
+                                <item guid="7f0d1fbf-0f19-4fe9-b8be-15d53f0d890a" action="eval">
+                                    <command>
+                                        <body>set cli_cmd &quot;$cli_cmd&quot;</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="31a412ef-7bd1-482f-b07b-55a2ebe3f929" action="if">
+                    <command>
+                        <body>$include != &quot;null&quot;</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="fc3d8a78-ec51-42dc-b1a8-59a9945cef55" action="then">
+                            <nestedSteps>
+                                <item guid="1da38270-e5eb-491a-8b74-3dd792e36fdb" action="eval">
+                                    <command>
+                                        <body>set cli_cmd &quot;$cli_cmd | i ${include}&quot;</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="ab1b37ee-d23d-44ba-8faf-3d0a503b0e15" action="comment">
+                    <command>
+                        <body>Issue command</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="f81cfb1b-e03f-4863-95d5-89875deb7ea4" action="command" session="$session">
+                            <command>
+                                <body>$cli_cmd</body>
+                            </command>
+                            <postProcessing>
+                                <storeResponseAt>command_output</storeResponseAt>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                                <completionProperties>
+                                    <idleChannel inherit="false" defaultValue=""/>
+                                    <completionTime inherit="false" defaultValue=""/>
+                                </completionProperties>
+                            </applicationProperties>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="4e0309dc-b286-4909-af92-bcfe3b857599" action="comment">
+                    <command>
+                        <body>Return result</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="5b7c90c4-7483-4c6d-b9a4-3a4ea4b51856" action="return">
+                            <command>
+                                <body>[response command_output]</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <arguments>
+                <item name="interface">
+                    <description>name of the interface
+use the formart: ten0/0/0/9, and NOT 0/0/0/9</description>
+                    <defaultValue>null</defaultValue>
+                </item>
+                <item name="include">
+                    <defaultValue>null</defaultValue>
+                </item>
+                <item name="extra_arg">
+                    <defaultValue>null</defaultValue>
+                </item>
+                <item name="np_loc">
+                    <defaultValue>null</defaultValue>
+                </item>
+                <item name="lc_loc">
+                    <defaultValue>null</defaultValue>
+                </item>
+                <item name="np_logical_chnl_loc">
+                    <defaultValue>null</defaultValue>
+                </item>
+                <item name="bw_fia_trace_loc">
+                    <description>show controller fabric fia trace loc 0/0/cpu0 | i &quot;bw_if&quot;</description>
+                    <defaultValue>null</defaultValue>
+                </item>
+                <item name="fabric_plane">
+                    <defaultValue>null</defaultValue>
+                </item>
+                <item name="config_sram_np">
+                    <description>show controllers np configSram 8 np0 location 0/0/CPU$
+
+give the np location of a particualr port to get the output 
+</description>
+                    <defaultValue>null</defaultValue>
+                </item>
+                <item name="config_sram_port">
+                    <description>show controllers np configSram 8 np0 location 0/0/CPU$
+
+to get the output of such command , 8 is the port number of a particular port 
+</description>
+                    <defaultValue>null</defaultValue>
+                </item>
+                <item name="int_option">
+                    <description>use:  
+all       Show all the information
+  bert      Show BERT status
+  control   Show configuration and control information(cisco-support)
+  internal  Show internal information
+  mac       Show mac information
+  periodic  show pm data periodically
+  phy       Show phy information
+  pm        show ethernet performance monitoring
+  regs      Show registers information
+  stats     Show stats information
+  xgxs      Show xgxs information</description>
+                    <defaultValue>null</defaultValue>
+                </item>
+                <item name="wanphy">
+                    <description>use yes</description>
+                    <defaultValue>null</defaultValue>
+                </item>
+                <item name="wanphy_option">
+                    <description>use:
+
+  alarms     Show alarm information
+  all        Show all information
+  registers  Show register information</description>
+                    <defaultValue>null</defaultValue>
+                </item>
+                <item name="fia_q_depth_loc">
+                    <description>location of linecard where you want to see the ouput of :
+show controllers fabric fia q-depth loc 0/8/cpu0
+</description>
+                    <defaultValue>null</defaultValue>
+                </item>
+                <item name="utility_filter">
+                    <description>| utility egrep WORD
+utility A set of common unix utilities
+egrep   Extended regular expression grep
+WORD    Unix commandline option string , maximum length 20</description>
+                    <defaultValue>null</defaultValue>
+                </item>
+                <item name="ports_np">
+                    <description>sh controllers np ports all location 0/8/CPU0 
+give the np for which you want to see the port map</description>
+                    <defaultValue>null</defaultValue>
+                </item>
+                <item name="port_map_np">
+                    <defaultValue>null</defaultValue>
+                </item>
+                <item name="location">
+                    <defaultValue>null</defaultValue>
+                </item>
+            </arguments>
+        </item>
+        <item name="reload_device" isPublic="true">
+            <steps>
+                <item guid="b386cdc3-a039-42be-9855-d0898916cbf6" action="comment">
+                    <command>
+                        <body>Initialize variables</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="41df6c14-2a4f-4efe-9393-fa2431a404c1" action="eval">
+                            <command>
+                                <body>set retCode TRUE</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="e0a09ff7-186e-466d-b8d2-4ef24d9b5548" action="if">
+                    <command>
+                        <body>$location ne &quot;null&quot;</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="871f37cc-4e61-4027-9f9c-f09f247b9ea5" action="then">
+                            <nestedSteps>
+                                <item guid="c6058c74-8db8-4390-851e-8274e065199c" action="command" session="$session" skip="true">
+                                    <command>
+                                        <body>admin</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                                </item>
+                                <item guid="494c4fe7-47fe-491a-b22c-d59b832367e4" action="command" session="$session">
+                                    <command>
+                                        <body>reload location $location</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                                        <completionProperties promptLearnUserResponseTime="$prompt_timeout" promptLearnUserResponseTime.inherit="false" promptLearnUserResponseTime.sub="true">
+                                            <idleChannel inherit="false" sub="true">5000</idleChannel>
+                                        </completionProperties>
+                                    </applicationProperties>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="2431b700-f121-4ea4-80dd-4fc19c932e91" action="else">
+                            <nestedSteps>
+                                <item guid="fbbc4e33-6a28-466d-b608-42e20380b7fd" action="command" session="$session">
+                                    <command>
+                                        <body>reload</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                                        <completionProperties promptLearnUserResponseTime="$prompt_timeout" promptLearnUserResponseTime.inherit="false" promptLearnUserResponseTime.sub="true">
+                                            <idleChannel inherit="false" sub="true">5000</idleChannel>
+                                        </completionProperties>
+                                    </applicationProperties>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="e51aa57f-c9f3-4045-8892-a6fbba90184d" action="command" session="$session">
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                        <completionProperties>
+                            <completeWhen inherit="false">TIMED</completeWhen>
+                            <completionTime inherit="false">5</completionTime>
+                        </completionProperties>
+                    </applicationProperties>
+                </item>
+                <item guid="c87aa166-55c6-4448-8929-3687a9f8c942" action="if">
+                    <command>
+                        <body>$wait_timer == &quot;null&quot;</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="7b4d62fd-0ef4-43a6-8c64-d3df398473cd" action="then">
+                            <nestedSteps>
+                                <item guid="09d3ebb7-b6b2-4b10-aa99-3e20e3b16513" action="sleep">
+                                    <command>
+                                        <body>200</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="eca35c3a-2eef-4ee3-949c-bbc1f2d6b5b9" action="if">
+                    <command>
+                        <body>$exit_present ne &quot;null&quot;</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="3ea01d11-58d1-4f96-b19d-e67710b2a35b" action="then">
+                            <nestedSteps>
+                                <item guid="b2545e98-a7a7-409f-9b3a-adba18e18f97" action="command" session="$session">
+                                    <command>
+                                        <body>exit</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="658b0e06-b9e0-410e-a859-98f5a2a35043" action="comment">
+                    <command>
+                        <body>Return retCode</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="dd79b1c6-46cb-482c-a0e7-df5df53efb96" action="return">
+                            <command>
+                                <body>retCode: $retCode</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <arguments>
+                <item name="prompt_timeout">
+                    <description>Primpt timeout for RSP Reload</description>
+                    <defaultValue>600</defaultValue>
+                </item>
+                <item name="exit_present">
+                    <description>values: yes</description>
+                    <defaultValue>null</defaultValue>
+                </item>
+                <item name="location">
+                    <defaultValue>null</defaultValue>
+                </item>
+                <item name="wait_timer">
+                    <description>-to skip the 200 seconds sleep, use any value to initialize this paramter </description>
+                    <defaultValue>null</defaultValue>
+                </item>
+            </arguments>
+        </item>
+        <item name="hw_module_location_reload" isPublic="true">
+            <steps>
+                <item guid="b0162082-9b06-4ad2-a76d-c5bbd80120c8" action="command" session="$session">
+                    <command>
+                        <body>reload  location $loc </body>
+                    </command>
+                    <postProcessing>
+                        <storeResponseAt>command_output</storeResponseAt>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                        <lineTerminator inherit="false">SLASH_R_SLASH_N</lineTerminator>
+                        <promptProperties>
+                            <alsoUseSessionPrompts inherit="false">false</alsoUseSessionPrompts>
+                        </promptProperties>
+                        <completionProperties>
+                            <completeWhen inherit="false">TIMED</completeWhen>
+                            <promptExtraction inherit="false">LAST_NONEMPTY_LINE</promptExtraction>
+                            <completionTime inherit="false">2</completionTime>
+                        </completionProperties>
+                    </applicationProperties>
+                </item>
+                <item guid="ffc4bcb9-ec3b-4eff-82c5-ac3fb8cb7d56" action="command" session="$session">
+                    <command>
+                        <body>y</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="87b7f7b6-6254-4928-8be1-c6934eca6c3a" action="return">
+                    <command>
+                        <body>[response command_output]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <arguments>
+                <item name="loc">
+                    <defaultValue>null</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="admin_reload_interactive_cli" isPublic="true">
+            <steps>
+                <item guid="3572ae44-b03b-4f25-9da9-37ea56e97769" action="eval">
+                    <command>
+                        <body>set cli_command &quot;reload location $loc&quot;</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="b7cdfa69-14a4-4b6c-86cb-835829eb6bbb" action="command" session="$session" normalOffset="2" acceleratedOffset="2" estimatedStepExecutionTime="10">
+                    <command>
+                        <body>$cli_command</body>
+                    </command>
+                    <postProcessing>
+                        <storeResponseAt>command_output</storeResponseAt>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                        <lineTerminator inherit="false">SLASH_R_SLASH_N</lineTerminator>
+                        <completionProperties>
+                            <completeWhen inherit="false">TIMED</completeWhen>
+                            <promptExtraction inherit="false">LAST_NONEMPTY_LINE</promptExtraction>
+                            <completionTime inherit="false" sub="true">20</completionTime>
+                        </completionProperties>
+                    </applicationProperties>
+                </item>
+                <item guid="905d65b6-9f5c-4a53-91b4-ac04a8bcf2f5" action="sleep">
+                    <command>
+                        <body>10</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="ce4ff8f6-21ea-40c8-ab10-80f56377dff4" action="command" session="$session" normalOffset="2" acceleratedOffset="2" estimatedStepExecutionTime="5">
+                    <command>
+                        <body>y</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                        <lineTerminator inherit="false">SLASH_R_SLASH_N</lineTerminator>
+                        <completionProperties>
+                            <completeWhen inherit="false">TIMED</completeWhen>
+                            <promptExtraction inherit="false">LAST_NONEMPTY_LINE</promptExtraction>
+                            <completionTime inherit="false" sub="true">10</completionTime>
+                        </completionProperties>
+                    </applicationProperties>
+                </item>
+                <item guid="4cae6c50-12c7-450a-a991-66e6fdab2d93" action="return">
+                    <command>
+                        <body>[response command_output]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <author>Tiberiu Carpenco</author>
+            <multilineDescription>Use this command do to a standard &quot;show run&quot; or use $output_modifier to add the &quot;|&quot; character and modify the output.
+</multilineDescription>
+            <arguments>
+                <item name="loc">
+                    <defaultValue>null</defaultValue>
+                </item>
+            </arguments>
+        </item>
+        <item name="config_hw_module" isPublic="true">
+            <steps>
+                <item guid="203ca9ef-fd20-46af-bbf1-1f3208084d5b" action="comment">
+                    <command>
+                        <body>Initialization</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="none">
+                                    <extractorProperties type="com.fnfr.svt.documents.EmptyExtractorPropertyGroup"/>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>1</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="Eval">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                    <statement>set retCode &quot;TRUE&quot;</statement>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenTrue>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="9e7e3d45-854f-4e01-a198-d8abeab20534" action="comment">
+                    <command>
+                        <body>Enter group configuration mode and configure interface parameters</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="59b69b38-569a-40b2-a51b-fd30146dfef7" action="command" session="$session">
+                            <command>
+                                <body>config terminal</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                        </item>
+                        <item guid="062d8b36-f70e-4f96-ae41-0002178941ff" action="eval">
+                            <command>
+                                <body>set cli_cmd &quot;controller&quot;</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="a4c68dc9-6248-4fd8-8c43-cbc795fac3ee" action="if" skip="true">
+                            <command>
+                                <body>!$in_context</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="3cbb8637-209c-4e97-965a-5176d56b772d" action="then">
+                                    <nestedSteps>
+                                        <item guid="edded24a-ad73-4311-8909-bf391fa470de" action="command" session="$session">
+                                            <command>
+                                                <body>configure terminal</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="a5977c56-7a53-4ec4-85d6-6ad01e1a741e" action="if">
+                            <command>
+                                <body>$pre_configure != &quot;null&quot;</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="1b5fa1c9-bf0f-47de-b5d6-c8a40a25dc11" action="then">
+                                    <nestedSteps>
+                                        <item guid="873fbf6d-63f6-46bf-9935-3802c80a7fd0" action="eval">
+                                            <command>
+                                                <body>set cli_cmd &quot;$cli_cmd preconfigure&quot;</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="053b75b6-8477-47fd-bfd4-4898fc8ee9db" action="if" skip="true">
+                            <command>
+                                <body>$loc != &quot;null&quot; &amp;&amp; $configure != &quot;null&quot;</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="db41fa2d-9413-4af6-b86c-d5a8c669a5d5" action="then">
+                                    <nestedSteps>
+                                        <item guid="ddb161f6-c244-4b4d-b641-6f62480fed84" action="eval">
+                                            <command>
+                                                <body>set cli_cmd &quot;$cli_cmd $loc&quot;</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="e60aae1a-454b-4ea3-b3dc-a1d9f9571206" action="else">
+                                    <nestedSteps>
+                                        <item guid="6912f92e-7765-4442-b576-4d36a88a0a83" action="eval">
+                                            <command>
+                                                <body>set cli_cmd &quot;no $cli_cmd $loc&quot;</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="7c354c37-e8f0-44bf-862f-6d1f2da3bf71" action="if">
+                            <command>
+                                <body>$port != &quot;null&quot; &amp;&amp; $configure != &quot;null&quot;</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="ea2b8f84-02f2-49c6-97fe-adeea18fbd76" action="then">
+                                    <nestedSteps>
+                                        <item guid="575f2887-1f1a-4c14-bd76-7fc61ae6e33f" action="eval">
+                                            <command>
+                                                <body>set cli_cmd &quot;$cli_cmd Optics$port breakout 4x10&quot;</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="c0cb008b-15fc-419d-924a-92066d435f72" action="else">
+                                    <nestedSteps>
+                                        <item guid="33fcc6e0-a769-46dc-a65c-47dcef4578eb" action="eval">
+                                            <command>
+                                                <body>set cli_cmd &quot;no $cli_cmd Optics$port breakout 4x10&quot;</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="91de15be-b8e0-4148-bc4c-6d813d7a6ab1" action="comment">
+                            <command>
+                                <body>Commit and exit configure mode</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="313de267-c04d-48df-bf37-6ce6035d0adc" action="command" session="$session">
+                                    <command>
+                                        <body>$cli_cmd</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                                </item>
+                                <item guid="90e623b4-b341-4485-b18e-897e07d42a9b" action="command" session="$session" skip="true">
+                                    <command>
+                                        <body>commit</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                                </item>
+                                <item guid="99a50f90-004f-4f96-bcbe-2ebd441d5fc9" action="command" session="$session" skip="true">
+                                    <command>
+                                        <body>end</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="889a8e9e-e638-4de5-b799-b13eb7a9e3b5" action="if">
+                            <command>
+                                <body>!$stay_in_context</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="5ff6aa4f-f224-4c68-abf7-b4fd9acfd28e" action="then">
+                                    <nestedSteps>
+                                        <item guid="576ea844-0b50-40f5-8aed-fdd8e27edd3c" action="command" session="$session">
+                                            <command>
+                                                <body>commit</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                                        </item>
+                                        <item guid="3befe006-dff3-46b0-82da-488b5be2763a" action="command" session="$session">
+                                            <command>
+                                                <body>end</body>
+                                            </command>
+                                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="1dff6556-f549-4604-8e6e-1190305a1083" action="comment">
+                    <command>
+                        <body>Return retCode</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="51e1ecc0-0f6b-42b7-b00b-c89827aedbd7" action="return">
+                            <command>
+                                <body>retCode: $retCode</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <arguments>
+                <item name="configure">
+                    <description>send yes if CLI should be configured</description>
+                    <defaultValue>null</defaultValue>
+                </item>
+                <item name="in_context">
+                    <defaultValue>0</defaultValue>
+                </item>
+                <item name="stay_in_context">
+                    <defaultValue>0</defaultValue>
+                </item>
+                <item name="pre_configure">
+                    <defaultValue>null</defaultValue>
+                </item>
+                <item name="port">
+                    <defaultValue>null</defaultValue>
+                </item>
+                <item name="loc">
+                    <defaultValue>null</defaultValue>
+                </item>
+            </arguments>
+        </item>
+        <item name="show_admin_power_supply" isPublic="true">
+            <steps>
+                <item guid="54fe3792-8c3f-4b2d-aaa1-937a82cad4e9" action="comment">
+                    <command>
+                        <body>Create command</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="none">
+                                    <extractorProperties type="com.fnfr.svt.documents.EmptyExtractorPropertyGroup"/>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>1</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="Eval">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                    <statement>set cli_cmd &quot;admin show environment power&quot;</statement>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenTrue>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="066e3b34-c9f0-40ce-b3e5-a6e774180c9b" action="comment">
+                    <command>
+                        <body>Create command</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="none">
+                                    <extractorProperties type="com.fnfr.svt.documents.EmptyExtractorPropertyGroup"/>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>1</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="Eval">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                    <statement>set cli_cmd &quot;admin show environment power-supply&quot;</statement>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenTrue>
+                                    </ruleProperties>
+                                </processorInfo>
+                                <skip>true</skip>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="f0a9dbb0-f80e-4d93-8e15-fd77eb076e14" action="if">
+                    <command>
+                        <body>$output_modifier != &quot;null&quot; &amp;&amp;  $location  == &quot;all&quot;</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="1cc0393d-569a-4cd2-af7f-0a0f189de49e" action="then">
+                            <nestedSteps>
+                                <item guid="dc798319-aadf-46a3-babe-7d96c1bebea4" action="comment">
+                                    <command>
+                                        <body>Insert steps here for when expression is true</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="60affa90-f86a-4a33-93ef-2f58d495ffbb" action="eval">
+                                    <command>
+                                        <body>set cli_cmd &quot;admin show environment power-supply | $output_modifier&quot;</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="ab7db750-1be6-4124-b8fc-693b91a2a752" action="if">
+                    <command>
+                        <body>$location != &quot;null&quot;</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="ffb0dedc-30df-405a-b712-23f881b188af" action="then">
+                            <nestedSteps>
+                                <item guid="9c284df4-3518-453e-bbdd-87b09eb538a9" action="comment">
+                                    <command>
+                                        <body>Insert steps here for when expression is true</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="74289a4b-91f4-4352-9735-065744df734a" action="if">
+                                    <command>
+                                        <body>$output_modifier != &quot;null &quot;</body>
+                                    </command>
+                                    <nestedSteps>
+                                        <item guid="4aa58e15-4534-47ee-b1d8-83dd0a433ba5" action="then">
+                                            <nestedSteps>
+                                                <item guid="7e29a1d3-d9f6-45c9-9913-08ad207910a4" action="eval">
+                                                    <command>
+                                                        <body>set cli_cmd &quot;admin show environment power-supply  location $location | $output_modifier&quot;</body>
+                                                    </command>
+                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                </item>
+                                            </nestedSteps>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                        <item guid="87593882-f0a7-42c2-a82e-e449d8f82aa0" action="else">
+                                            <nestedSteps>
+                                                <item guid="a03341d5-e0d7-49fc-9021-a42490ff6d41" action="comment">
+                                                    <command>
+                                                        <body>Insert steps here for when the expression evaluates to false</body>
+                                                    </command>
+                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                </item>
+                                                <item guid="0a2be02a-1e61-47d5-a4ef-50a133718da4" action="eval">
+                                                    <command>
+                                                        <body>set cli_cmd &quot;admin show environment power-supply  location $location  &quot;</body>
+                                                    </command>
+                                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                                </item>
+                                            </nestedSteps>
+                                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            <useFieldsInCommand>false</useFieldsInCommand>
+                                        </item>
+                                    </nestedSteps>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="2fbc0bc2-c037-4061-b639-0d6fcddf6083" action="comment">
+                    <command>
+                        <body>Issue command</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="d3196eec-5959-422b-95c3-37253579e8c3" action="command" session="$session">
+                            <command>
+                                <body>$cli_cmd</body>
+                            </command>
+                            <postProcessing>
+                                <storeResponseAt>cmd_output</storeResponseAt>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="fb814eb8-e4ed-4058-a83c-3a0d5c4198a8" action="comment">
+                    <command>
+                        <body>Return response</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="86b2200b-dc9a-4c19-9c2a-725b3461df93" action="return">
+                            <command>
+                                <body>[response cmd_output]</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <arguments>
+                <item name="output_modifier">
+                    <description>send &quot;include Total&quot;</description>
+                    <defaultValue>null</defaultValue>
+                </item>
+                <item name="location">
+                    <description>Values:
+\t- null - detail keyword will not be used
+\t- any - detail keyword will be used</description>
+                    <defaultValue>null</defaultValue>
+                </item>
+                <item name="include">
+                    <description>Value can be: &quot;Total&quot;</description>
+                    <defaultValue>null</defaultValue>
+                </item>
+            </arguments>
+        </item>
+        <item name="get_power_xml" isPublic="true">
+            <steps>
+                <item guid="34fc5446-b600-4a7f-aae3-d75c9fff3767" action="command" session="$session">
+                    <command>
+                        <body>show operational Environment rackTable rack/Name=0 slotTable slot/Name=$slot_num  cardTable card/Name=0 sensorTable sensor/Name=0 attributes xml</body>
+                    </command>
+                    <postProcessing>
+                        <storeResponseAt>command_output</storeResponseAt>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="ec3961e5-4295-4ab8-9001-bc70f5615fa6" action="return">
+                    <command>
+                        <body>[response command_output]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <arguments>
+                <item name="slot">
+                    <description>Use anything other than null to add this option to the command
+</description>
+                    <defaultValue>null</defaultValue>
+                </item>
+            </arguments>
+            <response>{&quot;apply-group_backbone_interface_configured&quot;:&quot;value&quot;,&quot;shut&quot;:&quot;value&quot;,&quot;apply-group_list&quot;:[&quot;value1&quot;]}</response>
+        </item>
+    </procedures>
+</testCase>

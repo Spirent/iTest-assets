@@ -1,0 +1,108 @@
+<?xml version="1.0" ?><ResponseMap version="4.3.0.71664">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="command">
+                <command>
+                    <body>show xdsl counters far-end channel current-interval 1/1/4/1</body>
+                </command>
+            </action>
+            <responseBody>========================================================================================================================
+current-interval table
+========================================================================================================================
+if-index |cv        |fecc      |cec       |measured-time|in-valid-flag
+---------+----------+----------+----------+-------------+---------------------------------------------------------------
+1/1/4/1   204        10226      0          485           false        
+------------------------------------------------------------------------------------------------------------------------
+current-interval count : 1
+========================================================================================================================
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;prompt&gt;leg:isadmin&amp;gt;# &lt;/prompt&gt;
+    &lt;echo&gt;show xdsl counters far-end channel current-interval 1/1/4/1&lt;/echo&gt;
+    &lt;promptName&gt;basic&lt;/promptName&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.3</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="colon_auto1">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>current-interval count :\\s+</regex>
+                            <start>0</start>
+                            <end>25</end>
+                        </item>
+                        <item name="current_interval_count">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>25</start>
+                            <end>26</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>current-interval count : 1</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+            </regexMaps>
+        </item>
+        <item type="com.fnfr.svt.mapping.table.TabularMapperProperties">
+            <tabularMaps>
+                <item name="table1">
+                    <additionalBannerLineCount>1</additionalBannerLineCount>
+                    <banner>if-index |cv        |fecc      |cec       |measured-time|in-valid-flag</banner>
+                    <footer>-----------------------------------------------------*</footer>
+                    <bannerStructure>CaseInsensitive</bannerStructure>
+                    <footerStructure>Wildcard</footerStructure>
+                    <columnBoundaries>Positional</columnBoundaries>
+                    <maxOccurences>1</maxOccurences>
+                    <columns>
+                        <item name="if-index">
+                            <isKey>true</isKey>
+                            <width>9</width>
+                        </item>
+                        <item name="cv">
+                            <width>11</width>
+                        </item>
+                        <item name="fecc">
+                            <width>11</width>
+                        </item>
+                        <item name="cec">
+                            <width>11</width>
+                        </item>
+                        <item name="measured-time">
+                            <width>14</width>
+                        </item>
+                        <item name="in-valid-flag">
+                            <width>60</width>
+                        </item>
+                    </columns>
+                </item>
+            </tabularMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="show xdsl counters * channel *"/>
+</ResponseMap>

@@ -1,0 +1,156 @@
+<?xml version="1.0" ?><ResponseMap version="6.0.0.18638fa">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="command">
+                <command>
+                    <body>show service id 1459098101 dhcp lease-state</body>
+                </command>
+            </action>
+            <responseBody>
+===============================================================================
+DHCP lease state table, service 1459098101
+===============================================================================
+IP Address      Mac Address       Sap/Sdp Id          Remaining  Lease    MC
+                                                      LeaseTime  Origin   Stdby
+-------------------------------------------------------------------------------
+0.0.0.0     74:f6:12:c4:ea:c1 3/1/1:2.2           04d11h52m  Radius    
+0.0.0.0    74:f6:12:c4:ec:11 3/1/2:3             06d01h47m  Radius    
+0.0.0.0    74:f6:12:c4:ea:e1 3/1/2:2             06d01h46m  Radius    
+0.0.0.0  74:f6:12:c5:81:71 lag-170:2.113       03h09m20s  Radius    
+0.0.0.0  74:f6:12:c5:79:81 lag-170:2.3112      03h09m19s  Radius    
+0.0.0.0  74:f6:12:c5:7e:a1 lag-180:2.111       03h11m16s  Radius    
+0.0.0.0  74:f6:12:c5:79:51 lag-180:2.114       03h09m19s  Radius    
+0.0.0.0  74:f6:12:c5:79:71 lag-180:2.1113      03h09m19s  Radius    
+0.0.0.0  74:f6:12:c4:cf:41 lag-170:2.2112      03h09m57s  Radius    
+0.0.0.0  74:f6:12:c5:78:b1 lag-170:2.3113      03h09m20s  Radius    
+0.0.0.0  74:f6:12:c5:7c:21 lag-180:2.902       03h09m19s  Radius    
+0.0.0.0  74:f6:12:c5:77:41 lag-170:2.2113      01h56m47s  Radius    
+0.0.0.0  74:f6:12:c4:cf:11 lag-180:2.1116      03h09m19s  Radius    
+0.0.0.0  74:f6:12:c5:81:f1 lag-180:2.1114      03h09m19s  Radius    
+0.0.0.0  74:f6:12:c4:c5:81 lag-180:2.1115      03h11m31s  Radius    
+0.0.0.0  74:f6:12:c5:7d:51 lag-180:2.1117      03h09m19s  Radius    
+0.0.0.0  74:f6:12:c4:cc:01 lag-170:2.2114      03h09m19s  Radius    
+0.0.0.0  74:f6:12:c5:78:01 lag-170:2.3121      03h09m20s  Radius    
+0.0.0.0  74:f6:12:c5:7a:61 lag-170:2.3122      03h09m20s  Radius    
+-------------------------------------------------------------------------------
+Number of lease states : 19
+===============================================================================
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;prompt&gt;A:ORLDFLMA08W010211073LSW02# &lt;/prompt&gt;
+    &lt;echo&gt;show service id 1459098101 dhcp lease-state &lt;/echo&gt;
+    &lt;promptName&gt;prompt1&lt;/promptName&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.1</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="colon_auto1">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Number of lease states :\\s+</regex>
+                            <start>0</start>
+                            <end>25</end>
+                        </item>
+                        <item name="Number_of_lease_states">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>25</start>
+                            <end>27</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>Number of lease states : 19</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+                <item name="pattern1">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>DHCP lease state table, service\\s+</regex>
+                            <start>0</start>
+                            <end>32</end>
+                        </item>
+                        <item name="serviceId">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>32</start>
+                            <end>42</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>DHCP lease state table, service 1459098101</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+            </regexMaps>
+        </item>
+        <item type="com.fnfr.svt.mapping.table.TabularMapperProperties">
+            <tabularMaps>
+                <item name="table1">
+                    <additionalBannerLineCount>1</additionalBannerLineCount>
+                    <banner>\\s+LeaseTime\\s+Origin\\s+Stdby\\s*</banner>
+                    <footer>-------------------------------------------------------------------------------\\s*</footer>
+                    <bannerStructure>Regex</bannerStructure>
+                    <footerStructure>Regex</footerStructure>
+                    <minOccurences>0</minOccurences>
+                    <columns>
+                        <item name="IP_Address">
+                            <isKey>true</isKey>
+                            <width>16</width>
+                            <lastFullCell/>
+                        </item>
+                        <item name="Mac_Address">
+                            <width>18</width>
+                            <lastFullCell/>
+                        </item>
+                        <item name="Sap_Sdp_Id">
+                            <width>20</width>
+                            <lastFullCell/>
+                        </item>
+                        <item name="LeaseTime">
+                            <width>11</width>
+                            <lastFullCell/>
+                        </item>
+                        <item name="Origin">
+                            <width>999</width>
+                            <lastFullCell/>
+                        </item>
+                    </columns>
+                    <ignoreBlankLines>false</ignoreBlankLines>
+                    <autoUpdateNames>false</autoUpdateNames>
+                </item>
+            </tabularMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="show service id * dhcp lease-state"/>
+</ResponseMap>

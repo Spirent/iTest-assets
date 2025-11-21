@@ -1,0 +1,170 @@
+<?xml version="1.0" ?><ResponseMap version="6.0.0.18638fa">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="cfm_lmm_mac_hop">
+                <command>
+                    <body>-destination_mep_id  $mep_id -md $md -ma $ma -source_mep_id  $local_mep_id -count $count -priority $priority</body>
+                </command>
+            </action>
+            <responseBody>HOP count 1 DATA
+LMM success rate is: 100.0
+LMR success rate is: 100.0
+LMR count is: 100
+Msg: Syntax ERROR encountered during send operation.
+HOP count 2 DATA
+LMM success rate is: 100.0
+LMR success rate is: 100.0
+LMR count is: 100
+Msg: Syntax ERROR encountered during send operation.
+HOP count 3 DATA
+LMM success rate is: 100.0
+LMR success rate is: 100.0
+LMR count is: 100
+Msg: Valid
+Loopback HOP Overall STATUS: FAILED</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;definedIn&gt;project://d_ciena/session_profiles/ciena_saos_qc.fftc&lt;/definedIn&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="definedIn">
+                    <queryFormatString>.//definedIn</queryFormatString>
+                    <source>Kernel</source>
+                </item>
+            </aliases>
+            <duration>95.2</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="overall_status">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Loopback HOP Overall STATUS:\\s+</regex>
+                            <start>0</start>
+                            <end>29</end>
+                        </item>
+                        <item name="Loopback_HOP_Overall_STATUS">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>29</start>
+                            <end>35</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>Loopback HOP Overall STATUS: FAILED</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+                <item name="hop_status">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Msg:\\s+</regex>
+                            <start>0</start>
+                            <end>5</end>
+                        </item>
+                        <item name="hop_message">
+                            <regex>[^0-9\\r\\n]+</regex>
+                            <named>true</named>
+                            <start>5</start>
+                            <end>52</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>Msg: Syntax ERROR encountered during send operation.</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+                <item name="lmm_rate">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>LMM success rate is:\\s+</regex>
+                            <start>0</start>
+                            <end>21</end>
+                        </item>
+                        <item name="LMM_success_rate">
+                            <regex>([\\d]+(\\.[\\d]+))</regex>
+                            <named>true</named>
+                            <start>21</start>
+                            <end>26</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="((\d+\.)+\d+)">one or more of digit and dots</item>
+                                <item name="([\d]+(\.[\d]+))">one simple decimal number</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>LMM success rate is: 100.0</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+                <item name="lmr_rate">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>LMR success rate is:\\s+</regex>
+                            <start>0</start>
+                            <end>21</end>
+                        </item>
+                        <item name="LMR_success_rate">
+                            <regex>([\\d]+(\\.[\\d]+))</regex>
+                            <named>true</named>
+                            <start>21</start>
+                            <end>26</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="((\d+\.)+\d+)">one or more of digit and dots</item>
+                                <item name="([\d]+(\.[\d]+))">one simple decimal number</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>LMR success rate is: 100.0</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+                <item name="lmr_cnt">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>LMR count is:\\s+</regex>
+                            <start>0</start>
+                            <end>14</end>
+                        </item>
+                        <item name="LMR_count">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>14</start>
+                            <end>17</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>LMR count is: 100</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+            </regexMaps>
+        </item>
+        <item type="com.fnfr.svt.mapping.table.TabularMapperProperties"/>
+    </mapperProperties>
+    <applicabilityProperties actionType="cfm_lmm_mac_hop" command="-destination_mep_id  $mep_id -md $md -ma $ma -source_mep_id  $local_mep_id -count $count -priority $priority"/>
+</ResponseMap>

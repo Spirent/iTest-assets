@@ -1,0 +1,243 @@
+<?xml version="1.0" ?><ResponseMap version="4.3.1.73463">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="showCableModem">
+                <command>
+                    <body>-cmMac $cmMac</body>
+                </command>
+            </action>
+            <responseBody>Load for five secs: 1%/0%; one minute: 2%; five minutes: 3%
+Time source is NTP, 09:56:12.679 EST Thu Nov 6 2014
+                                                                                     D
+MAC Address    IP Address      I/F           MAC               Prim RxPwr  Timing Num I
+                                             State             Sid  (dBmv) Offset CPE P
+001d.cebd.d74a 0.0.0.0   C5/0/0/UB     w-online(pt)      36    0.00   3222   1   N
+
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;definedIn&gt;project://d_Cisco10KCMTS/session_profiles/Cisco10KCMTSquickcall.fftc&lt;/definedIn&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="definedIn">
+                    <queryFormatString>.//definedIn</queryFormatString>
+                    <source>Kernel</source>
+                </item>
+            </aliases>
+            <duration>0.4</duration>
+        </item>
+        <item name="notFound">
+            <action actionType="command">
+                <command>
+                    <body>show cable modem 001d.cea4.ac62</body>
+                </command>
+            </action>
+            <responseBody>Load for five secs: 1%/0%; one minute: 2%; five minutes: 3%
+Time source is NTP, 10:11:48.733 EST Thu Dec 11 2014
+Cable modem with MAC address 001d.cea4.ac62 not registered.
+
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;prompt&gt;ubr102.cmts.eng#&lt;/prompt&gt;
+    &lt;echo&gt;show cable modem 001d.cea4.ac62&lt;/echo&gt;
+    &lt;promptName&gt;PrivPrompt&lt;/promptName&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.8</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.table.TabularMapperProperties">
+            <tabularMaps>
+                <item name="table2">
+                    <additionalBannerLineCount>1</additionalBannerLineCount>
+                    <banner>MAC Address*IP Address* I/F*MAC*Prim*RxPwr*Timing*Num*I</banner>
+                    <bannerStructure>Wildcard</bannerStructure>
+                    <columnBoundaries>Positional</columnBoundaries>
+                    <minOccurences>0</minOccurences>
+                    <maxOccurences>1</maxOccurences>
+                    <columns>
+                        <item name="MAC_Address">
+                            <isKey>true</isKey>
+                            <width>15</width>
+                        </item>
+                        <item name="IP_Address">
+                            <width>16</width>
+                        </item>
+                        <item name="Interface">
+                            <width>6</width>
+                        </item>
+                        <item name="slash"/>
+                        <item name="Upstream">
+                            <width>6</width>
+                        </item>
+                        <item name="MAC_State">
+                            <width>19</width>
+                        </item>
+                        <item name="Prim_Sid">
+                            <width>5</width>
+                        </item>
+                        <item name="RxPwr">
+                            <width>7</width>
+                        </item>
+                        <item name="Timing_Offset">
+                            <width>7</width>
+                        </item>
+                        <item name="Num_CPE">
+                            <width>4</width>
+                        </item>
+                        <item name="DualStack">
+                            <width>0</width>
+                        </item>
+                    </columns>
+                </item>
+            </tabularMaps>
+        </item>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="dateTimePattern">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Load for five secs:\\s+</regex>
+                            <start>0</start>
+                            <end>20</end>
+                        </item>
+                        <item name="Load_for_five_secs">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>20</start>
+                            <end>21</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>%/</regex>
+                            <start>21</start>
+                            <end>23</end>
+                        </item>
+                        <item name="one_minute">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>23</start>
+                            <end>24</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>%; one minute:\\s+</regex>
+                            <start>24</start>
+                            <end>39</end>
+                        </item>
+                        <item name="five_minutes">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>39</start>
+                            <end>40</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor3">
+                            <regex>%; five minutes:\\s+</regex>
+                            <start>40</start>
+                            <end>57</end>
+                        </item>
+                        <item name="group3">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>57</start>
+                            <end>58</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor4">
+                            <regex>%\\s+Time source is NTP,\\s+</regex>
+                            <start>58</start>
+                            <end>80</end>
+                        </item>
+                        <item name="group4">
+                            <regex>[^\\r\\n]+</regex>
+                            <named>true</named>
+                            <start>80</start>
+                            <end>112</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>Load for five secs: 1%/0%; one minute: 2%; five minutes: 3%
+Time source is NTP, 10:11:48.733 EST Thu Dec 11 2014</sampleMatch>
+                    <optional>true</optional>
+                </item>
+                <item name="notFoundPattern">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Cable modem with MAC address\\s+</regex>
+                            <start>0</start>
+                            <end>29</end>
+                        </item>
+                        <item name="Cable_modem_with_MAC_address">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>29</start>
+                            <end>43</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+not registered\\.</regex>
+                            <start>43</start>
+                            <end>59</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>Cable modem with MAC address 001d.cea4.ac62 not registered.</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="show cable modem\\s*([0-9A-Fa-f]{4}[.]){2}([0-9A-Fa-f]{4})?" matchType="Regex" priority="49"/>
+</ResponseMap>

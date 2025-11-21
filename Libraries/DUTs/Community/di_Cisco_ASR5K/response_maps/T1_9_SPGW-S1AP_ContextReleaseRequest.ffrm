@@ -1,0 +1,215 @@
+<?xml version="1.0" ?><ResponseMap version="5.4.0.4f90e5a">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="readFile">
+                <command>
+                    <body>file:/c:/temp/2016_12_19_16_32_1.9_SPGW-SessionIdleTimeout/Monitor_Subscriber_MMEPP-02.log</body>
+                </command>
+            </action>
+            <responseBody>    Procedure Code :   CONTEXT RELEASE REQUEST (18)
+    Criticality
+      | 01.. .... | Ignore (1)
+    CONTEXT RELEASE REQUEST Value : 
+      | .001 1010 | Length Determinant : 26
+      Value : 
+        | 0... .... | Ext bit : 0
+          IEs Count : 3
+            IE : 1
+              Protocol IE ID : MME_UE_S1AP_ID (0)
+              Criticality
+                | 00.. .... | Reject (0)
+              MME_UE_S1AP_ID Value : 
+                | .000 0101 | Length Determinant : 5
+                Value : 
+                  | 11.. .... | Length Determinant : 4
+                  41953796 (0x2802a04)
+            IE : 2
+              Protocol IE ID : eNB_UE_S1AP_ID (8)
+              Criticality
+                | 00.. .... | Reject (0)
+              eNB_UE_S1AP_ID Value : 
+                | .000 0100 | Length Determinant : 4
+                Value : 
+                  | 10.. .... | Length Determinant : 3
+                  449806 (0x6dd0e)
+            IE : 3
+              Protocol IE ID : Cause (2)
+              Criticality
+                | 01.. .... | Ignore (1)
+              Cause Value : 
+                | .000 0010 | Length Determinant : 2
+                Value : 
+                  | 0... .... | Ext bit : 0
+                  | .000 .... | Choice index : 0
+                    Radio Network Layer Cause
+                      | .... 0... | Ext bit : 0
+                      | .... .010 | | 100. .... | User-inactivity (20)
+
+0x0000\t 0012 401a 0000 0300 0000 05c0 0280 2a04\t..@...........*.
+0x0010\t 0008 0004 8006 dd0e 0002 4002 0280     \t..........@...
+
+Monday December 19 2016
+&lt;&lt;&lt;&lt;OUTBOUND  From sessmgr:40 sessmgr_egtp.c:2683 (Callid 0b9fc7ac) 16:37:39:718 Eventid:141005(3)
+[MME-S11]GTPv2C Tx PDU, from 0.0.0.0:30640 to 0.0.0.0:2123 (12)
+TEID: 0x856E2016, Message type: EGTP_RELEASE_ACCESS_BEARERS_REQUEST (0xAA)
+Sequence Number: 0x399E28 (3776040)
+GTP HEADER
+        Version number: 2
+        TEID flag: Present
+        Piggybacking flag: Not present
+        Message Length: 0x0008 (8)
+
+PDU HEX DUMP
+0x0000\t 48aa 0008 856e 2016 399e 2800          \tH....n..9.(.
+
+Monday December 19 2016
+INBOUND&gt;&gt;&gt;&gt;&gt;  From sessmgr:40 tpc_interface.c:1158 (Callid 0b9fc7ac) 16:37:39:720 Eventid:141004(3)
+[MME-S11]GTPv2C Rx PDU, from 0.0.0.0:2123 to 0.0.0.0:30640 (18)
+TEID: 0x8030E028, Message type: EGTP_RELEASE_ACCESS_BEARERS_RESPONSE (0xAB)</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;isEmpty&gt;false&lt;/isEmpty&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="isEmpty">
+                    <queryFormatString>.//isEmpty</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.1</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="S1ContextReleaseRequest">
+                    <groups>
+                        <item name="anchor14">
+                            <regex>.+User-inactivity \\(</regex>
+                            <start>442</start>
+                            <end>476</end>
+                        </item>
+                        <item name="user_inactivity">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>476</start>
+                            <end>478</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor15">
+                            <regex>\\)</regex>
+                            <start>478</start>
+                            <end>479</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>                      | .... .010 | | 100. .... | User-inactivity (20)</sampleMatch>
+                    <optional>true</optional>
+                    <maintainConsistency>false</maintainConsistency>
+                </item>
+                <item name="S11ReleaseAccessBearersRequest">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>TEID:\\s+</regex>
+                            <start>0</start>
+                            <end>6</end>
+                        </item>
+                        <item name="TEID">
+                            <regex>([0][x][\\da-fA-F]+)</regex>
+                            <named>true</named>
+                            <start>6</start>
+                            <end>16</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([0][x][\da-fA-F]+)">one hexadecimal number</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>, Message type: EGTP_RELEASE_ACCESS_BEARERS_REQUEST \\(</regex>
+                            <start>16</start>
+                            <end>69</end>
+                        </item>
+                        <item name="EGTP_RELEASE_ACCESS_BEARERS_REQUEST">
+                            <regex>([0][x][\\da-fA-F]+)</regex>
+                            <named>true</named>
+                            <start>69</start>
+                            <end>73</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([0][x][\da-fA-F]+)">one hexadecimal number</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>\\)</regex>
+                            <start>73</start>
+                            <end>74</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>TEID: 0x856E2016, Message type: EGTP_RELEASE_ACCESS_BEARERS_REQUEST (0xAA)</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+                <item name="S11ReleaseAccessBearersResponse">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>TEID:\\s+</regex>
+                            <start>0</start>
+                            <end>6</end>
+                        </item>
+                        <item name="TEID_Response">
+                            <regex>([0][x][\\da-fA-F]+)</regex>
+                            <named>true</named>
+                            <start>6</start>
+                            <end>16</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([0][x][\da-fA-F]+)">one hexadecimal number</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>, Message type: EGTP_RELEASE_ACCESS_BEARERS_RESPONSE \\(</regex>
+                            <start>16</start>
+                            <end>70</end>
+                        </item>
+                        <item name="EGTP_RELEASE_ACCESS_BEARERS_RESPONSE">
+                            <regex>([0][x][\\da-fA-F]+)</regex>
+                            <named>true</named>
+                            <start>70</start>
+                            <end>74</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([0][x][\da-fA-F]+)">one hexadecimal number</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>\\)</regex>
+                            <start>74</start>
+                            <end>75</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>TEID: 0x8030E028, Message type: EGTP_RELEASE_ACCESS_BEARERS_RESPONSE (0xAB)</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="readFile" command="file:/c:/temp/2016_12_19_14_28_1.9_SPGW-SessionIdleTimeout/Monitor_Subscriber_MMEPP-02.log"/>
+</ResponseMap>

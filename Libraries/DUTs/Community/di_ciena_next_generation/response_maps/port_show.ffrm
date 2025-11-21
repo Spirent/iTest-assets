@@ -1,0 +1,108 @@
+<?xml version="1.0" ?><ResponseMap version="6.0.0.18638fa">
+    <sampleDictionary>
+        <item name="saos_8_4">
+            <action actionType="command">
+                <command>
+                    <body>port show</body>
+                </command>
+            </action>
+            <responseBody>
++-----------------------------------------------------------------------------------------------------+
+|               Port Table                |           Operational Status            |  Admin Config   |
++--------------------------------+--------+----+--------------+----+---+-------+----+----+-------+----+
+|             Port               | Port   |    |  Link State  |    |   |       |Auto|    |       |Auto|
+|             Name               | Type   |Link|   Duration   |XCVR|STP| Mode  |Neg |Link| Mode  |Neg |
++--------------------------------+--------+----+--------------+----+---+-------+----+----+-------+----+
+| 1/1                            | 100Gig |Down|   0d 0h 0m 1s|Ena |Dis|       |    |Ena |Auto/FD| off|
+| 1/2                            | 100Gig |Down|   4d21h52m43s|Ena |Dis|       |    |Ena |Auto/FD| off|
+| 2/1                            | 100Gig |Down|  12d 6h 6m56s| Dis|Dis|       |    | Dis|Auto/FD| off|
+| 2/2                            | 100Gig |Down|   0d 0h 0m 0s|Ena |Dis|       |    |Ena |Auto/FD| off|
++--------------------------------+--------+----+--------------+----+---+-------+----+----+-------+----+
+
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;prompt&gt;8700-15*&amp;gt; &lt;/prompt&gt;
+    &lt;echo&gt;port show&lt;/echo&gt;
+    &lt;promptName&gt;normal&lt;/promptName&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+            </aliases>
+            <duration>1.5</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties"/>
+        <item type="com.fnfr.svt.mapping.table.TabularMapperProperties">
+            <tabularMaps>
+                <item name="port_table">
+                    <additionalBannerLineCount>1</additionalBannerLineCount>
+                    <banner>\\|\\s+Name\\s+\\|\\s+Type\\s+\\|Link\\|\\s+Duration\\s+\\|XCVR\\|STP\\| Mode\\s+\\|Neg \\|Link\\| Mode\\s+\\|Neg \\|</banner>
+                    <footer>\\+-*\\+-*\\+-*\\+--*\\+-*\\+-*\\+-*\\+-*\\+-*\\+-*\\+-*\\+</footer>
+                    <bannerStructure>Regex</bannerStructure>
+                    <footerStructure>Regex</footerStructure>
+                    <customDelimiter>|</customDelimiter>
+                    <delimiter>Custom</delimiter>
+                    <minOccurences>0</minOccurences>
+                    <maxOccurences>1</maxOccurences>
+                    <columns>
+                        <item name="pipe">
+                            <lastFullCell/>
+                            <showInStructuredData>false</showInStructuredData>
+                        </item>
+                        <item name="port_name">
+                            <lastFullCell/>
+                        </item>
+                        <item name="port_type">
+                            <lastFullCell/>
+                        </item>
+                        <item name="oper_link">
+                            <lastFullCell/>
+                        </item>
+                        <item name="link_state_duration">
+                            <lastFullCell/>
+                        </item>
+                        <item name="XCVR">
+                            <lastFullCell/>
+                        </item>
+                        <item name="STP">
+                            <lastFullCell/>
+                        </item>
+                        <item name="oper_mode">
+                            <lastFullCell/>
+                        </item>
+                        <item name="oper_auto_neg">
+                            <lastFullCell/>
+                        </item>
+                        <item name="admin_link">
+                            <lastFullCell/>
+                        </item>
+                        <item name="admin_mode">
+                            <lastFullCell/>
+                        </item>
+                        <item name="admin_auto_neg">
+                            <lastFullCell/>
+                        </item>
+                        <item name="pipe_1">
+                            <lastFullCell/>
+                            <showInStructuredData>false</showInStructuredData>
+                        </item>
+                    </columns>
+                    <responseEndCountsAsEnd>false</responseEndCountsAsEnd>
+                </item>
+            </tabularMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="port show"/>
+</ResponseMap>

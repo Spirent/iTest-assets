@@ -1,0 +1,2625 @@
+<?xml version="1.0"?>
+<testCase version="7.0.0.bc91e6c">
+    <general>
+        <sessionClass includeTestCase="true" sessionType="attero_tcl_base.ffsp"/>
+    </general>
+    <procedures>
+        <item name="main">
+            <steps>
+                <item guid="07196557-8644-4c33-b92c-e6b93b466e14" action="comment">
+                    <command>
+                        <body>Attero TCL Quickcalls</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="cc75e395-92f5-4705-b0e6-7c99bbf574f1" action="comment">
+                    <command>
+                        <body>See the User Manual and Remote Control User Manual in the Attero Help menu</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="f4f02de4-4378-4320-a824-eefc611b3d90" action="comment">
+                    <command>
+                        <body>Attero Ports and Profiles are 0 Based.</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="000ac3e2-1f37-41a9-87d6-bcf13736c830" action="comment">
+                    <command>
+                        <body>Link 0 maps to Port 1 and Link 1 maps to Port 2</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="c1edabb2-5a9c-46d0-91d3-1ecc7010e790" action="comment">
+                    <command>
+                        <body>Profiles for Link 0 are 0 - 7 where 7 is the unfiltered profile (profile 8 in the GUI)</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="f7baacff-c716-46ee-a428-eefcb95b1f62" action="comment">
+                    <command>
+                        <body>Profiles for Link 1 are 8 - 15 where 15 is the unfiltered profile (profile 15 in the GUI)</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="f219baab-3d54-4c37-9f41-c55b58d28fcc" action="comment">
+                    <command>
+                        <body>The procedures set the impairment. The Impairment then needs to be started and then stopped.</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="87d7bd9a-b8fe-4997-81a2-b9e6690832b9" action="comment">
+                    <command>
+                        <body>Impairements are cleared with the clearImpairments procedure</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+        </item>
+        <item name="getVersion" isPublic="true">
+            <steps>
+                <item guid="ebf7284b-406e-44c6-971c-d15e81a7a373" action="command" session="$session">
+                    <command>
+                        <body> puts [ atteroget Idn]</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="contains">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                        <searchString>ERROR</searchString>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$value == 1</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="FailTest">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message> The Command Failed.</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message> Exiting Test Case Now.</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="AbortExecution">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                        </actionsWhenTrue>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>group1()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>serialNumber</storageLocation>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>group3()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>firmWare</storageLocation>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="d977df1a-0ebb-4b8a-a9c2-958a6dc17750" action="write">
+                    <command>
+                        <body>SERIALNUMBER=$serialNumber\\n</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="cf81deec-8b1a-4a8e-823b-2104089c4245" action="write">
+                    <command>
+                        <body>$firmWare</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+        </item>
+        <item name="getConnectionStatus" isPublic="true">
+            <steps>
+                <item guid="7964f46a-4ff5-4cce-acd5-98242e4e2da7" action="comment">
+                    <command>
+                        <body>Verifies that the TCL session is connected to Attero and exist the test if not</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="86cf0496-4261-4d59-b0af-e6a0cbfdd4f3" action="command" session="$session">
+                    <command>
+                        <body>isconnected</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="contains">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                        <searchString>1</searchString>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$value == 1</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="OK">
+                                                    <message>Connection Status Verified</message>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenTrue>
+                                        <actionsWhenFalse>
+                                            <item actionId="FailTest">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message>Not Connected to Attero</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="AbortExecution">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                        </actionsWhenFalse>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="29b09856-4dc8-4030-b15e-796bbe4c40f6" action="write">
+                    <command>
+                        <body>1</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+        </item>
+        <item name="setSystemConnect" isPublic="true">
+            <steps>
+                <item guid="1377b7e9-3181-4b5e-b27e-b99ff1ae72e6" action="command" session="$session">
+                    <command>
+                        <body>source &quot;C:/Calnex/Attero/RemoteControl/Tcl/attero.tcl&quot;</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="4a2511a9-6e44-418c-b0f3-878ffb266f5a" action="command" session="$session" normalOffset="0.003" estimatedStepExecutionTime="0.002">
+                    <command>
+                        <body>connect $attero $windowsHost 9990 9000</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="contains">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                        <searchString>connected to instrument</searchString>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$value == 1</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup" severity="OK">
+                                                    <message>Successfully connected to Attero</message>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenTrue>
+                                        <actionsWhenFalse>
+                                            <item actionId="FailTest">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message>Did not successfully connect to Attero</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="AbortTest">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                        </actionsWhenFalse>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="9326da48-ea5c-4b45-aee9-bf32c6a5f3f5" action="getConnectionStatus" session="$session">
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>group1()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>status</storageLocation>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="a83ee3c4-8296-4f9a-8f3c-9a1bd2807011" action="write">
+                    <command>
+                        <body>$status</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <arguments>
+                <item name="attero">
+                    <defaultValue>10.6.2.14</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="windowsHost">
+                    <defaultValue>localhost</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="setSystemDisconnect" isPublic="true">
+            <steps>
+                <item guid="20473143-2dcd-4261-b7f4-e96a83a98178" action="command" session="$session" normalOffset="0.002" estimatedStepExecutionTime="0.075">
+                    <command>
+                        <body>disconnect</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+        </item>
+        <item name="setSettingsFileImport" isPublic="true">
+            <steps>
+                <item guid="107b3cb6-7cff-490d-a479-9a5ce7e44909" action="command" session="$session">
+                    <command>
+                        <body>recall &quot;$pathName$fileName&quot;</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="contains">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                        <searchString>ERROR</searchString>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$value == 1</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="FailTest">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message> The Command Failed.</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message> Exiting Test Case Now.</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="AbortExecution">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                        </actionsWhenTrue>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <arguments>
+                <item name="pathName">
+                    <defaultValue>C:/Users/igibbs/iTest_6.1_workspace/di_attero/configs/</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="fileName">
+                    <defaultValue>attero_vxlan.cst</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="setSettingsFileSave" isPublic="true">
+            <steps>
+                <item guid="1c245e6c-dd17-4aaa-85c9-79e990659e25" action="command" session="$session">
+                    <command>
+                        <body>store &quot;$pathName$fileName&quot;</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="contains">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                        <searchString>ERROR</searchString>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$value == 1</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="FailTest">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message> The Command Failed.</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message> Exiting Test Case Now.</message>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenTrue>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <arguments>
+                <item name="pathName">
+                    <defaultValue>C:/Users/igibbs/iTest_6.1_workspace/di_attero/configs/</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="fileName">
+                    <description>&lt;filename&gt;.cst</description>
+                    <defaultValue>&lt;filename&gt;.cst</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="setSettingsDefault" isPublic="true">
+            <steps>
+                <item guid="97e932cd-1e5c-4a18-84d6-8e63f605170f" action="comment">
+                    <command>
+                        <body>*Resets interface setting to 1G Electrical</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="8a350e26-0006-4c06-b9de-0c20d5bf1e7b" action="comment">
+                    <command>
+                        <body>Restores default settings</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="0cbc2850-410d-4b33-b56a-2f421342e42d" action="comment">
+                    <command>
+                        <body>Can be used to clear flow filters.</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="01b7c15e-635d-4ba3-a508-083fc8743782" action="command" session="$session">
+                    <command>
+                        <body>atteroset Rst TRUE</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="contains">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                        <searchString>ERROR</searchString>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$value == 1</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="FailTest">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message> The Command Failed.</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message> Exiting Test Case Now.</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="AbortExecution">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                        </actionsWhenTrue>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+        </item>
+        <item name="setInterface1GbeElectrical" isPublic="true">
+            <steps>
+                <item guid="d61ec624-f164-4ba9-97e9-dcf48762131c" action="command" session="$session">
+                    <command>
+                        <body>atteroset Physical LineRate 1GBE</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="2602a6df-4d01-4233-a904-b923b39a5889" action="command" session="$session">
+                    <command>
+                        <body>atteroset Physical LineInterface ELECTRICAL</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="4473b215-1fcc-4cb6-9e12-4db7247425cb" action="command" session="$session">
+                    <command>
+                        <body>atteroget Physical LineRate</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="regex">
+                                    <extractorProperties type="com.fnfr.svt.mapping.regex.extractors.RegexExtractorPropertyGroup" useLineMode="true">
+                                        <regex>^\\d+GBE$</regex>
+                                        <extractionGroupIndex>0</extractionGroupIndex>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$value eq &quot;1GBE&quot;</expression>
+                                        <actionsWhenFalse>
+                                            <item actionId="FailTest">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message>{auto_message_false}</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="AbortExecution">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                        </actionsWhenFalse>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="6f568f1f-aa58-4469-8b76-b6b496736f4c" action="command" session="$session">
+                    <command>
+                        <body>atteroget Physical LineInterface</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="regex">
+                                    <extractorProperties type="com.fnfr.svt.mapping.regex.extractors.RegexExtractorPropertyGroup" useLineMode="true">
+                                        <regex>^ELECTRICAL$</regex>
+                                        <extractionGroupIndex>0</extractionGroupIndex>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$value eq &quot;ELECTRICAL&quot;</expression>
+                                        <actionsWhenFalse>
+                                            <item actionId="FailTest">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message>{auto_message_false}</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="AbortExecution">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                        </actionsWhenFalse>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+        </item>
+        <item name="setInterface1GbeOptical" isPublic="true">
+            <steps>
+                <item guid="ab428737-c13c-4ebd-afed-51d0432107a9" action="command" session="$session">
+                    <command>
+                        <body>atteroset Physical LineRate 1GBE</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="70ff2efc-2140-4e51-881c-5725e8de5c0e" action="command" session="$session">
+                    <command>
+                        <body>atteroset Physical LineInterface ELECTRICAL_SFP</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="1b4604d3-22f4-491c-ad88-0785a507bbae" action="command" session="$session">
+                    <command>
+                        <body>atteroget Physical LineRate</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="regex">
+                                    <extractorProperties type="com.fnfr.svt.mapping.regex.extractors.RegexExtractorPropertyGroup" useLineMode="true">
+                                        <regex>^\\d+GBE$</regex>
+                                        <extractionGroupIndex>0</extractionGroupIndex>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$value eq &quot;1GBE&quot;</expression>
+                                        <actionsWhenFalse>
+                                            <item actionId="FailTest">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message>{auto_message_false}</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="AbortExecution">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                        </actionsWhenFalse>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="1b1482fc-e032-49a0-bdd8-80b3b2552862" action="command" session="$session">
+                    <command>
+                        <body>atteroget Physical LineInterface</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="regex">
+                                    <extractorProperties type="com.fnfr.svt.mapping.regex.extractors.RegexExtractorPropertyGroup" useLineMode="true">
+                                        <regex>^ELECTRICAL_SFP$</regex>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$value eq &quot;ELECTRICAL_SFP&quot;</expression>
+                                        <actionsWhenFalse>
+                                            <item actionId="FailTest">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message>{auto_message_false}</message>
+                                                </actionProperties>
+                                            </item>
+                                        </actionsWhenFalse>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+        </item>
+        <item name="setInterface10GbeSfp" isPublic="true">
+            <steps>
+                <item guid="62cf8943-fe22-4667-a98a-eec89f30a9e8" action="command" session="$session">
+                    <command>
+                        <body>atteroset Physical LineRate 10GBE</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="1b18c713-28ee-4ca0-81eb-c394f9612876" action="command" session="$session">
+                    <command>
+                        <body>atteroset Physical xFPSelect SFPPLUS</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="82d0b5ee-30bd-45e9-84fa-d9ab5f640690" action="command" session="$session">
+                    <command>
+                        <body>atteroget Physical LineRate</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="regex">
+                                    <extractorProperties type="com.fnfr.svt.mapping.regex.extractors.RegexExtractorPropertyGroup" useLineMode="true">
+                                        <regex>^\\d+GBE$</regex>
+                                        <extractionGroupIndex>0</extractionGroupIndex>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$value eq &quot;10GBE&quot;</expression>
+                                        <actionsWhenFalse>
+                                            <item actionId="FailTest">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message>{auto_message_false}</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="AbortExecution">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                        </actionsWhenFalse>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="c68f8b41-002c-4304-b167-a6c10ca642fc" action="command" session="$session">
+                    <command>
+                        <body>atteroget Physical xFPSelect</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="contains">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                        <searchString>SFPPLUS</searchString>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$value == 1</expression>
+                                        <actionsWhenFalse>
+                                            <item actionId="FailTest">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message>{auto_message_false}</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="AbortExecution">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                        </actionsWhenFalse>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+        </item>
+        <item name="setInterface100MegElectrical" isPublic="true">
+            <steps>
+                <item guid="8841ce86-5a70-440c-b43e-d889d3996d05" action="command" session="$session">
+                    <command>
+                        <body>atteroset Physical LineRate 100BASET</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="f778b6dc-b1c8-4253-9ab7-ee70881707e0" action="command" session="$session">
+                    <command>
+                        <body>atteroset Physical LineInterface ELECTRICAL</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="f6b9b48f-c766-43b3-bac9-9474e1b016fa" action="command" session="$session">
+                    <command>
+                        <body>atteroget Physical LineRate</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="contains">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                        <searchString>100BASET</searchString>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$value == 1</expression>
+                                        <actionsWhenFalse>
+                                            <item actionId="FailTest">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message>{auto_message_false}</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="AbortExecution">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                        </actionsWhenFalse>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="b09572d3-5179-4913-a522-2f4f5b30a051" action="command" session="$session">
+                    <command>
+                        <body>atteroget Physical LineInterface</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="contains">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                        <searchString>ELECTRICAL</searchString>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$value == 1</expression>
+                                        <actionsWhenFalse>
+                                            <item actionId="FailTest">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message>{auto_message_false}</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="AbortExecution">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                        </actionsWhenFalse>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+        </item>
+        <item name="setImpairmentStart" isPublic="true">
+            <steps>
+                <item guid="c63503b2-05ce-4f79-be9d-83f4f84754ef" action="command" session="$session">
+                    <command>
+                        <body>startimpairment</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="contains">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                        <searchString>ERROR</searchString>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$value == 1</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="FailTest">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message> The Command Failed.</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message> Exiting Test Case Now.</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="AbortExecution">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                        </actionsWhenTrue>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+        </item>
+        <item name="setImpairmentStop" isPublic="true">
+            <steps>
+                <item guid="19cc49e4-6830-453f-9f31-c59142b7a921" action="command" session="$session" normalOffset="0.002" estimatedStepExecutionTime="0.001">
+                    <command>
+                        <body>stopimpairment</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="contains">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                        <searchString>ERROR</searchString>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$value == 1</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="FailTest">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message> The Command Failed.</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message> Exiting Test Case Now.</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="AbortExecution">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                        </actionsWhenTrue>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+        </item>
+        <item name="setImpairmentsClearAll" isPublic="true">
+            <steps>
+                <item guid="a3d52602-c624-44e5-9d0f-f4590f8bc6f2" action="command" session="$session">
+                    <command>
+                        <body>atteroset Impair ClearAll TRUE</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="contains">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                        <searchString>ERROR</searchString>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$value == 1</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="FailTest">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message> The Command Failed.</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message> Exiting Test Case Now.</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="AbortExecution">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                        </actionsWhenTrue>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+        </item>
+        <item name="setImpairmentsClearProfile" isPublic="true">
+            <steps>
+                <item guid="67c7efe5-a768-462f-afc2-1f82bc205080" action="command" session="$session">
+                    <command>
+                        <body>atteroset Impair #$profile Clear</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="contains">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                        <searchString>ERROR</searchString>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$value == 1</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="FailTest">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message> The Command Failed.</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message> Exiting Test Case Now.</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="AbortExecution">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                        </actionsWhenTrue>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <arguments>
+                <item name="profile">
+                    <defaultValue>7</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="setFlowFilterImport" isPublic="true">
+            <steps>
+                <item guid="4c275d00-aa39-4472-98bd-ee11efd0ce69" action="command" session="$session">
+                    <command>
+                        <body> atteroset Filter Import &quot;$pathName$filterName&quot;</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="contains">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                        <searchString>ERROR</searchString>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$value == 1</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="FailTest">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message> The Command Failed.</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message> Exiting Test Case Now.</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="AbortExecution">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                        </actionsWhenTrue>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <arguments>
+                <item name="filterName">
+                    <defaultValue>flowfilter-vxlan.xml</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="pathName">
+                    <defaultValue>C:/Users/igibbs/iTest_6.1_workspace/di_attero/configs/</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="getInterfaceMediaType" isPublic="true">
+            <steps>
+                <item guid="cf9566d9-9f71-4ee2-8395-58d19c86f0cf" action="command" session="$session">
+                    <command>
+                        <body>atteroget Physical LineInterface</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>result()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>mediaType</storageLocation>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="7ceaa83a-3510-4088-8d51-4047a1d21cdd" action="write">
+                    <command>
+                        <body>Media: $mediaType</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+        </item>
+        <item name="getInterfaceSfpType" isPublic="true">
+            <steps>
+                <item guid="574f33a0-6103-4811-af04-7852dcb50b19" action="command" session="$session">
+                    <command>
+                        <body>atteroget Physical xFPSelect</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>result()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>sfpType</storageLocation>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="6c09babd-1a5a-4ff3-b3c0-1277e337c340" action="write">
+                    <command>
+                        <body>SFP: $sfpType</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+        </item>
+        <item name="getInterfaceSettings" isPublic="true">
+            <steps>
+                <item guid="f87006a1-897f-421e-b057-8cea71b274b1" action="getInterfaceSpeed" session="$session">
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>Speed()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>interfaceSpeed</storageLocation>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="ede2b437-8fc4-4443-bd14-f5077c298e39" action="getInterfaceMediaType" session="$session">
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>Media()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>mediaType</storageLocation>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="268e1a8c-8e8c-4b4a-ad1e-ff441685b97e" action="getInterfaceSfpType" session="$session">
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>SFP()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>sfpType</storageLocation>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="f1c33a7c-efbd-41e1-bcaa-0792ed8d26ef" action="write">
+                    <command>
+                        <body>Speed: $interfaceSpeed\\n</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="85fc9de1-f19a-4833-967c-3265bff8b2d4" action="write">
+                    <command>
+                        <body>Media: $mediaType\\n</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="cdfc02b7-4fcf-472c-a754-9665a720786e" action="write">
+                    <command>
+                        <body>SFP: $sfpType</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+        </item>
+        <item name="getInterfaceSpeed" isPublic="true">
+            <steps>
+                <item guid="34b238d9-19ee-47a7-a8e1-acfff5db5fa0" action="command" session="$session">
+                    <command>
+                        <body>atteroget Physical LineRate</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>group1()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>interfaceSpeed</storageLocation>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="47564764-8585-404b-af9d-7e7724801a13" action="write">
+                    <command>
+                        <body>Speed: $interfaceSpeed</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+        </item>
+        <item name="setDelayLoop" isPublic="true">
+            <steps>
+                <item guid="aa0c7c42-1b32-45ed-9035-20c50b89a2bd" action="comment">
+                    <command>
+                        <body>Set delay to increase via while loop. Half the delay gets set to profile link 0 and half to link 1</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="9da8296d-f528-408e-8a2e-af670e7d0fca" action="comment">
+                    <command>
+                        <body>No support for choosing other filters or unidirectional delay</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="ea4d34ac-e43c-4415-8192-6c4195b27dd1" action="eval">
+                    <command>
+                        <body>set rtd $startingDelay</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="5f940c49-1941-4af7-9219-33d500c8e410" action="eval">
+                    <command>
+                        <body>set impairstart 1</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="ab985760-2d78-473c-9b1f-5f43fb673e47" action="while">
+                    <command>
+                        <body>$rtd &lt;= $endingDelay</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="0a562665-e217-4693-862e-07b79a4de39d" action="eval">
+                            <command>
+                                <body>set delay [expr $rtd * 1000 / 2]</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="d0bf2232-ec68-4739-833e-89fac4b812f5" action="command" session="$session" normalOffset="0.002" estimatedStepExecutionTime="0.001">
+                            <command>
+                                <body>atteroset Impair ImpairProfile #0 #7 FixedDelay $delay</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="3ddc421b-ef43-4ce3-831c-3fb5de55a00f" action="command" session="$session" normalOffset="0.002" estimatedStepExecutionTime="0.001">
+                            <command>
+                                <body>atteroset Impair ImpairProfile #1 #7 FixedDelay $delay</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="fc2acaec-758a-4c3a-b877-69532096cb5c" action="while">
+                            <command>
+                                <body>$impairstart == 1</body>
+                            </command>
+                            <nestedSteps>
+                                <item guid="62902fb4-9bbe-450f-9266-3d13317715b2" action="command" session="$session" normalOffset="0.002" estimatedStepExecutionTime="0.034">
+                                    <command>
+                                        <body>startimpairment</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                                <item guid="179623c8-adbe-49bb-8587-b254732e3d0f" action="eval">
+                                    <command>
+                                        <body>incr impairstart</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                    <useFieldsInCommand>false</useFieldsInCommand>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="c3dd2de4-3504-4980-ba8f-3918b2012c27" action="eval">
+                            <command>
+                                <body>puts $rtd</body>
+                            </command>
+                            <postProcessing>
+                                <analysisRules>
+                                    <item>
+                                        <extractorInfo extractorType="query">
+                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                <query>group1()</query>
+                                            </extractorProperties>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="message">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.MessageProcessorPropertyGroup" severity="Information">
+                                                <message>The Current Configured RTD is: &quot;{value}&quot;</message>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                </analysisRules>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="8a5e2e72-e22d-461d-84dd-65d936f2f6be" action="comment">
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="a12aecae-57aa-4b1c-a0b7-f4cace0648f7" action="sleep">
+                            <command>
+                                <body>$stepDuration</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                        <item guid="e50a14c0-becb-49f8-9b97-dcb607563890" action="eval">
+                            <command>
+                                <body>incr rtd $step</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="52b3590b-e611-4079-8f12-1098ac929e16" action="comment">
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="none">
+                                    <extractorProperties type="com.fnfr.svt.documents.EmptyExtractorPropertyGroup"/>
+                                </extractorInfo>
+                                <processorInfo ruleType="message">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.MessageProcessorPropertyGroup" severity="Information">
+                                        <message> Loop Finished. Clear Impairments if Necessary</message>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <arguments>
+                <item name="startingDelay">
+                    <defaultValue>1</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="endingDelay">
+                    <defaultValue>20</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="step">
+                    <defaultValue>1</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="stepDuration">
+                    <defaultValue>30</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="setDelayRtd" isPublic="true">
+            <steps>
+                <item guid="b8308d99-fedb-41f7-a4a1-921275e06475" action="comment">
+                    <command>
+                        <body>Set round trip delay. Half of the delay on link 0 and half on link 1</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="134fdcbb-fe5a-4819-8d7d-b2a45ca9dae4" action="eval">
+                    <command>
+                        <body>set delay [expr $rtd * 1000 / 2]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="c0e043a5-d106-44de-84ed-f8ee6fa07702" action="command" session="$session">
+                    <command>
+                        <body>atteroset Impair ImpairProfile #0 #7 FixedDelay $delay</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="f06fe6f5-f115-4b70-88e0-0f86f12ab926" action="command" session="$session">
+                    <command>
+                        <body>atteroset Impair ImpairProfile #1 #7 FixedDelay $delay</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <arguments>
+                <item name="rtd">
+                    <description>Round Trip Delay in milliseconds</description>
+                    <defaultValue>1</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="setDelayUnidirectional" isPublic="true">
+            <steps>
+                <item guid="450a400c-698d-415c-9040-1986cacc7aef" action="comment">
+                    <command>
+                        <body>Set delay in milliseconds using port and profile as inputs</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="122f7525-f6aa-4d65-8e2e-9c2a99d6d206" action="eval">
+                    <command>
+                        <body>set delay [expr $delay * 1000]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="4d5fccfd-d60f-4d18-b973-73c25884fa23" action="command" session="$session">
+                    <command>
+                        <body>atteroset Impair ImpairProfile #$port #$profile FixedDelay $delay</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <arguments>
+                <item name="delay">
+                    <description>Delay in Milliseconds</description>
+                    <defaultValue>10</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="port">
+                    <description>Port 0 or Port 1</description>
+                    <defaultValue>0</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="profile">
+                    <description>Profile 0-7. 7 is the catch-all filter</description>
+                    <defaultValue>7</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="setBandwidthShaper" isPublic="true">
+            <steps>
+                <item guid="d1f54680-36ad-4d94-89f6-ad7a0cc80a7c" action="comment">
+                    <command>
+                        <body>Set bandwidth shaper bidirectionally</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="786391aa-5428-4578-bdc6-1ce832c6e317" action="eval">
+                    <command>
+                        <body>set cir [expr $committedRate * 1000]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="24365e82-b694-4a47-950f-af04dd1516a6" action="command" session="$session">
+                    <command>
+                        <body>atteroset Impair BandwidthControl #7 Shaper Enable TRUE</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="9438abd8-588a-4ed2-bd51-797a4e86caa1" action="command" session="$session">
+                    <command>
+                        <body>atteroset Impair BandwidthControl #7 Shaper CommittedBurstTol $committedBurstTol</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="d23584cf-4d63-49e8-a2e6-c19913adf02e" action="command" session="$session">
+                    <command>
+                        <body>atteroset Impair BandwidthControl #7 Shaper ExcessBurstTol $excessBurstTol</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="a499ab10-6fb3-43c8-934d-ba211fd9788b" action="command" session="$session">
+                    <command>
+                        <body>atteroset Impair BandwidthControl #7 Shaper CommittedRate $cir</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="f3766d5a-10b1-4364-9328-cb0b392fede4" action="command" session="$session">
+                    <command>
+                        <body>atteroset Impair BandwidthControl #15 Shaper Enable TRUE</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="f298fdd9-e1c0-41fc-8683-d08c8168988d" action="command" session="$session">
+                    <command>
+                        <body>atteroset Impair BandwidthControl #15 Shaper CommittedBurstTol $committedBurstTol</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="74922bf5-6487-47d5-945f-cb1d33903ec2" action="command" session="$session">
+                    <command>
+                        <body>atteroset Impair BandwidthControl #15 Shaper ExcessBurstTol $excessBurstTol</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="891aedc8-22a3-41f9-85de-a8376e793ba5" action="command" session="$session">
+                    <command>
+                        <body>atteroset Impair BandwidthControl #15 Shaper CommittedRate $cir</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="7cf29611-c04a-47e3-b7ac-35df8dff46c0" action="command" session="$session">
+                    <command>
+                        <body>atteroset Measurement Count Reset TRUE</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <arguments>
+                <item name="committedRate">
+                    <description>Committed Rate in Mbps</description>
+                    <defaultValue>100</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="committedBurstTol">
+                    <description>In bytes</description>
+                    <defaultValue>64</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="excessBurstTol">
+                    <description>In bytes</description>
+                    <defaultValue>0</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="setBandwidthShaperUnidirectional" isPublic="true">
+            <steps>
+                <item guid="3ef6f579-ae15-4cb8-b738-bd0c90e49835" action="comment">
+                    <command>
+                        <body>Set bandwidth shaper unidirectionally per profile</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="58cad7ae-39ff-40ac-9816-b125364b94aa" action="eval">
+                    <command>
+                        <body>set cir [expr $committedRate * 1000]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="fc6b72e2-a5c2-48d2-816c-d1f78c3b0c97" action="command" session="$session">
+                    <command>
+                        <body>atteroset Impair BandwidthControl #$profile Shaper CommittedBurstTol $committedBurstTol</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="658bd33a-d546-4f12-9169-9fb4c718c30f" action="command" session="$session">
+                    <command>
+                        <body>atteroset Impair BandwidthControl #$profile Shaper ExcessBurstTol $excessBurstTol</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="b8d8a78c-62f0-4c65-9d94-3c280e488c1c" action="command" session="$session">
+                    <command>
+                        <body>atteroset Impair BandwidthControl #$profile Shaper CommittedRate $cir</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="bff0fd3d-4972-4bdb-a1fc-f0bf8b2ba0f4" action="command" session="$session">
+                    <command>
+                        <body>atteroset Impair BandwidthControl #$profile Shaper Enable TRUE</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <arguments>
+                <item name="committedRate">
+                    <description>Committed Rate in Mbps</description>
+                    <defaultValue>100</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="committedBurstTol">
+                    <description>In bytes</description>
+                    <defaultValue>64</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="excessBurstTol">
+                    <description>In bytes</description>
+                    <defaultValue>0</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="profile">
+                    <defaultValue>7</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="setBandwidthPolicer" isPublic="true">
+            <steps>
+                <item guid="1b41d39c-db27-41a6-9880-6aa93dd8a3a6" action="comment">
+                    <command>
+                        <body>Set bandwidth policer bidirectionally on the catch-all profiles</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="55025c73-c27b-4bb9-9290-574bdc2a4f96" action="eval">
+                    <command>
+                        <body>set cir [expr $committedRate * 1000]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="d2c10de5-7188-43c8-8b3b-505272324acc" action="eval">
+                    <command>
+                        <body>set eir [expr $excessRate * 1000]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="643dab97-a660-46de-9aac-1085e88d4429" action="command" session="$session">
+                    <command>
+                        <body>atteroset Impair BandwidthControl #7 Policer CommittedBurstTol $committedBurstTol</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="4af439fd-cbb3-4431-aa01-195e21f31ffd" action="command" session="$session">
+                    <command>
+                        <body>atteroset Impair BandwidthControl #7 Policer ExcessBurstTol $excessBurstTol</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="1a6c57a7-9946-4e7f-955b-98acc83d2f13" action="command" session="$session">
+                    <command>
+                        <body>atteroset Impair BandwidthControl #7 Policer CommittedRate $cir</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="926b94f0-43c1-4983-9780-d97a34739e80" action="command" session="$session">
+                    <command>
+                        <body>atteroset Impair BandwidthControl #7 Policer ExcessRate $eir</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="d1b70da4-d246-4766-8b89-369099f578b4" action="command" session="$session">
+                    <command>
+                        <body>atteroset Impair BandwidthControl #15 Policer CommittedBurstTol $committedBurstTol</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="e20e91a0-a4b4-4308-a92e-c1e7d0f16064" action="command" session="$session">
+                    <command>
+                        <body>atteroset Impair BandwidthControl #15 Policer ExcessBurstTol $excessBurstTol</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="63f73eb0-160a-44a4-8eb9-921381849de7" action="command" session="$session">
+                    <command>
+                        <body>atteroset Impair BandwidthControl #15 Policer CommittedRate $cir</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="5ba41a79-cd51-43ef-8db0-2ee4a268cf2a" action="command" session="$session">
+                    <command>
+                        <body>atteroset Impair BandwidthControl #15 Policer ExcessRate $eir</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="421cff5f-d1a5-4b00-9353-1092de1707f1" action="command" session="$session">
+                    <command>
+                        <body>atteroset Measurement Count Reset TRUE</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="6eeb645d-3125-4881-9ebe-f9b7a551beba" action="command" session="$session">
+                    <command>
+                        <body>atteroset Impair BandwidthControl #7 Policer Enable TRUE</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="21e75585-1b81-4288-b20e-ba02b8ee102a" action="command" session="$session">
+                    <command>
+                        <body>atteroset Impair BandwidthControl #15 Policer Enable TRUE</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <arguments>
+                <item name="committedBurstTol">
+                    <description>In bytes</description>
+                    <defaultValue>1500</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="excessBurstTol">
+                    <description>In Bytes</description>
+                    <defaultValue>64</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="committedRate">
+                    <description>in Mbps</description>
+                    <defaultValue>500</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="excessRate">
+                    <description>In Mbps</description>
+                    <defaultValue>100</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="setBandwidthPolicerUnidirectional" isPublic="true">
+            <steps>
+                <item guid="ae12ed3c-c72e-4cfc-b932-4646150f4249" action="comment">
+                    <command>
+                        <body>Set bandwidth policer unidirectional per profile</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="1491b647-26f8-4e92-9522-e9754502a7f0" action="eval">
+                    <command>
+                        <body>set cir [expr $committedRate * 1000]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="dc5cb92e-14d2-4d32-8fa6-6152a26798bb" action="eval">
+                    <command>
+                        <body>set eir [expr $excessRate * 1000]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="20255844-a9f9-493b-a1aa-a0b26e56dffa" action="command" session="$session">
+                    <command>
+                        <body>atteroset Impair BandwidthControl #$profile Policer CommittedBurstTol $committedBurstTol</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="86ed64a8-21ff-4f02-bb7a-b2ab10b8bce5" action="command" session="$session">
+                    <command>
+                        <body>atteroset Impair BandwidthControl #$profile Policer ExcessBurstTol $excessBurstTol</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="0ecde0c8-9390-40a3-aab5-1d419045d971" action="command" session="$session">
+                    <command>
+                        <body>atteroset Impair BandwidthControl #$profile Policer CommittedRate $cir</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="065a21ba-e3ba-4f0f-8163-57a709cf0608" action="command" session="$session">
+                    <command>
+                        <body>atteroset Impair BandwidthControl #$profile Policer ExcessRate $eir</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="57503533-0873-4a22-9c19-857594a8bcb0" action="command" session="$session">
+                    <command>
+                        <body>atteroset Impair BandwidthControl #$profile Policer Enable TRUE</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <arguments>
+                <item name="committedBurstTol">
+                    <description>In bytes</description>
+                    <defaultValue>1500</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="excessBurstTol">
+                    <description>In Bytes</description>
+                    <defaultValue>64</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="committedRate">
+                    <description>in Mbps</description>
+                    <defaultValue>500</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="excessRate">
+                    <description>In Mbps</description>
+                    <defaultValue>100</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="profile">
+                    <defaultValue>7</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="setFrameLossRate" isPublic="true">
+            <steps>
+                <item guid="a83d2381-3c3f-40e2-844c-d927f64f1f9d" action="comment">
+                    <command>
+                        <body>Set Unidirectional Frame Loss as percentage on specified profile</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="2585128c-d611-419e-9a06-5035ac2d2b20" action="command" session="$session">
+                    <command>
+                        <body>atteroset Impair Corruption #$profile Lost Distribution Type PERCENT</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="contains">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                        <searchString>ERROR</searchString>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$value == 1</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="FailTest">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message> The Command Failed.</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message> Exiting Test Case Now.</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="AbortExecution">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                        </actionsWhenTrue>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="b815d10e-cfaa-4aee-8c73-d73cb93af4d5" action="command" session="$session">
+                    <command>
+                        <body>atteroset Impair Corruption #$profile Lost Distribution Percent $percentLoss</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="contains">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                        <searchString>ERROR</searchString>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$value == 1</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="FailTest">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message> The Command Failed.</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message> Exiting Test Case Now.</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="AbortExecution">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                        </actionsWhenTrue>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="d8a3efe2-df60-450f-a652-de02c992aab5" action="command" session="$session">
+                    <command>
+                        <body>atteroset Impair Corruption #$profile ErrorType Lost TRUE</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="contains">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                        <searchString>ERROR</searchString>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$value == 1</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="FailTest">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message> The Command Failed.</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message> Exiting Test Case Now.</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="AbortExecution">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                        </actionsWhenTrue>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="23f22b3b-93e2-48c4-acb5-54435acd2a09" action="command" session="$session">
+                    <command>
+                        <body>atteroset Measurement Count Reset TRUE</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="contains">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                        <searchString>ERROR</searchString>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$value == 1</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="FailTest">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message> The Command Failed.</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message> Exiting Test Case Now.</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="AbortExecution">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                        </actionsWhenTrue>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <arguments>
+                <item name="percentLoss">
+                    <description>Percentage</description>
+                    <defaultValue>1</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="profile">
+                    <defaultValue>7</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="setFrameLossBurst" isPublic="true">
+            <steps>
+                <item guid="1c0fcd59-3fe3-4510-80fb-cf8cfa9e51e6" action="comment">
+                    <command>
+                        <body>Set Unidirectional Frame Loss burst on specified profile</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="86b45866-ad2f-49e7-9fa3-50676a6619e2" action="command" session="$session">
+                    <command>
+                        <body>atteroset Impair Corruption #$profile Lost Distribution Type BURST</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="790d28cb-7ee1-46e0-9625-f13b9e64e2c3" action="command" session="$session">
+                    <command>
+                        <body>atteroset Impair Corruption #$profile  ErrorType Lost TRUE</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="edd08399-91cb-4279-994b-57375f7178b2" action="command" session="$session">
+                    <command>
+                        <body>atteroset Impair Corruption #$profile  Lost Distribution BurstSize $burstSize</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="900b8f61-17e6-44b4-a88f-3cc83747961b" action="command" session="$session">
+                    <command>
+                        <body>atteroset Measurement Count Reset TRUE</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <arguments>
+                <item name="profile">
+                    <defaultValue>7</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="burstSize">
+                    <defaultValue>1</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="setErroredFramesBurst" isPublic="true">
+            <steps>
+                <item guid="86c4b13d-06a6-4ee9-9073-3b2793d0c9fd" action="comment">
+                    <command>
+                        <body>Set Unidirectional burst of errored frames on specified profile</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="02e9beee-e0f9-446f-adad-780465ce87a4" action="command" session="$session">
+                    <command>
+                        <body>atteroset Impair Corruption #$profile Errored Distribution Type BURST</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="2202c7da-c3ef-46ea-9899-39cb17ecfcdb" action="command" session="$session">
+                    <command>
+                        <body>atteroset Impair Corruption #$profile ErrorType Errored TRUE</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="25229ba0-8d2b-4c67-b5c3-8e1e85fd8bfa" action="command" session="$session">
+                    <command>
+                        <body>atteroset Impair Corruption #$profile Errored Distribution BurstSize $burstSize</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="4c6980a7-166f-4020-96e5-c8ba64f68ed5" action="command" session="$session">
+                    <command>
+                        <body>atteroset Measurement Count Reset TRUE</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <arguments>
+                <item name="profile">
+                    <defaultValue>7</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="burstSize">
+                    <defaultValue>1</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="setErroredFrameRate" isPublic="true">
+            <steps>
+                <item guid="960a2546-a684-4c57-83c2-57d26df53f7e" action="comment">
+                    <command>
+                        <body>Set Unidirectional Errored Frame Rate as percentage on specified profile</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="de137d66-867f-4a10-aded-b899dd3300fe" action="command" session="$session">
+                    <command>
+                        <body>atteroset Impair Corruption #$profile ErrorType Errored TRUE</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="cb2ee842-fda0-46a2-995d-3caa458ecd05" action="command" session="$session">
+                    <command>
+                        <body>atteroset Impair Corruption #$profile Errored Distribution Type PERCENT</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="42201205-55ff-4c05-afee-bc624d58f893" action="command" session="$session">
+                    <command>
+                        <body>atteroset Impair Corruption #$profile Errored Distribution Percent $percentErrored</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="35e95742-461a-4953-82b1-9b092fbd3022" action="command" session="$session">
+                    <command>
+                        <body>atteroset Measurement Count Reset TRUE</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <arguments>
+                <item name="profile">
+                    <defaultValue>7</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="percentErrored">
+                    <defaultValue>1</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="setLinkFlapConstant" isPublic="true">
+            <steps>
+                <item guid="a134cf3d-e048-4767-80f8-5819f7de1b71" action="comment">
+                    <command>
+                        <body>Turns the link off after the Start Impairment command. The link turns back on with the Stop Impairment command</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="664f4762-cfb8-4183-ac61-1d7a79fcabd8" action="comment">
+                    <command>
+                        <body>0 Based. 0 for link 1. 1 for link 2</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="0ddd96b7-3c52-4c22-b0ac-43c4378f50b7" action="command" session="$session">
+                    <command>
+                        <body>atteroset Impair Corruption Physical #$link Type LINK_FLAP</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="5a62ff23-6fad-4a67-b996-78a393706b25" action="command" session="$session">
+                    <command>
+                        <body>atteroset Impair Corruption Physical #$link Enable TRUE</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="1b70f186-661d-4886-9533-f2240d9ddbc2" action="command" session="$session">
+                    <command>
+                        <body>atteroset Impair Corruption Physical #$link Distribution Type CONSTANT</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="fe21af27-507c-436e-8269-dabf45925b31" action="command" session="$session">
+                    <command>
+                        <body>atteroset Impair Corruption Physical #$link Distribution Periodicity CONTINUOUS</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="f274c3e6-b9e3-472e-b027-051432d1ed34" action="command" session="$session">
+                    <command>
+                        <body>atteroset Measurement Count Reset TRUE</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <arguments>
+                <item name="link">
+                    <description>0 or 1</description>
+                    <defaultValue>0</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="setLinkFlapDuration" isPublic="true">
+            <steps>
+                <item guid="1265757e-2498-44ce-9f35-e2f7be6de614" action="comment">
+                    <command>
+                        <body>Turns the specified link off for the specified number of seconds</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="3e58da0b-bf7d-43b9-9fea-813b7a7c70c4" action="command" session="$session">
+                    <command>
+                        <body>atteroset Impair Corruption Physical #$link Enable TRUE</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="12ae515c-ddb3-4dac-81f7-3b1b132dfc54" action="command" session="$session">
+                    <command>
+                        <body>atteroset Impair Corruption Physical #$link Type LINK_FLAP</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="ffc01cd1-3765-475d-827d-d84e023c1f09" action="command" session="$session">
+                    <command>
+                        <body>atteroset Impair Corruption Physical #$link Distribution Type CONSTANT</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="278b7ff8-3cfe-483a-8ee8-0b8d97ea2aa1" action="command" session="$session">
+                    <command>
+                        <body>atteroset Impair Corruption Physical #$link Distribution Periodicity DURATION</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="aaa54587-c919-4a96-b2c8-ba61f5b77521" action="command" session="$session">
+                    <command>
+                        <body>atteroset Impair Corruption Physical #$link Distribution Duration $duration</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="dfea6149-4b0d-4f18-8d96-ebebf9fd9883" action="command" session="$session">
+                    <command>
+                        <body>atteroset Measurement Count Reset TRUE</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <arguments>
+                <item name="link">
+                    <description>0 or 1</description>
+                    <defaultValue>0</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="duration">
+                    <description>Flap Duration in Seconds</description>
+                    <defaultValue>0.5</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="setDuplicateFramesBurst" isPublic="true">
+            <steps>
+                <item guid="f1fd19c8-3613-4f4c-912f-1078ec9cce39" action="comment">
+                    <command>
+                        <body>Sets the specified profile to burst the specified number of duplicate frames</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="273e9e1b-030a-467a-9301-0b1ca85ee0ff" action="command" session="$session">
+                    <command>
+                        <body>atteroset Impair Corruption #$profile Repeated Distribution Type BURST</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="307f5afa-443a-47e1-a38c-392344f13ba8" action="command" session="$session">
+                    <command>
+                        <body>atteroset Impair Corruption #$profile ErrorType Repeated TRUE</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="e201ca53-6a4e-4193-8229-4a81e3967cc6" action="command" session="$session">
+                    <command>
+                        <body>atteroset Impair Corruption #$profile Repeated Distribution BurstSize $burstSize</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="c22a70eb-4bdc-40be-a433-0c02b50bb70b" action="command" session="$session">
+                    <command>
+                        <body>atteroset Measurement Count Reset TRUE</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <arguments>
+                <item name="profile">
+                    <defaultValue>7</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="burstSize">
+                    <description>number of duplicate frames</description>
+                    <defaultValue>1</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="setDuplicateFramesRate" isPublic="true">
+            <steps>
+                <item guid="79db6ba4-16fe-4e39-98f6-6b68b3d6c95b" action="comment">
+                    <command>
+                        <body>Sets the specified profile to send duplicate frames at the specified percentage</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="96ae1070-1452-4e13-a850-1ec9e04c5d39" action="command" session="$session">
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="60595dea-3c9e-4c4e-abb6-6169ffe9e90a" action="command" session="$session">
+                    <command>
+                        <body>atteroset Impair Corruption #$profile Repeated Distribution Type PERCENT</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="ec57645f-18c8-4336-a30a-b0c15b1c6d64" action="command" session="$session">
+                    <command>
+                        <body>atteroset Impair Corruption #$profile ErrorType Repeated TRUE</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="dfe2830c-d23c-449d-bcb4-adfd9c430c55" action="command" session="$session">
+                    <command>
+                        <body>atteroset Impair Corruption #$profile Repeated Distribution Percent $percent</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="41e4e1d1-4f33-4714-8404-42cbf9c2aeb2" action="command" session="$session">
+                    <command>
+                        <body>atteroset Measurement Count Reset TRUE</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <arguments>
+                <item name="profile">
+                    <defaultValue>7</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="percent">
+                    <defaultValue>0.1</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="setReorderedFramesBurst" isPublic="true">
+            <steps>
+                <item guid="258e32d9-53f8-43f0-8745-bce3b617bb35" action="comment">
+                    <command>
+                        <body>Sets the specified profile to send the specified number of reordered frames</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="d266e373-8ec0-4978-8948-cb0a6b96a72d" action="command" session="$session">
+                    <command>
+                        <body>atteroset Impair Corruption #$profile Misordered Distribution Type BURST</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="d535b34b-9700-4d8d-babd-e8475fa974b7" action="command" session="$session">
+                    <command>
+                        <body>atteroset Impair Corruption #$profile ErrorType Misordered TRUE</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="b976114c-89fb-409a-92e2-77aaec39aa7e" action="command" session="$session">
+                    <command>
+                        <body>atteroset Impair Corruption #$profile Misordered Distribution BurstSize $burstSize</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="3de4f970-4c66-4072-b547-ebb807f40d70" action="command" session="$session">
+                    <command>
+                        <body>atteroset Measurement Count Reset TRUE</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <arguments>
+                <item name="profile">
+                    <defaultValue>7</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="burstSize">
+                    <defaultValue>1</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="setReorderedFramesRate" isPublic="true">
+            <steps>
+                <item guid="8c587d59-b027-417c-b320-797f88c855fe" action="comment">
+                    <command>
+                        <body>Sets the specified profile to send duplicate frames at the specified percentage</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="75451d79-bf75-4251-a8de-dc51ef726093" action="command" session="$session">
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="5fa7dacf-5a77-4f94-9499-f7d6a23b2dd5" action="command" session="$session">
+                    <command>
+                        <body>atteroset Impair Corruption #$profile Misordered Distribution Type PERCENT</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="1c5b9b8a-8c61-4e0e-973f-45077b6c2d3e" action="command" session="$session">
+                    <command>
+                        <body>atteroset Impair Corruption #$profile MisorderDepth 1</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="49cec5ce-c502-49ce-924d-f9e570637010" action="command" session="$session">
+                    <command>
+                        <body>atteroset Impair Corruption #$profile Misordered Distribution Percent $percent</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="faf573f8-d119-4cde-9ab7-307cc3d8f411" action="command" session="$session">
+                    <command>
+                        <body>atteroset Measurement Count Reset TRUE</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <arguments>
+                <item name="profile">
+                    <defaultValue>7</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="percent">
+                    <defaultValue>1.0</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="setCaptureStart" isPublic="true">
+            <steps>
+                <item guid="5d145daf-40b9-4e90-9bea-a770a7076d85" action="command" session="$session">
+                    <command>
+                        <body>startpacketcapture</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="contains">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                        <searchString>ERROR</searchString>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$value == 1</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="FailTest">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message> The Command Failed.</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message> Exiting Test Case Now.</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="AbortExecution">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                        </actionsWhenTrue>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+        </item>
+        <item name="setCaptureStop" isPublic="true">
+            <steps>
+                <item guid="d82dd5de-966c-49d8-8905-099e38df6775" action="command" session="$session">
+                    <command>
+                        <body>stopcapture</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="contains">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                        <searchString>ERROR</searchString>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$value == 1</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="FailTest">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message> The Command Failed.</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message> Exiting Test Case Now.</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="AbortExecution">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                        </actionsWhenTrue>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+        </item>
+        <item name="setCaptureSave" isPublic="true">
+            <steps>
+                <item guid="e57b3fac-4c21-4ca2-9eb7-de97ac7b7aef" action="command" session="$session">
+                    <command>
+                        <body>store &quot;$pathName$fileName&quot;</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="contains">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                        <searchString>ERROR</searchString>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$value == 1</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="FailTest">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message> The Command Failed.</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="DeclareExecutionIssue">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.ExecutionIssuePropertyGroup">
+                                                    <message> Exiting Test Case Now.</message>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="AbortExecution">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                        </actionsWhenTrue>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <arguments>
+                <item name="pathName">
+                    <defaultValue>C:/Users/igibbs/iTest_6.1_workspace/di_attero/configs/</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="fileName">
+                    <description>&lt;filename&gt;.cpd</description>
+                    <defaultValue>&lt;filename&gt;.cpd</defaultValue>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+    </procedures>
+</testCase>

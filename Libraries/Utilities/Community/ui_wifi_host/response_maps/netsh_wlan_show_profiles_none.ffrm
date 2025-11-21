@@ -1,0 +1,85 @@
+<?xml version="1.0" ?><ResponseMap version="5.2.0.2567c16">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="command">
+                <command>
+                    <body>netsh wlan show profiles</body>
+                </command>
+            </action>
+            <responseBody>
+Profiles on interface Wi-Fi:
+
+Group policy profiles (read only)
+---------------------------------
+    &lt;None&gt;
+
+User profiles
+-------------
+    &lt;None&gt;
+
+
+[Wed Sep 09 - 09:06:04] ~
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;prompt&gt;[spirent.wifi-host] $ &lt;/prompt&gt;
+    &lt;echo&gt;netsh wlan show profiles&lt;/echo&gt;
+    &lt;promptName&gt;prompt1&lt;/promptName&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.3</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="profileLine">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>All User Profile\\s+:\\s+</regex>
+                            <start>0</start>
+                            <end>23</end>
+                        </item>
+                        <item name="profileName">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>23</start>
+                            <end>41</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>All User Profile     : anytext0001-5G</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+            </regexMaps>
+        </item>
+        <item type="com.fnfr.svt.mapping.table.TabularMapperProperties"/>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="netsh wlan show profiles" priority="51">
+        <application>
+            <item>com.fnfr.svt.applications.ssh</item>
+        </application>
+    </applicabilityProperties>
+    <aliases>
+        <item name="profileCount">
+            <queryFormatString>string(count(.//profileName))</queryFormatString>
+        </item>
+    </aliases>
+</ResponseMap>

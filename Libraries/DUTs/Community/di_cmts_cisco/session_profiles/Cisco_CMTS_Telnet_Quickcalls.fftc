@@ -1,0 +1,815 @@
+<?xml version="1.0"?>
+<testCase version="6.1.0.e2e4ec0">
+    <general>
+        <sessionClass includeTestCase="true" sessionType="Cisco_CMTS_Telnet_Base.ffsp"/>
+    </general>
+    <execution>
+        <parameters version="6.1.0.e2e4ec0">
+            <parameters escape="true">
+                <parameters xmlns:pt="http://www.fnfr.com/schemas/parameterTree">
+                    <ciscoCmtsUsername>spirent</ciscoCmtsUsername>
+                    <ciscoCmtsPassword pt:mask="true">2h0un5z8FFGRWMInuHAVxg==</ciscoCmtsPassword>
+                </parameters>
+            </parameters>
+        </parameters>
+    </execution>
+    <procedures>
+        <item name="main">
+            <steps>
+                <item guid="5cc8249a-797b-4d0d-97b2-bcd6e1a7d21d" action="comment">
+                    <command>
+                        <body>quickcall library</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+        </item>
+        <item name="login" isPublic="true">
+            <description>Login for Cisco CMTS</description>
+            <steps>
+                <item guid="ac3455fc-3769-4f70-a6d9-754576af5526" action="command" session="$session" normalOffset="15.466" estimatedStepExecutionTime="0.013">
+                    <command>
+                        <body>[param ciscoCmtsUsername]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                        <completionProperties expectedIdleTime="3.15" expectedIdleTime.inherit="false"/>
+                    </applicationProperties>
+                </item>
+                <item guid="57f675aa-da2b-4520-a5ec-e94766c142cb" action="command" session="$session" normalOffset="4.112" estimatedStepExecutionTime="0.022">
+                    <command>
+                        <body>[param ciscoCmtsPassword]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+            </steps>
+            <version>1.0</version>
+            <multilineDescription>Logs in to a Cisco CMTS telnet session.</multilineDescription>
+        </item>
+        <item name="waitForOnline" isPublic="true">
+            <description>Wait for cable modem to come online for Cisco CMTS</description>
+            <steps>
+                <item guid="05fa8529-492f-4120-9fb9-9b3cfce31a0d" action="eval">
+                    <command>
+                        <body>set online 0</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="5514e1cd-2fd2-41bb-9630-794b5c3b6f08" action="for">
+                    <command>
+                        <body>{set i 0} {$i &lt; $timeout} {set i [expr $i + $interval]}</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="7fb10a6c-cd97-49f1-92a7-a138f23f40c6" action="command" session="$session" normalOffset="33.836" estimatedStepExecutionTime="0.208">
+                            <command>
+                                <body>show cable modem $cmMac</body>
+                            </command>
+                            <postProcessing>
+                                <analysisRules>
+                                    <item>
+                                        <extractorInfo extractorType="contains">
+                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                                <searchString>not registered</searchString>
+                                            </extractorProperties>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="assert">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                <expression>$value == 1</expression>
+                                                <actionsWhenTrue>
+                                                    <item actionId="SkipRemainingRules">
+                                                        <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                    </item>
+                                                </actionsWhenTrue>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                    <item>
+                                        <extractorInfo extractorType="query">
+                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                                <query>MAC_State_all()</query>
+                                            </extractorProperties>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="assert">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                <expression>[string match *online(pt*) $value]</expression>
+                                                <actionsWhenTrue>
+                                                    <item actionId="Eval">
+                                                        <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                            <statement>set online 1</statement>
+                                                        </actionProperties>
+                                                    </item>
+                                                    <item actionId="Break">
+                                                        <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                    </item>
+                                                </actionsWhenTrue>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                </analysisRules>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                                <completionProperties expectedIdleTime="4.144" expectedIdleTime.inherit="false"/>
+                            </applicationProperties>
+                        </item>
+                        <item guid="85cf6f64-4508-46e2-afce-69dc6ac3ea5e" action="sleep">
+                            <command>
+                                <body>$interval</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="96432c85-3bbc-4a16-a68e-b6f83ba0c371" action="if">
+                    <command>
+                        <body>$online == 1</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="530acd63-e9bf-4ef3-aeaa-050c7edc92c7" action="then">
+                            <nestedSteps>
+                                <item guid="1709d706-75d0-4bb9-8dfc-2c5cfcb2461b" action="return">
+                                    <command>
+                                        <body>Online; $i</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="87fc1278-c6dc-4189-986e-d8100e6e7325" action="else">
+                            <nestedSteps>
+                                <item guid="70e083a4-7fd7-4a69-8a64-c397c9daaa85" action="return">
+                                    <command>
+                                        <body>Offline; $i</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <multilineDescription>Checks &apos;show cable modem&apos; on the CMTS for a single modem until that modem shows any form of online(pt) (including online(ptd)).</multilineDescription>
+            <arguments>
+                <item name="cmMac">
+                    <description>MAC address of cable modem under test. </description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="timeout">
+                    <description>Length of time to wait for online status in seconds. Default is 180. </description>
+                    <defaultValue>180</defaultValue>
+                </item>
+                <item name="interval">
+                    <description>Time to wait between checks in seconds. Default value is 10.</description>
+                    <defaultValue>10</defaultValue>
+                </item>
+            </arguments>
+        </item>
+        <item name="waitForOffline" isPublic="true">
+            <description>Wait for cable modem to go offline for Cisco CMTS</description>
+            <steps>
+                <item guid="105b67c0-5762-4d57-907b-9070e316191b" action="eval">
+                    <command>
+                        <body>set offline 0</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="5492399c-caf4-4a7c-b359-a624a454b034" action="for">
+                    <command>
+                        <body>{set i 0} {$i &lt; $timeout} {set i [expr $i + $interval]}</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="8a1acfd6-9b13-4040-8b35-cb02ce4f3b5a" action="command" session="$session" normalOffset="33.836" estimatedStepExecutionTime="0.208">
+                            <command>
+                                <body>show cable modem $cmMac </body>
+                            </command>
+                            <postProcessing>
+                                <analysisRules>
+                                    <item>
+                                        <extractorInfo extractorType="contains">
+                                            <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                                <searchString>online</searchString>
+                                            </extractorProperties>
+                                        </extractorInfo>
+                                        <processorInfo ruleType="assert">
+                                            <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                                <expression>$value == 0</expression>
+                                                <actionsWhenTrue>
+                                                    <item actionId="Eval">
+                                                        <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                            <statement>set offline 1</statement>
+                                                        </actionProperties>
+                                                    </item>
+                                                    <item actionId="Break">
+                                                        <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                                    </item>
+                                                </actionsWhenTrue>
+                                            </ruleProperties>
+                                        </processorInfo>
+                                    </item>
+                                </analysisRules>
+                            </postProcessing>
+                            <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties">
+                                <completionProperties expectedIdleTime="4.144" expectedIdleTime.inherit="false"/>
+                            </applicationProperties>
+                        </item>
+                        <item guid="80c9378b-b93c-4b90-8ae1-93c9c9b6281b" action="sleep">
+                            <command>
+                                <body>$interval</body>
+                            </command>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="82cce187-195d-4017-b1a6-454b6375d1c7" action="if">
+                    <command>
+                        <body>$offline == 1</body>
+                    </command>
+                    <nestedSteps>
+                        <item guid="253ec41b-8ae3-4de9-9991-a9cd9d2ca66d" action="then">
+                            <nestedSteps>
+                                <item guid="a1b751f2-1f8c-4afc-9a8d-f3da570e9bc3" action="return">
+                                    <command>
+                                        <body>Offline; $i</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                        <item guid="71fbba8c-7e21-4d2a-93b8-483ec10f6232" action="else">
+                            <nestedSteps>
+                                <item guid="f9de6022-1630-410c-9f41-ec68d3e0573c" action="return">
+                                    <command>
+                                        <body>Online; $i</body>
+                                    </command>
+                                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                </item>
+                            </nestedSteps>
+                            <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                            <useFieldsInCommand>false</useFieldsInCommand>
+                        </item>
+                    </nestedSteps>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+            </steps>
+            <author>Alex Orr </author>
+            <version>1.0</version>
+            <multilineDescription>Checks &apos;show cable modem&apos; on the CMTS for a single modem until that modem goes offline.</multilineDescription>
+            <arguments>
+                <item name="cmMac">
+                    <description>MAC address of cable modem under test. </description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="timeout">
+                    <description>Length of time in seconds to wait for offline status. Default is 90.
+</description>
+                    <defaultValue>90</defaultValue>
+                </item>
+                <item name="interval">
+                    <description>Time to wait between status checks in seconds. Default is 10.</description>
+                    <defaultValue>5</defaultValue>
+                </item>
+            </arguments>
+        </item>
+        <item name="clearCableCounters" isPublic="true">
+            <description>Clear Cable Counters for Cisco CMTS</description>
+            <steps>
+                <item guid="d7b11961-0a3a-4816-a2a4-0aba310a9d31" action="command" session="$session">
+                    <command>
+                        <body>clear counters $cableInt </body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="c27cb10f-3022-42b8-bd53-f13988418769" action="command" session="$session">
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+            </steps>
+            <author>Alex Orr</author>
+            <version>1.0</version>
+            <multilineDescription>Clears the service flow counters on the CMTS for a single modem. </multilineDescription>
+            <arguments>
+                <item name="cableInt">
+                    <description>Cable interface to clear counters on</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="showCableModem" isPublic="true">
+            <description>Show Cable Modem for Cisco CMTS</description>
+            <steps>
+                <item guid="d23252a2-c0d4-41b8-a6e8-51cbb6638b06" action="command" session="$session">
+                    <command>
+                        <body>show cable modem $cmMac</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="contains">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.ExtractorContainsPropertyGroup">
+                                        <searchString>not registered</searchString>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="assert">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.AssertionPropertyGroup">
+                                        <expression>$value == 1</expression>
+                                        <actionsWhenTrue>
+                                            <item actionId="Eval">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                    <statement>set cmIP 0</statement>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="Eval">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                    <statement>set cableInt 0</statement>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="Eval">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                    <statement>set macState offline</statement>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="Eval">
+                                                <actionProperties type="com.fnfr.svt.execution.builtin.actions.EvalActionPropertyGroup">
+                                                    <statement>set cpeCount 0</statement>
+                                                </actionProperties>
+                                            </item>
+                                            <item actionId="SkipRemainingRules">
+                                                <actionProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                                            </item>
+                                        </actionsWhenTrue>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>IP_Address_all()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>cmIP</storageLocation>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>Interface_all()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>cableInt</storageLocation>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>MAC_State_all()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>macState</storageLocation>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>Num_CPE_all()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>cpeCount</storageLocation>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="6f4138ad-5306-49d5-ab03-9853f0384f86" action="write">
+                    <command>
+                        <body>Show Cable Modem for: $cmMac \\n</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="6147714f-dcc9-4cb2-95f3-91454c489329" action="write">
+                    <command>
+                        <body>Status: $macState \\n</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="54859596-f1f9-4510-9974-11d0b49451d7" action="write">
+                    <command>
+                        <body>CM IP: $cmIP \\n</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="123d2552-e1ae-4347-b6e7-ab3b1b4170cb" action="write">
+                    <command>
+                        <body>Cable Int: $cableInt  \\n</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="11b59ec9-b5aa-44ca-9e96-27cfd168fbeb" action="write">
+                    <command>
+                        <body>CPE Count: $cpeCount</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <author>Alex Orr</author>
+            <version>1.0</version>
+            <multilineDescription>Runs a &apos;show cable modem&apos; command on the CMTS for a single modem. Returns structured output containing CM status, IP of the modem, CM&apos;s current cable interface, and CPE count. </multilineDescription>
+            <arguments>
+                <item name="cmMac">
+                    <description>MAC Address of CM in form xxxx.xxxx.xxxx
+</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="showCableModemQos" isPublic="true">
+            <description>Show Cable Modem Quality of Service for Cisco CMTS</description>
+            <steps>
+                <item guid="149034f6-622b-4a55-a144-a01d003bf315" action="command" session="$session">
+                    <command>
+                        <body>show cable modem $cmMac qos</body>
+                    </command>
+                    <postProcessing>
+                        <storeResponseAt>response</storeResponseAt>
+                        <storeResponseText>true</storeResponseText>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="f876d7df-1839-4940-8756-e272085010fc" action="return">
+                    <command>
+                        <body>$response</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <author>Alex Orr</author>
+            <version>1.0</version>
+            <multilineDescription>Get detailed information on a modem&apos;s several service flows including provisioned and real time data rates.
+Runs &quot;show cable modem qos&quot; on the CMTS for a single modem. Returns the raw output. </multilineDescription>
+            <arguments>
+                <item name="cmMac">
+                    <description>MAC address of cable modem in form xxxx.xxxx.xxxx</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="showCableModemCpe" isPublic="true">
+            <description>Show Cable Modem CPE Counts for Cisco CMTS</description>
+            <steps>
+                <item guid="88ab59cb-f50a-4e1a-a9eb-33aabfba71be" action="command" session="$session">
+                    <command>
+                        <body>show cable modem $cmMac cpe</body>
+                    </command>
+                    <postProcessing>
+                        <storeResponseAt>response</storeResponseAt>
+                        <storeResponseText>true</storeResponseText>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="081b8248-4110-4b19-b236-f441d22176ed" action="return">
+                    <command>
+                        <body>$response</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <multilineDescription>Get a list of a modem&apos;s attached CPE devices.
+Runs &quot;show cable modem cpe&quot; command on the CMTS for a single modem. Returns the raw response. </multilineDescription>
+            <arguments>
+                <item name="cmMac">
+                    <description>MAC address of cable modem in form xxxx.xxxx.xxxx</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="showCableModemPrimary" isPublic="true">
+            <description>Show Cable Modem Primary for Cisco CMTS</description>
+            <steps>
+                <item guid="ae6d4030-18a1-49dc-9462-71e208d03ccb" action="command" session="$session">
+                    <command>
+                        <body>show cable modem $cmMac primary</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>Primary_DS_all()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>primDS</storageLocation>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="88b39386-acaa-434e-abc3-2045caff7be6" action="return">
+                    <command>
+                        <body>$primDS</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <author>Alex Orr</author>
+            <version>1.0</version>
+            <multilineDescription>Get a modem&apos;s primary downstream channel.
+Runs the &quot;show cable modem primary&quot; command on the CMTS for a single modem. Returns the raw response. </multilineDescription>
+            <arguments>
+                <item name="cmMac">
+                    <description>MAC address of cable modem in form xxxx.xxxx.xxxx</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="disableDownstream" isPublic="true">
+            <description>Disable Downstream Interface for Cisco CMTS</description>
+            <steps>
+                <item guid="8fd538ea-fb11-457a-8fcc-5c8593c88a8e" action="command" session="$session">
+                    <command>
+                        <body>config t</body>
+                    </command>
+                    <postProcessing>
+                        <storeResponseAt>response</storeResponseAt>
+                        <storeResponseText>true</storeResponseText>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="2a62d2a8-699d-4aa1-ae3c-9d7ac7a72586" action="command" session="$session">
+                    <command>
+                        <body>interface $interface </body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="07fb57ae-b0ba-4974-97c7-d6259ba3d895" action="command" session="$session">
+                    <command>
+                        <body>shutdown</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="40e1a10e-28ec-47ad-bd0a-60410d33feef" action="command" session="$session">
+                    <command>
+                        <body>end</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+            </steps>
+            <author>Alex Orr</author>
+            <version>1.0</version>
+            <multilineDescription>Shutdown a particular downstream interface on the CMTS.</multilineDescription>
+            <arguments>
+                <item name="interface">
+                    <description>Name of interface to shut down</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="enableDownstream" isPublic="true">
+            <description>Enable Downstream Interface for Arris CMTS</description>
+            <steps>
+                <item guid="ab42611c-047d-41f6-9151-cd4e62780735" action="command" session="$session">
+                    <command>
+                        <body>config t</body>
+                    </command>
+                    <postProcessing>
+                        <storeResponseAt>response</storeResponseAt>
+                        <storeResponseText>true</storeResponseText>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="c37aea65-591f-479a-adbb-821e75fef4c3" action="command" session="$session">
+                    <command>
+                        <body>interface $interface </body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="f70e3c2a-db8a-44ab-b992-11ca3aadbcd2" action="command" session="$session">
+                    <command>
+                        <body>no shutdown</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="59e3ffe6-cf96-4c87-84e6-f2bc44f60ab8" action="command" session="$session">
+                    <command>
+                        <body>end</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+            </steps>
+            <author>Alex Orr</author>
+            <version>1.0</version>
+            <multilineDescription>Re-enables a particular downstream interface on the CMTS</multilineDescription>
+            <arguments>
+                <item name="interface">
+                    <description>Name of interface to enable</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="showServiceFlowCounters" isPublic="true">
+            <description>Show Service Flow Counters for Cisco CMTS</description>
+            <steps>
+                <item guid="cad07650-9f29-4b3f-a16f-76bba8d4001a" action="command" session="$session">
+                    <command>
+                        <body>show interface $cableInt service-flow $sfid counters verbose</body>
+                    </command>
+                    <postProcessing>
+                        <storeResponseAt>response</storeResponseAt>
+                        <storeResponseText>true</storeResponseText>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="78f45a93-5965-4d36-b164-de3660424b10" action="return">
+                    <command>
+                        <body>$response</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <author>Alex Orr</author>
+            <version>1.0</version>
+            <multilineDescription>Get a list of counters for each of a modem&apos;s service flows.
+Runs debug command to show service flow counters on the CMTS for a single modem. Returns the raw output of the response.</multilineDescription>
+            <arguments>
+                <item name="sfid">
+                    <description>Service flow ID</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+                <item name="cableInt">
+                    <description>Cable interface service flow exists on</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="resetModem" isPublic="true">
+            <description>Reset Modem for Cisco CMTS</description>
+            <steps>
+                <item guid="2fa8a765-37f9-42c7-b457-9fe065b6804d" action="command" session="$session">
+                    <command>
+                        <body>clear cable modem $cmMac reset</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+            </steps>
+            <version>1.0 </version>
+            <multilineDescription>Runs &quot;clear cable modem &lt;MAC&gt; reset&quot; on the CMTS for a single modem. </multilineDescription>
+            <arguments>
+                <item name="cmMac">
+                    <description>MAC address of modem to reset
+</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+        <item name="ping" isPublic="true">
+            <description>Ping for Cisco CMTS</description>
+            <steps>
+                <item guid="bb57ab6d-8a6e-4533-a024-cface05ded80" action="command" session="$session">
+                    <command>
+                        <body>ping $target</body>
+                    </command>
+                    <postProcessing>
+                        <analysisRules>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>pingTarget()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>pingTarget</storageLocation>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>byteTarget()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>byteTarget</storageLocation>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>pings()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>pings</storageLocation>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>packets_transmitted()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>packetsTransmitted</storageLocation>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                            <item>
+                                <extractorInfo extractorType="query">
+                                    <extractorProperties type="com.fnfr.svt.mapping.execution.extractors.QueryDataExtractorPropertyGroup">
+                                        <query>packets_received()</query>
+                                    </extractorProperties>
+                                </extractorInfo>
+                                <processorInfo ruleType="store">
+                                    <ruleProperties type="com.fnfr.svt.execution.builtin.processors.StoreProcessorPropertyGroup">
+                                        <storageLocation>packetsRecieved</storageLocation>
+                                    </ruleProperties>
+                                </processorInfo>
+                            </item>
+                        </analysisRules>
+                    </postProcessing>
+                    <applicationProperties type="com.fnfr.svt.editors.terminal.documents.StepDefaultProperties"/>
+                </item>
+                <item guid="3032b136-7e2d-4ee7-a093-21de5d224b8f" action="eval">
+                    <command>
+                        <body>set success [expr 100 * [expr $packetsRecieved / $packetsTransmitted]]</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                    <useFieldsInCommand>false</useFieldsInCommand>
+                </item>
+                <item guid="e8e2910f-0693-49e1-9791-62190c872c4f" action="write">
+                    <command>
+                        <body>Target: $pingTarget \\n</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="3c854920-8408-4da1-bb66-fc39a56f6796" action="write">
+                    <command>
+                        <body>Bytes Sent: $byteTarget \\n</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="f21870df-fa88-49de-93f1-86cd9d3ad0ed" action="write">
+                    <command>
+                        <body>Pings: $pings \\n</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="20665d3b-1194-428a-a3ee-2a6905dfffc9" action="write">
+                    <command>
+                        <body>Recieved/Sent: $packetsRecieved/$packetsTransmitted \\n</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+                <item guid="8723c3fa-9ba6-4915-bc46-f09a72792bd3" action="write">
+                    <command>
+                        <body>Success Rate: $success</body>
+                    </command>
+                    <applicationProperties type="com.fnfr.svt.documents.EmptyPropertyGroup"/>
+                </item>
+            </steps>
+            <version>1.0</version>
+            <multilineDescription>Run a ping from the CMTS to the specified address.
+Returns structured output displaying the target address, number of bytes sent, number of pings, packets sent and recieved, and success rate. </multilineDescription>
+            <arguments>
+                <item name="target">
+                    <description>IP address to ping
+</description>
+                    <isMandatory>true</isMandatory>
+                </item>
+            </arguments>
+        </item>
+    </procedures>
+</testCase>

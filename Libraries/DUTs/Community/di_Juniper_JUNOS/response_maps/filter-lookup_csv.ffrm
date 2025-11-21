@@ -1,0 +1,112 @@
+<?xml version="1.0" ?><ResponseMap version="6.0.0.18638fa">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="readFile">
+                <command>
+                    <body>filter-lookup.csv</body>
+                </command>
+            </action>
+            <responseBody>Card_type,Ingress_filter,Egress_filter,Class_profile,Type_no,Cass_serv
+MPC - SGOS,vpls_classifier_MPC_${S}_${C}M_in,vpls_classifier_${S}_${C}M_out,sched-map_pe_ce_SGOS_6COS_egres,1,SGOS
+MPC-PPCOS,vpls_PPCOS_MPC_${S}_${C}M_in,vpls_PPCOS_${S}_out,tcp_ pe_ce _SGOS_6COS_{$C}M  ,1,PPCOS
+DPC-CG - SGOS,vpls_classifier_${S}_${C}M_flood${B}M_in,vpls_classifier_${S}_${C}M_out,sched-map_pe_ce_SGOS_6COS_egres,2,SGOS
+DPC-CG PPCOS,vpls_PPCOS_${S}_${C}M_flood${B}M_in,vpls_PPCOS_${S}_out,tcp_ pe_ce _SGOS_6COS_{$C}M  ,2,PPCOS
+DPC-FG SGOS,vpls_classifier_${S}_${C}M_flood${B}M_in,vpls_classifier_${S}_${C}M_out,tcp- pe_ce _SGOS_6COS_{$C}M,3,SGOS
+DPC-FG PPCOS,vpls_PPCOS_${S}_${C}M_flood${B}M_in,vpls_PPCOS_fgc_${S}_${C}M_out,tcp_pe_ce_PPCOS_$S_{$C}M,3,PPCOS
+40X1 GE-CG - SGOS,vpls_classifier_${S}_${C}M_flood${B}M_in,vpls_classifier_${S}_${C}M_out,sched-map_pe_ce_SGOS_6COS_egres,4,SGOS
+40X1 GE-CG - PPCOS,vpls_PPCOS_${S}_${C}M_flood${B}M_in,vpls_PPCOS_${S}_out,tcp_ pe_ce _SGOS_6COS_{$C}M  ,4,PPCOS
+40X1 GE - FG - SGOS,vpls_classifier_${S}_${C}M_flood${B}M_in,vpls_fgc_classifier_${S}_${C}M_out,tcp- pe_ce _SGOS_6COS_{$C}M,5,SGOS
+40X1 - FG - PPCOS,vpls_PPCOS_${S}_${C}M_flood${B}M_in,vpls_PPCOS_fgc_${S}_${C}M_out,tcp_pe_ce_PPCOS_$S{$C}M,5,PPCOS
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+                    
+                &lt;/structure&gt;
+</structuredData>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.table.TabularMapperProperties">
+            <tabularMaps>
+                <item name="filter_data">
+                    <banner>Card_type,Ingress_filter,Egress_filter,Class_profile,Type_no,Cass_serv</banner>
+                    <bannerStructure>Wildcard</bannerStructure>
+                    <delimiter>Comma</delimiter>
+                    <columns>
+                        <item name="Card_type">
+                            <lastFullCell/>
+                        </item>
+                        <item name="Ingress_filter">
+                            <lastFullCell/>
+                        </item>
+                        <item name="Egress_filter">
+                            <lastFullCell/>
+                        </item>
+                        <item name="Class_profile">
+                            <lastFullCell/>
+                        </item>
+                        <item name="Type_no">
+                            <lastFullCell/>
+                        </item>
+                        <item name="Cass_serv">
+                            <lastFullCell/>
+                        </item>
+                    </columns>
+                </item>
+            </tabularMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="readFile" command="*.csv">
+        <application>
+            <item>com.fnfr.svt.applications.tclsh</item>
+            <item>com.fnfr.svt.applications.telnet</item>
+        </application>
+    </applicabilityProperties>
+    <aliases>
+        <item name="ingress">
+            <queryFormatString>(mapped/Tabular/filter_data/table/row)[Type_no = &quot;{0}&quot; and Cass_serv = &quot;{1}&quot;]/Ingress_filter</queryFormatString>
+            <arguments>
+                <item name="card">
+                    <valuesQuery>//Type_no</valuesQuery>
+                    <interpretAs>SampleValues</interpretAs>
+                </item>
+                <item name="class_of_service">
+                    <valuesQuery>//Cass_serv</valuesQuery>
+                    <interpretAs>SampleValues</interpretAs>
+                </item>
+            </arguments>
+        </item>
+        <item name="egress">
+            <queryFormatString>(mapped/Tabular/filter_data/table/row)[Type_no = &quot;{0}&quot; and Cass_serv = &quot;{1}&quot;]/Egress_filter</queryFormatString>
+            <arguments>
+                <item name="card">
+                    <defaultvalue>1</defaultvalue>
+                </item>
+                <item name="class_of_service">
+                    <defaultvalue>1</defaultvalue>
+                </item>
+            </arguments>
+        </item>
+        <item name="class_profile">
+            <queryFormatString>(mapped/Tabular/filter_data/table/row)[Type_no = &quot;{0}&quot; and Cass_serv = &quot;{1}&quot;]/Class_profile</queryFormatString>
+            <arguments>
+                <item name="card"/>
+                <item name="class_of_service"/>
+            </arguments>
+        </item>
+        <item name="Card_type_by_Type_no_and_Cass_serv">
+            <queryFormatString>mapped/Tabular/filter_data/table/row[Type_no=&quot;{0}&quot; and Cass_serv = &quot;{1}&quot;]/Card_type</queryFormatString>
+            <arguments>
+                <item name="Type_no">
+                    <valuesQuery>//Type_no</valuesQuery>
+                    <interpretAs>SampleValues</interpretAs>
+                </item>
+                <item name="Cass_serv">
+                    <valuesQuery>//Cass_serv</valuesQuery>
+                    <interpretAs>SampleValues</interpretAs>
+                </item>
+            </arguments>
+        </item>
+    </aliases>
+</ResponseMap>

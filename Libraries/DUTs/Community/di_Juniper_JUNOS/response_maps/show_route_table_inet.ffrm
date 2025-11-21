@@ -1,0 +1,428 @@
+<?xml version="1.0" ?><ResponseMap version="6.0.0.18638fa">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="command">
+                <command>
+                    <body>show route 0.0.0.0 table inet.3 detail</body>
+                </command>
+            </action>
+            <responseBody>Feb 03 11:33:11 
+
+inet.3: 6237 destinations, 6721 routes (6237 active, 0 holddown, 0 hidden)
+0.0.0.0/32 (2 entries, 1 announced)
+        State: &lt;FlashAll&gt;
+        *RSVP   Preference: 7/1
+                Next hop type: Router, Next hop index: 0
+                Address: 0x416b37c
+                Next-hop reference count: 53
+                Next hop: 0.0.0.0 via ae10.0 weight 0x1, selected
+                Label-switched-path PE54_PE50_P_2_5_1_PRIORITY
+                Label operation: Push 0
+                Label TTL action: no-prop-ttl
+                Load balance label: Label 0: Entropy label; 
+                Label element ptr: 0x431dd80
+                Label parent element ptr: 0x0
+                Label element references: 37
+                Label element child references: 33
+                Label element lsp id: 2
+                Session Id: 0x0
+                Next hop: 0.0.0.0 via ae10.0 weight 0x1
+                Label-switched-path PE54_PE50_P_2_15_2_DEFAULT
+                Label operation: Push 0
+                Label TTL action: no-prop-ttl
+                Load balance label: Label 0: Entropy label; 
+                Label element ptr: 0x4352d00
+                Label parent element ptr: 0x0
+                Label element references: 37
+                Label element child references: 33
+                Label element lsp id: 3
+                Session Id: 0x0
+                State: &lt;Active Int&gt;
+                Local AS: 13979 
+                Age: 2d 23:51:29 \tMetric: 10001 
+                Validation State: unverified 
+                Task: RSVP
+                Announcement bits (2): 0-OSPF 2-Resolve tree 1 
+                AS path: I
+         OSPF   Preference: 10
+                Next hop type: Router, Next hop index: 0
+                Address: 0x416b37c
+                Next-hop reference count: 53
+                Next hop: 0.0.0.0 via ae10.0 weight 0x1
+                Label-switched-path PE54_PE50_P_2_5_1_PRIORITY
+                Label operation: Push 0
+                Label TTL action: no-prop-ttl
+                Load balance label: Label 0: Entropy label; 
+                Label element ptr: 0x431dd80
+                Label parent element ptr: 0x0
+                Label element references: 37
+                Label element child references: 33
+                Label element lsp id: 2
+                Session Id: 0x0
+                Next hop: 0.0.0.0 via ae10.0 weight 0x1, selected
+                Label-switched-path PE54_PE50_P_2_15_2_DEFAULT
+                Label operation: Push 0
+                Label TTL action: no-prop-ttl
+                Load balance label: Label 0: Entropy label; 
+                Label element ptr: 0x4352d00
+                Label parent element ptr: 0x0
+                Label element references: 37
+                Label element child references: 33
+                Label element lsp id: 3
+                Session Id: 0x0
+                State: &lt;Int&gt;
+                Inactive reason: Route Preference
+                Local AS: 13979 
+                Age: 2d 23:47:01 \tMetric: 10001 
+                Validation State: unverified 
+                Area: 0.0.0.0
+                Task: OSPF
+                AS path: I
+
+{master}
+</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;isEmpty&gt;false&lt;/isEmpty&gt;
+    &lt;promptName&gt;normal&lt;/promptName&gt;
+    &lt;echo&gt;show route 10.144.0.175 table inet.3 detail&lt;/echo&gt;
+    &lt;prompt&gt;itest-ap@PE54&amp;gt; &lt;/prompt&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="isEmpty">
+                    <queryFormatString>.//isEmpty</queryFormatString>
+                </item>
+                <item name="promptName">
+                    <queryFormatString>.//promptName</queryFormatString>
+                </item>
+                <item name="echo">
+                    <queryFormatString>.//echo</queryFormatString>
+                </item>
+                <item name="prompt">
+                    <queryFormatString>.//prompt</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.6</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="pattern1">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>inet\\.\\d+:\\s+</regex>
+                            <start>0</start>
+                            <end>8</end>
+                        </item>
+                        <item name="destinations">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>8</start>
+                            <end>12</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+destinations,\\s+</regex>
+                            <start>12</start>
+                            <end>27</end>
+                        </item>
+                        <item name="routes">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>27</start>
+                            <end>31</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>\\s+routes \\(</regex>
+                            <start>31</start>
+                            <end>40</end>
+                        </item>
+                        <item name="active">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>40</start>
+                            <end>44</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor3">
+                            <regex>\\s+active,\\s+\\d+\\s+holddown,\\s+\\d+\\s+hidden\\)\\s+</regex>
+                            <start>44</start>
+                            <end>75</end>
+                        </item>
+                        <item name="neighbor">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>75</start>
+                            <end>90</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor4">
+                            <regex>\\s+\\(\\d+\\s+entries,\\s+\\d+\\s+announced\\)</regex>
+                            <start>90</start>
+                            <end>115</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>inet.3: 6237 destinations, 6721 routes (6237 active, 0 holddown, 0 hidden)
+0.0.0.0/32 (2 entries, 1 announced)</sampleMatch>
+                    <optional>true</optional>
+                </item>
+                <item name="pattern2">
+                    <groups>
+                        <item name="Protocol">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>0</start>
+                            <end>5</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor0">
+                            <regex>\\s+Preference:\\s+</regex>
+                            <start>5</start>
+                            <end>20</end>
+                        </item>
+                        <item name="Preference">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>20</start>
+                            <end>23</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>*RSVP   Preference: 7/1</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+                <item name="pattern3">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Next hop:\\s+</regex>
+                            <start>0</start>
+                            <end>10</end>
+                        </item>
+                        <item name="Next_hop">
+                            <regex>((\\d+\\.)+\\d+)</regex>
+                            <named>true</named>
+                            <start>10</start>
+                            <end>22</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="((\d+\.)+\d+)">one or more of digit and dots</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+via\\s+</regex>
+                            <start>22</start>
+                            <end>27</end>
+                        </item>
+                        <item name="via_interface">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>27</start>
+                            <end>33</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>\\s+weight\\s+([0][x][\\da-fA-F]+), selected\\s+Label-switched-path\\s+</regex>
+                            <start>33</start>
+                            <end>91</end>
+                        </item>
+                        <item name="Label_switched_path">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>91</start>
+                            <end>117</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>Next hop: 0.0.0.0 via ae10.0 weight 0x1, selected
+                Label-switched-path PE54_PE50_P_2_5_1_PRIORITY</sampleMatch>
+                    <optional>true</optional>
+                </item>
+                <item name="pattern4">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Load balance label:\\s+</regex>
+                            <start>0</start>
+                            <end>20</end>
+                        </item>
+                        <item name="Load_balance_label">
+                            <regex>[^\\r\\n]+</regex>
+                            <named>true</named>
+                            <start>20</start>
+                            <end>42</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name=".{22}">exactly 22 of any character</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>;</regex>
+                            <start>42</start>
+                            <end>43</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>Load balance label: Label 0: Entropy label;</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+                <item name="pattern5">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Next hop:\\s+</regex>
+                            <start>0</start>
+                            <end>10</end>
+                        </item>
+                        <item name="Next_hop">
+                            <regex>((\\d+\\.)+\\d+)</regex>
+                            <named>true</named>
+                            <start>10</start>
+                            <end>22</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="((\d+\.)+\d+)">one or more of digit and dots</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+via\\s+</regex>
+                            <start>22</start>
+                            <end>27</end>
+                        </item>
+                        <item name="via_interface">
+                            <regex>\\S+</regex>
+                            <named>true</named>
+                            <start>27</start>
+                            <end>33</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>\\s+weight\\s+([0][x][\\da-fA-F]+)\\s+Label-switched-path\\s+</regex>
+                            <start>33</start>
+                            <end>81</end>
+                        </item>
+                        <item name="Label_switched_path">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>81</start>
+                            <end>107</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>Next hop: 0.0.0.0 via ae10.0 weight 0x1
+                Label-switched-path PE54_PE50_P_2_15_2_DEFAULT</sampleMatch>
+                    <optional>true</optional>
+                </item>
+                <item name="pattern6">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Age:\\s+</regex>
+                            <start>0</start>
+                            <end>5</end>
+                        </item>
+                        <item name="Age">
+                            <regex>.{11}</regex>
+                            <named>true</named>
+                            <start>5</start>
+                            <end>16</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+Metric:\\s+</regex>
+                            <start>16</start>
+                            <end>26</end>
+                        </item>
+                        <item name="Metric">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>26</start>
+                            <end>31</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>Age: 2d 23:51:29 \tMetric: 10001</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+            </regexMaps>
+        </item>
+        <item type="com.fnfr.svt.mapping.table.TabularMapperProperties"/>
+    </mapperProperties>
+    <applicabilityProperties actionType="command" command="show route * table inet.3 detail">
+        <application>
+            <item>com.fnfr.svt.applications.cmd</item>
+            <item>com.fnfr.itest.application.serial</item>
+            <item>com.fnfr.svt.applications.ssh</item>
+            <item>com.fnfr.svt.applications.telnet</item>
+        </application>
+    </applicabilityProperties>
+</ResponseMap>

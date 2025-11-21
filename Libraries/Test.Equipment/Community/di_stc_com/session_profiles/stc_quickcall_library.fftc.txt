@@ -1,0 +1,704 @@
+============General==================
+isProcedureLibrary="true"
+sessionClass(includeTestCase="true")(sessionType="stc.ffsp")
+============Steps====================
+Procedure main
+Procedure apiSaveResultCommand
+	1 #Create a default directory if doesn't exist - assume the C: drive exisits
+		useFieldsInCommand="false"
+		1.1 eval file mkdir file:$databaseConnectionStringFilePath
+			useFieldsInCommand="false"
+	2 #Save DB results and return status
+		useFieldsInCommand="false"
+		2.1 eval $session stc::perform SaveResultCommand -databaseConnectionString "$databaseConnectionStringFilePath/$databaseConnectionStringFileName" -saveDetailedResults true -OverwriteIfExist TRUE
+			analyze
+				regex ^Result=([^\\r\\n]+)$
+				store retValSaveResultCommand
+			estimatedStepExecutionTime="5.307"
+		2.2 call stcApiReturnValues -stcApiReturnValue $retValSaveResultCommand
+			useFieldsInCommand="false"
+	3 if $convertSchema == 1
+		useFieldsInCommand="false"
+		3.1 then 
+			useFieldsInCommand="false"
+			3.1.1 #Convert raw DB results and change to Results Reporter Schema for easy analysis
+				useFieldsInCommand="false"
+				3.1.1.1 open cmdDb application:com.fnfr.svt.applications.cmd
+					useFieldsInCommand="false"
+				3.1.1.2 command cmdDb cd %ITEST_HOME%/../Spirent TestCenter $stcVersion/Spirent TestCenter Application/Results Reporter
+					normalOffset="3.995"
+				3.1.1.3 command cmdDb ResultsReporterCLI.bat -o $databaseConnectionStringFilePath/$databaseConnectionStringFileName -f csv -d $databaseConnectionStringFilePath/myresults.csv
+					normalOffset="151.135"
+				3.1.1.4 close cmdDb 
+					useFieldsInCommand="false"
+	4 write [response retVal]
+Procedure stcApiReturnValues
+	1 #init variables
+		useFieldsInCommand="false"
+		1.1 eval set newXmlPayload ""
+			useFieldsInCommand="false"
+	2 #Loop through array and turn it into xml
+		useFieldsInCommand="false"
+		2.1 foreach {attribute attributeValue} $stcApiReturnValue
+			useFieldsInCommand="false"
+			2.1.1 #Build structured return values for easy analysis. Strip off the dashon attributes
+				useFieldsInCommand="false"
+			2.1.2 eval set attribute [string map {- ""} $attribute]
+				useFieldsInCommand="false"
+			2.1.3 eval set xmlPayload "<$attribute>$attributeValue</$attribute>"
+				useFieldsInCommand="false"
+			2.1.4 eval set newXmlPayload "$newXmlPayload\\n$xmlPayload"
+				useFieldsInCommand="false"
+	3 #write a structured response back to iTest. Wrap the XML header so response has good XML structure
+		useFieldsInCommand="false"
+		3.1 write <?xml version="1.0" encoding="ISO-8859-1"?>\\n
+		3.2 write <returnValues>\\n
+		3.3 write [string trim $newXmlPayload]
+		3.4 write \\n</returnValues>
+Procedure subscribeResults
+	1 subscribeView $session $subscribedResults
+		normalOffset="41.863"
+		estimatedStepExecutionTime="1.03"
+		emulation
+		structuredData="
+<structure xmlns:map="http://www.fnfr.com/svt/mapping">
+    <success map:endcol="4" map:line="0" map:nodetype="token" map:startcol="0">true</success>
+</structure>
+"
+		aliases
+			success
+				queryFormatString="success"
+Procedure sanityCheckTraffic
+	1 eval puts "Sanity check traffic to ensure data is running normal!"
+		analyze
+			regex .*
+			message Information:Verify that traffic is running and check for common problems
+		useFieldsInCommand="false"
+	2 subscribeResults $session -subscribedResults DetailedStreamResults
+		useFieldsInCommand="false"
+		emulation
+		responseType="text"
+		structuredData="
+<structure xmlns:map="http://www.fnfr.com/svt/mapping">
+    <definedIn>project://d_stc/referenceSessionProfile/stc_quickcall_library.fftc</definedIn>
+</structure>
+"
+		aliases
+			definedIn
+				queryFormatString=".//definedIn"
+				source="Kernel"
+		duration="1.3"
+	3 sleep $sanityCheckDelaySec
+	4 eval set sanityCheckStatus PASS
+		useFieldsInCommand="false"
+	5 showResults $session DetailedStreamResults "Advanced Sequencing" 1
+		analyze
+			query .//TxCount_Frames_
+			assert $value > 0
+				When True
+					PassTestIfNotAlreadyFailed 
+					DeclareExecutionIssue OK:Verify that Tx count is greater than 0; actual: "$value"
+				When False
+					FailTest 
+					DeclareExecutionIssue Error:Verify that Tx count is greater than 0; actual: "$value"
+					Eval set sanityCheckStatus FAIL
+		analyze
+			query .//DroppedCount_Frames_
+			assert $value eq "0"
+				When True
+					PassTestIfNotAlreadyFailed 
+					DeclareExecutionIssue OK:Verify that frames are not dropped; expected: 0, actual: "$value"
+				When False
+					FailTest 
+					DeclareExecutionIssue Error:Verify that frames are not dropped; expected: 0, actual: "$value"
+					Eval set sanityCheckStatus FAIL
+		analyze
+			query .//ReorderedCount_Frames_
+			assert $value eq "0"
+				When True
+					PassTestIfNotAlreadyFailed 
+					DeclareExecutionIssue OK:Verify reordered count is 0; actual count: "$value"
+				When False
+					FailTest 
+					DeclareExecutionIssue Error:Verify reordered count is 0; actual count: "$value"
+					Eval set sanityCheckStatus FAIL
+		analyze
+			query .//DuplicateCount_Frames_
+			assert $value eq "0"
+				When True
+					PassTestIfNotAlreadyFailed 
+					DeclareExecutionIssue OK:Verify that duplicate count is 0; actual count: "$value"
+				When False
+					FailTest 
+					DeclareExecutionIssue Error:Verify that duplicate count is 0; actual count: "$value"
+					Eval set sanityCheckStatus FAIL
+		analyze
+			query .//RxCount_Frames_
+			assert $value > 0
+				When True
+					PassTestIfNotAlreadyFailed 
+					DeclareExecutionIssue OK:Verify stream Rx count is greater than 0, actual count: $value
+				When False
+					FailTest 
+					DeclareExecutionIssue Error:Verify stream Rx count is greater than 0, actual count: $value
+					Eval set sanityCheckStatus FAIL
+		normalOffset="22.457"
+		estimatedStepExecutionTime="0.041"
+		emulation
+		response="
+Advanced Sequencing
+Name/ID               Tx Port Name  Rx Port Names  Tx Count (Frames)  Rx Count (Frames)  Dropped Count (Frames)  Dropped Frame Percent  In-order Count (Frames)  Reordered Count (Frames)  Duplicate Count (Frames)  Late Count (Frames)  Dropped Rate (fps)  Dropped Frame Percent Rate  In-order Rate (fps)  Reordered Rate (fps)  Duplicate Rate (fps)  Late Rate (fps)
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+StreamBlock 2/65536   Port //2/9    Port //2/12    12221              11222              0                       0                      11222                    0                         0                         0                    0                   0                           813                  0                     0                     0              
+StreamBlock 1/131072  Port //2/12   Port //2/9     12338              10811              18                      0.166                  10810                    1                         0                         0                    0                   0                           813                  0                     0                     0              
+
+"
+		structuredData="
+<structure xmlns:map="http://www.fnfr.com/svt/mapping">
+    <AdvancedSequencing map:endcol="19" map:line="1" map:nodetype="token" map:startcol="19"/>
+    <DetailedStreamResults map:nodetype="table">
+        <row map:nodetype="row">
+            <Name_ID map:endcol="19" map:line="4" map:nodetype="token" map:startcol="0">StreamBlock 2/65536</Name_ID>
+            <TxPortName map:endcol="32" map:line="4" map:nodetype="token" map:startcol="22">Port //2/9</TxPortName>
+            <RxPortNames map:endcol="47" map:line="4" map:nodetype="token" map:startcol="36">Port //2/12</RxPortNames>
+            <TxCount_Frames_ map:endcol="56" map:line="4" map:nodetype="token" map:startcol="51">12221</TxCount_Frames_>
+            <RxCount_Frames_ map:endcol="75" map:line="4" map:nodetype="token" map:startcol="70">11222</RxCount_Frames_>
+            <DroppedCount_Frames_ map:endcol="90" map:line="4" map:nodetype="token" map:startcol="89">0</DroppedCount_Frames_>
+            <DroppedFramePercent map:endcol="114" map:line="4" map:nodetype="token" map:startcol="113">0</DroppedFramePercent>
+            <In_orderCount_Frames_ map:endcol="141" map:line="4" map:nodetype="token" map:startcol="136">11222</In_orderCount_Frames_>
+            <ReorderedCount_Frames_ map:endcol="162" map:line="4" map:nodetype="token" map:startcol="161">0</ReorderedCount_Frames_>
+            <DuplicateCount_Frames_ map:endcol="188" map:line="4" map:nodetype="token" map:startcol="187">0</DuplicateCount_Frames_>
+            <LateCount_Frames_ map:endcol="214" map:line="4" map:nodetype="token" map:startcol="213">0</LateCount_Frames_>
+            <DroppedRate_fps_ map:endcol="235" map:line="4" map:nodetype="token" map:startcol="234">0</DroppedRate_fps_>
+            <DroppedFramePercentRate map:endcol="255" map:line="4" map:nodetype="token" map:startcol="254">0</DroppedFramePercentRate>
+            <In_orderRate_fps_ map:endcol="285" map:line="4" map:nodetype="token" map:startcol="282">813</In_orderRate_fps_>
+            <ReorderedRate_fps_ map:endcol="304" map:line="4" map:nodetype="token" map:startcol="303">0</ReorderedRate_fps_>
+            <DuplicateRate_fps_ map:endcol="326" map:line="4" map:nodetype="token" map:startcol="325">0</DuplicateRate_fps_>
+            <LateRate_fps_ map:endcol="348" map:line="4" map:nodetype="token" map:startcol="347">0</LateRate_fps_>
+        </row>
+        <row map:nodetype="row">
+            <Name_ID map:endcol="20" map:line="5" map:nodetype="token" map:startcol="0">StreamBlock 1/131072</Name_ID>
+            <TxPortName map:endcol="33" map:line="5" map:nodetype="token" map:startcol="22">Port //2/12</TxPortName>
+            <RxPortNames map:endcol="46" map:line="5" map:nodetype="token" map:startcol="36">Port //2/9</RxPortNames>
+            <TxCount_Frames_ map:endcol="56" map:line="5" map:nodetype="token" map:startcol="51">12338</TxCount_Frames_>
+            <RxCount_Frames_ map:endcol="75" map:line="5" map:nodetype="token" map:startcol="70">10811</RxCount_Frames_>
+            <DroppedCount_Frames_ map:endcol="91" map:line="5" map:nodetype="token" map:startcol="89">18</DroppedCount_Frames_>
+            <DroppedFramePercent map:endcol="118" map:line="5" map:nodetype="token" map:startcol="113">0.166</DroppedFramePercent>
+            <In_orderCount_Frames_ map:endcol="141" map:line="5" map:nodetype="token" map:startcol="136">10810</In_orderCount_Frames_>
+            <ReorderedCount_Frames_ map:endcol="162" map:line="5" map:nodetype="token" map:startcol="161">1</ReorderedCount_Frames_>
+            <DuplicateCount_Frames_ map:endcol="188" map:line="5" map:nodetype="token" map:startcol="187">0</DuplicateCount_Frames_>
+            <LateCount_Frames_ map:endcol="214" map:line="5" map:nodetype="token" map:startcol="213">0</LateCount_Frames_>
+            <DroppedRate_fps_ map:endcol="235" map:line="5" map:nodetype="token" map:startcol="234">0</DroppedRate_fps_>
+            <DroppedFramePercentRate map:endcol="255" map:line="5" map:nodetype="token" map:startcol="254">0</DroppedFramePercentRate>
+            <In_orderRate_fps_ map:endcol="285" map:line="5" map:nodetype="token" map:startcol="282">813</In_orderRate_fps_>
+            <ReorderedRate_fps_ map:endcol="304" map:line="5" map:nodetype="token" map:startcol="303">0</ReorderedRate_fps_>
+            <DuplicateRate_fps_ map:endcol="326" map:line="5" map:nodetype="token" map:startcol="325">0</DuplicateRate_fps_>
+            <LateRate_fps_ map:endcol="348" map:line="5" map:nodetype="token" map:startcol="347">0</LateRate_fps_>
+        </row>
+    </DetailedStreamResults>
+    <success map:endcol="4" map:line="7" map:nodetype="token" map:startcol="0">true</success>
+</structure>
+"
+		aliases
+			Advanced Sequencing
+				queryFormatString="AdvancedSequencing"
+			TxPortName
+				queryFormatString=".//DetailedStreamResults/row[Name_ID = '{0}']/TxPortName"
+				arguments
+					Name_ID
+						valuesQuery=".//DetailedStreamResults/row/Name_ID"
+						interpretAs="SampleValues"
+			RxPortNames
+				queryFormatString=".//DetailedStreamResults/row[Name_ID = '{0}']/RxPortNames"
+				arguments
+					Name_ID
+						valuesQuery=".//DetailedStreamResults/row/Name_ID"
+						interpretAs="SampleValues"
+			TxCount_Frames_
+				queryFormatString=".//DetailedStreamResults/row[Name_ID = '{0}']/TxCount_Frames_"
+				arguments
+					Name_ID
+						valuesQuery=".//DetailedStreamResults/row/Name_ID"
+						interpretAs="SampleValues"
+			RxCount_Frames_
+				queryFormatString=".//DetailedStreamResults/row[Name_ID = '{0}']/RxCount_Frames_"
+				arguments
+					Name_ID
+						valuesQuery=".//DetailedStreamResults/row/Name_ID"
+						interpretAs="SampleValues"
+			DroppedCount_Frames_
+				queryFormatString=".//DetailedStreamResults/row[Name_ID = '{0}']/DroppedCount_Frames_"
+				arguments
+					Name_ID
+						valuesQuery=".//DetailedStreamResults/row/Name_ID"
+						interpretAs="SampleValues"
+			DroppedFramePercent
+				queryFormatString=".//DetailedStreamResults/row[Name_ID = '{0}']/DroppedFramePercent"
+				arguments
+					Name_ID
+						valuesQuery=".//DetailedStreamResults/row/Name_ID"
+						interpretAs="SampleValues"
+			In_orderCount_Frames_
+				queryFormatString=".//DetailedStreamResults/row[Name_ID = '{0}']/In_orderCount_Frames_"
+				arguments
+					Name_ID
+						valuesQuery=".//DetailedStreamResults/row/Name_ID"
+						interpretAs="SampleValues"
+			ReorderedCount_Frames_
+				queryFormatString=".//DetailedStreamResults/row[Name_ID = '{0}']/ReorderedCount_Frames_"
+				arguments
+					Name_ID
+						valuesQuery=".//DetailedStreamResults/row/Name_ID"
+						interpretAs="SampleValues"
+			DuplicateCount_Frames_
+				queryFormatString=".//DetailedStreamResults/row[Name_ID = '{0}']/DuplicateCount_Frames_"
+				arguments
+					Name_ID
+						valuesQuery=".//DetailedStreamResults/row/Name_ID"
+						interpretAs="SampleValues"
+			LateCount_Frames_
+				queryFormatString=".//DetailedStreamResults/row[Name_ID = '{0}']/LateCount_Frames_"
+				arguments
+					Name_ID
+						valuesQuery=".//DetailedStreamResults/row/Name_ID"
+						interpretAs="SampleValues"
+			DroppedRate_fps_
+				queryFormatString=".//DetailedStreamResults/row[Name_ID = '{0}']/DroppedRate_fps_"
+				arguments
+					Name_ID
+						valuesQuery=".//DetailedStreamResults/row/Name_ID"
+						interpretAs="SampleValues"
+			DroppedFramePercentRate
+				queryFormatString=".//DetailedStreamResults/row[Name_ID = '{0}']/DroppedFramePercentRate"
+				arguments
+					Name_ID
+						valuesQuery=".//DetailedStreamResults/row/Name_ID"
+						interpretAs="SampleValues"
+			In_orderRate_fps_
+				queryFormatString=".//DetailedStreamResults/row[Name_ID = '{0}']/In_orderRate_fps_"
+				arguments
+					Name_ID
+						valuesQuery=".//DetailedStreamResults/row/Name_ID"
+						interpretAs="SampleValues"
+			ReorderedRate_fps_
+				queryFormatString=".//DetailedStreamResults/row[Name_ID = '{0}']/ReorderedRate_fps_"
+				arguments
+					Name_ID
+						valuesQuery=".//DetailedStreamResults/row/Name_ID"
+						interpretAs="SampleValues"
+			DuplicateRate_fps_
+				queryFormatString=".//DetailedStreamResults/row[Name_ID = '{0}']/DuplicateRate_fps_"
+				arguments
+					Name_ID
+						valuesQuery=".//DetailedStreamResults/row/Name_ID"
+						interpretAs="SampleValues"
+			LateRate_fps_
+				queryFormatString=".//DetailedStreamResults/row[Name_ID = '{0}']/LateRate_fps_"
+				arguments
+					Name_ID
+						valuesQuery=".//DetailedStreamResults/row/Name_ID"
+						interpretAs="SampleValues"
+			success
+				queryFormatString="success"
+		duration="0.1"
+	6 write Sanity Check Status: $sanityCheckStatus
+Procedure deadStreamCount
+	1 subscribeResults $session -subscribedResults DetailedStreamResults
+		useFieldsInCommand="false"
+		emulation
+		responseType="text"
+		structuredData="
+<structure xmlns:map="http://www.fnfr.com/svt/mapping">
+    <definedIn>project://d_stc/referenceSessionProfile/stc_quickcall_library.fftc</definedIn>
+</structure>
+"
+		aliases
+			definedIn
+				queryFormatString=".//definedIn"
+				source="Kernel"
+		duration="1.3"
+	2 showResults $session DetailedStreamResults "Advanced Sequencing" 1
+		analyze
+			query DetailedStreamResults/row/Name_ID
+			store streamIds
+		normalOffset="22.457"
+		estimatedStepExecutionTime="0.041"
+		emulation
+		response="
+Advanced Sequencing
+Name/ID               Tx Port Name  Rx Port Names  Tx Count (Frames)  Rx Count (Frames)  Dropped Count (Frames)  Dropped Frame Percent  In-order Count (Frames)  Reordered Count (Frames)  Duplicate Count (Frames)  Late Count (Frames)  Dropped Rate (fps)  Dropped Frame Percent Rate  In-order Rate (fps)  Reordered Rate (fps)  Duplicate Rate (fps)  Late Rate (fps)
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+StreamBlock 2/65536   Port //2/9    Port //2/12    12221              11222              0                       0                      11222                    0                         0                         0                    0                   0                           813                  0                     0                     0              
+StreamBlock 1/131072  Port //2/12   Port //2/9     12338              10811              18                      0.166                  10810                    1                         0                         0                    0                   0                           813                  0                     0                     0              
+
+"
+		structuredData="
+<structure xmlns:map="http://www.fnfr.com/svt/mapping">
+    <AdvancedSequencing map:endcol="19" map:line="1" map:nodetype="token" map:startcol="19"/>
+    <DetailedStreamResults map:nodetype="table">
+        <row map:nodetype="row">
+            <Name_ID map:endcol="19" map:line="4" map:nodetype="token" map:startcol="0">StreamBlock 2/65536</Name_ID>
+            <TxPortName map:endcol="32" map:line="4" map:nodetype="token" map:startcol="22">Port //2/9</TxPortName>
+            <RxPortNames map:endcol="47" map:line="4" map:nodetype="token" map:startcol="36">Port //2/12</RxPortNames>
+            <TxCount_Frames_ map:endcol="56" map:line="4" map:nodetype="token" map:startcol="51">12221</TxCount_Frames_>
+            <RxCount_Frames_ map:endcol="75" map:line="4" map:nodetype="token" map:startcol="70">11222</RxCount_Frames_>
+            <DroppedCount_Frames_ map:endcol="90" map:line="4" map:nodetype="token" map:startcol="89">0</DroppedCount_Frames_>
+            <DroppedFramePercent map:endcol="114" map:line="4" map:nodetype="token" map:startcol="113">0</DroppedFramePercent>
+            <In_orderCount_Frames_ map:endcol="141" map:line="4" map:nodetype="token" map:startcol="136">11222</In_orderCount_Frames_>
+            <ReorderedCount_Frames_ map:endcol="162" map:line="4" map:nodetype="token" map:startcol="161">0</ReorderedCount_Frames_>
+            <DuplicateCount_Frames_ map:endcol="188" map:line="4" map:nodetype="token" map:startcol="187">0</DuplicateCount_Frames_>
+            <LateCount_Frames_ map:endcol="214" map:line="4" map:nodetype="token" map:startcol="213">0</LateCount_Frames_>
+            <DroppedRate_fps_ map:endcol="235" map:line="4" map:nodetype="token" map:startcol="234">0</DroppedRate_fps_>
+            <DroppedFramePercentRate map:endcol="255" map:line="4" map:nodetype="token" map:startcol="254">0</DroppedFramePercentRate>
+            <In_orderRate_fps_ map:endcol="285" map:line="4" map:nodetype="token" map:startcol="282">813</In_orderRate_fps_>
+            <ReorderedRate_fps_ map:endcol="304" map:line="4" map:nodetype="token" map:startcol="303">0</ReorderedRate_fps_>
+            <DuplicateRate_fps_ map:endcol="326" map:line="4" map:nodetype="token" map:startcol="325">0</DuplicateRate_fps_>
+            <LateRate_fps_ map:endcol="348" map:line="4" map:nodetype="token" map:startcol="347">0</LateRate_fps_>
+        </row>
+        <row map:nodetype="row">
+            <Name_ID map:endcol="20" map:line="5" map:nodetype="token" map:startcol="0">StreamBlock 1/131072</Name_ID>
+            <TxPortName map:endcol="33" map:line="5" map:nodetype="token" map:startcol="22">Port //2/12</TxPortName>
+            <RxPortNames map:endcol="46" map:line="5" map:nodetype="token" map:startcol="36">Port //2/9</RxPortNames>
+            <TxCount_Frames_ map:endcol="56" map:line="5" map:nodetype="token" map:startcol="51">12338</TxCount_Frames_>
+            <RxCount_Frames_ map:endcol="75" map:line="5" map:nodetype="token" map:startcol="70">10811</RxCount_Frames_>
+            <DroppedCount_Frames_ map:endcol="91" map:line="5" map:nodetype="token" map:startcol="89">18</DroppedCount_Frames_>
+            <DroppedFramePercent map:endcol="118" map:line="5" map:nodetype="token" map:startcol="113">0.166</DroppedFramePercent>
+            <In_orderCount_Frames_ map:endcol="141" map:line="5" map:nodetype="token" map:startcol="136">10810</In_orderCount_Frames_>
+            <ReorderedCount_Frames_ map:endcol="162" map:line="5" map:nodetype="token" map:startcol="161">1</ReorderedCount_Frames_>
+            <DuplicateCount_Frames_ map:endcol="188" map:line="5" map:nodetype="token" map:startcol="187">0</DuplicateCount_Frames_>
+            <LateCount_Frames_ map:endcol="214" map:line="5" map:nodetype="token" map:startcol="213">0</LateCount_Frames_>
+            <DroppedRate_fps_ map:endcol="235" map:line="5" map:nodetype="token" map:startcol="234">0</DroppedRate_fps_>
+            <DroppedFramePercentRate map:endcol="255" map:line="5" map:nodetype="token" map:startcol="254">0</DroppedFramePercentRate>
+            <In_orderRate_fps_ map:endcol="285" map:line="5" map:nodetype="token" map:startcol="282">813</In_orderRate_fps_>
+            <ReorderedRate_fps_ map:endcol="304" map:line="5" map:nodetype="token" map:startcol="303">0</ReorderedRate_fps_>
+            <DuplicateRate_fps_ map:endcol="326" map:line="5" map:nodetype="token" map:startcol="325">0</DuplicateRate_fps_>
+            <LateRate_fps_ map:endcol="348" map:line="5" map:nodetype="token" map:startcol="347">0</LateRate_fps_>
+        </row>
+    </DetailedStreamResults>
+    <success map:endcol="4" map:line="7" map:nodetype="token" map:startcol="0">true</success>
+</structure>
+"
+		aliases
+			Advanced Sequencing
+				queryFormatString="AdvancedSequencing"
+			TxPortName
+				queryFormatString=".//DetailedStreamResults/row[Name_ID = '{0}']/TxPortName"
+				arguments
+					Name_ID
+						valuesQuery=".//DetailedStreamResults/row/Name_ID"
+						interpretAs="SampleValues"
+			RxPortNames
+				queryFormatString=".//DetailedStreamResults/row[Name_ID = '{0}']/RxPortNames"
+				arguments
+					Name_ID
+						valuesQuery=".//DetailedStreamResults/row/Name_ID"
+						interpretAs="SampleValues"
+			TxCount_Frames_
+				queryFormatString=".//DetailedStreamResults/row[Name_ID = '{0}']/TxCount_Frames_"
+				arguments
+					Name_ID
+						valuesQuery=".//DetailedStreamResults/row/Name_ID"
+						interpretAs="SampleValues"
+			RxCount_Frames_
+				queryFormatString=".//DetailedStreamResults/row[Name_ID = '{0}']/RxCount_Frames_"
+				arguments
+					Name_ID
+						valuesQuery=".//DetailedStreamResults/row/Name_ID"
+						interpretAs="SampleValues"
+			DroppedCount_Frames_
+				queryFormatString=".//DetailedStreamResults/row[Name_ID = '{0}']/DroppedCount_Frames_"
+				arguments
+					Name_ID
+						valuesQuery=".//DetailedStreamResults/row/Name_ID"
+						interpretAs="SampleValues"
+			DroppedFramePercent
+				queryFormatString=".//DetailedStreamResults/row[Name_ID = '{0}']/DroppedFramePercent"
+				arguments
+					Name_ID
+						valuesQuery=".//DetailedStreamResults/row/Name_ID"
+						interpretAs="SampleValues"
+			In_orderCount_Frames_
+				queryFormatString=".//DetailedStreamResults/row[Name_ID = '{0}']/In_orderCount_Frames_"
+				arguments
+					Name_ID
+						valuesQuery=".//DetailedStreamResults/row/Name_ID"
+						interpretAs="SampleValues"
+			ReorderedCount_Frames_
+				queryFormatString=".//DetailedStreamResults/row[Name_ID = '{0}']/ReorderedCount_Frames_"
+				arguments
+					Name_ID
+						valuesQuery=".//DetailedStreamResults/row/Name_ID"
+						interpretAs="SampleValues"
+			DuplicateCount_Frames_
+				queryFormatString=".//DetailedStreamResults/row[Name_ID = '{0}']/DuplicateCount_Frames_"
+				arguments
+					Name_ID
+						valuesQuery=".//DetailedStreamResults/row/Name_ID"
+						interpretAs="SampleValues"
+			LateCount_Frames_
+				queryFormatString=".//DetailedStreamResults/row[Name_ID = '{0}']/LateCount_Frames_"
+				arguments
+					Name_ID
+						valuesQuery=".//DetailedStreamResults/row/Name_ID"
+						interpretAs="SampleValues"
+			DroppedRate_fps_
+				queryFormatString=".//DetailedStreamResults/row[Name_ID = '{0}']/DroppedRate_fps_"
+				arguments
+					Name_ID
+						valuesQuery=".//DetailedStreamResults/row/Name_ID"
+						interpretAs="SampleValues"
+			DroppedFramePercentRate
+				queryFormatString=".//DetailedStreamResults/row[Name_ID = '{0}']/DroppedFramePercentRate"
+				arguments
+					Name_ID
+						valuesQuery=".//DetailedStreamResults/row/Name_ID"
+						interpretAs="SampleValues"
+			In_orderRate_fps_
+				queryFormatString=".//DetailedStreamResults/row[Name_ID = '{0}']/In_orderRate_fps_"
+				arguments
+					Name_ID
+						valuesQuery=".//DetailedStreamResults/row/Name_ID"
+						interpretAs="SampleValues"
+			ReorderedRate_fps_
+				queryFormatString=".//DetailedStreamResults/row[Name_ID = '{0}']/ReorderedRate_fps_"
+				arguments
+					Name_ID
+						valuesQuery=".//DetailedStreamResults/row/Name_ID"
+						interpretAs="SampleValues"
+			DuplicateRate_fps_
+				queryFormatString=".//DetailedStreamResults/row[Name_ID = '{0}']/DuplicateRate_fps_"
+				arguments
+					Name_ID
+						valuesQuery=".//DetailedStreamResults/row/Name_ID"
+						interpretAs="SampleValues"
+			LateRate_fps_
+				queryFormatString=".//DetailedStreamResults/row[Name_ID = '{0}']/LateRate_fps_"
+				arguments
+					Name_ID
+						valuesQuery=".//DetailedStreamResults/row/Name_ID"
+						interpretAs="SampleValues"
+			success
+				queryFormatString="success"
+		duration="0.1"
+	3 sleep $delaySec
+	4 showResults $session DetailedStreamResults "Advanced Sequencing" 1
+		normalOffset="22.457"
+		estimatedStepExecutionTime="0.041"
+		emulation
+		response="
+Advanced Sequencing
+Name/ID               Tx Port Name  Rx Port Names  Tx Count (Frames)  Rx Count (Frames)  Dropped Count (Frames)  Dropped Frame Percent  In-order Count (Frames)  Reordered Count (Frames)  Duplicate Count (Frames)  Late Count (Frames)  Dropped Rate (fps)  Dropped Frame Percent Rate  In-order Rate (fps)  Reordered Rate (fps)  Duplicate Rate (fps)  Late Rate (fps)
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+StreamBlock 2/65536   Port //2/9    Port //2/12    12221              11222              0                       0                      11222                    0                         0                         0                    0                   0                           813                  0                     0                     0              
+StreamBlock 1/131072  Port //2/12   Port //2/9     12338              10811              18                      0.166                  10810                    1                         0                         0                    0                   0                           813                  0                     0                     0              
+
+"
+		structuredData="
+<structure xmlns:map="http://www.fnfr.com/svt/mapping">
+    <AdvancedSequencing map:endcol="19" map:line="1" map:nodetype="token" map:startcol="19"/>
+    <DetailedStreamResults map:nodetype="table">
+        <row map:nodetype="row">
+            <Name_ID map:endcol="19" map:line="4" map:nodetype="token" map:startcol="0">StreamBlock 2/65536</Name_ID>
+            <TxPortName map:endcol="32" map:line="4" map:nodetype="token" map:startcol="22">Port //2/9</TxPortName>
+            <RxPortNames map:endcol="47" map:line="4" map:nodetype="token" map:startcol="36">Port //2/12</RxPortNames>
+            <TxCount_Frames_ map:endcol="56" map:line="4" map:nodetype="token" map:startcol="51">12221</TxCount_Frames_>
+            <RxCount_Frames_ map:endcol="75" map:line="4" map:nodetype="token" map:startcol="70">11222</RxCount_Frames_>
+            <DroppedCount_Frames_ map:endcol="90" map:line="4" map:nodetype="token" map:startcol="89">0</DroppedCount_Frames_>
+            <DroppedFramePercent map:endcol="114" map:line="4" map:nodetype="token" map:startcol="113">0</DroppedFramePercent>
+            <In_orderCount_Frames_ map:endcol="141" map:line="4" map:nodetype="token" map:startcol="136">11222</In_orderCount_Frames_>
+            <ReorderedCount_Frames_ map:endcol="162" map:line="4" map:nodetype="token" map:startcol="161">0</ReorderedCount_Frames_>
+            <DuplicateCount_Frames_ map:endcol="188" map:line="4" map:nodetype="token" map:startcol="187">0</DuplicateCount_Frames_>
+            <LateCount_Frames_ map:endcol="214" map:line="4" map:nodetype="token" map:startcol="213">0</LateCount_Frames_>
+            <DroppedRate_fps_ map:endcol="235" map:line="4" map:nodetype="token" map:startcol="234">0</DroppedRate_fps_>
+            <DroppedFramePercentRate map:endcol="255" map:line="4" map:nodetype="token" map:startcol="254">0</DroppedFramePercentRate>
+            <In_orderRate_fps_ map:endcol="285" map:line="4" map:nodetype="token" map:startcol="282">813</In_orderRate_fps_>
+            <ReorderedRate_fps_ map:endcol="304" map:line="4" map:nodetype="token" map:startcol="303">0</ReorderedRate_fps_>
+            <DuplicateRate_fps_ map:endcol="326" map:line="4" map:nodetype="token" map:startcol="325">0</DuplicateRate_fps_>
+            <LateRate_fps_ map:endcol="348" map:line="4" map:nodetype="token" map:startcol="347">0</LateRate_fps_>
+        </row>
+        <row map:nodetype="row">
+            <Name_ID map:endcol="20" map:line="5" map:nodetype="token" map:startcol="0">StreamBlock 1/131072</Name_ID>
+            <TxPortName map:endcol="33" map:line="5" map:nodetype="token" map:startcol="22">Port //2/12</TxPortName>
+            <RxPortNames map:endcol="46" map:line="5" map:nodetype="token" map:startcol="36">Port //2/9</RxPortNames>
+            <TxCount_Frames_ map:endcol="56" map:line="5" map:nodetype="token" map:startcol="51">12338</TxCount_Frames_>
+            <RxCount_Frames_ map:endcol="75" map:line="5" map:nodetype="token" map:startcol="70">10811</RxCount_Frames_>
+            <DroppedCount_Frames_ map:endcol="91" map:line="5" map:nodetype="token" map:startcol="89">18</DroppedCount_Frames_>
+            <DroppedFramePercent map:endcol="118" map:line="5" map:nodetype="token" map:startcol="113">0.166</DroppedFramePercent>
+            <In_orderCount_Frames_ map:endcol="141" map:line="5" map:nodetype="token" map:startcol="136">10810</In_orderCount_Frames_>
+            <ReorderedCount_Frames_ map:endcol="162" map:line="5" map:nodetype="token" map:startcol="161">1</ReorderedCount_Frames_>
+            <DuplicateCount_Frames_ map:endcol="188" map:line="5" map:nodetype="token" map:startcol="187">0</DuplicateCount_Frames_>
+            <LateCount_Frames_ map:endcol="214" map:line="5" map:nodetype="token" map:startcol="213">0</LateCount_Frames_>
+            <DroppedRate_fps_ map:endcol="235" map:line="5" map:nodetype="token" map:startcol="234">0</DroppedRate_fps_>
+            <DroppedFramePercentRate map:endcol="255" map:line="5" map:nodetype="token" map:startcol="254">0</DroppedFramePercentRate>
+            <In_orderRate_fps_ map:endcol="285" map:line="5" map:nodetype="token" map:startcol="282">813</In_orderRate_fps_>
+            <ReorderedRate_fps_ map:endcol="304" map:line="5" map:nodetype="token" map:startcol="303">0</ReorderedRate_fps_>
+            <DuplicateRate_fps_ map:endcol="326" map:line="5" map:nodetype="token" map:startcol="325">0</DuplicateRate_fps_>
+            <LateRate_fps_ map:endcol="348" map:line="5" map:nodetype="token" map:startcol="347">0</LateRate_fps_>
+        </row>
+    </DetailedStreamResults>
+    <success map:endcol="4" map:line="7" map:nodetype="token" map:startcol="0">true</success>
+</structure>
+"
+		aliases
+			Advanced Sequencing
+				queryFormatString="AdvancedSequencing"
+			TxPortName
+				queryFormatString=".//DetailedStreamResults/row[Name_ID = '{0}']/TxPortName"
+				arguments
+					Name_ID
+						valuesQuery=".//DetailedStreamResults/row/Name_ID"
+						interpretAs="SampleValues"
+			RxPortNames
+				queryFormatString=".//DetailedStreamResults/row[Name_ID = '{0}']/RxPortNames"
+				arguments
+					Name_ID
+						valuesQuery=".//DetailedStreamResults/row/Name_ID"
+						interpretAs="SampleValues"
+			TxCount_Frames_
+				queryFormatString=".//DetailedStreamResults/row[Name_ID = '{0}']/TxCount_Frames_"
+				arguments
+					Name_ID
+						valuesQuery=".//DetailedStreamResults/row/Name_ID"
+						interpretAs="SampleValues"
+			RxCount_Frames_
+				queryFormatString=".//DetailedStreamResults/row[Name_ID = '{0}']/RxCount_Frames_"
+				arguments
+					Name_ID
+						valuesQuery=".//DetailedStreamResults/row/Name_ID"
+						interpretAs="SampleValues"
+			DroppedCount_Frames_
+				queryFormatString=".//DetailedStreamResults/row[Name_ID = '{0}']/DroppedCount_Frames_"
+				arguments
+					Name_ID
+						valuesQuery=".//DetailedStreamResults/row/Name_ID"
+						interpretAs="SampleValues"
+			DroppedFramePercent
+				queryFormatString=".//DetailedStreamResults/row[Name_ID = '{0}']/DroppedFramePercent"
+				arguments
+					Name_ID
+						valuesQuery=".//DetailedStreamResults/row/Name_ID"
+						interpretAs="SampleValues"
+			In_orderCount_Frames_
+				queryFormatString=".//DetailedStreamResults/row[Name_ID = '{0}']/In_orderCount_Frames_"
+				arguments
+					Name_ID
+						valuesQuery=".//DetailedStreamResults/row/Name_ID"
+						interpretAs="SampleValues"
+			ReorderedCount_Frames_
+				queryFormatString=".//DetailedStreamResults/row[Name_ID = '{0}']/ReorderedCount_Frames_"
+				arguments
+					Name_ID
+						valuesQuery=".//DetailedStreamResults/row/Name_ID"
+						interpretAs="SampleValues"
+			DuplicateCount_Frames_
+				queryFormatString=".//DetailedStreamResults/row[Name_ID = '{0}']/DuplicateCount_Frames_"
+				arguments
+					Name_ID
+						valuesQuery=".//DetailedStreamResults/row/Name_ID"
+						interpretAs="SampleValues"
+			LateCount_Frames_
+				queryFormatString=".//DetailedStreamResults/row[Name_ID = '{0}']/LateCount_Frames_"
+				arguments
+					Name_ID
+						valuesQuery=".//DetailedStreamResults/row/Name_ID"
+						interpretAs="SampleValues"
+			DroppedRate_fps_
+				queryFormatString=".//DetailedStreamResults/row[Name_ID = '{0}']/DroppedRate_fps_"
+				arguments
+					Name_ID
+						valuesQuery=".//DetailedStreamResults/row/Name_ID"
+						interpretAs="SampleValues"
+			DroppedFramePercentRate
+				queryFormatString=".//DetailedStreamResults/row[Name_ID = '{0}']/DroppedFramePercentRate"
+				arguments
+					Name_ID
+						valuesQuery=".//DetailedStreamResults/row/Name_ID"
+						interpretAs="SampleValues"
+			In_orderRate_fps_
+				queryFormatString=".//DetailedStreamResults/row[Name_ID = '{0}']/In_orderRate_fps_"
+				arguments
+					Name_ID
+						valuesQuery=".//DetailedStreamResults/row/Name_ID"
+						interpretAs="SampleValues"
+			ReorderedRate_fps_
+				queryFormatString=".//DetailedStreamResults/row[Name_ID = '{0}']/ReorderedRate_fps_"
+				arguments
+					Name_ID
+						valuesQuery=".//DetailedStreamResults/row/Name_ID"
+						interpretAs="SampleValues"
+			DuplicateRate_fps_
+				queryFormatString=".//DetailedStreamResults/row[Name_ID = '{0}']/DuplicateRate_fps_"
+				arguments
+					Name_ID
+						valuesQuery=".//DetailedStreamResults/row/Name_ID"
+						interpretAs="SampleValues"
+			LateRate_fps_
+				queryFormatString=".//DetailedStreamResults/row[Name_ID = '{0}']/LateRate_fps_"
+				arguments
+					Name_ID
+						valuesQuery=".//DetailedStreamResults/row/Name_ID"
+						interpretAs="SampleValues"
+			success
+				queryFormatString="success"
+		duration="0.1"
+	5 eval set deadStreamCount 0
+		useFieldsInCommand="false"
+	6 foreach streamId $streamIds
+		useFieldsInCommand="false"
+		6.1 #Compare each stream to see if data is flowing
+			useFieldsInCommand="false"
+		6.2 if [query result1 "RxCount_Frames_(\\"$streamId\\")"] == [query result2 "RxCount_Frames_(\\"$streamId\\")"]
+			useFieldsInCommand="false"
+			6.2.1 then 
+				useFieldsInCommand="false"
+				6.2.1.1 #Dead Stream - packets match
+					useFieldsInCommand="false"
+				6.2.1.2 write Steam status - $streamId : DEAD\\n
+				6.2.1.3 eval incr deadStreamCount
+					useFieldsInCommand="false"
+			6.2.2 else 
+				useFieldsInCommand="false"
+				6.2.2.1 #Live Stream - packets don't match
+					useFieldsInCommand="false"
+				6.2.2.2 write Steam status - $streamId : LIVE\\n
+	7 write Total Dead Streams: $deadStreamCount
+Procedure capturePortPcap
+	1 startCapture $session $port
+		normalOffset="36.522"
+		estimatedStepExecutionTime="2.451"
+		emulation
+		structuredData="
+<structure xmlns:map="http://www.fnfr.com/svt/mapping">
+    <success map:endcol="4" map:line="0" map:nodetype="token" map:startcol="0">true</success>
+</structure>
+"
+		aliases
+			success
+				queryFormatString="success"
+	2 sleep $delay
+	3 stopCapture $session $port
+		normalOffset="3.26"
+		estimatedStepExecutionTime="1.827"
+		emulation
+		structuredData="
+<structure xmlns:map="http://www.fnfr.com/svt/mapping">
+    <success map:endcol="4" map:line="0" map:nodetype="token" map:startcol="0">true</success>
+</structure>
+"
+		aliases
+			success
+				queryFormatString="success"
+	4 saveCapture $session $port $filePath
+		normalOffset="16.376"
+		estimatedStepExecutionTime="0.214"
+		emulation
+		response="Capture saved to file:/C:/stc.pcap
+"
+		structuredData="
+<structure xmlns:map="http://www.fnfr.com/svt/mapping">
+    <success map:endcol="4" map:line="1" map:nodetype="token" map:startcol="0">true</success>
+</structure>
+"
+		aliases
+			success
+				queryFormatString="success"

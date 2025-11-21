@@ -1,0 +1,123 @@
+<?xml version="1.0" ?><ResponseMap version="5.4.0.4f90e5a">
+    <sampleDictionary>
+        <item name="sample2">
+            <responseBody>    Procedure Code :   UE CONTEXT MODIFICATION (21)
+    Criticality
+      | 00.. .... | Reject (0)
+    UE CONTEXT MODIFICATION Value : 
+      | .001 1001 | Length Determinant : 25
+      Value : 
+        | 0... .... | Ext bit : 0
+          IEs Count : 3
+            IE : 1
+              Protocol IE ID : MME_UE_S1AP_ID (0)
+              Criticality
+                | 00.. .... | Reject (0)
+              MME_UE_S1AP_ID Value : 
+                | .000 0101 | Length Determinant : 5
+                Value : 
+                  | 11.. .... | Length Determinant : 4
+                  42992414 (0x290031e)
+            IE : 2
+              Protocol IE ID : eNB_UE_S1AP_ID (8)
+              Criticality
+                | 00.. .... | Reject (0)
+              eNB_UE_S1AP_ID Value : 
+                | .000 0100 | Length Determinant : 4
+                Value : 
+                  | 10.. .... | Length Determinant : 3
+                  115861 (0x1c495)
+            IE : 3
+              Protocol IE ID : CSFallbackIndicator (108)
+              Criticality
+                | 00.. .... | Reject (0)
+              CSFallbackIndicator Value : 
+                | .000 0001 | Length Determinant : 1
+                Value : 
+                  | 0... .... | Ext bit : 0
+                  CS-Fallback-Required (0)</responseBody>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="ProcCode">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Procedure Code :\\s+</regex>
+                            <start>0</start>
+                            <end>19</end>
+                        </item>
+                        <item name="Procedure_Code">
+                            <regex>[^\\r\\n]+</regex>
+                            <named>true</named>
+                            <start>19</start>
+                            <end>47</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>Procedure Code :   UE CONTEXT MODIFICATION (21)</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+                <item name="CSFallback">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>CS-Fallback-Required \\(</regex>
+                            <start>0</start>
+                            <end>22</end>
+                        </item>
+                        <item name="CS_Fallback_Required">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>22</start>
+                            <end>23</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\)</regex>
+                            <start>23</start>
+                            <end>24</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>CS-Fallback-Required (0)</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+                <item name="ProtocolId">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>\\s+IE :\\s+3\\s+Protocol IE ID :\\s+</regex>
+                            <start>0</start>
+                            <end>50</end>
+                        </item>
+                        <item name="Protocol_IE_ID">
+                            <regex>[^\\r\\n]+</regex>
+                            <named>true</named>
+                            <start>50</start>
+                            <end>75</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>            IE : 3
+              Protocol IE ID : CSFallbackIndicator (108)</sampleMatch>
+                    <optional>true</optional>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="readFile" command="file:/c:/temp/2016_12_07_10_02_2.10MO_MT_Cell_Reselection/Monitor_Subscriber_MMEPP-02.log"/>
+</ResponseMap>

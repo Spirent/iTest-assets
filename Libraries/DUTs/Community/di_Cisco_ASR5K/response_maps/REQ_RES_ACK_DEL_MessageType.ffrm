@@ -1,0 +1,213 @@
+<?xml version="1.0" ?><ResponseMap version="5.4.0.4f90e5a">
+    <sampleDictionary>
+        <item name="sample1">
+            <action actionType="readFile">
+                <command>
+                    <body>file:/c:/temp/2017_02_08_19_15_14.1_LTE-UMTS_IDLE_mode_reselection-context_retrieval_on_UMTS_valid_NRI_map/Monitor_Subscriber_SGSN-02.log</body>
+                </command>
+            </action>
+            <responseBody>TEID: 0x8002203A, Message type: GTP_UPDATE_PDP_CONTEXT_REQ_MSG (0x12)
+Sequence Number2001:0db8:85a3:0000:0000:8a2e:0370:7334 0x188A (6282)
+GTP HEADER FOLLOWS:
+             Version number: 1
+              Protocol type: 1 (GTP C/U)
+       Extended header flag: Present
+       Sequence number flag: Present
+           NPDU number flag: Not present
+               Message Type: 0x12 (GTP_UPDATE_PDP_CONTEXT_REQ_MSG)</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;isEmpty&gt;false&lt;/isEmpty&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="isEmpty">
+                    <queryFormatString>.//isEmpty</queryFormatString>
+                </item>
+            </aliases>
+        </item>
+        <item name="sample2">
+            <action actionType="readFile">
+                <command>
+                    <body>file:/c:/temp/2017_02_08_19_15_14.1_LTE-UMTS_IDLE_mode_reselection-context_retrieval_on_UMTS_valid_NRI_map/Monitor_Subscriber_MMEPP-02.log</body>
+                </command>
+            </action>
+            <responseBody>TEID: 0x8002003A, Message type: EGTP_DELETE_SESSION_REQUEST (0x24)
+Sequence Number: 0x162028 (1450024)
+GTP HEADER
+        Version number: 2
+        TEID flag: Present
+        Piggybacking flag: Not present
+        Message Length: 0x001D (29)
+
+INFORMATION ELEMENTS</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;isEmpty&gt;false&lt;/isEmpty&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="isEmpty">
+                    <queryFormatString>.//isEmpty</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.1</duration>
+        </item>
+        <item name="sample3">
+            <action actionType="readFile">
+                <command>
+                    <body>file:/c:/temp/2017_02_19_21_08_3.1_Intra-MME_X2_handover_ECM-connected-Huawei_RAN/Monitor_Subscriber_MMEPP-02.log</body>
+                </command>
+            </action>
+            <responseBody>TEID: 0x80030009, Message type: EGTP_MODIFY_BEARER_RESPONSE (0x23)
+Sequence Number: 0x007209 (29193)
+GTP HEADER
+        Version number: 2
+        TEID flag: Present
+        Piggybacking flag: Not present
+        Message Length: 0x002A (42)
+
+INFORMATION ELEMENTS
+        CAUSE: 
+            Type: 2  Length: 2  Inst: 0
+            Value: 
+                Cause: EGTP_CAUSE_REQ_ACCEPTED (0x10)</responseBody>
+            <contentType>text</contentType>
+            <structuredData>
+&lt;structure xmlns:map=&quot;http://www.fnfr.com/svt/mapping&quot;&gt;
+    &lt;isEmpty&gt;false&lt;/isEmpty&gt;
+&lt;/structure&gt;
+</structuredData>
+            <aliases>
+                <item name="isEmpty">
+                    <queryFormatString>.//isEmpty</queryFormatString>
+                </item>
+            </aliases>
+            <duration>0.1</duration>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="MessageType">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>TEID:\\s+</regex>
+                            <start>0</start>
+                            <end>6</end>
+                        </item>
+                        <item name="TEID">
+                            <regex>([0][x][\\da-fA-F]+)</regex>
+                            <named>true</named>
+                            <start>6</start>
+                            <end>16</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([0][x][\da-fA-F]+)">one hexadecimal number</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>, Message type:\\s+</regex>
+                            <start>16</start>
+                            <end>32</end>
+                        </item>
+                        <item name="Message_Data">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>32</start>
+                            <end>62</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>\\s+\\(</regex>
+                            <start>62</start>
+                            <end>64</end>
+                        </item>
+                        <item name="Message_type_Num">
+                            <regex>([0][x][\\da-fA-F]+)</regex>
+                            <named>true</named>
+                            <start>64</start>
+                            <end>68</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([0][x][\da-fA-F]+)">one hexadecimal number</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor3">
+                            <regex>\\)</regex>
+                            <start>68</start>
+                            <end>69</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>TEID: 0x8002203A, Message type: GTP_UPDATE_PDP_CONTEXT_REQ_MSG (0x12)</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                    <maintainConsistency>false</maintainConsistency>
+                </item>
+                <item name="MessageCause">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Cause:\\s+</regex>
+                            <start>0</start>
+                            <end>7</end>
+                        </item>
+                        <item name="Cause">
+                            <regex>\\w+</regex>
+                            <named>true</named>
+                            <start>7</start>
+                            <end>30</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="[^0-9\r\n]+">one or more non-digit characters except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor1">
+                            <regex>\\s+\\(</regex>
+                            <start>30</start>
+                            <end>32</end>
+                        </item>
+                        <item name="Cause_EGTP_CAUSE_REQ_ACCEPTED">
+                            <regex>([0][x][\\da-fA-F]+)</regex>
+                            <named>true</named>
+                            <start>32</start>
+                            <end>36</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([0][x][\da-fA-F]+)">one hexadecimal number</item>
+                            </suggestions>
+                        </item>
+                        <item name="anchor2">
+                            <regex>\\)</regex>
+                            <start>36</start>
+                            <end>37</end>
+                        </item>
+                    </groups>
+                    <sampleMatch>Cause: EGTP_CAUSE_REQ_ACCEPTED (0x10)</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="readFile" command="file:/c:/temp/2017_02_08_19_15_14.1_LTE-UMTS_IDLE_mode_reselection-context_retrieval_on_UMTS_valid_NRI_map/Monitor_Subscriber_SGSN-02.log"/>
+</ResponseMap>

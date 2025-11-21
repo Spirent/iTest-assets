@@ -1,0 +1,96 @@
+<?xml version="1.0"?>
+<ResponseMap version="5.1.0.77511">
+    <sampleDictionary>
+        <item name="sample1">
+            <responseBody>RP/0/RSP1/CPU0:asr9k_5#sh drops location 0/0/CPU0 | b FIA
+FIA 0 Drops:
+----------------------------------------------------------------
+Total drop:                                                  38
+Ingress drop:                                                38
+Ingress sp0 crc err                                          7
+Ingress sp0 bad code                                         1
+Ingress sp0 align fail                                       3
+Ingress sp1 crc err                                          16
+Ingress sp1 bad code                                         8
+Ingress sp1 align fail                                       3
+----------------------------------------------------------------
+
+FIA 1 Drops:
+----------------------------------------------------------------
+Total drop:                                                  26
+Ingress drop:                                                26
+Ingress sp0 crc err                                          13
+Ingress sp0 bad code                                         7
+Ingress sp0 align fail                                       3
+Ingress sp1 align fail                                       3
+----------------------------------------------------------------
+
+FIA 2 Drops:
+----------------------------------------------------------------
+Total drop:                                                  14
+Ingress drop:                                                14
+Ingress sp0 crc err                                          2
+Ingress sp0 bad code                                         2
+Ingress sp0 align fail                                       3
+Ingress sp1 crc err                                          4
+Ingress sp1 align fail                                       3
+----------------------------------------------------------------
+
+FIA 3 Drops:
+----------------------------------------------------------------
+Total drop:                                                  7
+Ingress drop:                                                7
+Ingress sp0 align fail                                       3
+Ingress sp1 crc err                                          1
+Ingress sp1 align fail                                       3
+----------------------------------------------------------------    </responseBody>
+        </item>
+        <item name="sample2">
+            <responseBody>No FIA 0 Drops
+----------------------------------------------------------------
+
+No FIA 1 Drops
+----------------------------------------------------------------
+
+No FIA 2 Drops
+----------------------------------------------------------------
+
+No FIA 3 Drops
+----------------------------------------------------------------
+</responseBody>
+        </item>
+    </sampleDictionary>
+    <mapperProperties>
+        <item type="com.fnfr.svt.mapping.regex.RegexMapperProperties">
+            <regexMaps>
+                <item name="total_drop_pattern">
+                    <groups>
+                        <item name="anchor0">
+                            <regex>Total drop:\\s+</regex>
+                            <start>0</start>
+                            <end>61</end>
+                        </item>
+                        <item name="total_drops">
+                            <regex>\\d+</regex>
+                            <named>true</named>
+                            <start>61</start>
+                            <end>62</end>
+                            <suggestions>
+                                <item name=".+">one or more of any character</item>
+                                <item name="[^\r\n]+">one or more of any character except line endings</item>
+                                <item name="\S+">one or more non-whitespace characters</item>
+                                <item name="\w+">one or more word characters</item>
+                                <item name="([-+]?\d+\.?\d*([eE][-+]?\d+)?)">one complex decimal number</item>
+                                <item name="\d+">one or more digits</item>
+                            </suggestions>
+                        </item>
+                    </groups>
+                    <sampleMatch>Total drop:                                                  6</sampleMatch>
+                    <regexMapMode>Line</regexMapMode>
+                    <optional>true</optional>
+                </item>
+            </regexMaps>
+        </item>
+    </mapperProperties>
+    <applicabilityProperties actionType="show_drops" command="*filter*"/>
+</ResponseMap>
