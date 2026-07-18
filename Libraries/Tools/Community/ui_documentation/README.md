@@ -17,7 +17,7 @@ Fail if information is missing. Must be as follows:
 Project: <name>
 Description: <Some wording about what the project does or is used for>
 Category: <"library", "automation", or "framework">
-Class: <"Community", "Tested by Spirent", "Reference">
+Class: <"Community", "Tested by Keysight", "Reference">
 ## Procedure Library: documentation.fftc
 ### Documentation Generator
 This test case will generate documentation for QuickCall libraries, Procedure libraries, drivers and optionally Response Maps. The Headline and Description should be completed for General Information and all procedures. Procedure arguments should also have a description.

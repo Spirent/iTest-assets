@@ -1074,7 +1074,7 @@ Create a soft failure by reloading the specified location
 <tr><td>status</td><td>shutdown/no shutdown</tr></td>
 <tr><td>mtu</td><td>Interface MTU</tr></td>
 <tr><td>service_policy</td><td>Full service policy command:
-e.g. "type performance input "</tr></td></table>
+e.g. "type performance input vidmon-rtp"</tr></td></table>
 
 ### find_hundredGig_interfaces_that_are_up
 <table><tr><th>Argument</th><th>Description</th></tr>
@@ -1082,7 +1082,7 @@ e.g. "type performance input "</tr></td></table>
 <tr><td>status</td><td>shutdown/no shutdown</tr></td>
 <tr><td>mtu</td><td>Interface MTU</tr></td>
 <tr><td>service_policy</td><td>Full service policy command:
-e.g. "type performance input "</tr></td></table>
+e.g. "type performance input vidmon-rtp"</tr></td></table>
 
 ### get_apply_group_list
 <table><tr><th>Argument</th><th>Description</th></tr>
@@ -1479,7 +1479,7 @@ SNo. Label/ID              User      Line                Client      Time Stamp
 <tr><td>status</td><td>shutdown/no shutdown</tr></td>
 <tr><td>mtu</td><td>Interface MTU</tr></td>
 <tr><td>service_policy</td><td>Full service policy command:
-e.g. "type performance input"</tr></td>
+e.g. "type performance input vidmon-rtp"</tr></td>
 <tr><td>soft_preempt</td><td>Set to anything but "null", to configure soft preemption.</tr></td>
 <tr><td>signalled_bw</td><tr></tr>
 <tr><td>commit_with_label</td><td>1 - Will commit generating a label; the label will be a global variable; GC_$session</tr></td>
@@ -2255,7 +2255,7 @@ EGRESS_POLICY -> show policy map pmap-name EGRESS_POLICY</tr></td></table>
 ### show_redundancy
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>level1</td><td>One from below:
-RP/0/RSP0/CPU0:#show redundancy ?
+RP/0/RSP0/CPU0:RTP-VIKING-MCAST-14#show redundancy ?
   location    Location to display
   statistics  Redundancy statistics information
   summary     Show summary of all redundant node pairs
@@ -4518,7 +4518,7 @@ Restart a process
 <table><tr><th>Argument</th><th>Description</th></tr>
 <tr><td>process</td><td>Job ID <0-4294967295> or name of process to restart</tr></td></table>
 
-171 response maps in project
+168 response maps in project
 ## Response Map File: show_np_Drops_xml.ffrm
 ## Response Map File: cisco_show_install.ffrm
 ## Response Map File: np_logical_chnl.ffrm
@@ -4562,7 +4562,6 @@ Restart a process
 ## Response Map File: show_watchdog_trace_single_notif_verbose.ffrm
 ## Response Map File: show_run_Srlg.ffrm
 ## Response Map File: show_ethernet_oam_discovery_interface.ffrm
-## Response Map File: CrashMap_6x.ffrm
 ## Response Map File: show_controllers.ffrm
 ## Response Map File: show_memory_summary.ffrm
 ## Response Map File: show_process_memory.ffrm
@@ -4571,7 +4570,6 @@ Restart a process
 ## Response Map File: show_filesystem_location.ffrm
 ## Response Map File: srlg_admin_wieght_xml.ffrm
 ## Response Map File: show_ethernet_oam_configuration_interface.ffrm
-## Response Map File: CrashMap_old.ffrm
 ## Response Map File: show_users.ffrm
 ## Response Map File: show_policy-map_interface_output.ffrm
 ## Response Map File: show_watchdog_oor-aware-process.ffrm
@@ -4591,7 +4589,6 @@ Restart a process
 ## Response Map File: show_hw_module_fpd.ffrm
 ## Response Map File: show_bfd_session_test.ffrm
 ## Response Map File: show_apply_group.ffrm
-## Response Map File: show_version.ffrm
 ## Response Map File: show_run_group.ffrm
 ## Response Map File: show_isis_neighbors.ffrm
 ## Response Map File: show_policy-map_interface_input.ffrm

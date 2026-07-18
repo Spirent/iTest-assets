@@ -2,7 +2,8 @@
 Project: Iperf Server - Linux  
 Description: QuickCalls and response map examples  
 Category: library  
-Class: Tested by Spirent
+Class: Tested by Keysight  
+
  ----
 1 quickcall library in project
 ## Quickcall Library: iperf_server_base_qc.fftc

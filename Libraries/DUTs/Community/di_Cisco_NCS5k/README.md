@@ -167,11 +167,10 @@ Use this command do to a standard "show run" or use $output_modifier to add the 
 <tr><td>slot</td><td>Use anything other than null to add this option to the command
 </tr></td></table>
 
-7 response maps in project
+6 response maps in project
 ## Response Map File: show_controller_interface_all_LR_SR.ffrm
 ## Response Map File: show_platform.ffrm
 ## Response Map File: admin_show_env_power.ffrm
 ## Response Map File: show_redundancy_summary.ffrm
-## Response Map File: show_version.ffrm
 ## Response Map File: show_run_qos.ffrm
 ## Response Map File: show_controller_interface_all.ffrm
